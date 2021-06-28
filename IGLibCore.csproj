@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+    <TargetFramework>net5.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    -->
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>net5.0;net461;netstandard2.0</TargetFrameworks>
+
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Attributes previously in AsemblyInfo.cs: -->
+    <Version>1.8.0</Version>
+    <Authors>Igor Grešovnik et al.</Authors>
+    <Company>IGLib</Company>
+    <Product>IGLib</Product>
+    <PackageId>IGLibCore</PackageId>
+    <AssemblyVersion>1.8.0</AssemblyVersion>
+    <FileVersion>1.8.0</FileVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description>Librart for some core utilities, with onlz baisc dependencies.</Description>
+    <Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl></RepositoryUrl>
+    <RepositoryType>Hit</RepositoryType>
+    <PackageTags>Tags</PackageTags>
+    <PackageReleaseNotes>Release</PackageReleaseNotes>
+    
+    
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="FromIGLibBase\" />
+  </ItemGroup>
+
+</Project>
