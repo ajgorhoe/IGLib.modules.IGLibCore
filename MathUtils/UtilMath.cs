@@ -62,9 +62,9 @@ namespace IG.Num
     } // class ExampleMathClass
 
 
-    public class UtilMath : M
-    {
-    }
+    //public class UtilMath : M
+    //{
+    //}
 
     /// <summary>Defines some mathematical functions to be used in derived and other classes.
     /// <para>* Standard mathematical functions  and constants with short names are implemented, e.g. sin() instesd of Math.Sin().</para>
