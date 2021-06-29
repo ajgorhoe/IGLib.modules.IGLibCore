@@ -12,7 +12,7 @@ namespace IG.Lib
     /// Implementation notes: 
     /// Registerable.Example contains an example of how to do that, or can even be inherited
     /// to provide all functionality automatically (but this may not be feasible because multiple 
-    /// inheritance is not supported, and our class already inherits form another one).</summary>
+    /// inheritance is not supported, and a class already inherits form another one).</summary>
     public interface IRegisterable<T> : IIdentifiable
             where T : class, IIdentifiable
     {
