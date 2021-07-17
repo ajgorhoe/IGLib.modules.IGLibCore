@@ -3,11 +3,11 @@
   <PropertyGroup>
     <!--
     <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     -->
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net5.0;net461;netstandard2.0</TargetFrameworks>
-
+    <TargetFrameworks>net5.0;net48;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <!-- Attributes previously in AsemblyInfo.cs: -->
@@ -32,7 +32,9 @@
     
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="FromIGLibBase\" />
+    <Compile Remove="FromIGLibBase\**" />
+    <EmbeddedResource Remove="FromIGLibBase\**" />
+    <None Remove="FromIGLibBase\**" />
   </ItemGroup>
 
 </Project>
