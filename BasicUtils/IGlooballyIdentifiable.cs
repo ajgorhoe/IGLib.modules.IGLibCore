@@ -13,11 +13,15 @@ namespace IG.Lib
         int ObjectId { get; }
     }
 
-    /// <summary>Base class for classes whose objects have a unique application-wide ID.</summary>
+    /// <summary>Base class for classes whose objects have a unique process-wide ID.
+    /// <para>The <see cref="NextGlobalId"/> static properrty of the class can be used to obtain a process-wide
+    /// unique ID for other purposes, such as unique variable names uses in scripts.</para></summary>
     public abstract class GloballyIdentifiableBase
     {
         private static int _nextId = 0;
         private static object _lock = new object();
+        
+        /// <summary>Gets the next integer ID that is unique i nthe scope of the process.</summary>
         public static int NextGlobalId
         {
             get
@@ -29,7 +33,8 @@ namespace IG.Lib
             }
         }
 
-        /// <summary>Application-wide unique object ID (unique across objects of all derived types).</summary>
+        /// <summary>Process-wide unique object ID. This ID is unique across all objects of classes inheriting from
+        /// <see cref="GloballyIdentifiableBase"/>, created within the current process.</summary>
         public int ObjectId { get; } = NextGlobalId;
     }
 
