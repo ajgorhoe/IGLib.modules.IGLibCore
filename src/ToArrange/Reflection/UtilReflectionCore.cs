@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IGLibCore.ToArrange.Reflection
+namespace IG.Lib
 {
 
     /// <summary>Some convenient utilities that use reflection.</summary>
