@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IGLibCore.BasicUtils
+namespace IG.Lib
 {
 
     /// <summary>Classes that contain unique application-level ID. This helps identify objects passed around in tests.</summary>
