@@ -16,6 +16,20 @@ namespace IG.Tests
     {
 
         [Test]
+        public void IEnumerableElementTypeRetriavalProducesNullForTypesThatAreNotEnumerable()
+        {
+            Assert.IsNull(UtilReflectionCore.GetEnumerableType(typeof(double)),"double");
+            Assert.IsNull(UtilReflectionCore.GetEnumerableType(typeof(FileInfo)), "FileInfo");
+            Assert.IsNull(UtilReflectionCore.GetEnumerableType(typeof(object)), "object");
+        }
+
+        [Test]
+        public void IEnumerableElementTypeRetriavalProducesNullForNullArgument()
+        {
+            Assert.IsNull(UtilReflectionCore.GetEnumerableType(null),"null");
+        }
+
+        [Test]
         public void IEnumerableElementTypeIsRetrievedCorrectlyForIEnumerableOfDifferentTypes()
         {
             // IEnumerable of value types:

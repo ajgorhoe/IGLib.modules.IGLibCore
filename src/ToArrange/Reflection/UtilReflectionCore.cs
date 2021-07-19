@@ -14,6 +14,10 @@ namespace IG.Lib
 
         public static Type GetEnumerableType(Type type)
         {
+            if (type == null)
+            {
+                return null;
+            }
             if (type.IsInterface && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
                 return type.GetGenericArguments()[0];
             foreach (Type intType in type.GetInterfaces())
