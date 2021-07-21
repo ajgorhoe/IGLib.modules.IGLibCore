@@ -7,19 +7,21 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net40</TargetFramework>
     -->
-    
-    <OutputType>Library</OutputType>
     <TargetFrameworks>net5.0;net48;netstandard2.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
+  
   <PropertyGroup>
     <!-- Attributes previously in AsemblyInfo.cs: -->
-    <Version>1.8.0</Version>
+    <AssemblyName>IGLibCore</AssemblyName>
+    <PackageId>IGLibCore</PackageId>
+    <Version>1.9.1</Version>
+    <AssemblyVersion>1.9.1</AssemblyVersion>
+    <FileVersion>1.9.1</FileVersion>
     <Authors>Igor Grešovnik et al.</Authors>
     <Company>IGLib</Company>
     <Product>IGLib</Product>
-    <PackageId>IGLibCore</PackageId>
-    <AssemblyVersion>1.8.0</AssemblyVersion>
-    <FileVersion>1.8.0</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <Description>Librart for some core utilities, with onlz baisc dependencies.</Description>
     <Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
@@ -30,12 +32,28 @@
     <RepositoryType>Hit</RepositoryType>
     <PackageTags>Tags</PackageTags>
     <PackageReleaseNotes>Release</PackageReleaseNotes>
+    
+    <PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
+    <PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
+
   </PropertyGroup>
+    
+  <!--
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
+    <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
+  </PropertyGroup>
+  -->
+  
   <ItemGroup>
     <Compile Remove="FromIGLibBase\**" />
     <EmbeddedResource Remove="FromIGLibBase\**" />
     <None Remove="FromIGLibBase\**" />
   </ItemGroup>
+  
   <ItemGroup>
     <Folder Include="ToArrange\TypeConversion\" />
   </ItemGroup>

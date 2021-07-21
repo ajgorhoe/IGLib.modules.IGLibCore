@@ -9,7 +9,7 @@
     -->
     
     <TargetFrameworks>net5.0;net48</TargetFrameworks>
-
+    <OutputType>Library</OutputType>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -34,8 +34,10 @@
     <Product>Investigative Generic Library (IGLib) - IGLibCoreTests</Product>
     <Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>
     <Description>Tests for IGLibCore.</Description>
+    
     <PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
     <PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
+    
   </PropertyGroup>
 
 
