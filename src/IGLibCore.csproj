@@ -10,6 +10,8 @@
     <TargetFrameworks>net5.0;net48;netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
+	<RootNamespace>IGLib</RootNamespace>
+
   </PropertyGroup>
   
   <PropertyGroup>
@@ -35,7 +37,6 @@
     
     <PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
     <PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
-
   </PropertyGroup>
   
   <ItemGroup>
