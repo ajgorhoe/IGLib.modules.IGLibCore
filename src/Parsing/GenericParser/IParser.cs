@@ -4,17 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IGLib.Parsing.GenericParser
+namespace IGLib.Parsing
 {
-    internal interface IParser<CharType>
+
+    /// <summary>Interface for imperative parser of string-like constructs.
+    /// <para>Main implementation is <see cref="StringParser"/>.</para></summary>
+    /// <typeparam name="CharType">Type of basic component of parsed "strings". Strings this can be general
+    /// array-like structures (where position is defined) composed of elements of type.</typeparam>
+    public interface IParser<CharType>
         where CharType : struct
     {
 
 
-        IParsable<CharType> Parsable { get; }
+        //IParsable<CharType> Parsable { get; }
 
-        IParserState State { get; }
+        //IParserState State { get; }
 
+        /// <summary>Current position of the parser.</summary>
         int Position { get; set; }
 
         CharType this [int index] { get; }
@@ -32,6 +38,10 @@ namespace IGLib.Parsing.GenericParser
         IEnumerable<CharType> SubString(int startIndex);
 
 
+        /// <summary>Returns true if the specified character is at the specified position of the parsable.</summary>
+        /// <param name="position">Positio ofr which character is verified.</param>
+        /// <param name="ch">Character that is expected at <paramref name="position"/></param>
+        /// <returns></returns>
         bool IsAt(int position, CharType ch);
 
         bool IsNext(CharType ch);
@@ -51,4 +61,5 @@ namespace IGLib.Parsing.GenericParser
 
 
     }
+
 }

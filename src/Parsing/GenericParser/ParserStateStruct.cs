@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IGLib.Parsing.GenericParser
+namespace IGLib.Parsing
 {
     public struct ParserStateStruct : IParserState
     {
