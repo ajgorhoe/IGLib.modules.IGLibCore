@@ -25,7 +25,7 @@
     <Company>IGLib</Company>
     <Product>IGLib</Product>
     <NeutralLanguage>en</NeutralLanguage>
-    <Description>Librart for some core utilities, with onlz baisc dependencies.</Description>
+    <Description>Library for some core utilities, with only baisc dependencies.</Description>
     <Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl></PackageProjectUrl>
