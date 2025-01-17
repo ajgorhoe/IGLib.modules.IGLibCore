@@ -1,6 +1,9 @@
 # IGLibCore
 
-This repository contains basic portions of the new Investigative Generic Library (IGLib). IGLib is currently undergoing some changes.
+<img src="https://ajgorhoe.github.io/icons/IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
+  style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" />
+
+This repository contains basic portions of the restructured ***Investigative Generic Library*** (***IGLib***). **IGLib** is currently undergoing some changes.
 
 The original repository for this container is located at
 
