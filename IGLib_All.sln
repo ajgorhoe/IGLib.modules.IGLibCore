@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibCoreTests", "tests\IGLibCoreTests\IGLibCoreTests.csproj", "{8B2BA798-021E-4F30-9251-7E5C9D4F8D57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibCore", "src\IGLibCore.csproj", "{6E4967CE-E5A8-41D5-96A2-0A09D436AB91}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGLibCore1", "IGLibCore1", "{49FA5358-3660-4DDD-919F-5BC0D39DF5E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGLibSandbox", "IGLibSandbox", "{F9A1F5C6-211C-498E-8A4E-40D4FC56F7A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGLibScripting", "IGLibScripting", "{A2B0D15D-28C9-48EC-B165-3FEADEE4FC76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGLibScriptingCs", "IGLibScriptingCs", "{1F37D3D2-5309-41EB-B7A1-BEB99A3A77D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGLibScripts", "IGLibScripts", "{37A47E16-EFC3-4814-85E1-10EF9B8818D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IG.ScriptingCs", "..\IGLibScriptingCs\src\IG.ScriptingCs\IG.ScriptingCs.csproj", "{5E8A8A11-99AF-432E-AED2-1E22C85C116D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Westwind.Scripting", "..\IGLibScriptingCs\src\Westwind.Scripting\Westwind.Scripting\Westwind.Scripting.csproj", "{157FB627-2D98-4E69-B109-E2BF2E725035}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Westwind.Scripting.Test", "..\IGLibScriptingCs\src\Westwind.Scripting\Westwind.Scripting.Test\Westwind.Scripting.Test.csproj", "{617ACA07-B233-471D-9F9B-A616807E5435}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferenceTest", "..\IGLibScriptingCs\src\Westwind.Scripting\ReferenceTest\ReferenceTest.csproj", "{289AC17E-2C74-4D70-848D-4F6637148FF1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScriptingCs_External", "ScriptingCs_External", "{C8FDE206-12AD-4834-B82A-8DC1894FD142}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B2BA798-021E-4F30-9251-7E5C9D4F8D57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B2BA798-021E-4F30-9251-7E5C9D4F8D57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B2BA798-021E-4F30-9251-7E5C9D4F8D57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B2BA798-021E-4F30-9251-7E5C9D4F8D57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E4967CE-E5A8-41D5-96A2-0A09D436AB91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E4967CE-E5A8-41D5-96A2-0A09D436AB91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E4967CE-E5A8-41D5-96A2-0A09D436AB91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E4967CE-E5A8-41D5-96A2-0A09D436AB91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E8A8A11-99AF-432E-AED2-1E22C85C116D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E8A8A11-99AF-432E-AED2-1E22C85C116D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E8A8A11-99AF-432E-AED2-1E22C85C116D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E8A8A11-99AF-432E-AED2-1E22C85C116D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{157FB627-2D98-4E69-B109-E2BF2E725035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{157FB627-2D98-4E69-B109-E2BF2E725035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{157FB627-2D98-4E69-B109-E2BF2E725035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{157FB627-2D98-4E69-B109-E2BF2E725035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{617ACA07-B233-471D-9F9B-A616807E5435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{617ACA07-B233-471D-9F9B-A616807E5435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{617ACA07-B233-471D-9F9B-A616807E5435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{617ACA07-B233-471D-9F9B-A616807E5435}.Release|Any CPU.Build.0 = Release|Any CPU
+		{289AC17E-2C74-4D70-848D-4F6637148FF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{289AC17E-2C74-4D70-848D-4F6637148FF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{289AC17E-2C74-4D70-848D-4F6637148FF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{289AC17E-2C74-4D70-848D-4F6637148FF1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8B2BA798-021E-4F30-9251-7E5C9D4F8D57} = {49FA5358-3660-4DDD-919F-5BC0D39DF5E4}
+		{6E4967CE-E5A8-41D5-96A2-0A09D436AB91} = {49FA5358-3660-4DDD-919F-5BC0D39DF5E4}
+		{5E8A8A11-99AF-432E-AED2-1E22C85C116D} = {1F37D3D2-5309-41EB-B7A1-BEB99A3A77D0}
+		{157FB627-2D98-4E69-B109-E2BF2E725035} = {C8FDE206-12AD-4834-B82A-8DC1894FD142}
+		{617ACA07-B233-471D-9F9B-A616807E5435} = {C8FDE206-12AD-4834-B82A-8DC1894FD142}
+		{289AC17E-2C74-4D70-848D-4F6637148FF1} = {C8FDE206-12AD-4834-B82A-8DC1894FD142}
+		{C8FDE206-12AD-4834-B82A-8DC1894FD142} = {1F37D3D2-5309-41EB-B7A1-BEB99A3A77D0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
+	EndGlobalSection
+EndGlobal
