@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferenceTest", "..\IGLibSc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScriptingCs_External", "ScriptingCs_External", "{C8FDE206-12AD-4834-B82A-8DC1894FD142}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IG.Sandbox", "..\IGLibSandbox\src\IG.Sandbox\IG.Sandbox.csproj", "{D5F1D538-F8A6-41BB-91B6-77105D4CEE25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{289AC17E-2C74-4D70-848D-4F6637148FF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{289AC17E-2C74-4D70-848D-4F6637148FF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{289AC17E-2C74-4D70-848D-4F6637148FF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5F1D538-F8A6-41BB-91B6-77105D4CEE25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5F1D538-F8A6-41BB-91B6-77105D4CEE25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5F1D538-F8A6-41BB-91B6-77105D4CEE25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F1D538-F8A6-41BB-91B6-77105D4CEE25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{617ACA07-B233-471D-9F9B-A616807E5435} = {C8FDE206-12AD-4834-B82A-8DC1894FD142}
 		{289AC17E-2C74-4D70-848D-4F6637148FF1} = {C8FDE206-12AD-4834-B82A-8DC1894FD142}
 		{C8FDE206-12AD-4834-B82A-8DC1894FD142} = {1F37D3D2-5309-41EB-B7A1-BEB99A3A77D0}
+		{D5F1D538-F8A6-41BB-91B6-77105D4CEE25} = {F9A1F5C6-211C-498E-8A4E-40D4FC56F7A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
