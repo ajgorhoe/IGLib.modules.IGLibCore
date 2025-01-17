@@ -31,7 +31,7 @@
     <PackageProjectUrl></PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl></RepositoryUrl>
-    <RepositoryType>Hit</RepositoryType>
+    <RepositoryType>git</RepositoryType>
     <PackageTags>Tags</PackageTags>
     <PackageReleaseNotes>Release</PackageReleaseNotes>
     
