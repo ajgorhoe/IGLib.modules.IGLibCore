@@ -41,7 +41,7 @@
 		<RootNamespace>IG.Tests</RootNamespace>
 		<PackageId>IGLibCoreTests</PackageId>
 		<Authors>Igor Grešovnik</Authors>
-		<Company>Igor Grešovnik</Company>
+		<Company>none</Company>
 		<ProductName>IGLib_CoreTests</ProductName>
 		<Product>Investigative Generic Library (IGLib) - IGLibCoreTests</Product>
 		<Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>

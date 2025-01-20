@@ -22,7 +22,7 @@
     <AssemblyVersion>2.0.0</AssemblyVersion>
     <FileVersion>2.0.0</FileVersion>
     <Authors>Igor Grešovnik et al.</Authors>
-    <Company>IGLib</Company>
+    <Company>none</Company>
     <Product>IGLib</Product>
     <NeutralLanguage>en</NeutralLanguage>
     <Description>Library for some core utilities, with only baisc dependencies.</Description>
