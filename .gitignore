@@ -129,6 +129,9 @@ csx
 # Windows Store app package directory
 AppPackages/
 
+# Draw.io backup files
+*.drawio.bkp
+
 # Others
 *.Cache
 ClientBin/
@@ -235,4 +238,5 @@ project.lock.json
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
+
 
