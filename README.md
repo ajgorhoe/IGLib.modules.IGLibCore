@@ -46,9 +46,9 @@ The legacy IGLib's base library is located at:
 
 Because of this, many libraries of the *legacy IGLib Framework* were phased out. Some others are not actively developed, but are used in existing applications. Only the [IGLib](https://github.com/ajgorhoe/IGLib.workspace.base.iglib) base library is still used in new applications, but it is also not developed, except for the necessary fixes needed in the applications that use it. The newer libraries were started after the new .NET Core (later renamed to .NET) became stable.
 
-The figure below shows dependencies betweem some IGLib modules, some legacy ones as well as the newer modules developed on the newer .NET Core / .NET (click the image to view searchable version full screen, or [click here]() to open a bitmpap version):
+The figure below shows dependencies betweem some IGLib modules, some legacy ones as well as the newer modules developed on the newer .NET Core / .NET (click the image to view searchable version full screen, or [click here](https://ajgorhoe.github.io/IGLibFramework/images/IGLib/IGLibDependencyGraph.jpg) to open a bitmpap version):
 
-<a href="./doc/images/IGLibDependencyGraph.svg"><img src="./doc/images/IGLibDependencyGraph.svg" width="max(80%), 800px"></img></a>
+<a href="https://ajgorhoe.github.io/IGLibFramework/images/IGLib/IGLibDependencyGraph.svg"><img src="./doc/images/IGLibDependencyGraph.svg" width="max(80%), 800px"></img></a>
 
 ### Legacy *IGLib* Libraries
 
