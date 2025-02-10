@@ -19,7 +19,7 @@ Contents:
 
 ### Unified Structure of IGLib Modules
 
-As good example of structure, see the **IGLibSandbox** module (a private repository).
+As good example of structure, see the **IGLibSandbox** module (a private repository), or **IGLibScripting**, or **IGlibScriptingCs** for modules with more complex dependencies.
 
 #### Directory Structure
 
