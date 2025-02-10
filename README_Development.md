@@ -26,6 +26,12 @@ Rearrange IGLib legacy such that the **IGLib project** can be migrated to the la
 
 The IGLib should target frameworks compatible with IGLibCore.
 
+#### IGLib Legacy - external dependencies
+
+* Shift external dependencies such that everything is contained in ../iglibexternal/ directory relative to project directories.
+
+* Let IGLibCore dependencies remain within the iglib/ directory, but think about updating the update scripts.
+
 ### Moving Immature Things to the Sandbox
 
 Utilities that are not mature enough should be moved to the IGLibSandbox module.
