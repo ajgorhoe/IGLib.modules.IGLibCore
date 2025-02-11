@@ -21,7 +21,6 @@ namespace IG.Lib
     public class IdGenerator : ILockable
     {
 
-
         #region Construction
 
         /// <summary>Creates a new ID generator. The first ID generated will be 0.
@@ -38,7 +37,7 @@ namespace IG.Lib
 
         #region ThreadLocking
 
-        private object _mainLock = new object();
+        private readonly object _mainLock = new object();
 
         /// <summary>This object's central lock object to be used by other object.
         /// Do not use this object for locking in class' methods, for this you should use 
@@ -50,7 +49,7 @@ namespace IG.Lib
 
         private int _currentId = 0;
 
-        private object _lockId = new object();
+        private readonly object _lockId = new object();
 
         /// <summary>Returns a new unique command ID 
         /// (process-unique over all objects of this type and its subtypes).</summary>
