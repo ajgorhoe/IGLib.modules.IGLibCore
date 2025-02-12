@@ -4,7 +4,7 @@
 <img src="https://ajgorhoe.github.io/icons/IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" />
 
-This repository contains basic portions of the restructured ***Investigative Generic Library*** (***IGLib***). The current document contains some information 
+This repository contains basic portions of the restructured ***Investigative Generic Library*** (***IGLib***). The current document contains some basic information for developers. More can be found in the [Developers' Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/development/InfoForDeveloers.md).
 
 **Contents** (the **original** content is **in the [Developers' Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/development/InfoForDeveloers.md)**):
 
@@ -17,6 +17,8 @@ This repository contains basic portions of the restructured ***Investigative Gen
 
 ## Instructions for Developers
 
+**Remark**: Don't make significant additions to these sections. Do it in the [Developers' Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/development/InfoForDeveloers.md) and make only the necessary corrections and updates here.
+
 ### Unified Structure of IGLib Modules
 
 As good example of structure, see the **IGLibSandbox** module (a private repository), or **IGLibScripting**, or **IGlibScriptingCs** for modules with more complex dependencies.
@@ -24,7 +26,7 @@ As good example of structure, see the **IGLibSandbox** module (a private reposit
 #### Directory Structure
 
 * ***Module/*** - cloned module's repository directory
-  * *.git/* 
+  * *.git/*
   * ***src/***
     * *Project1/* - the project directory for *Project1*
       * *Project1.csproj* - the project file; Project file should be such that all code sources are within the project directory and no sources need to be excluded from build.
