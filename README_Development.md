@@ -4,18 +4,18 @@
 <img src="https://ajgorhoe.github.io/icons/IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" />
 
-This repository contains basic portions of the restructured ***Investigative Generic Library*** (***IGLib***). **IGLib** is currently undergoing some changes.
+This repository contains basic portions of the restructured ***Investigative Generic Library*** (***IGLib***). The current document contains some information 
 
-Contents:
+**Contents** (the **original** content is **in the [Developers' Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/development/InfoForDeveloers.md)**):
 
-* [Rules for Developers](#rules-for-developers)
+* **[Instructions for Developers](#instructions-for-developers)**
   * [IGLibCore project](#the-iglibcore-and-other-base-modules)
   * [Unified Structure](#unified-structure-of-iglib-modules)
     * [Directory Structure](#directory-structure)
     * [Solution Structure](#solution-structure)
 * [To Do](#things-to-be-done)
 
-## Rules for Developers
+## Instructions for Developers
 
 ### Unified Structure of IGLib Modules
 
@@ -28,7 +28,7 @@ As good example of structure, see the **IGLibSandbox** module (a private reposit
   * ***src/***
     * *Project1/* - the project directory for *Project1*
       * *Project1.csproj* - the project file; Project file should be such that all code sources are within the project directory and no sources need to be excluded from build.
-    * *Project2/* - the project directtory for *Project2*
+    * *Project2/* - the project directory for *Project2*
       * *Project2.csproj*
     * ... - as a rule, IGLib modules should not consist of too many projects; many will consist of a single code project and a test project
     * *TestProject1/*
@@ -92,32 +92,3 @@ Division of modules into
 * Should **not have dependencies on external source projects**.
 * Should **avoid dependcncies on NuGet packages** and should **only have dependencies on .NET base libraries**.
   * Should **avoid dependencies on complex .NET stuff** and stuff that is likely subject to changes (based on past experience) **such as serialization**.
-
-## Things to be Done
-
-## Unify Directory Structure of .NET IGLib Modules
-
-IGLib Modules bases on .NET should be rearranged such that they have uniform structure.
-
-Establish **Uniform Naming** of modules. **Distinguishing names from the legacy** IGLib Framework is **not a priority**. It is more important to have good and concise names.
-
-**IGlibCore** project should **move to src/IGLib** fromm src/, such that more projects can be included in the src/ .
-
-### Rearranging IGLib Legacy
-
-Rearrange IGLib legacy such that the **IGLib project** can be migrated to the latest .NET (first .NET 8, then .NET 9 and later).
-
-The IGLib should target frameworks compatible with IGLibCore.
-
-#### IGLib Legacy - external dependencies
-
-* Shift external dependencies such that everything is contained in ../iglibexternal/ directory relative to project directories.
-
-* Let IGLibCore dependencies remain within the iglib/ directory, but think about updating the update scripts.
-
-### Moving Immature Things to the Sandbox
-
-Utilities that are not mature enough should be moved to the IGLibSandbox module.
-
-* Parser utilities
-* CommandLine parsing
