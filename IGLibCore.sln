@@ -5,6 +5,9 @@ VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems", "0_SolutionItems", "{633BD4B2-3198-47BE-A26F-0E48453D428E}"
 	ProjectSection(SolutionItems) = preProject
+		ajgorhoe_IGLib.modules.IGLibCore.url = ajgorhoe_IGLib.modules.IGLibCore.url
+		ajgorhoe_IGLib.workspace.base.iglib.url = ajgorhoe_IGLib.workspace.base.iglib.url
+		ajgorhoe_iglibmodules.url = ajgorhoe_iglibmodules.url
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
