@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-
 using IG.Lib;
+
 using System.IO;
 
 namespace IG.Tests

@@ -33,7 +33,7 @@
 
 
 		<ItemGroup>
-		<ProjectReference Include="..\..\src\IGLibCore.csproj" />
+		<ProjectReference Include="..\..\src\IGLib.Core\IGLib.Core.csproj" />
 	</ItemGroup>
 
 	<PropertyGroup>
