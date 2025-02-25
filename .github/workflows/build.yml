@@ -41,14 +41,14 @@ jobs:
 
       # 5️⃣ RESTORE DEPENDENCIES
       - name: Restore NuGet packages
-        run: dotnet restore MainReop1/MainRepo1.sln
+        run: dotnet restore IGLibCore/IGLibCore.sln
 
-      # 6️⃣ RUN a TEST SCRIPT (PowerShell)
-      - name: Run Pre-Build PowerShell Script
-        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
+      # # 6️⃣ RUN a TEST SCRIPT (PowerShell)
+      # - name: Run Pre-Build PowerShell Script
+      #   run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
-      # 7️⃣ BUILD Main Project & Test Project in Release Mode
-      - name: Build Solution
-        run: dotnet build IGLibCore/IGLibCore.sln --configuration Release --no-restore
+      # # 7️⃣ BUILD Main Project & Test Project in Release Mode
+      # - name: Build Solution
+      #   run: dotnet build IGLibCore/IGLibCore.sln --configuration Release --no-restore
 
 
