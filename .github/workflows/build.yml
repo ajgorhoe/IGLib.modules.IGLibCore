@@ -66,7 +66,6 @@ jobs:
 
       # 8️⃣ RUN TESTS & COLLECT RESULTS
       - name: Run Unit Tests
-        run: dotnet test IGLibCore/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj \
-          --configuration Release --logger trx --results-directory test-results
+        run: dotnet test IGLibCore/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj --configuration Release --logger trx --results-directory test-results
 
 
