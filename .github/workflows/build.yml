@@ -31,6 +31,6 @@ jobs:
       - name: Clone IGLibScripting
         run: |
           git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
-          IGLibScripts
+          IGLibScripting
 
 
