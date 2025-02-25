@@ -27,6 +27,12 @@ jobs:
           git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripts \
           IGLibScripts
 
+      # 3️⃣ CLONE IGLibScripting 
+      - name: Clone IGLibScripting Dependency
+        run: |
+          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
+          IGLibScripting11
+
       # # 3️⃣ CLONE IGLibScripting
       # - name: Clone IGLibScripting
       #   run: |
