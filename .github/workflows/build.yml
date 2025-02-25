@@ -25,7 +25,7 @@ jobs:
       - name: Clone IGLibScripts
         run: |
           git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripts \
-          IGLibScripts
+            IGLibScripts
 
       # 3️⃣ CHECKOUT IGLibScripting
       - name: Clone IGLibScripting
@@ -63,5 +63,10 @@ jobs:
       # 7️⃣ BUILD Main Project & Test Project in Release Mode
       - name: Build Solution
         run: dotnet build IGLibCore/IGLibCore.sln --configuration Release --no-restore
+
+      # 8️⃣ RUN TESTS & COLLECT RESULTS
+      - name: Run Unit Tests
+        run: dotnet test IGLibCore/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj \
+          --configuration Release --logger trx --results-directory test-results
 
 
