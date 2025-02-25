@@ -1,0 +1,34 @@
+name: Build and Test MainRepo1
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Runs on GitHub-hosted Ubuntu
+
+    steps:
+      # 1️⃣ CHECKOUT Main Repository
+      - name: Clone Main Repository
+        uses: actions/checkout@v4
+        with:
+          repository: ajgorhoe/IGLib.modules.IGLibCore
+          path: IGLibCore
+
+      # 2️⃣ CLONE IGLibScripts
+      - name: Clone IGLibScripts
+        run: |
+          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripts \
+          IGLibScripts
+
+      # 3️⃣ CLONE IGLibScripts
+      - name: Clone IGLibScripting
+        run: |
+          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
+          IGLibScripts
