@@ -43,4 +43,8 @@ jobs:
       - name: Restore NuGet packages
         run: dotnet restore MainReop1/MainRepo1.sln
 
+      # 6️⃣ RUN a TEST SCRIPT (PowerShell)
+      - name: Run Pre-Build PowerShell Script
+        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
+
 
