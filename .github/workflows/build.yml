@@ -27,11 +27,11 @@ jobs:
           git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripts \
           IGLibScripts
 
-      # # 3️⃣ CLONE IGLibScripting
-      # - name: Clone IGLibScripting
-      #   run: |
-      #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
-      #     IGLibScripting
+      # 3️⃣ CLONE IGLibScripting
+      - name: Clone IGLibScripting
+        run: |
+          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
+          IGLibScripting
 
       # 4️⃣ SET UP .NET SDK
       - name: Setup .NET 8
