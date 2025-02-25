@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <!--
-    <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net6.0</TargetFramework>
+	All potentially interesting targets for testing:
+    <TargetFramework>net9.0;net8.0;net6.0;net48</TargetFramework>
 	Current targets that work with both IGLib legacy and the new IGLib:
     <TargetFrameworks>net6.0;net48;netstandard2.0</TargetFrameworks>
     -->
-    <TargetFrameworks>net6.0;net48;netstandard2.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net6.0;net48;netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
 	<RootNamespace>IGLib</RootNamespace>
