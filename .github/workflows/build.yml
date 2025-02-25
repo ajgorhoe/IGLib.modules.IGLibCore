@@ -27,7 +27,7 @@ jobs:
           git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripts \
           IGLibScripts
 
-      # # 3️⃣ CLONE IGLibScripts
+      # # 3️⃣ CLONE IGLibScripting
       # - name: Clone IGLibScripting
       #   run: |
       #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
@@ -46,5 +46,9 @@ jobs:
       # 6️⃣ RUN a TEST SCRIPT (PowerShell)
       - name: Run Pre-Build PowerShell Script
         run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
+
+      # 7️⃣ BUILD Main Project & Test Project in Release Mode
+      - name: Build Solution
+        run: dotnet build IGLibCore/IGLibCore.sln --configuration Release --no-restore
 
 
