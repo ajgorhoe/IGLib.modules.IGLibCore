@@ -39,4 +39,8 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      # 5️⃣ RESTORE DEPENDENCIES
+      - name: Restore NuGet packages
+        run: dotnet restore MainReop1/MainRepo1.sln
+
 
