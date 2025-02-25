@@ -27,11 +27,11 @@ jobs:
           git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripts \
           IGLibScripts
 
-      # 3️⃣ CLONE IGLibScripting
-      - name: Clone IGLibScripting
-        run: |
-          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
-          IGLibScripting
+      # # 3️⃣ CLONE IGLibScripting
+      # - name: Clone IGLibScripting
+      #   run: |
+      #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
+      #     IGLibScripting
 
       # 4️⃣ SET UP .NET SDK
       - name: Setup .NET 8
@@ -43,9 +43,9 @@ jobs:
       - name: Restore NuGet packages
         run: dotnet restore IGLibCore/IGLibCore.sln
 
-      # # 6️⃣ RUN a TEST SCRIPT (PowerShell)
-      # - name: Run Pre-Build PowerShell Script
-      #   run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
+      # 6️⃣ RUN a TEST SCRIPT (PowerShell)
+      - name: Run Pre-Build PowerShell Script
+        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
       # # 7️⃣ BUILD Main Project & Test Project in Release Mode
       # - name: Build Solution
