@@ -20,6 +20,8 @@ jobs:
         with:
           repository: ajgorhoe/IGLib.modules.IGLibCore
           path: IGLibCore
+          ref: main
+          ## Trmporary token created automatically for the main repo (owner of the workflow) 
           token: ${{ secrets.GITHUB_TOKEN  }}
 
       # CLONE IGLibScripts
@@ -34,6 +36,7 @@ jobs:
         with:
           repository: ajgorhoe/IGLib.modules.IGLibScripting
           path: IGLibScripting
+          ref: main
           token: ${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}
 
       # # CLONE IGLibScripting 
