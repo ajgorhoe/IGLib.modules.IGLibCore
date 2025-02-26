@@ -49,14 +49,8 @@ jobs:
       - name: Clone IGLibScripting Dependency
         shell: pwsh
         run: |
-          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting `
-            IGLibScripting
-
-      # CLONE IGLibScripting
-      - name: Clone IGLibScripting
-        run: |
-          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting `
-            IGLibScripting
+          git clone --depth 1 https://${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}@github.com/ajgorhoe/IGLib.modules.IGLibScripting `
+            IGLibScripting1
 
       # # SET UP .NET SDK 8.0
       # - name: Setup .NET 8
