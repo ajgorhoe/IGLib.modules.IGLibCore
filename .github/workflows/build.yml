@@ -33,6 +33,7 @@ jobs:
         with:
           repository: ajgorhoe/IGLib.modules.IGLibScripting
           path: IGLibScripting
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # # 3️⃣ CLONE IGLibScripting 
       # - name: Clone IGLibScripting Dependency
