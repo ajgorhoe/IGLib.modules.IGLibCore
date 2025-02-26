@@ -26,13 +26,14 @@ jobs:
           repository: ajgorhoe/IGLib.modules.IGLibCore
           path: IGLibCore
           ref: main
-          ## Trmporary token created automatically for the main repo (owner of the workflow) 
+          # Temporary token created automatically for the main repo (owner of the workflow) 
           token: ${{ secrets.GITHUB_TOKEN  }}
 
       # CLONE IGLibScripts
       - name: Clone IGLibScripts
+        shell: pwsh
         run: |
-          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripts \
+          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripts `
             IGLibScripts
 
       # CHECKOUT IGLibScripting
@@ -44,17 +45,18 @@ jobs:
           ref: main
           token: ${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}
 
-      # # CLONE IGLibScripting 
-      # - name: Clone IGLibScripting Dependency
-      #   run: |
-      #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
-      #       IGLibScripting
+      # CLONE IGLibScripting 
+      - name: Clone IGLibScripting Dependency
+        shell: pwsh
+        run: |
+          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting `
+            IGLibScripting
 
-      # # CLONE IGLibScripting
-      # - name: Clone IGLibScripting
-      #   run: |
-      #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
-      #       IGLibScripting
+      # CLONE IGLibScripting
+      - name: Clone IGLibScripting
+        run: |
+          git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting `
+            IGLibScripting
 
       # # SET UP .NET SDK 8.0
       # - name: Setup .NET 8
@@ -68,7 +70,7 @@ jobs:
       #   with:
       #     dotnet-version: 6.0.x
 
-      - name: Setup .NET SDK
+      - name: SET UP .NET SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
