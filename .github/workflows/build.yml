@@ -64,7 +64,7 @@ jobs:
           dotnet-version: 6.0.x
       
       # RUN PRE-BUILD SCRIPT (PowerShell)
-      - name: Run Post-Build PowerShell Script
+      - name: Run Pre-Build PowerShell Script
         run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
       # RESTORE DEPENDENCIES
