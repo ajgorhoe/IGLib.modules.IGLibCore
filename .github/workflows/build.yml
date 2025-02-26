@@ -20,6 +20,7 @@ jobs:
         with:
           repository: ajgorhoe/IGLib.modules.IGLibCore
           path: IGLibCore
+          token: ${{ secrets.GITHUB_TOKEN  }}
 
       # CLONE IGLibScripts
       - name: Clone IGLibScripts
@@ -33,7 +34,7 @@ jobs:
         with:
           repository: ajgorhoe/IGLib.modules.IGLibScripting
           path: IGLibScripting
-          token: ${{ secrets.GITHUB_TOKEN  }}
+          token: ${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}
 
       # # CLONE IGLibScripting 
       # - name: Clone IGLibScripting Dependency
@@ -78,5 +79,5 @@ jobs:
       #   uses: actions/upload-artifact@v4
       #   with:
       #     name: BuildArtifacts
-      #     path: MainReop1/src/MainRepo1/bin/Release/
+      #     path: IGLibCore/src/IGLib.Core/bin/Release/
 
