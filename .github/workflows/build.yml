@@ -10,8 +10,13 @@ on:
   workflow_dispatch: # Allows manual triggering
 
 jobs:
-  build:
-    runs-on: ubuntu-latest # Runs on GitHub-hosted Ubuntu
+
+  build-and-test:
+    runs-on: windows-latest  # use Windows for .NET Framework support
+    # runs-on: ubuntu-latest # runs on GitHub-hosted Ubuntu
+    strategy:
+      matrix:
+        dotnet-version: [ '6.0', '8.0' ]
 
     steps:
       # CHECKOUT Main Repository
@@ -51,18 +56,27 @@ jobs:
       #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
       #       IGLibScripting
 
-      # SET UP .NET SDK 8.0
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 8.0.x
+      # # SET UP .NET SDK 8.0
+      # - name: Setup .NET 8
+      #   uses: actions/setup-dotnet@v3
+      #   with:
+      #     dotnet-version: 8.0.x
 
-      # SET UP .NET SDK 6.0
-      - name: Setup .NET 6
-        uses: actions/setup-dotnet@v3
+      # # SET UP .NET SDK 6.0
+      # - name: Setup .NET 6
+      #   uses: actions/setup-dotnet@v3
+      #   with:
+      #     dotnet-version: 6.0.x
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 6.0.x
-      
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Setup MSBuild for .NET Framework
+        uses: microsoft/setup-msbuild@v1  # Needed for .NET Framework builds
+
+
       # RUN PRE-BUILD SCRIPT (PowerShell)
       - name: Run Pre-Build PowerShell Script
         run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
