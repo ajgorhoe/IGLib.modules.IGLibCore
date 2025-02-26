@@ -69,13 +69,13 @@ jobs:
       - name: Build Solution
         run: dotnet build IGLibCore/IGLibCore.sln --configuration Release --no-restore
 
-      # # RUN TESTS & COLLECT RESULTS
-      # - name: Run Unit Tests
-      #   run: dotnet test IGLibCore/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj --configuration Release --logger trx --results-directory test-results
+      # RUN TESTS & COLLECT RESULTS
+      - name: Run Unit Tests
+        run: dotnet test IGLibCore/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj --configuration Release --logger trx --results-directory test-results
       
-      # # RUN POST-BUILD SCRIPT (PowerShell)
-      # - name: Run Post-Build PowerShell Script
-      #   run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
+      # RUN POST-BUILD SCRIPT (PowerShell)
+      - name: Run Post-Build PowerShell Script
+        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
       # # UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
       # - name: Upload Build Artifacts
