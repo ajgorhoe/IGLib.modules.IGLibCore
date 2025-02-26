@@ -51,19 +51,25 @@ jobs:
       #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
       #       IGLibScripting
 
-      # SET UP .NET SDK
+      # SET UP .NET SDK 8.0
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
 
+      # SET UP .NET SDK 6.0
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+      
+      # RUN PRE-BUILD SCRIPT (PowerShell)
+      - name: Run Post-Build PowerShell Script
+        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
+
       # RESTORE DEPENDENCIES
       - name: Restore NuGet packages
         run: dotnet restore IGLibCore/IGLibCore.sln
-
-      # RUN a TEST SCRIPT (PowerShell)
-      - name: Run Pre-Build PowerShell Script
-        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
       # BUILD Main Project & Test Project in Release Mode
       - name: Build Solution
@@ -72,10 +78,6 @@ jobs:
       # RUN TESTS & COLLECT RESULTS
       - name: Run Unit Tests
         run: dotnet test IGLibCore/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj --configuration Release --logger trx --results-directory test-results
-      
-      # RUN POST-BUILD SCRIPT (PowerShell)
-      - name: Run Post-Build PowerShell Script
-        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
       # UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
       - name: Upload Build Artifacts
@@ -84,3 +86,6 @@ jobs:
           name: BuildArtifacts
           path: IGLibCore/src/IGLib.Core/bin/Release/
 
+      # RUN a TEST SCRIPT (PowerShell)
+      - name: Run Post-Build PowerShell Script
+        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
