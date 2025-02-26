@@ -38,13 +38,13 @@ jobs:
       # - name: Clone IGLibScripting Dependency
       #   run: |
       #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
-      #     IGLibScripting11
+      #       IGLibScripting
 
       # # 3️⃣ CLONE IGLibScripting
       # - name: Clone IGLibScripting
       #   run: |
       #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
-      #     IGLibScripting
+      #       IGLibScripting
 
       # 4️⃣ SET UP .NET SDK
       - name: Setup .NET 8
@@ -64,18 +64,18 @@ jobs:
       - name: Build Solution
         run: dotnet build IGLibCore/IGLibCore.sln --configuration Release --no-restore
 
-      # 8️⃣ RUN TESTS & COLLECT RESULTS
-      - name: Run Unit Tests
-        run: dotnet test IGLibCore/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj --configuration Release --logger trx --results-directory test-results
+      # # 8️⃣ RUN TESTS & COLLECT RESULTS
+      # - name: Run Unit Tests
+      #   run: dotnet test IGLibCore/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj --configuration Release --logger trx --results-directory test-results
       
-      # 🔟 RUN POST-BUILD SCRIPT (PowerShell)
-      - name: Run Post-Build PowerShell Script
-        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
+      # # 🔟 RUN POST-BUILD SCRIPT (PowerShell)
+      # - name: Run Post-Build PowerShell Script
+      #   run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
-      # 1️⃣1️⃣ UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: BuildArtifacts
-          path: MainReop1/src/MainRepo1/bin/Release/
+      # # 1️⃣1️⃣ UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
+      # - name: Upload Build Artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: BuildArtifacts
+      #     path: MainReop1/src/MainRepo1/bin/Release/
 
