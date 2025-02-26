@@ -14,20 +14,20 @@ jobs:
     runs-on: ubuntu-latest # Runs on GitHub-hosted Ubuntu
 
     steps:
-      # 1️⃣ CHECKOUT Main Repository
+      # CHECKOUT Main Repository
       - name: Clone Main Repository
         uses: actions/checkout@v4
         with:
           repository: ajgorhoe/IGLib.modules.IGLibCore
           path: IGLibCore
 
-      # 2️⃣ CLONE IGLibScripts
+      # CLONE IGLibScripts
       - name: Clone IGLibScripts
         run: |
           git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripts \
             IGLibScripts
 
-      # 3️⃣ CHECKOUT IGLibScripting
+      # CHECKOUT IGLibScripting
       - name: Clone IGLibScripting
         uses: actions/checkout@v4
         with:
@@ -35,45 +35,45 @@ jobs:
           path: IGLibScripting
           token: ${{ secrets.GITHUB_TOKEN  }}
 
-      # # 3️⃣ CLONE IGLibScripting 
+      # # CLONE IGLibScripting 
       # - name: Clone IGLibScripting Dependency
       #   run: |
       #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
       #       IGLibScripting
 
-      # # 3️⃣ CLONE IGLibScripting
+      # # CLONE IGLibScripting
       # - name: Clone IGLibScripting
       #   run: |
       #     git clone --depth 1 https://github.com/ajgorhoe/IGLib.modules.IGLibScripting \
       #       IGLibScripting
 
-      # 4️⃣ SET UP .NET SDK
+      # SET UP .NET SDK
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
 
-      # 5️⃣ RESTORE DEPENDENCIES
+      # RESTORE DEPENDENCIES
       - name: Restore NuGet packages
         run: dotnet restore IGLibCore/IGLibCore.sln
 
-      # 6️⃣ RUN a TEST SCRIPT (PowerShell)
+      # RUN a TEST SCRIPT (PowerShell)
       - name: Run Pre-Build PowerShell Script
         run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
-      # 7️⃣ BUILD Main Project & Test Project in Release Mode
+      # BUILD Main Project & Test Project in Release Mode
       - name: Build Solution
         run: dotnet build IGLibCore/IGLibCore.sln --configuration Release --no-restore
 
-      # # 8️⃣ RUN TESTS & COLLECT RESULTS
+      # # RUN TESTS & COLLECT RESULTS
       # - name: Run Unit Tests
       #   run: dotnet test IGLibCore/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj --configuration Release --logger trx --results-directory test-results
       
-      # # 🔟 RUN POST-BUILD SCRIPT (PowerShell)
+      # # RUN POST-BUILD SCRIPT (PowerShell)
       # - name: Run Post-Build PowerShell Script
       #   run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
-      # # 1️⃣1️⃣ UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
+      # # UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
       # - name: Upload Build Artifacts
       #   uses: actions/upload-artifact@v4
       #   with:
