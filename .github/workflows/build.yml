@@ -77,10 +77,10 @@ jobs:
       - name: Run Post-Build PowerShell Script
         run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
-      # # UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
-      # - name: Upload Build Artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: BuildArtifacts
-      #     path: IGLibCore/src/IGLib.Core/bin/Release/
+      # UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: BuildArtifacts
+          path: IGLibCore/src/IGLib.Core/bin/Release/
 
