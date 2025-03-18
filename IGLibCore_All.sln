@@ -67,7 +67,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLibScripts", "..\IGLibScr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core", "src\IGLib.Core\IGLib.Core.csproj", "{CF4B1E2A-830C-47A1-B95B-DD38C6277D77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Sandbox.Test", "..\IGLibSandbox\test\IGLib.Sandbox.Test\IGLib.Sandbox.Test.csproj", "{D86F7FFB-1C45-4459-8860-540C38F4950A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Sandbox.Test", "..\IGLibSandbox\tests\IGLib.Sandbox.Test\IGLib.Sandbox.Test.csproj", "{D86F7FFB-1C45-4459-8860-540C38F4950A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Sandbox", "..\IGLibSandbox\src\IGLib.Sandbox\IGLib.Sandbox.csproj", "{977EB755-5D22-465E-B772-0B966E8A52CD}"
 EndProject
@@ -99,7 +99,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_IGLibCore",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.ScriptingCs", "..\IGLibScriptingCs\src\IGLib.ScriptingCs\IGLib.ScriptingCs.csproj", "{81A19371-C3E8-4CA0-9D1F-30A8CE0CE6EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.ScriptingCs.Tests", "..\IGLibScriptingCs\test\IGLib.ScriptingCs.Tests\IGLib.ScriptingCs.Tests.csproj", "{222AB368-1077-444B-B6FB-9CE5D32B7E2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.ScriptingCs.Tests", "..\IGLibScriptingCs\tests\IGLib.ScriptingCs.Tests\IGLib.ScriptingCs.Tests.csproj", "{222AB368-1077-444B-B6FB-9CE5D32B7E2B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_IGLibScriptingCs", "0_SolutionItems_IGLibScriptingCs", "{C7582123-B0B4-43CB-9C45-51D3E416FD65}"
 	ProjectSection(SolutionItems) = preProject
@@ -110,7 +110,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_IGLibScript
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Scripting", "..\IGLibScripting\src\IGLib.Scripting\IGLib.Scripting.csproj", "{B23C3AC6-348D-4519-8DD8-B6C890AF07E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Scripting.Tests", "..\IGLibScripting\test\IGLib.Scripting.Tests\IGLib.Scripting.Tests.csproj", "{8F46F015-390A-4245-AFD8-5FE89020E39C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Scripting.Tests", "..\IGLibScripting\tests\IGLib.Scripting.Tests\IGLib.Scripting.Tests.csproj", "{8F46F015-390A-4245-AFD8-5FE89020E39C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItem_IGLibScripting", "0_SolutionItem_IGLibScripting", "{DD76168B-914E-4610-A432-DFF34B6F528C}"
 	ProjectSection(SolutionItems) = preProject
@@ -127,9 +127,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox_Examples", "Sandbox
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox_Tests", "Sandbox_Tests", "{9F9AE360-40B9-4302-86E4-55F72B355D1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Sandbox.Gr3D.Tests", "..\IGLibSandbox\test\IGLib.Sandbox.Gr3D.Tests\IGLib.Sandbox.Gr3D.Tests.csproj", "{E8E322C0-3571-E1EE-847C-80EEB892DCBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Sandbox.Gr3D.Tests", "..\IGLibSandbox\tests\IGLib.Sandbox.Gr3D.Tests\IGLib.Sandbox.Gr3D.Tests.csproj", "{E8E322C0-3571-E1EE-847C-80EEB892DCBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.TestBase", "..\IGLibSandbox\test\IGLib.TestBase\IGLib.TestBase.csproj", "{D14AD8B0-9248-7B1D-2CFE-9B8E159A7A51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.TestBase", "tests\IGLib.TestBase\IGLib.TestBase.csproj", "{D14AD8B0-9248-7B1D-2CFE-9B8E159A7A51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core_Tests", "Core_Tests", "{18B675F9-4591-42D9-833A-548F276ED862}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core.Tests", "tests\IGLib.Core.Tests\IGLib.Core.Tests.csproj", "{78CE3414-36A9-0B49-F490-44013F42F294}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -257,6 +261,10 @@ Global
 		{D14AD8B0-9248-7B1D-2CFE-9B8E159A7A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D14AD8B0-9248-7B1D-2CFE-9B8E159A7A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D14AD8B0-9248-7B1D-2CFE-9B8E159A7A51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78CE3414-36A9-0B49-F490-44013F42F294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78CE3414-36A9-0B49-F490-44013F42F294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78CE3414-36A9-0B49-F490-44013F42F294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78CE3414-36A9-0B49-F490-44013F42F294}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -310,7 +318,9 @@ Global
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {F9A1F5C6-211C-498E-8A4E-40D4FC56F7A9}
 		{9F9AE360-40B9-4302-86E4-55F72B355D1F} = {F9A1F5C6-211C-498E-8A4E-40D4FC56F7A9}
 		{E8E322C0-3571-E1EE-847C-80EEB892DCBF} = {9F9AE360-40B9-4302-86E4-55F72B355D1F}
-		{D14AD8B0-9248-7B1D-2CFE-9B8E159A7A51} = {9F9AE360-40B9-4302-86E4-55F72B355D1F}
+		{D14AD8B0-9248-7B1D-2CFE-9B8E159A7A51} = {18B675F9-4591-42D9-833A-548F276ED862}
+		{18B675F9-4591-42D9-833A-548F276ED862} = {49FA5358-3660-4DDD-919F-5BC0D39DF5E4}
+		{78CE3414-36A9-0B49-F490-44013F42F294} = {18B675F9-4591-42D9-833A-548F276ED862}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}

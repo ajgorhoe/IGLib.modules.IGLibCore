@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using System.IO;
+using IG.Lib;
 
 namespace IG.Tests
 {

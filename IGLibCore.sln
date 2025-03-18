@@ -20,7 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{21254F1A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core", "src\IGLib.Core\IGLib.Core.csproj", "{F7D04FC0-4ED9-461D-8CD7-6FF2190C3A47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core.Tests", "test\IGLib.Core.Tests\IGLib.Core.Tests.csproj", "{37844841-CD4C-42CA-A844-1A530336C28B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core.Tests", "tests\IGLib.Core.Tests\IGLib.Core.Tests.csproj", "{37844841-CD4C-42CA-A844-1A530336C28B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.TestBase", "tests\IGLib.TestBase\IGLib.TestBase.csproj", "{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{37844841-CD4C-42CA-A844-1A530336C28B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37844841-CD4C-42CA-A844-1A530336C28B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37844841-CD4C-42CA-A844-1A530336C28B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

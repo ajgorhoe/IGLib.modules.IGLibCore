@@ -1342,7 +1342,9 @@ namespace IG.Num.Experimental
     /// <summary>Extension of type double by a struct.
     /// Provides binary operaror ^ (left operand raised to the power of right operand).</summary>
     [Obsolete("")]
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     public struct xdouble
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
 
         public xdouble(double value) { Value = value; }
