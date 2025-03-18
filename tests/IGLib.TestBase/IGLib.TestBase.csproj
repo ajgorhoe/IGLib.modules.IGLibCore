@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!--
+		<TargetFramework>net8.0</TargetFramework>
+		<TargetFrameworks>net8.0;net48;netstandard2.0</TargetFrameworks>
+		WARNING: always use just one of both elements, either TargetFrameworks or TargetFramework;
+		Usually, the .NET 8 and higher should be used because some tested projects are not compatile
+		with the old frameworks.
+		-->
+		<TargetFrameworks>net8.0;net48;netstandard2.0</TargetFrameworks>
+		<LangVersion>12.0</LangVersion>
+	</PropertyGroup>
+	
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48' OR '$(TargetFramework)' == 'netstandard2.0'" >
+		<PackageReference Include="System.Text.Json" Version="9.0.3" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<!--
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.12.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0"></PackageReference>
+		<PackageReference Include="System.Runtime.Loader" Version="4.3.0"></PackageReference>
+		-->
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.*" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.*"></PackageReference>
+		<PackageReference Include="System.Runtime.Loader" Version="4.*"></PackageReference>
+
+
+		<PackageReference Include="xunit" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
+		<PackageReference Include="FluentAssertions" Version="5.10.3" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+	</ItemGroup>
+	<!-- References needed for code compilationL
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0"></PackageReference>
+		<PackageReference Include="System.Runtime.Loader" Version="4.3.0"></PackageReference>
+	</ItemGroup>
+	-->
+</Project>
