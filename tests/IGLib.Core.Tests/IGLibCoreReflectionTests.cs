@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;  // alternative (not good): NUnit.Framework.Assert;
 
 using System.IO;
 using IG.Lib;
