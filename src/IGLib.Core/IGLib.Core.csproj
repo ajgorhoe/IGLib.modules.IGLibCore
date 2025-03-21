@@ -2,11 +2,9 @@
 
   <PropertyGroup>
     <!--
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	All potentially interesting targets for testing:
-    <TargetFramework>net9.0;net8.0;net6.0;net48</TargetFramework>
-	Current targets that work with both IGLib legacy and the new IGLib:
-    <TargetFrameworks>net6.0;net48;netstandard2.0</TargetFrameworks>
+    <TargetFramework>net9.0;net8.0;net6.0;net48;netstandard2.0</TargetFramework>
+	Current targets for this project that must work with both IGLib legacy and the new IGLib:
     -->
     <TargetFrameworks>net8.0;net48;netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>

@@ -1,14 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<!--
-    <TargetFramework>net5.0</TargetFramework>
-    <TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net5.0</TargetFramework>
+	<!--
+	Possible targets:
+	<TargetFrameworks>net8.0;net48;netstandard2.0</TargetFrameworks>
+	netstandard2.0 CAN BE OMITTED.
     -->
 
-    <TargetFrameworks>net8.0;net48</TargetFrameworks>
+		<TargetFrameworks>net8.0;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
@@ -26,14 +25,14 @@
 		<PackageReference Include="xunit" Version="2.9.3" />
 		<PackageReference Include="Neovolve.Logging.Xunit" Version="6.3.0" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\IGLib.Core\IGLib.Core.csproj" />
-	  <ProjectReference Include="..\IGLib.TestBase\IGLib.TestBase.csproj" />
+		<ProjectReference Include="..\..\src\IGLib.Core\IGLib.Core.csproj" />
+		<ProjectReference Include="..\IGLib.TestBase\IGLib.TestBase.csproj" />
 	</ItemGroup>
 
 	<PropertyGroup>
