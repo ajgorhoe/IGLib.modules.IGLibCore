@@ -3,6 +3,7 @@ using FluentAssertions;
 using Xunit.Abstractions;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 
 namespace IGLib.Tests.Base
 {
@@ -15,13 +16,34 @@ namespace IGLib.Tests.Base
         /// can be used to write to the test output, too. The API is of type <see cref="ITestOutputHelper"/>
         /// and is more limited than consol, but it still enables some code that uses output to Consol to be directly
         /// copied into test methods.</param>
-        public TestBase(ITestOutputHelper output, bool assignConsole= true)
+        public TestBase(ITestOutputHelper output, bool assignConsole = true)
         {
             Output = output;
             Console = output;
             LoggerFactory = new LoggerFactory();
             LoggerFactory.AddProvider(new XUnitLoggerProvider(output));
         }
+
+        /// <summary>Default export path for tests that generate output. Specified relative to the
+        /// currennt directory of test execution, which is usually a subdirectory of the [ProjectDir]/bin/  .</summary>
+        protected const string DefaultExportPathIGLib = "../_IGLib_TestExports/";
+
+        /// <summary>Export path for tests that generate output files. This is set to <see cref="IGLibDefaultExportPath"/>
+        /// by default (good for most cases), but this can be overridden in test class's constructor.
+        /// <para>When default is used, directory and file paths in subdirectories can be created by string
+        /// addition.</para></summary>
+        /// <remarks>There are several reasons one would like to generatte file output in tests.
+        /// <para>Some tests will generate temporary intermediate output, e.g. when their aim is specifically to test 
+        /// correctness of file exports or imports.</para>
+        /// <para>There are also tests that serve as examples, or they generate output that isintended for manual 
+        /// inspection, possibly with help off 3rd party software. Tyical example are some tests / examples for 
+        /// 3D graphics, which generate output that can be manually imported and inspected in software like Blender.
+        /// User can immediately give rough estimate of correctness of generated surfaces, or even correctness of
+        /// generated surface normals (since incorrect normals would reflect visually in strange rendering of coarse
+        /// meshes ).</para></remarks>
+        protected string ExportPathIGLib { get; } = DefaultExportPathIGLib;
+
+        protected string ExportPathIGLibTemporary => Path.Combine(ExportPathIGLib, "temp");
 
         /// <summary>Enables writing to tests' output. Provided by the framework (injected via constructor).</summary>
         public ITestOutputHelper Output { get; set; }
