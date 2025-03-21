@@ -41,7 +41,7 @@ namespace IGLib.Tests.Base
         /// User can immediately give rough estimate of correctness of generated surfaces, or even correctness of
         /// generated surface normals (since incorrect normals would reflect visually in strange rendering of coarse
         /// meshes ).</para></remarks>
-        protected string ExportPathIGLib { get; } = DefaultExportPathIGLib;
+        protected string ExportPathIGLib { get; set; } = DefaultExportPathIGLib;
 
         protected string ExportPathIGLibTemporary => Path.Combine(ExportPathIGLib, "temp");
 
