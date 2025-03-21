@@ -54,14 +54,14 @@ namespace IGLib.Tests.Base
         public void TestDemo_Simple_Addition_Test()
         {
             Output.WriteLine($"Testing addition of two numbers of type int:");
-            // Arrange
+            // ** Arrange:
             int a = 22;
             int b = 7;
             int expectedResult = 29;
-            // Act
+            // ** Act:
             int result = a + b;
             Output.WriteLine($"Input: a={a}, b={b}, result vs. expected: {result} vs. {expectedResult}");
-            // Assert
+            // ** Assert:
             result.Should().Be(expectedResult);
         }
 
