@@ -1,52 +1,54 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <!--
+	<PropertyGroup>
+		<!--
 	All potentially interesting targets for testing:
     <TargetFramework>net9.0;net8.0;net6.0;net48;netstandard2.0</TargetFramework>
 	Current targets for this project that must work with both IGLib legacy and the new IGLib:
     -->
-    <TargetFrameworks>net8.0;net48;netstandard2.0</TargetFrameworks>
-    <OutputType>Library</OutputType>
-    <IsPackable>true</IsPackable>
-	<RootNamespace>IGLib</RootNamespace>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <!-- Attributes previously in AsemblyInfo.cs: -->
-    <AssemblyName>IGLib.Core</AssemblyName>
-    <PackageId>IGLib.Core</PackageId>
-    <Version>2.0.0</Version>
-    <AssemblyVersion>2.0.0</AssemblyVersion>
-    <FileVersion>2.0.0</FileVersion>
-    <Authors>Igor Grešovnik et al.</Authors>
-    <Company>none</Company>
-    <Product>IGLib</Product>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Description>Library for some core utilities, with only baisc dependencies.</Description>
-    <Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl></PackageProjectUrl>
-    <PackageIconUrl>https://ajgorhoe.github.io/icons/IGLibIcon_64x64.png</PackageIconUrl>
-    <RepositoryUrl></RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>Tags</PackageTags>
-    <PackageReleaseNotes>Release</PackageReleaseNotes>
-    
-    <PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
-    <PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <Compile Remove="FromIGLibBase\**" />
-    <EmbeddedResource Remove="FromIGLibBase\**" />
-    <None Remove="FromIGLibBase\**" />
-  </ItemGroup>
-   
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-    <PackageReference Include="System.Text.Json" Version="9.0.0" />
-  </ItemGroup>
+		<TargetFrameworks>net8.0;net48;netstandard2.0</TargetFrameworks>
+		<OutputType>Library</OutputType>
+		<IsPackable>true</IsPackable>
+		<RootNamespace>IGLib</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- Attributes previously in AsemblyInfo.cs: -->
+		<AssemblyName>IGLib.Core</AssemblyName>
+		<PackageId>IGLib.Core</PackageId>
+		<Version>2.0.0</Version>
+		<AssemblyVersion>2.0.0</AssemblyVersion>
+		<FileVersion>2.0.0</FileVersion>
+		<Authors>Igor Grešovnik et al.</Authors>
+		<Company>none</Company>
+		<Product>IGLib</Product>
+		<NeutralLanguage>en</NeutralLanguage>
+		<Description>Library for some core utilities, with only baisc dependencies.</Description>
+		<Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
+		<PackageLicenseUrl></PackageLicenseUrl>
+		<PackageProjectUrl></PackageProjectUrl>
+		<PackageIconUrl>https://ajgorhoe.github.io/icons/IGLibIcon_64x64.png</PackageIconUrl>
+		<RepositoryUrl></RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>Tags</PackageTags>
+		<PackageReleaseNotes>Release</PackageReleaseNotes>
+
+		<PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
+		<PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="FromIGLibBase\**" />
+		<EmbeddedResource Remove="FromIGLibBase\**" />
+		<None Remove="FromIGLibBase\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+		<!--
+		-->
+		<PackageReference Include="System.Text.Json" Version="9.0.0" />
+	</ItemGroup>
 
 </Project>

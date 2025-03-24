@@ -26,7 +26,7 @@ namespace IGLib.Tests.Base
 
         /// <summary>Default export path for tests that generate output. Specified relative to the
         /// currennt directory of test execution, which is usually a subdirectory of the [ProjectDir]/bin/  .</summary>
-        protected const string DefaultExportPathIGLib = "../_IGLib_TestExports/";
+        protected const string DefaultExportPathIGLib = "../../_IGLib_TestExports/";
 
         /// <summary>Export path for tests that generate output files. This is set to <see cref="IGLibDefaultExportPath"/>
         /// by default (good for most cases), but this can be overridden in test class's constructor.
