@@ -3,9 +3,9 @@
 // This is a fix for the following compiler error in .NET 4.8 targets:
 // "Predefined type 'System.Runtime.CompilerServices.IsExternalInit' is not defined or imported"
 
-#if NET48
+// #if NET48  // conditinal compilation is not needed
 namespace System.Runtime.CompilerServices
 {
     public class IsExternalInit {}
 }
-#endif
+// #endif
