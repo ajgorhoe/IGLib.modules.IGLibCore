@@ -8,7 +8,7 @@ This repository contains basic portions of the restructured ***Investigative Gen
 
 Contents:
 
-* [Links](#links)
+* [Links](#links) 
 * [About the repository](#about-the-repository)
   * [Building and Running](#building-and-running)
   * [IGLib Restrcturing](#iglib-restructuring)
