@@ -8,6 +8,7 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;  // alternat
 
 using System.IO;
 using IG.Lib;
+using IGLib.CoreExtended;
 
 namespace IG.Tests
 {

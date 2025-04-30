@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IG.Lib
+namespace IGLib.CoreExtended
 {
 
     /// <summary>Some convenient utilities that use reflection.</summary>
+    /// <remarks>
+    /// <para>IMPORTANT:</para>
+    /// Utilities from System.Reflection namespace should not be included in the IGLib.Core project.
+    /// Move such utilities to the IGLib.CoreExtended project instead!</remarks>
     public static class UtilReflectionCore
     {
 

@@ -19,6 +19,30 @@
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<AssemblyName>IGLibCoreTests</AssemblyName>
+		<RootNamespace>IG.Tests</RootNamespace>
+		<PackageId>IGLibCoreTests</PackageId>
+		<Authors>Igor Grešovnik</Authors>
+		<Company>none</Company>
+		<ProductName>IGLib_CoreTests</ProductName>
+		<Product>Investigative Generic Library (IGLib) - IGLibCoreTests</Product>
+		<Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>
+		<Description>Tests for IGLibCore.</Description>
+
+		<!-- PackageLicenseExpression available only for OSI AND fsf approved licenses.
+		<PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
+		-->
+		<PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
+
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\IGLib.Core\IGLib.Core.csproj" />
+		<ProjectReference Include="..\..\src\IGLib.CoreExtended\IGLib.CoreExtended.csproj" />
+		<ProjectReference Include="..\IGLib.TestBase\IGLib.TestBase.csproj" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="NUnit" Version="4.3.2" />
 		<PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
@@ -37,28 +61,6 @@
 		</PackageReference>
 
 	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\..\src\IGLib.Core\IGLib.Core.csproj" />
-		<ProjectReference Include="..\IGLib.TestBase\IGLib.TestBase.csproj" />
-	</ItemGroup>
-
-	<PropertyGroup>
-		<AssemblyName>IGLibCoreTests</AssemblyName>
-		<RootNamespace>IG.Tests</RootNamespace>
-		<PackageId>IGLibCoreTests</PackageId>
-		<Authors>Igor Grešovnik</Authors>
-		<Company>none</Company>
-		<ProductName>IGLib_CoreTests</ProductName>
-		<Product>Investigative Generic Library (IGLib) - IGLibCoreTests</Product>
-		<Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>
-		<Description>Tests for IGLibCore.</Description>
-
-		<!-- PackageLicenseExpression available only for OSI AND fsf approved licenses.
-		<PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
-		-->
-		<PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
-
-	</PropertyGroup>
 
 
 </Project>
