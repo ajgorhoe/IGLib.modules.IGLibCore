@@ -1,5 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<!--
+	WARNING:
+	This contains some legacy tests.
+	Put new tests into the IGLib.TestBase project!
+	-->
+	
 	<PropertyGroup>
 	<!--
 	Possible targets:
@@ -9,6 +15,7 @@
 
 		<TargetFrameworks>net8.0;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
+		<ImplicitUsings>disable</ImplicitUsings>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
