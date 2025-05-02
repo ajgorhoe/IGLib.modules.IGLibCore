@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 using static IGLib.Tests.Base.UtilSpeedTesting;
 using System;
+using System.Diagnostics;
 
 namespace IGLib.Tests.Base
 {
@@ -102,26 +103,24 @@ namespace IGLib.Tests.Base
         }
 
 
-
-
         // Geometric series:
 
-        /// <summary>Verifies that finite arithmetic series calculaed analytically is correct.
-        /// <para>Test is based on the separate built-in analytical calculation of the expected result in
-        /// this method. For double verification, the test <see cref="UtilSpeedTesting_ArithmeticSeriesNumericalMatchesAnalyticalResult"/>
+        /// <summary>Verifies that finite geometric series calculaed analytically is correct.
+        /// <para>Test is based on the separate built-in analytical calculation of the expected result by
+        /// this method. For double verification, the test <see cref="UtilSpeedTesting_GeometricSeriesNumericalMatchesAnalyticalResult(int, double, double, double)"/>
         /// compares results of the method for analytical calculation of the finite arithmetic series with the method for numerical
-        /// calculation, which reduces the possibility of wrong implementation to the minimum.</para>
+        /// calculation, which reduces the possibility of wrong implementation.</para>
         /// <para>The tested method will be used to chack correctness in other tests.</para></summary>
         /// <param name="n">Number of elements of the sum.</param>
         /// <param name="a0">The first element of the sum.</param>
-        /// <param name="d">The constant difference between the next element of the sequence and the previous element.</param>
-        /// <param name="tolerance">The tolerance, allowed discrepancy between both results to account fo rounding errors.</param>
+        /// <param name="d">The constant quotient between the next element of the sequence and the current element.</param>
+        /// <param name="tolerance">The tolerance, allowed discrepancy between both results, to account for rounding errors.</param>
         [Theory]
-        [InlineData(2, 10, 1, 0)]
-        [InlineData(3, 2, 1, 0)]
-        [InlineData(2, 1.5, 0.6, 1e-8)]
-        [InlineData(12, 6.35, 1.34, 1e-8)]
-        [InlineData(15, 1.64e2, -21.86, 1e-8)]
+        [InlineData(2, 10, 2, 0)]
+        [InlineData(3, 4, 0.5, 1e-8)]
+        [InlineData(100, 41.4, 0.95, 1e-8)]
+        [InlineData(100, 12.3, 1.05, 1e-8)]
+        [InlineData(100, 12.3, -1.05, 1e-8)]
         public void UtilSpeedTesting_GeometricSeriesAnalyticalMethodIsCorrect(int n, double a0, double k, double tolerance)
         {
             Console.WriteLine($"Testing that analytical finite arithmetic series is calculated correctly...");
@@ -146,24 +145,24 @@ namespace IGLib.Tests.Base
             controlResult.Should().BeApproximately(analyticalResult, tolerance);
         }
 
-        /// <summary>Verifies that finite arithmetic series calculaed numerically matches the result
-        /// calculatec by analytic formula.</summary>
+        /// <summary>Verifies that finite geometric series calculaed numerically matches the result
+        /// calculatec by an analytic formula.</summary>
         /// <param name="n">Number of elements of the sum.</param>
         /// <param name="a0">The first element of the sum.</param>
-        /// <param name="k">The constant difference between the next element of the sequence and the previous element.</param>
-        /// <param name="tolerance">The tolerance, allowed discrepancy between both results to account fo rounding errors.</param>
+        /// <param name="k">The constant quotient between the next element of the sequence and the current element.</param>
+        /// <param name="tolerance">The tolerance, allowed discrepancy between both results, to account fo rounding errors.</param>
         [Theory]
-        [InlineData(2, 10, 1, 0)]
-        [InlineData(3, 2, 1, 0)]
-        [InlineData(200, 54, 18, 0)]
-        [InlineData(2, 1.5, 0.6, 1e-8)]
-        [InlineData(100, 6.35, 1.34, 1e-8)]
-        [InlineData(10, -5.32, 0.06, 1e-8)]
-        [InlineData(15, 1.64e2, -21.86, 1e-8)]
-        [InlineData(15, -45.96, -2.312, 1e-8)]
+        [InlineData(2, 10, 2, 0)]
+        [InlineData(3, 4, 0.5, 1e-8)]
+        [InlineData(100, 41.4, 0.95, 1e-8)]
+        [InlineData(100, 12.3, 1.05, 1e-8)]
+        [InlineData(100, 12.3, -1.05, 1e-8)]
+        [InlineData(100, 1, 1.0001, 1e-8)]
+        [InlineData(100, 1, 0.999, 1e-8)]
         public void UtilSpeedTesting_GeometricSeriesNumericalMatchesAnalyticalResult(int n, double a0, double k, double tolerance)
         {
-            Console.WriteLine($"Testing that numerical finite arithmetic series gives the same results as the analytical calculation.");
+            // Arrange
+            // Console.WriteLine($"Testing that numerical finite geometric series gives the same results as the analytical calculation.");
             Console.WriteLine($"Parameters:");
             Console.WriteLine($"  n:   {n}         (number of elements)");
             Console.WriteLine($"  a:   {a0}         (the first element)");
@@ -171,20 +170,75 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepany))");
             double analyticalResult = UtilSpeedTesting.GeometricSeriesAnalytical(n, a0, k);
             Console.WriteLine($"Analytical result: S = {analyticalResult}");
+            // Act
             double numericalResult = UtilSpeedTesting.GeometricSeriesNumerical(n, a0, k);
             Console.WriteLine($"Numerical result:  S = {numericalResult}");
             Console.WriteLine($"  Difference: {numericalResult - analyticalResult}, tolerance: {tolerance}");
+            // Assert
             numericalResult.Should().BeApproximately(analyticalResult, tolerance);
+        }
+
+
+        #endregion TestUtilSpeedTesting
+
+
+        /// <summary>Verifies that finite geometric series calculaed numerically matches the result
+        /// calculatec by an analytic formula.</summary>
+        /// <param name="n">Number of elements of the sum.</param>
+        /// <param name="a0">The first element of the sum.</param>
+        /// <param name="k">The constant quotient between the next element of the sequence and the current element.</param>
+        /// <param name="tolerance">The tolerance, allowed discrepancy between both results, to account fo rounding errors.</param>
+        [Theory]
+        //[InlineData(1, 1.0, 1.00001, 1e-8)]
+        //[InlineData(10, 1.0, 1.00001, 1e-8)]
+        //[InlineData(100, 1.0, 1.00001, 1e-8)]
+        //[InlineData(1_000, 1.0, 1.00001, 1e-8)]
+        //[InlineData(10_000, 1.0, 1.00001, 1e-8)]
+        //[InlineData(100_000, 1.0, 1.00001, 1e-8)]
+        //[InlineData(1000_000, 1.0, 1.00001, 1e-4)]
+        [InlineData(1, 1.0, 0.99999, 1e-8)]
+        [InlineData(10, 1.0, 0.99999, 1e-8)]
+        [InlineData(100, 1.0, 0.99999, 1e-8)]
+        [InlineData(1_000, 1.0, 0.99999, 1e-8)]
+        [InlineData(10_000, 1.0, 0.99999, 1e-8)]
+        [InlineData(100_000, 1.0, 0.99999, 1e-8)]
+        [InlineData(1000_000, 1.0, 0.99999, 1e-4)]
+        public void SpeedTest_ComparingDufferentNumbersOfExecutioin(int n, double a0, double k, double tolerance)
+        {
+            // Arrange
+            // Console.WriteLine($"Testing that numerical finite geometric series gives the same results as the analytical calculation.");
+            Console.WriteLine($"Parameters:");
+            Console.WriteLine($"  n:   {n}         (number of elements)");
+            Console.WriteLine($"  a:   {a0}         (the first element)");
+            Console.WriteLine($"  d:   {k}         (difference between successive elements)");
+            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepany))");
+            double analyticalResult = UtilSpeedTesting.GeometricSeriesAnalytical(n, a0, k);
+            Console.WriteLine($"Analytical result: S = {analyticalResult}");
+            // Act
+            Stopwatch sw = Stopwatch.StartNew();
+            double numericalResult = UtilSpeedTesting.GeometricSeriesNumerical(n, a0, k);
+            sw.Stop();
+            Console.WriteLine($"Numerical result:  S = {numericalResult}");
+            Console.WriteLine($"  Difference: {numericalResult - analyticalResult}, tolerance: {tolerance}");
+            // Assert
+            numericalResult.Should().BeApproximately(analyticalResult, tolerance, 
+                because: "Precond: Calculation needs to be correct in order to use it in speed tests.");
+            Console.WriteLine("");
+            double calculationsPerSecond = (double)n / sw.Elapsed.TotalSeconds;
+            Console.WriteLine($"Geometric series with {n} terms was calculated in {sw.Elapsed.TotalSeconds} s.");
+            Console.WriteLine($"  Calculations per second: {calculationsPerSecond}");
+            Console.WriteLine($"  Millions  per second:    {calculationsPerSecond / 1.0e6}");
         }
 
 
 
 
+        #region SpeedTests
 
 
 
 
-        #endregion TestUtilSpeedTesting
+        #endregion S[eedTests
 
 
 
