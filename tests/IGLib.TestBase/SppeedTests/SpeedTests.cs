@@ -61,7 +61,7 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"  n:   {n}         (number of elements)");
             Console.WriteLine($"  a:   {a0}         (the first element)");
             Console.WriteLine($"  d:   {d}         (difference between successive elements)");
-            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepany))");
+            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepancy))");
             double analyticalResult = UtilSpeedTesting.ArithmeticSeriesAnalytical(n, a0, d);
             Console.WriteLine($"Analytical result: S = {analyticalResult}");
             double controlResult = n * (2 * a0 + (n - 1) * d) / 2.0;
@@ -93,7 +93,7 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"  n:   {n}         (number of elements)");
             Console.WriteLine($"  a:   {a0}         (the first element)");
             Console.WriteLine($"  d:   {d}         (difference between successive elements)");
-            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepany))");
+            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepancy))");
             double analyticalResult = UtilSpeedTesting.ArithmeticSeriesAnalytical(n, a0, d);
             Console.WriteLine($"Analytical result: S = {analyticalResult}");
             double numericalResult = UtilSpeedTesting.ArithmeticSeriesNumerical(n, a0, d);
@@ -128,7 +128,7 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"  n:   {n}         (number of elements)");
             Console.WriteLine($"  a:   {a0}         (the first element)");
             Console.WriteLine($"  k:   {k}         (difference between successive elements)");
-            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepany))");
+            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepancy))");
             double analyticalResult = UtilSpeedTesting.GeometricSeriesAnalytical(n, a0, k);
             Console.WriteLine($"Analytical result: S = {analyticalResult}");
             double controlResult;
@@ -167,7 +167,7 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"  n:   {n}         (number of elements)");
             Console.WriteLine($"  a:   {a0}         (the first element)");
             Console.WriteLine($"  d:   {k}         (difference between successive elements)");
-            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepany))");
+            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepancy))");
             double analyticalResult = UtilSpeedTesting.GeometricSeriesAnalytical(n, a0, k);
             Console.WriteLine($"Analytical result: S = {analyticalResult}");
             // Act
@@ -189,21 +189,14 @@ namespace IGLib.Tests.Base
         /// <param name="k">The constant quotient between the next element of the sequence and the current element.</param>
         /// <param name="tolerance">The tolerance, allowed discrepancy between both results, to account fo rounding errors.</param>
         [Theory]
-        //[InlineData(1, 1.0, 1.00001, 1e-8)]
-        //[InlineData(10, 1.0, 1.00001, 1e-8)]
-        //[InlineData(100, 1.0, 1.00001, 1e-8)]
-        //[InlineData(1_000, 1.0, 1.00001, 1e-8)]
-        //[InlineData(10_000, 1.0, 1.00001, 1e-8)]
-        //[InlineData(100_000, 1.0, 1.00001, 1e-8)]
-        //[InlineData(1000_000, 1.0, 1.00001, 1e-4)]
-        [InlineData(1, 1.0, 0.99999, 1e-8)]
-        [InlineData(10, 1.0, 0.99999, 1e-8)]
-        [InlineData(100, 1.0, 0.99999, 1e-8)]
-        [InlineData(1_000, 1.0, 0.99999, 1e-8)]
-        [InlineData(10_000, 1.0, 0.99999, 1e-8)]
-        [InlineData(100_000, 1.0, 0.99999, 1e-8)]
-        [InlineData(1000_000, 1.0, 0.99999, 1e-4)]
-        public void SpeedTest_ComparingDufferentNumbersOfExecutioin(int n, double a0, double k, double tolerance)
+        [InlineData(1, 1.0, 1-1e-4, 1e-8)]
+        [InlineData(10, 1.0, 1 - 1e-4, 1e-8)]
+        [InlineData(100, 1.0, 1 - 1e-4, 1e-8)]
+        [InlineData(1_000, 1.0, 1 - 1e-4, 1e-8)]
+        [InlineData(10_000, 1.0, 1 - 1e-4, 1e-8)]
+        [InlineData(100_000, 1.0, 1 - 1e-4, 1e-8)]
+        [InlineData(1000_000, 1.0, 1 - 1e-4, 1e-4)]
+        public void StandardSpeedTestPreparationGeometric_ComparingDufferentNumbersOfExecutioin(int n, double a0, double k, double tolerance)
         {
             // Arrange
             // Console.WriteLine($"Testing that numerical finite geometric series gives the same results as the analytical calculation.");
@@ -211,7 +204,9 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"  n:   {n}         (number of elements)");
             Console.WriteLine($"  a:   {a0}         (the first element)");
             Console.WriteLine($"  d:   {k}         (difference between successive elements)");
-            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepany))");
+            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepancy))");
+            Console.WriteLine($"  k^n: {Math.Pow(k, n)}");
+            Console.WriteLine("");
             double analyticalResult = UtilSpeedTesting.GeometricSeriesAnalytical(n, a0, k);
             Console.WriteLine($"Analytical result: S = {analyticalResult}");
             // Act
@@ -230,6 +225,38 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"  Millions  per second:    {calculationsPerSecond / 1.0e6}");
         }
 
+        [Fact]
+        public void StandardSpeedTestGeometricSeries()
+        {
+            // Arrange
+            int n = 100_000;
+            double k = 1 - 1e-4;
+            double a0 = 1.0;
+            double tolerance = 1e-8;
+            // Console.WriteLine($"Testing that numerical finite geometric series gives the same results as the analytical calculation.");
+            Console.WriteLine($"Parameters:");
+            Console.WriteLine($"  n:   {n}         (number of elements)");
+            Console.WriteLine($"  a:   {a0}         (the first element)");
+            Console.WriteLine($"  d:   {k}         (difference between successive elements)");
+            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepancy))");
+            Console.WriteLine($"  k^n: {Math.Pow(k, n)}");
+            double analyticalResult = UtilSpeedTesting.GeometricSeriesAnalytical(n, a0, k);
+            Console.WriteLine($"Analytical result: S = {analyticalResult}");
+            // Act
+            Stopwatch sw = Stopwatch.StartNew();
+            double numericalResult = UtilSpeedTesting.GeometricSeriesNumerical(n, a0, k);
+            sw.Stop();
+            Console.WriteLine($"Numerical result:  S = {numericalResult}");
+            Console.WriteLine($"  Difference: {numericalResult - analyticalResult}, tolerance: {tolerance}");
+            // Assert
+            numericalResult.Should().BeApproximately(analyticalResult, tolerance,
+                because: "Precond: Calculation needs to be correct in order to use it in speed tests.");
+            Console.WriteLine("");
+            double calculationsPerSecond = (double)n / sw.Elapsed.TotalSeconds;
+            Console.WriteLine($"Geometric series with {n} terms was calculated in {sw.Elapsed.TotalSeconds} s.");
+            Console.WriteLine($"  Calculations per second: {calculationsPerSecond}");
+            Console.WriteLine($"  Millions  per second:    {calculationsPerSecond / 1.0e6}");
+        }
 
 
 
