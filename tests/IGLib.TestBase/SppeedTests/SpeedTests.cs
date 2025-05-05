@@ -3,10 +3,10 @@ using Xunit;
 using FluentAssertions;
 using Xunit.Abstractions;
 using System.Collections.Generic;
-
-using static IGLib.Tests.Base.UtilSpeedTesting;
 using System;
 using System.Diagnostics;
+
+using static IGLib.Tests.Base.UtilSpeedTesting;
 
 namespace IGLib.Tests.Base
 {
@@ -146,7 +146,7 @@ namespace IGLib.Tests.Base
         }
 
         /// <summary>Verifies that finite geometric series calculaed numerically matches the result
-        /// calculatec by an analytic formula.</summary>
+        /// calculatec by an analytic formula. Numerical calculation is performed by <see cref="UtilSpeedTesting.GeometricSeriesNumerical(int, double, double)"/></summary>
         /// <param name="n">Number of elements of the sum.</param>
         /// <param name="a0">The first element of the sum.</param>
         /// <param name="k">The constant quotient between the next element of the sequence and the current element.</param>
@@ -166,7 +166,7 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"Parameters:");
             Console.WriteLine($"  n:   {n}         (number of elements)");
             Console.WriteLine($"  a:   {a0}         (the first element)");
-            Console.WriteLine($"  d:   {k}         (difference between successive elements)");
+            Console.WriteLine($"  k:   {k}         (difference between successive elements)");
             Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepancy))");
             double analyticalResult = UtilSpeedTesting.GeometricSeriesAnalytical(n, a0, k);
             Console.WriteLine($"Analytical result: S = {analyticalResult}");
@@ -179,24 +179,63 @@ namespace IGLib.Tests.Base
         }
 
 
-        #endregion TestUtilSpeedTesting
-
 
         /// <summary>Verifies that finite geometric series calculaed numerically matches the result
-        /// calculatec by an analytic formula.</summary>
+        /// calculatec by an analytic formula. Numerical calculation is performed by <see cref="UtilSpeedTesting.GeometricSeriesNumerical(int, double, double)"/></summary>
         /// <param name="n">Number of elements of the sum.</param>
         /// <param name="a0">The first element of the sum.</param>
         /// <param name="k">The constant quotient between the next element of the sequence and the current element.</param>
         /// <param name="tolerance">The tolerance, allowed discrepancy between both results, to account fo rounding errors.</param>
         [Theory]
-        [InlineData(1, 1.0, 1-1e-4, 1e-8)]
-        [InlineData(10, 1.0, 1 - 1e-4, 1e-8)]
-        [InlineData(100, 1.0, 1 - 1e-4, 1e-8)]
-        [InlineData(1_000, 1.0, 1 - 1e-4, 1e-8)]
-        [InlineData(10_000, 1.0, 1 - 1e-4, 1e-8)]
-        [InlineData(100_000, 1.0, 1 - 1e-4, 1e-8)]
-        [InlineData(1000_000, 1.0, 1 - 1e-4, 1e-4)]
-        public void StandardSpeedTestPreparationGeometric_ComparingDufferentNumbersOfExecutioin(int n, double a0, double k, double tolerance)
+        [InlineData(2, 10, 2, 0)]
+        [InlineData(3, 4, 0.5, 1e-8)]
+        [InlineData(100, 41.4, 0.95, 1e-8)]
+        [InlineData(100, 12.3, 1.05, 1e-8)]
+        [InlineData(100, 12.3, -1.05, 1e-8)]
+        [InlineData(100, 1, 1.0001, 1e-8)]
+        [InlineData(100, 1, 0.999, 1e-8)]
+        public void UtilSpeedTesting_GeometricSeriesNumerical_DirectElementCalculation_MatchesAnalyticalResult(int n, double a0, double k, double tolerance)
+        {
+            // Arrange
+            // Console.WriteLine($"Testing that numerical finite geometric series gives the same results as the analytical calculation.");
+            Console.WriteLine($"Parameters:");
+            Console.WriteLine($"  n:   {n}         (number of elements)");
+            Console.WriteLine($"  a:   {a0}         (the first element)");
+            Console.WriteLine($"  k:   {k}         (difference between successive elements)");
+            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepancy))");
+            double analyticalResult = UtilSpeedTesting.GeometricSeriesAnalytical(n, a0, k);
+            Console.WriteLine($"Analytical result: S = {analyticalResult}");
+            // Act
+            double numericalResult = UtilSpeedTesting.GeometricSeriesNumerical_DirectElementCalculation(n, a0, k);
+            Console.WriteLine($"Numerical result:  S = {numericalResult}");
+            Console.WriteLine($"  Difference: {numericalResult - analyticalResult}, tolerance: {tolerance}");
+            // Assert
+            numericalResult.Should().BeApproximately(analyticalResult, tolerance);
+        }
+
+
+        #endregion TestUtilSpeedTesting
+
+
+
+
+
+        /// <summary>Performs calculation of geometric series at the same parameters as <see cref="UtilSpeedTesting.StandardSpeedTestGeometricSeriesBasic(bool)"/>,
+        /// except that calculation is performed with different numbers of terms, in order to find the suitable
+        /// parameter for standard tests.</summary>
+        /// <param name="n">Number of elements of the sum.</param>
+        /// <param name="a0">The first element of the sum.</param>
+        /// <param name="k">The constant quotient between the next element of the sequence and the current element.</param>
+        /// <param name="tolerance">The tolerance, allowed discrepancy between both results, to account fo rounding errors.</param>
+        [Theory]
+        [InlineData(1, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
+        [InlineData(10, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
+        [InlineData(100, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
+        [InlineData(1_000, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
+        [InlineData(10_000, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
+        [InlineData(100_000, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
+        [InlineData(1000_000, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
+        public void StandardSpeedTestPreparationGeometric_ComparingDifferentNumbersOfExecutioin(int n, double a0, double k, double tolerance)
         {
             // Arrange
             // Console.WriteLine($"Testing that numerical finite geometric series gives the same results as the analytical calculation.");
@@ -225,39 +264,83 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"  Millions  per second:    {calculationsPerSecond / 1.0e6}");
         }
 
+
+        /// <summary>Performs the stanard speed test with calculation of a finite geometric series, with
+        /// standard parameters, and reports the resutlrs.</summary>
         [Fact]
         public void StandardSpeedTestGeometricSeries()
         {
             // Arrange
-            int n = 100_000;
-            double k = 1 - 1e-4;
-            double a0 = 1.0;
-            double tolerance = 1e-8;
-            // Console.WriteLine($"Testing that numerical finite geometric series gives the same results as the analytical calculation.");
+            int n = TstGeom_n;
+            double a0 = TstGeom_a0;
+            double k = TstGeom_k;
+            double tolerance = TstGeom_Tolerance;
+            Console.WriteLine($"Performing standard speed test: numerical finite geometric series...");
             Console.WriteLine($"Parameters:");
             Console.WriteLine($"  n:   {n}         (number of elements)");
             Console.WriteLine($"  a:   {a0}         (the first element)");
-            Console.WriteLine($"  d:   {k}         (difference between successive elements)");
+            Console.WriteLine($"  d:   {k}         (quotient of successive elements)");
             Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepancy))");
             Console.WriteLine($"  k^n: {Math.Pow(k, n)}");
             double analyticalResult = UtilSpeedTesting.GeometricSeriesAnalytical(n, a0, k);
-            Console.WriteLine($"Analytical result: S = {analyticalResult}");
             // Act
             Stopwatch sw = Stopwatch.StartNew();
             double numericalResult = UtilSpeedTesting.GeometricSeriesNumerical(n, a0, k);
             sw.Stop();
             Console.WriteLine($"Numerical result:  S = {numericalResult}");
+            Console.WriteLine($"Analytical result: S = {analyticalResult}");
             Console.WriteLine($"  Difference: {numericalResult - analyticalResult}, tolerance: {tolerance}");
             // Assert
             numericalResult.Should().BeApproximately(analyticalResult, tolerance,
                 because: "Precond: Calculation needs to be correct in order to use it in speed tests.");
             Console.WriteLine("");
-            double calculationsPerSecond = (double)n / sw.Elapsed.TotalSeconds;
+            double iterationsPerSecond = (double)n / sw.Elapsed.TotalSeconds;
+            double speedFactor = iterationsPerSecond / TstGeom_IterationsPerSecondIhp24;
             Console.WriteLine($"Geometric series with {n} terms was calculated in {sw.Elapsed.TotalSeconds} s.");
-            Console.WriteLine($"  Calculations per second: {calculationsPerSecond}");
-            Console.WriteLine($"  Millions  per second:    {calculationsPerSecond / 1.0e6}");
+            Console.WriteLine($"  Calculations per second: {iterationsPerSecond}");
+            Console.WriteLine($"  Millions  per second:    {iterationsPerSecond / 1.0e6}");
+            Console.WriteLine($"  peed factor:             {speedFactor}");
         }
 
+
+
+        /// <summary>Performs the stanard speed test with calculation of a finite geometric series, with
+        /// standard parameters, but with directly calculating each term by using <see cref="Math.Pow(double, double)"/>
+        /// rather than accumulating sequence elements iteratively..</summary>
+        [Fact]
+        public void StandardSpeedTestGeometricSeries_DirectElementCalculation()
+        {
+            // Arrange
+            int n = TstGeom_n;
+            double a0 = TstGeom_a0;
+            double k = TstGeom_k;
+            double tolerance = TstGeom_Tolerance;
+            Console.WriteLine($"Performing standard speed test: numerical finite geometric series...");
+            Console.WriteLine($"Parameters:");
+            Console.WriteLine($"  n:   {n}         (number of elements)");
+            Console.WriteLine($"  a:   {a0}         (the first element)");
+            Console.WriteLine($"  d:   {k}         (quotient of successive elements)");
+            Console.WriteLine($"  tol: {tolerance}     (tolerance (max. allowed discrepancy))");
+            Console.WriteLine($"  k^n: {Math.Pow(k, n)}");
+            double analyticalResult = UtilSpeedTesting.GeometricSeriesAnalytical(n, a0, k);
+            // Act
+            Stopwatch sw = Stopwatch.StartNew();
+            double numericalResult = UtilSpeedTesting.GeometricSeriesNumerical_DirectElementCalculation(n, a0, k);
+            sw.Stop();
+            Console.WriteLine($"Numerical result:  S = {numericalResult}");
+            Console.WriteLine($"Analytical result: S = {analyticalResult}");
+            Console.WriteLine($"  Difference: {numericalResult - analyticalResult}, tolerance: {tolerance}");
+            // Assert
+            numericalResult.Should().BeApproximately(analyticalResult, tolerance,
+                because: "Precond: Calculation needs to be correct in order to use it in speed tests.");
+            Console.WriteLine("");
+            double iterationsPerSecond = (double)n / sw.Elapsed.TotalSeconds;
+            double speedFactor = iterationsPerSecond / TstGeom_IterationsPerSecondIhp24;
+            Console.WriteLine($"Geometric series with {n} terms was calculated in {sw.Elapsed.TotalSeconds} s.");
+            Console.WriteLine($"  Calculations per second: {iterationsPerSecond}");
+            Console.WriteLine($"  Millions  per second:    {iterationsPerSecond / 1.0e6}");
+            Console.WriteLine($"  peed factor:             {speedFactor}");
+        }
 
 
         #region SpeedTests
