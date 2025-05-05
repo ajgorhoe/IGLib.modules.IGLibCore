@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System;
 using System.Diagnostics;
 
-using static IGLib.Tests.Base.UtilSpeedTesting;
+using static IGLib.Tests.UtilSpeedTesting;
 
 namespace IGLib.Tests.Base
 {

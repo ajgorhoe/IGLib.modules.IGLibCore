@@ -6,8 +6,9 @@ using System.Diagnostics;
 using FluentAssertions;
 using LearnCs.Lib;
 
-namespace IGLib.Tests.Base
+namespace IGLib.Tests
 {
+
 
     public class UtilSpeedTesting
     {
