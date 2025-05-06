@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System;
 using System.Diagnostics;
 
+using IGLib.Tests;
 using static IGLib.Tests.UtilSpeedTesting;
 
 namespace IGLib.Tests.Base
@@ -228,13 +229,13 @@ namespace IGLib.Tests.Base
         /// <param name="k">The constant quotient between the next element of the sequence and the current element.</param>
         /// <param name="tolerance">The tolerance, allowed discrepancy between both results, to account fo rounding errors.</param>
         [Theory]
-        [InlineData(1, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
-        [InlineData(10, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
-        [InlineData(100, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
-        [InlineData(1_000, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
-        [InlineData(10_000, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
-        [InlineData(100_000, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
-        [InlineData(1000_000, TstGeom_a0, TstGeom_k, TstGeom_Tolerance)]
+        [InlineData(1, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
+        [InlineData(10, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
+        [InlineData(100, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
+        [InlineData(1_000, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
+        [InlineData(10_000, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
+        [InlineData(100_000, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
+        [InlineData(1000_000, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
         public void StandardSpeedTestPreparationGeometric_ComparingDifferentNumbersOfExecutioin(int n, double a0, double k, double tolerance)
         {
             // Arrange
@@ -271,10 +272,10 @@ namespace IGLib.Tests.Base
         public void StandardSpeedTestGeometricSeries()
         {
             // Arrange
-            int n = TstGeom_n;
-            double a0 = TstGeom_a0;
-            double k = TstGeom_k;
-            double tolerance = TstGeom_Tolerance;
+            int n = ConstGeom.NumExecutions;
+            double a0 = ConstGeom.a0;
+            double k = ConstGeom.k;
+            double tolerance = ConstGeom.Tolerance;
             Console.WriteLine($"Performing standard speed test: numerical finite geometric series...");
             Console.WriteLine($"Parameters:");
             Console.WriteLine($"  n:   {n}         (number of elements)");
@@ -295,7 +296,7 @@ namespace IGLib.Tests.Base
                 because: "Precond: Calculation needs to be correct in order to use it in speed tests.");
             Console.WriteLine("");
             double iterationsPerSecond = (double)n / sw.Elapsed.TotalSeconds;
-            double speedFactor = iterationsPerSecond / TstGeom_IterationsPerSecondIhp24;
+            double speedFactor = iterationsPerSecond / ConstGeom.RefExecutionsPerSecondHpLaptop24;
             Console.WriteLine($"Geometric series with {n} terms was calculated in {sw.Elapsed.TotalSeconds} s.");
             Console.WriteLine($"  Calculations per second: {iterationsPerSecond}");
             Console.WriteLine($"  Millions  per second:    {iterationsPerSecond / 1.0e6}");
@@ -311,10 +312,10 @@ namespace IGLib.Tests.Base
         public void StandardSpeedTestGeometricSeries_DirectElementCalculation()
         {
             // Arrange
-            int n = TstGeom_n;
-            double a0 = TstGeom_a0;
-            double k = TstGeom_k;
-            double tolerance = TstGeom_Tolerance;
+            int n = ConstGeomDirect.NumExecutions;
+            double a0 = ConstGeomDirect.a0;
+            double k = ConstGeomDirect.k;
+            double tolerance = ConstGeomDirect.Tolerance;
             Console.WriteLine($"Performing standard speed test: numerical finite geometric series...");
             Console.WriteLine($"Parameters:");
             Console.WriteLine($"  n:   {n}         (number of elements)");
@@ -335,7 +336,7 @@ namespace IGLib.Tests.Base
                 because: "Precond: Calculation needs to be correct in order to use it in speed tests.");
             Console.WriteLine("");
             double iterationsPerSecond = (double)n / sw.Elapsed.TotalSeconds;
-            double speedFactor = iterationsPerSecond / TstGeom_IterationsPerSecondIhp24;
+            double speedFactor = iterationsPerSecond / ConstGeomDirect.RefExecutionsPerSecondHpLaptop24;
             Console.WriteLine($"Geometric series with {n} terms was calculated in {sw.Elapsed.TotalSeconds} s.");
             Console.WriteLine($"  Calculations per second: {iterationsPerSecond}");
             Console.WriteLine($"  Millions  per second:    {iterationsPerSecond / 1.0e6}");
