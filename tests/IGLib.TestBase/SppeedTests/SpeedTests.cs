@@ -1,4 +1,6 @@
-﻿
+﻿// To include legacy tests, uncomment the directive below:
+//#define IncludeLegacyTests
+
 using Xunit;
 using FluentAssertions;
 using Xunit.Abstractions;
@@ -73,16 +75,18 @@ namespace IGLib.Tests.Base
         #endregion SpeedTests.GeometricSeries
 
 
-        #endregion SpeedTests
+#endregion SpeedTests
 
 
 
-        #region SpeedTests_LEGACY
+#region SpeedTests_LEGACY
 
-        /// <summary>Performs the stanard speed test with calculation of a finite geometric series, with
-        /// standard parameters, and reports the resutlrs.</summary>
-        /// <remarks>This test can be deleted (it already has a replacement).</remarks>
+/// <summary>Performs the stanard speed test with calculation of a finite geometric series, with
+/// standard parameters, and reports the resutlrs.</summary>
+/// <remarks>This test can be deleted (it already has a replacement).</remarks>
+#if IncludeLegacyTests
         [Fact]
+#endif
         public void Legacy_StandardSpeedTestGeometricSeries_OLD()
         {
             // Arrange
@@ -123,7 +127,9 @@ namespace IGLib.Tests.Base
         /// standard parameters, but with directly calculating each term by using <see cref="Math.Pow(double, double)"/>
         /// rather than accumulating sequence elements iteratively.</summary>
         /// <remarks>This test can be deleted (it already has a replacement).</remarks>
+#if IncludeLegacyTests
         [Fact]
+#endif
         public void Legacy_StandardSpeedTestGeometricSeries_DirectElementCalculation_OLD()
         {
             // Arrange
@@ -159,7 +165,7 @@ namespace IGLib.Tests.Base
         }
 
 
-        #endregion SpeedTests_LEGACY
+#endregion SpeedTests_LEGACY
 
 
 

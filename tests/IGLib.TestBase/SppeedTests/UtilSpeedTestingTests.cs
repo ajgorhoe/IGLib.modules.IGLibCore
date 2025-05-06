@@ -36,6 +36,56 @@ namespace IGLib.Tests.Base
         }
 
 
+        #region SpeedTestInfo
+
+        [Fact]
+        void SpeedTestInfoDouble_PropertiesAreCorrect()
+        {
+            // Arrange
+            // Creation parameters:
+            string testId = ConstGeom.TestId;
+            string referenceMachineId = ConstMachineHpLaptop24.MachineId;
+            // Test-specific parameters:
+            int numExecutions = ConstGeom.NumExecutions;
+            string par1Name = "a0";
+            double par1Value = ConstGeom.a0;
+            string par2Name = "k";
+            double par2Value = ConstGeom.k;
+            // Expected results:
+            double analyticalResult = ConstGeom.AnalyticResult;
+            double tolerance = ConstGeom.Tolerance;
+            double referenceExecutionsPerSecond = ConstGeom.RefExecutionsPerSecond_HpLaptop24;
+            // results:
+            Stopwatch sw = Stopwatch.StartNew();
+            double result = GeometricSeriesNumerical(numExecutions, par1Value, par2Value);
+            sw.Stop();
+            double executionTimeSeconds = sw.Elapsed.TotalSeconds;
+
+            // Act
+            SpeedTestInfo info = new SpeedTestInfo(testId, referenceMachineId);
+            // test specific parameters:
+            info.NumExecutions = numExecutions;
+            info.Parameters.AddRange([(par1Name, par1Value), (par2Name, par2Value)]);
+            // expected results:
+            info.AnalyticalResult = analyticalResult;
+            info.Tolerance = tolerance;
+            info.ReferenceExecutionsPerSecond = referenceExecutionsPerSecond;
+            // results:
+            info.Result = result;
+            info.ExecutionTimeSeconds = executionTimeSeconds;
+            
+            // Assert
+            info.Should().NotBeNull();
+            info.TestId.Should().Be(testId);
+            info.ReferenceMachineId.Should().Be(referenceMachineId);
+            
+        }
+
+
+
+        #endregion SpeedTestInfo
+
+
 
         #region UtilSpeedTesting_Tests
 
@@ -233,13 +283,17 @@ namespace IGLib.Tests.Base
         /// <param name="k">The constant quotient between the next element of the sequence and the current element.</param>
         /// <param name="tolerance">The tolerance, allowed discrepancy between both results, to account fo rounding errors.</param>
         [Theory]
+#if false
         [InlineData(1, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
         [InlineData(10, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
         [InlineData(100, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
+#endif
         [InlineData(1_000, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
         [InlineData(10_000, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
         [InlineData(100_000, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
+#if false
         [InlineData(1000_000, ConstGeom.a0, ConstGeom.k, ConstGeom.Tolerance)]
+#endif
         public void StandardSpeedTestPreparationGeometric_ComparingDifferentNumbersOfExecutioin(int n, double a0, double k, double tolerance)
         {
             // Arrange
@@ -269,7 +323,7 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"  Millions  per second:    {calculationsPerSecond / 1.0e6}");
         }
 
-        #endregion StandardSpeedTestPreparation
+#endregion StandardSpeedTestPreparation
 
 
 

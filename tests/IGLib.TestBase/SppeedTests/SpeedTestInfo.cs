@@ -22,6 +22,13 @@ namespace IGLib.Tests
         public SpeedTestInfo() : base()
         { }
 
+        /// <inheritdoc/>
+        /// <remarks>This property evaluates to true for the current class.</remarks>
+        public override bool CanCalculateDiscrepancy { get; } = true;
+
+        /// <inheritdoc/>
+        public override double Discrepancy => Result - AnalyticalResult;
+
     }
 
 
@@ -60,15 +67,28 @@ namespace IGLib.Tests
         public List<(string ParameterName, object ParameterValue)> Parameters { get; }
             = new List<(string ParameterName, object ParameterValue)>();
 
-        /// <summary>Tolerance for the result of the calculation performed by the test to be considered correct.</summary>
-        public virtual ResultType Tolerance { get; set; } = default(ResultType);
-
         /// <summary>Result calculated by the test.</summary>
         public virtual ResultType Result { get; set; } = default(ResultType);
 
         /// <summary>Expected result of the test, calculated by some other method (e.g., using an
         /// analytical formula in case it exists).</summary>
         public virtual ResultType AnalyticalResult { get; set; } = default(ResultType);
+
+        /// <summary>Tolerance for the result of the calculation performed by the test to be considered correct.</summary>
+        public virtual ResultType Tolerance { get; set; } = default(ResultType);
+
+        /// <summary>True if discrepancy between <see cref="Result"/> and <see cref="AnalyticalResult"/>
+        /// can be calculated by the current object, false if not.</summary>
+        public virtual bool CanCalculateDiscrepancy { get; } = false;
+        
+        /// <summary>Calculated discrepancy between the calculated result of the test (<see cref="Result"/>) 
+        /// and the expected result of the test (<see cref="AnalyticalResult"/>).
+        /// <para>Before referencing this property, check the <see cref="CanCalculateDiscrepancy"/> to see
+        /// whether the discrepancy can at all be provided with the current class.</para>
+        /// <para>The value of this property is meaningful only when the <see cref="Result"/> and
+        /// <see cref="AnalyticalResult"/> were both assigned.</para></summary>
+        public virtual ResultType Discrepancy => 
+            throw new NotImplementedException($"Calculation of discrepancy is not implemented for this class ({GetType().Name})");
 
         public const double DefaultExecutionTimeSeconds = 1e9;
 
@@ -133,6 +153,12 @@ namespace IGLib.Tests
                     }
                 }
                 sb.AppendLine($"]");
+            }
+            sb.AppendLine($"  Test result:   {Result}");
+            if (CanCalculateDiscrepancy)
+            {
+                sb.AppendLine($"    Analytical:  {AnalyticalResult}");
+                sb.AppendLine($"    Discrepancy: {Discrepancy}, Tolerance: {Tolerance}");
             }
             sb.AppendLine($"  Reference executions per second: {ReferenceExecutionsPerSecond} ({ReferenceExecutionsPerSecond / 1e6} M)");
             sb.AppendLine($"  Reference machine ID:  {ReferenceMachineId}");

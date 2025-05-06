@@ -289,8 +289,22 @@ ProcessorLink   ";
                 Console.WriteLine($"  k^n: {Math.Pow(k, info.NumExecutions)}");
             }
             Stopwatch sw = Stopwatch.StartNew();
-            info.Result = GeometricSeriesNumerical(info.NumExecutions, a0, k);
-            sw.Stop();
+            try
+            {
+                info.Result = GeometricSeriesNumerical(info.NumExecutions, a0, k);
+            }
+            catch (Exception ex)
+            {
+                info.Exception = ex;
+                if (writeToConsole)
+                {
+                    Console.WriteLine($"Exception {ex.GetType().Name}: \"{ex.Message}\"");
+                }
+            }
+            finally
+            {
+                sw.Stop();
+            }
             // Store results of the speed test:
             info.ExecutionTimeSeconds = sw.Elapsed.TotalSeconds;
             if (writeToConsole)
@@ -335,12 +349,6 @@ ProcessorLink   ";
 
 
 
-
-
-
-
-
-
         /// <summary>Performs the standard speed test - calculation of a finite geometric series
         /// with specific parameters, with direct calculation of elements of geometric sequence, and 
         /// with reference results from the machine represented by <see cref="ConstMachineHpLaptop24"/>.
@@ -370,8 +378,23 @@ ProcessorLink   ";
                 Console.WriteLine($"  k^n: {Math.Pow(k, info.NumExecutions)}");
             }
             Stopwatch sw = Stopwatch.StartNew();
-            info.Result = GeometricSeriesNumerical_DirectElementCalculation(info.NumExecutions, a0, k);
-            sw.Stop();
+            try
+            {
+                info.Result = GeometricSeriesNumerical_DirectElementCalculation(info.NumExecutions, a0, k);
+            }
+            catch (Exception ex)
+            {
+                info.Exception = ex;
+                if (writeToConsole)
+                {
+                    Console.WriteLine($"Exception {ex.GetType().Name}: \"{ex.Message}\"");
+                }
+            }
+            finally
+            {
+                sw.Stop();
+            }
+
             // Store results of the speed test:
             info.ExecutionTimeSeconds = sw.Elapsed.TotalSeconds;
             if (writeToConsole)
