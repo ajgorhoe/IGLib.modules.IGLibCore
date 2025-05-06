@@ -75,12 +75,28 @@ namespace IGLib.Tests.Base
             info.ExecutionTimeSeconds = executionTimeSeconds;
             
             // Assert
+            // creation:
             info.Should().NotBeNull();
             info.TestId.Should().Be(testId);
             info.ReferenceMachineId.Should().Be(referenceMachineId);
-            
-        }
+            // test-specific parameters:
+            info.NumExecutions.Should().Be(numExecutions);
 
+
+            // expected results:
+            info.AnalyticalResult.Should().Be(analyticalResult);
+            info.Tolerance.Should().Be(tolerance);
+            info.ReferenceExecutionsPerSecond.Should().Be(referenceExecutionsPerSecond);
+            // results:
+            info.Exception.Should().BeNull();
+            info.Result.Should().Be(result);
+            info.ExecutionTimeSeconds.Should().Be(executionTimeSeconds);
+            info.NumExecutionsPerSecond.Should().BeApproximately(
+                (double)numExecutions / executionTimeSeconds, 1e-3);
+            info.MegaExecutionsPerSecond.Should().BeApproximately(
+                info.NumExecutionsPerSecond / 1e6, 1e-6);
+            info.SpeedFactor.Should().BeApproximately(info.NumExecutionsPerSecond / referenceExecutionsPerSecond, 1e-8);
+        }
 
 
         #endregion SpeedTestInfo
