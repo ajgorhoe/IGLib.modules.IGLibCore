@@ -10,7 +10,10 @@ using IGLib.Tests;
 using static IGLib.Tests.UtilSpeedTesting;
 using System.Runtime.CompilerServices;
 
-namespace IGLib.Tests.Base
+using IGLib.Tests.Base;
+using IGLib.Testing;
+
+namespace IGLib.Testing.Tests
 {
 
     /// <summary><para>This test class provides unit tests for speed testing utilities, especially from
@@ -23,7 +26,7 @@ namespace IGLib.Tests.Base
     /// simple <see cref="ITestOutputHelper.WriteLine(string)"/> and <see cref="ITestOutputHelper.WriteLine(string, 
     /// object[])"/> methods are available for writing to test Output.</para>
     /// </summary>
-    public class UtilSpeedTestingTests : TestBase<ExampleTestClass>
+    public class UtilSpeedTestingTests : TestBase<UtilSpeedTestingTests>
     {
         /// <summary>This constructor, when called by the test framework, will bring in an object 
         /// of type <see cref="ITestOutputHelper"/>, which will be used to write on the tests' output,

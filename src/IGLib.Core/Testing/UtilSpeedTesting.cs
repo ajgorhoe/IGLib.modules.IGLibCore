@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using FluentAssertions;
-using LearnCs.Lib;
 
 namespace IGLib.Tests
 {

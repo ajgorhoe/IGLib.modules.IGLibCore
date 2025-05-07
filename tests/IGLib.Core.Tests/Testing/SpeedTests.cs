@@ -8,10 +8,11 @@ using System.Collections.Generic;
 using System;
 using System.Diagnostics;
 
+using IGLib.Tests.Base;
 using IGLib.Tests;
 using static IGLib.Tests.UtilSpeedTesting;
 
-namespace IGLib.Tests.Base
+namespace IGLib.Testing.Tests
 {
 
     /// <summary><para>This test class performs various speed tests, which give some indication of
@@ -22,7 +23,7 @@ namespace IGLib.Tests.Base
     /// simple <see cref="ITestOutputHelper.WriteLine(string)"/> and <see cref="ITestOutputHelper.WriteLine(string, 
     /// object[])"/> methods are available for writing to test Output.</para>
     /// </summary>
-    public class SpeedTests : TestBase<ExampleTestClass>
+    public class SpeedTests : TestBase<SpeedTests>
     {
         /// <summary>This constructor, when called by the test framework, will bring in an object 
         /// of type <see cref="ITestOutputHelper"/>, which will be used to write on the tests' output,
