@@ -68,6 +68,28 @@ namespace IGLib.Tests
         public List<(string ParameterName, object ParameterValue)> Parameters { get; }
             = new List<(string ParameterName, object ParameterValue)>();
 
+        /// <summary>Whether the current object contains a valid result.
+        /// <para>This implementation provides a heuristic estimation, which shuld produce correct results in
+        /// most cases (e.g. in different concretized instances of this generic class). False is returned 
+        /// if either the <see cref="Exception"/> property is set (meaning that exception was thrown when 
+        /// performing the test) or when the <see cref="Result"/> property has default value, but this
+        /// is not equal to what is contained in the <see cref="AnalyticalResult"/>. When the result type
+        /// is a class, default value is null and if result is null this almost certainly means that
+        /// the result has not been calculated and assigned. When the result type is a value type such
+        /// as <see cref="double"/>, default value (0.0 for double) might easily be a result actually
+        /// produced by the test, but in such cases the <see cref="AnalyticalResult"/> would lekely have
+        /// the same value.</para></summary>
+        public virtual bool HasValidResult =>
+            Exception == null && (!Result.Equals(default(ResultType)) || Result.Equals(AnalyticalResult));
+
+        /// <summary>Whether the current object has the execution time assigned.
+        /// <para>This implements a heuristic tests: the <see cref="ExecutionTimeSeconds"/> must be
+        /// greater than 0 to return true. No speed test should be designed in such a way that execution
+        /// time is below the resolution of the system's clock, therefore execution time being 0 can
+        /// only mean that the execution time has not been assigned.</para></summary>
+        public virtual bool HasExecutionTime => 
+            Exception == null && ExecutionTimeSeconds != DefaultExecutionTimeSeconds;
+
         /// <summary>Result calculated by the test.</summary>
         public virtual ResultType Result { get; set; } = default(ResultType);
 
@@ -91,7 +113,7 @@ namespace IGLib.Tests
         public virtual ResultType Discrepancy => 
             throw new NotImplementedException($"Calculation of discrepancy is not implemented for this class ({GetType().Name})");
 
-        public const double DefaultExecutionTimeSeconds = 1e9;
+        public const double DefaultExecutionTimeSeconds = 0.0;
 
         /// <summary>Total execution time of the test, in seconds.
         /// <para>Initially set to <see cref="DefaultNumExecutionTimeSeconds"/>, such that the

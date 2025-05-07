@@ -267,68 +267,69 @@ ProcessorLink   ";
         public static double StandardSpeedTestGeometricSeries_HpLaptop24(out SpeedTestInfo info,
             bool writeToConsole = DefaultWriteToConsole_StandardTests)
         {
-            double a0 = ConstGeom.a0;
-            double k = ConstGeom.k;
-            info = new(ConstGeom.TestId, ConstMachineHpLaptop24.MachineId);
-            info.Parameters.AddRange([("a0", a0), ("k", k)]);
-            info.NumExecutions = ConstGeom.NumExecutions    ;
-            info.AnalyticalResult = ConstGeom.AnalyticResult;
-            info.Tolerance = ConstGeom.Tolerance;
-            info.ReferenceExecutionsPerSecond = ConstGeom.RefExecutionsPerSecond_HpLaptop24;
-            if (writeToConsole)
-            {
-                Console.WriteLine($"Performing speed test - numerical calculation of a finite geometric series...");
-                Console.WriteLine($"Test ID: {ConstGeom.TestId}");
-                Console.WriteLine($"Parameters:");
-                Console.WriteLine($"  n:   {info.NumExecutions}         (number of iterations)");
-                Console.WriteLine($"  a:   {a0}         (the first element)");
-                Console.WriteLine($"  k:   {k}         (quotient of successive elements)");
-                Console.WriteLine($"  tol: {info.Tolerance}         (tolerance (max. allowed discrepancy))");
-                Console.WriteLine($"  k^n: {Math.Pow(k, info.NumExecutions)}");
-            }
-            Stopwatch sw = Stopwatch.StartNew();
+            info = null;
             try
             {
-                info.Result = GeometricSeriesNumerical(info.NumExecutions, a0, k);
+                double a0 = ConstGeom.a0;
+                double k = ConstGeom.k;
+                info = new(ConstGeom.TestId, ConstMachineHpLaptop24.MachineId);
+                info.Parameters.AddRange([("a0", a0), ("k", k)]);
+                info.NumExecutions = ConstGeom.NumExecutions;
+                info.AnalyticalResult = ConstGeom.AnalyticResult;
+                info.Tolerance = ConstGeom.Tolerance;
+                info.ReferenceExecutionsPerSecond = ConstGeom.RefExecutionsPerSecond_HpLaptop24;
+                if (writeToConsole)
+                {
+                    Console.WriteLine($"Performing speed test - numerical calculation of a finite geometric series...");
+                    Console.WriteLine($"Test ID: {ConstGeom.TestId}");
+                    Console.WriteLine($"Parameters:");
+                    Console.WriteLine($"  n:   {info.NumExecutions}         (number of iterations)");
+                    Console.WriteLine($"  a:   {a0}         (the first element)");
+                    Console.WriteLine($"  k:   {k}         (quotient of successive elements)");
+                    Console.WriteLine($"  tol: {info.Tolerance}         (tolerance (max. allowed discrepancy))");
+                    Console.WriteLine($"  k^n: {Math.Pow(k, info.NumExecutions)}");
+                }
+                Stopwatch sw = Stopwatch.StartNew();
+                try
+                {
+                    info.Result = GeometricSeriesNumerical(info.NumExecutions, a0, k);
+                    info.ExecutionTimeSeconds = sw.Elapsed.TotalSeconds;
+                }
+                finally
+                {
+                    sw.Stop();
+                }
+                if (writeToConsole)
+                {
+                    Console.WriteLine($"Numerical result:  S = {info.Result}");
+                    Console.WriteLine($"Analytical result: S = {info.AnalyticalResult}");
+                    Console.WriteLine($"  Difference: {info.Result - info.AnalyticalResult}, tolerance: {info.Tolerance}");
+                }
+                // Verification - numerical result needs to be correct within the specified tolerance:
+                if (Math.Abs(info.Result - info.AnalyticalResult) > info.Tolerance)
+                {
+                    if (writeToConsole)
+                    {
+                        Console.WriteLine("WARNING: Diecrepancy between the numerical and analytical result is not within tolerance; exception is being thrown.");
+                        throw new InvalidOperationException("Discrepancy between numerical and analytical result is not within tolerance.");
+                    }
+                }
+                if (writeToConsole)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine($"Geometric series with {info.NumExecutions} terms was calculated in {info.ExecutionTimeSeconds} s.");
+                    Console.WriteLine($"  Calculations per second: {info.NumExecutionsPerSecond}");
+                    Console.WriteLine($"  Millions  per second:    {info.MegaExecutionsPerSecond}");
+                    Console.WriteLine($"  Speed factor:            {info.SpeedFactor}");
+                }
             }
             catch (Exception ex)
             {
-                info.Exception = ex;
-                if (writeToConsole)
-                {
-                    Console.WriteLine($"Exception {ex.GetType().Name}: \"{ex.Message}\"");
-                }
+                if (info != null) { info.Exception = ex; }
+                throw;
             }
-            finally
-            {
-                sw.Stop();
-            }
-            // Store results of the speed test:
-            info.ExecutionTimeSeconds = sw.Elapsed.TotalSeconds;
-            if (writeToConsole)
-            {
-                Console.WriteLine($"Numerical result:  S = {info.Result}");
-                Console.WriteLine($"Analytical result: S = {info.AnalyticalResult}");
-                Console.WriteLine($"  Difference: {info.Result - info.AnalyticalResult}, tolerance: {info.Tolerance}");
-            }
-            // Verification - numerical result needs to be correct within the specified tolerance:
-            if (Math.Abs(info.Result - info.AnalyticalResult) > info.Tolerance)
-            {
-                if (writeToConsole)
-                {
-                    Console.WriteLine("WARNING: Diecrepancy between the numerical and analytical result is not within tolerance; exception is being thrown.");
-                    throw new InvalidOperationException("Discrepancy between numerical and analytical result is not within tolerance.");
-                }
-            }
-            if (writeToConsole)
-            {
-                Console.WriteLine("");
-                Console.WriteLine($"Geometric series with {info.NumExecutions} terms was calculated in {info.ExecutionTimeSeconds} s.");
-                Console.WriteLine($"  Calculations per second: {info.NumExecutionsPerSecond}");
-                Console.WriteLine($"  Millions  per second:    {info.MegaExecutionsPerSecond}");
-                Console.WriteLine($"  Speed factor:            {info.SpeedFactor}");
-            }
-            return info.SpeedFactor;
+            if (info != null) { return info.SpeedFactor; }
+            return default;
         }
 
         /// <summary>Similar as <see cref="StandardSpeedTestGeometricSeries_HpLaptop24(out SpeedTestInfo, bool)"/>, which it
@@ -356,69 +357,71 @@ ProcessorLink   ";
         public static double StandardSpeedTestGeometricSeries_DirectElementCalculation_HpLaptop24(out SpeedTestInfo info,
             bool writeToConsole = DefaultWriteToConsole_StandardTests)
         {
-            double a0 = ConstGeomDirect.a0;
-            double k = ConstGeomDirect.k;
-            info = new(ConstGeomDirect.TestId, ConstMachineHpLaptop24.MachineId);
-            info.Parameters.AddRange([("a0", a0), ("k", k)]);
-            info.NumExecutions = ConstGeomDirect.NumExecutions;
-            info.AnalyticalResult = ConstGeomDirect.AnalyticResult;
-            info.Tolerance = ConstGeomDirect.Tolerance;
-            info.ReferenceExecutionsPerSecond = ConstGeomDirect.RefExecutionsPerSecond_HpLaptop24;
-            if (writeToConsole)
-            {
-                Console.WriteLine($"Performing speed test - numerical calculation of a finite geometric series\n  with direct calculation of elements...");
-                Console.WriteLine($"Test ID: {ConstGeomDirect.TestId}");
-                Console.WriteLine($"Parameters:");
-                Console.WriteLine($"  n:   {info.NumExecutions}         (number of iterations)");
-                Console.WriteLine($"  a:   {a0}         (the first element)");
-                Console.WriteLine($"  k:   {k}         (quotient of successive elements)");
-                Console.WriteLine($"  tol: {info.Tolerance}         (tolerance (max. allowed discrepancy))");
-                Console.WriteLine($"  k^n: {Math.Pow(k, info.NumExecutions)}");
-            }
-            Stopwatch sw = Stopwatch.StartNew();
+            info = null;
             try
             {
-                info.Result = GeometricSeriesNumerical_DirectElementCalculation(info.NumExecutions, a0, k);
+                double a0 = ConstGeomDirect.a0;
+                double k = ConstGeomDirect.k;
+                info = new(ConstGeomDirect.TestId, ConstMachineHpLaptop24.MachineId);
+                info.Parameters.AddRange([("a0", a0), ("k", k)]);
+                info.NumExecutions = ConstGeomDirect.NumExecutions;
+                info.AnalyticalResult = ConstGeomDirect.AnalyticResult;
+                info.Tolerance = ConstGeomDirect.Tolerance;
+                info.ReferenceExecutionsPerSecond = ConstGeomDirect.RefExecutionsPerSecond_HpLaptop24;
+                if (writeToConsole)
+                {
+                    Console.WriteLine($"Performing speed test - numerical calculation of a finite geometric series\n  with direct calculation of elements...");
+                    Console.WriteLine($"Test ID: {ConstGeomDirect.TestId}");
+                    Console.WriteLine($"Parameters:");
+                    Console.WriteLine($"  n:   {info.NumExecutions}         (number of iterations)");
+                    Console.WriteLine($"  a:   {a0}         (the first element)");
+                    Console.WriteLine($"  k:   {k}         (quotient of successive elements)");
+                    Console.WriteLine($"  tol: {info.Tolerance}         (tolerance (max. allowed discrepancy))");
+                    Console.WriteLine($"  k^n: {Math.Pow(k, info.NumExecutions)}");
+                }
+                Stopwatch sw = Stopwatch.StartNew();
+                try
+                {
+                    info.Result = GeometricSeriesNumerical_DirectElementCalculation(info.NumExecutions, a0, k);
+                    info.ExecutionTimeSeconds = sw.Elapsed.TotalSeconds;
+                }
+                finally
+                {
+                    sw.Stop();
+                }
+                // Store results of the speed test:
+                info.ExecutionTimeSeconds = sw.Elapsed.TotalSeconds;
+                if (writeToConsole)
+                {
+                    Console.WriteLine($"Numerical result:  S = {info.Result}");
+                    Console.WriteLine($"Analytical result: S = {info.AnalyticalResult}");
+                    Console.WriteLine($"  Difference: {info.Result - info.AnalyticalResult}, tolerance: {info.Tolerance}");
+                }
+                // Verification - numerical result needs to be correct within the specified tolerance:
+                if (Math.Abs(info.Result - info.AnalyticalResult) > info.Tolerance)
+                {
+                    if (writeToConsole)
+                    {
+                        Console.WriteLine("WARNING: Diecrepancy between the numerical and analytical result is not within tolerance; exception is being thrown.");
+                        throw new InvalidOperationException("Discrepancy between numerical and analytical result is not within tolerance.");
+                    }
+                }
+                if (writeToConsole)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine($"Geometric series with {info.NumExecutions} terms was calculated in {info.ExecutionTimeSeconds} s.");
+                    Console.WriteLine($"  Calculations per second: {info.NumExecutionsPerSecond}");
+                    Console.WriteLine($"  Millions  per second:    {info.MegaExecutionsPerSecond}");
+                    Console.WriteLine($"  Speed factor:            {info.SpeedFactor}");
+                }
             }
             catch (Exception ex)
             {
-                info.Exception = ex;
-                if (writeToConsole)
-                {
-                    Console.WriteLine($"Exception {ex.GetType().Name}: \"{ex.Message}\"");
-                }
+                if (info != null) { info.Exception = ex; }
+                throw;
             }
-            finally
-            {
-                sw.Stop();
-            }
-
-            // Store results of the speed test:
-            info.ExecutionTimeSeconds = sw.Elapsed.TotalSeconds;
-            if (writeToConsole)
-            {
-                Console.WriteLine($"Numerical result:  S = {info.Result}");
-                Console.WriteLine($"Analytical result: S = {info.AnalyticalResult}");
-                Console.WriteLine($"  Difference: {info.Result - info.AnalyticalResult}, tolerance: {info.Tolerance}");
-            }
-            // Verification - numerical result needs to be correct within the specified tolerance:
-            if (Math.Abs(info.Result - info.AnalyticalResult) > info.Tolerance)
-            {
-                if (writeToConsole)
-                {
-                    Console.WriteLine("WARNING: Diecrepancy between the numerical and analytical result is not within tolerance; exception is being thrown.");
-                    throw new InvalidOperationException("Discrepancy between numerical and analytical result is not within tolerance.");
-                }
-            }
-            if (writeToConsole)
-            {
-                Console.WriteLine("");
-                Console.WriteLine($"Geometric series with {info.NumExecutions} terms was calculated in {info.ExecutionTimeSeconds} s.");
-                Console.WriteLine($"  Calculations per second: {info.NumExecutionsPerSecond}");
-                Console.WriteLine($"  Millions  per second:    {info.MegaExecutionsPerSecond}");
-                Console.WriteLine($"  Speed factor:            {info.SpeedFactor}");
-            }
-            return info.SpeedFactor;
+            if (info != null) { return info.SpeedFactor; }
+            return default;
         }
 
         /// <summary>Similar as <see cref="StandardSpeedTestGeometricSeries_HpLaptop24(out SpeedTestInfo, bool)"/>, which it

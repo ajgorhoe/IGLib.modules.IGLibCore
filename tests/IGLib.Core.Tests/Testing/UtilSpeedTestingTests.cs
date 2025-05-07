@@ -41,8 +41,57 @@ namespace IGLib.Testing.Tests
 
         #region SpeedTestInfo
 
+        bool PerformActualCalculationInSpeedTestInfo { get; } = false;
+
+
         [Fact]
-        void SpeedTestInfoDouble_PropertiesAreCorrect()
+        protected void SpeedTestInfo_TwoParameterConstructorWorksCorrectly()
+        {
+            string testId = ConstGeom.TestId;
+            string referenceMachineId = ConstMachineHpLaptop24.MachineId;
+            SpeedTestInfo testInfo = new(testId, referenceMachineId);
+            testInfo.Should().NotBeNull();
+            testInfo.TestId.Should().Be(testId);
+            testInfo.ReferenceMachineId.Should().Be(referenceMachineId);
+        }
+
+        [Fact]
+        protected void SpeedTestInfo_ParameterlessConstructorWorksCorrectly()
+        {
+            SpeedTestInfo testInfo = new();
+            testInfo.Should().NotBeNull();
+            testInfo.TestId.Should().NotBeNullOrEmpty();
+            testInfo.ReferenceMachineId.Should().NotBeNullOrEmpty();
+            testInfo.TestId.Should().Be(SpeedTestInfo.DefultTestId);
+            testInfo.ReferenceMachineId.Should().Be(SpeedTestInfo.DefaultRefeenceMachineId);
+        }
+
+        [Fact]
+        protected void SpeedTestInfoGeneric_TwoParameterConstructorWorksCorrectly()
+        {
+            string testId = ConstGeom.TestId;
+            string referenceMachineId = ConstMachineHpLaptop24.MachineId;
+            SpeedTestInfo<int> testInfo = new(testId, referenceMachineId);
+            testInfo.Should().NotBeNull();
+            testInfo.TestId.Should().Be(testId);
+            testInfo.ReferenceMachineId.Should().Be(referenceMachineId);
+        }
+
+        [Fact]
+        protected void SpeedTestInfoGeneric_ParameterlessConstructorWorksCorrectly()
+        {
+            SpeedTestInfo<float> testInfo = new();
+            testInfo.Should().NotBeNull();
+            testInfo.TestId.Should().NotBeNullOrEmpty();
+            testInfo.ReferenceMachineId.Should().NotBeNullOrEmpty();
+            testInfo.TestId.Should().Be(SpeedTestInfo.DefultTestId);
+            testInfo.ReferenceMachineId.Should().Be(SpeedTestInfo.DefaultRefeenceMachineId);
+        }
+
+        /// <summary>Tests the 2 parameter constructor and majority of properties of the \
+        /// <see cref="SpeedTestInfo"/> class (which inherits from <see cref="SpeedTestInfo{double}"/>).</summary>
+        [Fact]
+        protected void SpeedTestInfo_WorksCorrectlyUnderNormalConditions()
         {
             // Arrange
             // Creation parameters:
@@ -59,54 +108,209 @@ namespace IGLib.Testing.Tests
             double tolerance = ConstGeom.Tolerance;
             double referenceExecutionsPerSecond = ConstGeom.RefExecutionsPerSecond_HpLaptop24;
             // results:
-            Stopwatch sw = Stopwatch.StartNew();
-            double result = GeometricSeriesNumerical(numExecutions, par1Value, par2Value);
-            sw.Stop();
-            double executionTimeSeconds = sw.Elapsed.TotalSeconds;
-
+            double result = default;
+            double executionTimeSeconds = default;
+            if (PerformActualCalculationInSpeedTestInfo)
+            {
+                // Use actual calculation to obtain the result and measure time:
+                Stopwatch sw = Stopwatch.StartNew();
+                result = GeometricSeriesNumerical(numExecutions, par1Value, par2Value);
+                sw.Stop();
+                executionTimeSeconds = sw.Elapsed.TotalSeconds;
+            }
+            else
+            {
+                // Avoid actual calculation and just generate some plausible results:
+                result = ConstGeom.AnalyticResult * (1.0 + 1e-12);
+                executionTimeSeconds = (1.0 + 0.0493) * numExecutions / ConstGeom.RefExecutionsPerSecond_HpLaptop24;
+            }
             // Act
-            SpeedTestInfo info = new SpeedTestInfo(testId, referenceMachineId);
+            SpeedTestInfo testInfo = new SpeedTestInfo(testId, referenceMachineId);
             // test specific parameters:
-            info.NumExecutions = numExecutions;
-            info.Parameters.AddRange([(par1Name, par1Value), (par2Name, par2Value)]);
+            testInfo.NumExecutions = numExecutions;
+            testInfo.Parameters.AddRange([(par1Name, par1Value), (par2Name, par2Value)]);
             // expected results:
-            info.AnalyticalResult = analyticalResult;
-            info.Tolerance = tolerance;
-            info.ReferenceExecutionsPerSecond = referenceExecutionsPerSecond;
+            testInfo.AnalyticalResult = analyticalResult;
+            testInfo.Tolerance = tolerance;
+            testInfo.ReferenceExecutionsPerSecond = referenceExecutionsPerSecond;
             // results:
-            info.Result = result;
-            info.ExecutionTimeSeconds = executionTimeSeconds;
-            
+            testInfo.Result = result;
+            testInfo.ExecutionTimeSeconds = executionTimeSeconds;
+
             // Assert
             // creation:
-            info.Should().NotBeNull();
-            info.TestId.Should().Be(testId);
-            info.ReferenceMachineId.Should().Be(referenceMachineId);
+            testInfo.Should().NotBeNull();
+            testInfo.TestId.Should().Be(testId);
+            testInfo.ReferenceMachineId.Should().Be(referenceMachineId);
             // test-specific parameters:
-            info.NumExecutions.Should().Be(numExecutions);
-            info.Parameters.Should().NotBeNull();
-            info.Parameters.Count.Should().Be(2);
-            var p1 = info.Parameters[0];
+            testInfo.NumExecutions.Should().Be(numExecutions);
+            testInfo.Parameters.Should().NotBeNull();
+            testInfo.Parameters.Count.Should().Be(2);
+            var p1 = testInfo.Parameters[0];
             p1.ParameterName.Should().Be(par1Name);
             p1.ParameterValue.Should().Be(par1Value);
-            var p2 = info.Parameters[1];
+            var p2 = testInfo.Parameters[1];
             p2.ParameterName.Should().Be(par2Name);
             p2.ParameterValue.Should().Be(par2Value);
             // expected results:
-            info.AnalyticalResult.Should().Be(analyticalResult);
-            info.Tolerance.Should().Be(tolerance);
-            info.ReferenceExecutionsPerSecond.Should().Be(referenceExecutionsPerSecond);
+            testInfo.HasValidResult.Should().BeTrue();
+            testInfo.HasExecutionTime.Should().BeTrue();
+            testInfo.AnalyticalResult.Should().Be(analyticalResult);
+            testInfo.Tolerance.Should().Be(tolerance);
+            testInfo.ReferenceExecutionsPerSecond.Should().Be(referenceExecutionsPerSecond);
             // results:
-            info.Exception.Should().BeNull();
-            info.Result.Should().Be(result);
-            info.CanCalculateDiscrepancy.Should().BeTrue();
-            info.Discrepancy.Should().BeApproximately(info.Result - info.AnalyticalResult, 1e-8);
-            info.ExecutionTimeSeconds.Should().Be(executionTimeSeconds);
-            info.NumExecutionsPerSecond.Should().BeApproximately(
+            testInfo.Exception.Should().BeNull();
+            testInfo.Result.Should().Be(result);
+            testInfo.CanCalculateDiscrepancy.Should().BeTrue();
+            testInfo.Discrepancy.Should().BeApproximately(testInfo.Result - testInfo.AnalyticalResult, 1e-8);
+            testInfo.ExecutionTimeSeconds.Should().Be(executionTimeSeconds);
+            testInfo.NumExecutionsPerSecond.Should().BeApproximately(
                 (double)numExecutions / executionTimeSeconds, 1e-3);
-            info.MegaExecutionsPerSecond.Should().BeApproximately(
-                info.NumExecutionsPerSecond / 1e6, 1e-6);
-            info.SpeedFactor.Should().BeApproximately(info.NumExecutionsPerSecond / referenceExecutionsPerSecond, 1e-8);
+            testInfo.MegaExecutionsPerSecond.Should().BeApproximately(
+                testInfo.NumExecutionsPerSecond / 1e6, 1e-6);
+            testInfo.SpeedFactor.Should().BeApproximately(testInfo.NumExecutionsPerSecond / referenceExecutionsPerSecond, 1e-8);
+        }
+
+        /// <summary>Provides a dummy speed test method that can be used in testing of <see cref="SpeedTestInfo"/> class.</summary>
+        /// <param name="testInfo">Output parameter - info object created by the speed test executing function.</param>
+        /// <param name="exception">Exception that will be thrown at the prescribed location within this method
+        /// If null then <see cref="InvalidOperationException"/> with a default message is assigned to this parameter..</param>
+        /// <param name="throwBeforeResultsObtained">If true then exception is thrown before the results are obtained by
+        /// from the (dummy / imaginary) test.</param>
+        /// <param name="throwAfterResultsObtained">If true then exception is thrown after the results are obtained and assigned
+        /// to <paramref name="testInfo"/>.</param>
+        /// <param name="executeActualTest">If true then actual test is executed, otherwise the test result and duration
+        /// are just assigned (values are selected such that they make sense).</param>
+        /// <returns>The speed factor calculated form the test.</returns>
+        protected double DummySpeedTest(out SpeedTestInfo testInfo,
+            Exception exception = null,
+            bool throwBeforeResultsObtained = false, bool throwAfterResultsObtained = false, bool executeActualTest = false)
+        {
+            testInfo = null;
+            try
+            {
+                if (exception == null)
+                {
+                    exception = new InvalidOperationException("Test exception.");
+                }
+                // Creation parameters:
+                string testId = ConstGeom.TestId;
+                string referenceMachineId = ConstMachineHpLaptop24.MachineId;
+                testInfo = new SpeedTestInfo(testId, referenceMachineId);
+                // Test-specific parameters:
+                int numExecutions = ConstGeom.NumExecutions;
+                string par1Name = "a0";
+                double par1Value = ConstGeom.a0;
+                string par2Name = "k";
+                double par2Value = ConstGeom.k;
+                // Expected results:
+                double analyticalResult = ConstGeom.AnalyticResult;
+                double tolerance = ConstGeom.Tolerance;
+                double referenceExecutionsPerSecond = ConstGeom.RefExecutionsPerSecond_HpLaptop24;
+                // results:
+                double executionTimeSeconds = default;
+                double result = default;
+                if (throwBeforeResultsObtained)
+                {
+                    throw exception;
+                }
+                if (executeActualTest)
+                {
+                    // Use actual calculation to obtain the result and measure time:
+                    Stopwatch sw = Stopwatch.StartNew();
+                    result = GeometricSeriesNumerical(numExecutions, par1Value, par2Value);
+                    sw.Stop();
+                    executionTimeSeconds = sw.Elapsed.TotalSeconds;
+                }
+                else
+                {
+                    // Avoid actual calculation and just generate some plausible results:
+                    result = ConstGeom.AnalyticResult * (1.0 + 1e-12);
+                    executionTimeSeconds = (1.0 + 0.0493) * numExecutions / ConstGeom.RefExecutionsPerSecond_HpLaptop24;
+                }
+                // Act
+                // test specific parameters:
+                testInfo.NumExecutions = numExecutions;
+                testInfo.Parameters.AddRange([(par1Name, par1Value), (par2Name, par2Value)]);
+                // expected results:
+                testInfo.AnalyticalResult = analyticalResult;
+                testInfo.Tolerance = tolerance;
+                testInfo.ReferenceExecutionsPerSecond = referenceExecutionsPerSecond;
+                // results:
+                testInfo.Result = result;
+                testInfo.ExecutionTimeSeconds = executionTimeSeconds;
+                if (throwAfterResultsObtained)
+                {
+                    throw exception;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (testInfo != null) { testInfo.Exception = ex; }
+                throw;
+            }
+            if (testInfo != null) { return testInfo.SpeedFactor; }
+            return default;
+        }
+
+
+        [Fact]
+        protected void SpeedTestInfo_BehaviorWhenExceptionThrownBeforeObtainingResultsIsCorrect()
+        {
+            Exception thrownException = new InvalidOperationException("Thrown within the speed test.");
+            Exception caughtException = null;
+            SpeedTestInfo testInfo = null;
+            double initialSpeedFactor = -1.0;
+            double speedFactor = initialSpeedFactor;
+            try
+            {
+                speedFactor = DummySpeedTest(out testInfo, thrownException, throwBeforeResultsObtained: true);
+            }
+            catch (Exception ex)
+            {
+                // In this way the exceptions should be handled whenever speed tests are called.
+                caughtException = ex;
+            }
+            caughtException.Should().NotBeNull(because: "PRECOND: The test method should throw exception.");
+            caughtException.Should().BeEquivalentTo(thrownException, because: "PRECOND: The test method should throw the same exception as prescribed.");
+            testInfo.Should().NotBeNull(because: "PRECOND: testInfo should be created by the test function before exception is thrown.");
+            testInfo.Exception.Should().NotBeNull();
+            testInfo.Exception.Should().Be(thrownException);
+            testInfo.Result.Should().Be(default);
+            testInfo.ExecutionTimeSeconds.Should().Be(SpeedTestInfo.DefaultExecutionTimeSeconds);
+            testInfo.HasValidResult.Should().BeFalse();
+            testInfo.HasExecutionTime.Should().BeFalse();
+            speedFactor.Should().Be(initialSpeedFactor, because: "Speed factor cannot be transferred to the caller when exception is thrown.");
+        }
+
+
+        [Fact]
+        protected void SpeedTestInfo_BehaviorWhenExceptionThrownAfterObtainingResultsIsCorrect()
+        {
+            Exception thrownException = new InvalidOperationException("Thrown within the speed test.");
+            Exception caughtException = null;
+            SpeedTestInfo testInfo = null;
+            double initialSpeedFactor = -1.0;
+            double speedFactor = initialSpeedFactor;
+            try
+            {
+                speedFactor = DummySpeedTest(out testInfo, thrownException, throwAfterResultsObtained: true);
+            }
+            catch (Exception ex)
+            {
+                // In this way the exceptions should be handled whenever speed tests are called.
+                caughtException = ex;
+            }
+            caughtException.Should().NotBeNull(because: "PRECOND: The test method should throw exception.");
+            caughtException.Should().BeEquivalentTo(thrownException, because: "PRECOND: The test method should throw the same exception as prescribed.");
+            testInfo.Should().NotBeNull(because: "PRECOND: testInfo should be created by the test function before exception is thrown.");
+            testInfo.Exception.Should().NotBeNull();
+            testInfo.Exception.Should().Be(thrownException);
+            testInfo.Result.Should().NotBe(default);
+            testInfo.ExecutionTimeSeconds.Should().NotBe(SpeedTestInfo.DefaultExecutionTimeSeconds);
+            testInfo.HasValidResult.Should().BeFalse();
+            testInfo.HasExecutionTime.Should().BeFalse();
+            speedFactor.Should().Be(initialSpeedFactor, because: "Speed factor cannot be transferred to the caller when exception is thrown.");
         }
 
 
@@ -341,7 +545,7 @@ namespace IGLib.Testing.Tests
             Console.WriteLine($"Numerical result:  S = {numericalResult}");
             Console.WriteLine($"  Difference: {numericalResult - analyticalResult}, tolerance: {tolerance}");
             // Assert
-            numericalResult.Should().BeApproximately(analyticalResult, tolerance, 
+            numericalResult.Should().BeApproximately(analyticalResult, tolerance,
                 because: "Precond: Calculation needs to be correct in order to use it in speed tests.");
             Console.WriteLine("");
             double calculationsPerSecond = (double)n / sw.Elapsed.TotalSeconds;
@@ -350,7 +554,7 @@ namespace IGLib.Testing.Tests
             Console.WriteLine($"  Millions  per second:    {calculationsPerSecond / 1.0e6}");
         }
 
-#endregion StandardSpeedTestPreparation
+        #endregion StandardSpeedTestPreparation
 
 
 
