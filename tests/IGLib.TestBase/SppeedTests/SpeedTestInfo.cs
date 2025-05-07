@@ -60,6 +60,7 @@ namespace IGLib.Tests
 
         /// <summary>Dimensions of the speed test (e.g. matrix dimensions {d1, d2} in case of matrix tests,
         /// {0} in case of scalar tets).</summary>
+        /// <remarks>This is currently not used. Please elaborate on the behavior later.</remarks>
         public virtual int[] Dimensions { get; set; } = { 0 };
 
         /// <summary>List of parameters of the test (if any).

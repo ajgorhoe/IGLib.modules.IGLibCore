@@ -81,8 +81,14 @@ namespace IGLib.Tests.Base
             info.ReferenceMachineId.Should().Be(referenceMachineId);
             // test-specific parameters:
             info.NumExecutions.Should().Be(numExecutions);
-
-
+            info.Parameters.Should().NotBeNull();
+            info.Parameters.Count.Should().Be(2);
+            var p1 = info.Parameters[0];
+            p1.ParameterName.Should().Be(par1Name);
+            p1.ParameterValue.Should().Be(par1Value);
+            var p2 = info.Parameters[1];
+            p2.ParameterName.Should().Be(par2Name);
+            p2.ParameterValue.Should().Be(par2Value);
             // expected results:
             info.AnalyticalResult.Should().Be(analyticalResult);
             info.Tolerance.Should().Be(tolerance);
@@ -90,6 +96,8 @@ namespace IGLib.Tests.Base
             // results:
             info.Exception.Should().BeNull();
             info.Result.Should().Be(result);
+            info.CanCalculateDiscrepancy.Should().BeTrue();
+            info.Discrepancy.Should().BeApproximately(info.Result - info.AnalyticalResult, 1e-8);
             info.ExecutionTimeSeconds.Should().Be(executionTimeSeconds);
             info.NumExecutionsPerSecond.Should().BeApproximately(
                 (double)numExecutions / executionTimeSeconds, 1e-3);
