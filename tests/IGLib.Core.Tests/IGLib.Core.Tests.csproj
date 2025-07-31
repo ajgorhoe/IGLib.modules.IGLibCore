@@ -9,11 +9,11 @@
 	<PropertyGroup>
 	<!--
 	Possible targets:
-	<TargetFrameworks>net8.0;net48;netstandard2.0</TargetFrameworks>
+	<TargetFrameworks>net9.0;net8.0;net48;netstandard2.0</TargetFrameworks>
 	netstandard2.0 CAN BE OMITTED.
     -->
 
-		<TargetFrameworks>net8.0;net48</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>

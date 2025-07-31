@@ -10,7 +10,7 @@
 		<TargetFramework>net9.0;net8.0;net6.0;net48;netstandard2.0</TargetFramework>
 		Current targets for this project that must work with both IGLib legacy and the new IGLib:
 		-->
-		<TargetFrameworks>net8.0;net48;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0;net48;netstandard2.0</TargetFrameworks>
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
