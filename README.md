@@ -43,7 +43,9 @@ The legacy IGLib's base library is located at:
   * [codedoc](https://github.com/ajgorhoe/IGLib.workspace.doc.codedoc) contains scripts and other tools for generating and viewing code documentation for software projects, including IGLib projects.
     * [CodeDocumentation](https://github.com/ajgorhoe/CodeDocumentation) contains compiled code documentation for parts of IGLib (experimental), generated via [codedoc](https://github.com/ajgorhoe/IGLib.workspace.doc.codedoc), then copied to and committed to tge repository.
 * [IGLibGraphics3D](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D) - a 3D graphics library.
-* []()
+* [IGLibScripting](d:\users\ws\ws\other\iglibmodules\IGLibScripting) - Rudimentary scripting utilities; some utiities will be transferred here from legacy IGLib.
+* [IGLibScriptingCs](https://github.com/ajgorhoe/IGLib.modules.IGLibScriptingCs) - C# scripting, dynamic building and execution. Some utiliies from legacyLib will be modernized in this repository.
+* [IGLibSandbox](https://github.com/ajgorhoe/IGLib.modules.IGLibSandbox) - a *private* repository for prototyping, experimental, and early development
 
 ### IGLib Restructuring
 
