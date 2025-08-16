@@ -59,7 +59,7 @@ The figure below shows dependencies betweem some IGLib modules, some legacy ones
 
 ### Legacy *IGLib* Libraries
 
-Bulding legacy IGLib libraries is a bit more complex due to their dependencies. See the [IGLib Framework repo](https://github.com/ajgorhoe/IGLib.workspace.base.iglib/)'s [ readme file](https://github.com/ajgorhoe/IGLib.workspace.base.iglib/blob/master/README.md) to learn more about this.
+Bulding legacy IGLib libraries is a bit more complex due to their dependencies. See the [IGLib Framework repo](https://github.com/ajgorhoe/IGLib.workspace.base.iglib/)'s [readme file](https://github.com/ajgorhoe/IGLib.workspace.base.iglib/blob/master/README.md) to learn more about this.
 
 ## License
 
