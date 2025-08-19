@@ -63,6 +63,6 @@ Bulding legacy IGLib libraries is a bit more complex due to their dependencies. 
 
 ## License
 
-© Copyright Igor Grešovnik.
+Copyright © Igor Grešovnik.
 
 See [LICENSE.md](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md) ([local version](./LICENSE.md)) for license information.
