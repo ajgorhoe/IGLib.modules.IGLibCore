@@ -18,9 +18,9 @@
 		<!-- Attributes previously in AsemblyInfo.cs: -->
 		<AssemblyName>IGLib.Core</AssemblyName>
 		<PackageId>IGLib.Core</PackageId>
-		<Version>2.0.0</Version>
-		<AssemblyVersion>2.0.0</AssemblyVersion>
-		<FileVersion>2.0.0</FileVersion>
+		<Version>2.1.0</Version>
+		<AssemblyVersion>2.1.0</AssemblyVersion>
+		<FileVersion>2.1.0</FileVersion>
 		<Authors>Igor Grešovnik et al.</Authors>
 		<Company>none</Company>
 		<Product>IGLib</Product>
@@ -34,7 +34,9 @@
 		<PackageReleaseNotes>Release</PackageReleaseNotes>
 		
 		<Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
-		<PackageLicenseExpression>From License file.</PackageLicenseExpression>
+		<!-- PackageLicenseExpression available only for OSI AND fsf approved licenses.
+		<PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
+		-->
 		<PackageLicenseUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md</PackageLicenseUrl>
 	</PropertyGroup>
 

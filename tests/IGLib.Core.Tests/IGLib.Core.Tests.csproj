@@ -17,24 +17,26 @@
 		<ImplicitUsings>disable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
 		<IsPackable>false</IsPackable>
+		<RootNamespace>IGLib.Tests</RootNamespace>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<AssemblyName>IGLibCoreTests</AssemblyName>
-		<RootNamespace>IG.Tests</RootNamespace>
-		<PackageId>IGLibCoreTests</PackageId>
+		<AssemblyName>IGLib.Core.Tests</AssemblyName>
+		<PackageId>IGLib.Core.Tests</PackageId>
+		<Version>2.1.0</Version>
+		<AssemblyVersion>2.1.0</AssemblyVersion>
+		<FileVersion>2.1.0</FileVersion>
 		<Authors>Igor Grešovnik</Authors>
 		<Company>none</Company>
 		<ProductName>IGLib_CoreTests</ProductName>
 		<Product>Investigative Generic Library (IGLib) - IGLibCoreTests</Product>
-		<Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>
 		<Description>Tests for IGLibCore.</Description>
 
+		<Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>
 		<!-- PackageLicenseExpression available only for OSI AND fsf approved licenses.
 		<PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
 		-->
-		<PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
-
+		<PackageLicenseUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md</PackageLicenseUrl>
 	</PropertyGroup>
 	
 	<ItemGroup>
