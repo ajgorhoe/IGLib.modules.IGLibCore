@@ -1,0 +1,5 @@
+2.0.25
+# Example:
+# On default branch (usually main, or master), execute:
+# git tag -a v2.0.25 -m "Version 2.0.25"
+# git tag

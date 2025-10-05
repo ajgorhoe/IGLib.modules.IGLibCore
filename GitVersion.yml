@@ -1,0 +1,15 @@
+mode: ContinuousDeployment
+branches:
+  main:
+    regex: ^master$|^main$
+    tag: ''
+    increment: Patch
+  develop:
+    regex: ^develop$
+    tag: beta
+    increment: Minor
+ignore:
+  sha: []
+commit-message-incrementing: Enabled
+assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-scheme: MajorMinorPatch

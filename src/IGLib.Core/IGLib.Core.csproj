@@ -18,9 +18,6 @@
 		<!-- Attributes previously in AsemblyInfo.cs: -->
 		<AssemblyName>IGLib.Core</AssemblyName>
 		<PackageId>IGLib.Core</PackageId>
-		<Version>2.1.0</Version>
-		<AssemblyVersion>2.1.0</AssemblyVersion>
-		<FileVersion>2.1.0</FileVersion>
 		<Authors>Igor Grešovnik et al.</Authors>
 		<Company>none</Company>
 		<Product>IGLib</Product>
@@ -40,6 +37,12 @@
 		<PackageLicenseUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md</PackageLicenseUrl>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<!-- For automatic versioning with GitVersion tool (https://gitversion.net/docs/usage/cli/) 
+			- versions specified from Git tags (like v.1.4.2 on min branch) & history : -->
+		<PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<Compile Remove="FromIGLibBase\**" />
 		<EmbeddedResource Remove="FromIGLibBase\**" />

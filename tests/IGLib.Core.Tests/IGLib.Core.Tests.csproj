@@ -23,14 +23,11 @@
 	<PropertyGroup>
 		<AssemblyName>IGLib.Core.Tests</AssemblyName>
 		<PackageId>IGLib.Core.Tests</PackageId>
-		<Version>2.1.0</Version>
-		<AssemblyVersion>2.1.0</AssemblyVersion>
-		<FileVersion>2.1.0</FileVersion>
 		<Authors>Igor Grešovnik</Authors>
 		<Company>none</Company>
 		<ProductName>IGLib_CoreTests</ProductName>
 		<Product>Investigative Generic Library (IGLib) - IGLibCoreTests</Product>
-		<Description>Tests for IGLibCore.</Description>
+		<Description>Tests for IGLib.Core.</Description>
 
 		<Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>
 		<!-- PackageLicenseExpression available only for OSI AND fsf approved licenses.
@@ -38,7 +35,13 @@
 		-->
 		<PackageLicenseUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md</PackageLicenseUrl>
 	</PropertyGroup>
-	
+
+	<ItemGroup>
+		<!-- For automatic versioning with GitVersion tool (https://gitversion.net/docs/usage/cli/) 
+			- versions specified from Git tags (like v.1.4.2 on min branch) & history : -->
+		<PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\IGLib.Core\IGLib.Core.csproj" />
 		<ProjectReference Include="..\..\src\IGLib.CoreExtended\IGLib.CoreExtended.csproj" />

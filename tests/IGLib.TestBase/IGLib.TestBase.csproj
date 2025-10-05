@@ -24,7 +24,7 @@
 		<Company>none</Company>
 		<ProductName>IGLib_CoreTests</ProductName>
 		<Product>Investigative Generic Library (IGLib) - IGLib.TestBase</Product>
-		<Description>Tests for IGLibCore.</Description>
+		<Description>Base class for test classes, test utilities, etc.</Description>
 
 		<Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>
 		<!-- PackageLicenseExpression available only for OSI AND fsf approved licenses.
@@ -32,6 +32,12 @@
 		-->
 		<PackageLicenseUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md</PackageLicenseUrl>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- For automatic versioning with GitVersion tool (https://gitversion.net/docs/usage/cli/) 
+			- versions specified from Git tags (like v.1.4.2 on min branch) & history : -->
+		<PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
+	</ItemGroup>
 
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48' OR '$(TargetFramework)' == 'netstandard2.0'">

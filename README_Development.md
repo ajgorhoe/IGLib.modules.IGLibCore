@@ -94,3 +94,22 @@ Division of modules into
 * Should **not have dependencies on external source projects**.
 * Should **avoid dependcncies on NuGet packages** and should **only have dependencies on .NET base libraries**.
   * Should **avoid dependencies on complex .NET stuff** and stuff that is likely subject to changes (based on past experience) **such as serialization**.
+
+
+
+
+## In Development
+
+### Versioning
+
+We use **`GitVersion`** for versioning. This is done by including the following in .NET project files (.csproj):
+
+~~~xml
+	<ItemGroup>
+		<PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
+	</ItemGroup>
+~~~
+
+This integrates directly with MSBuild; restore pulls it in, and it computes versions during build. The tool is configured in `GitVersion.yml` ([local version here](./GitVersion.yml)).
+
+**Workflow**:
