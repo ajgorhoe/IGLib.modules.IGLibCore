@@ -1,5 +1,8 @@
 mode: ContinuousDeployment
 workflow: GitHubFlow/v1
+strategies:
+# - ConfiguredNextVersion
+- Mainline
 branches:
   main:
     regex: ^master$|^main$
