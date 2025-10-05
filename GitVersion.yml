@@ -1,12 +1,15 @@
 mode: ContinuousDeployment
+workflow: GitHubFlow/v1
 branches:
   main:
     regex: ^master$|^main$
-    tag: ''
+    label: ''
     increment: Patch
+    is-release-branch: true
+    is-main-branch: true
   develop:
     regex: ^develop$
-    tag: beta
+    label: beta
     increment: Minor
 ignore:
   sha: []
