@@ -39,7 +39,7 @@
 		<PackageReleaseNotes>See README.md in packge repository.</PackageReleaseNotes>
 
 		<Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>
-		<!-- Remark: PackageLicenseExpression is available only for OSI AND FSF approved licenses. -->
+		<!-- Remark: PackageLicenseExpression tag is available only for OSI AND FSF approved licenses. -->
 		<PackageLicenseUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md</PackageLicenseUrl>
 	</PropertyGroup>
 
