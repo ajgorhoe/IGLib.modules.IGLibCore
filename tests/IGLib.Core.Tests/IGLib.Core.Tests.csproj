@@ -18,21 +18,28 @@
 		<LangVersion>latest</LangVersion>
 		<IsPackable>false</IsPackable>
 		<RootNamespace>IGLib.Tests</RootNamespace>
+		<NeutralLanguage>en-us</NeutralLanguage>
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<!-- This group contains attributes previously in AsemblyInfo.cs. -->
 		<AssemblyName>IGLib.Core.Tests</AssemblyName>
 		<PackageId>IGLib.Core.Tests</PackageId>
+		<!-- Versioning is handled with GitVersion (attributes: Version, AssemblyVersion, FileVersion). -->
 		<Authors>Igor Grešovnik</Authors>
 		<Company>none</Company>
-		<ProductName>IGLib_CoreTests</ProductName>
-		<Product>Investigative Generic Library (IGLib) - IGLibCoreTests</Product>
+		<ProductName>IGLib - Core Library Tests</ProductName>
+		<Product>Investigative Generic Library (IGLib) - Core Library Tests</Product>
 		<Description>Tests for IGLib.Core.</Description>
+		<RepositoryUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+		<PackageIconUrl>https://ajgorhoe.github.io/icons/IGLibIcon_64x64.png</PackageIconUrl>
+		<PackageTags>IGLib</PackageTags>
+		<PackageReleaseNotes>See README.md in packge repository.</PackageReleaseNotes>
 
 		<Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>
-		<!-- PackageLicenseExpression available only for OSI AND fsf approved licenses.
-		<PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
-		-->
+		<!-- Remark: PackageLicenseExpression is available only for OSI AND FSF approved licenses. -->
 		<PackageLicenseUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md</PackageLicenseUrl>
 	</PropertyGroup>
 

@@ -15,18 +15,23 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<!-- This group contains attributes previously in AsemblyInfo.cs. -->
 		<AssemblyName>IGLib.TestBase</AssemblyName>
 		<PackageId>IGLib.TestBase</PackageId>
-		<Version>2.1.0</Version>
-		<AssemblyVersion>2.1.0</AssemblyVersion>
-		<FileVersion>2.1.0</FileVersion>
+		<!-- Versioning is handled with GitVersion (attributes: Version, AssemblyVersion, FileVersion). -->
 		<Authors>Igor Grešovnik</Authors>
 		<Company>none</Company>
-		<ProductName>IGLib_CoreTests</ProductName>
-		<Product>Investigative Generic Library (IGLib) - IGLib.TestBase</Product>
+		<ProductName>IGLib - Tests Base Classes and Utilities</ProductName>
+		<Product>Investigative Generic Library (IGLib) - Tests Base Classes and Utilities</Product>
 		<Description>Base class for test classes, test utilities, etc.</Description>
+		<RepositoryUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+		<PackageIconUrl>https://ajgorhoe.github.io/icons/IGLibIcon_64x64.png</PackageIconUrl>
+		<PackageTags>IGLib</PackageTags>
+		<PackageReleaseNotes>See README.md in packge repository.</PackageReleaseNotes>
 
-		<Copyright>Copyright (c) Igor Grešovnik, 2008 - present.</Copyright>
+		<Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
 		<!-- PackageLicenseExpression available only for OSI AND fsf approved licenses.
 		<PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
 		-->
