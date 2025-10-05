@@ -13,7 +13,9 @@ This repository contains basic portions of the restructured ***Investigative Gen
   * [Unified Structure](#unified-structure-of-iglib-modules)
     * [Directory Structure](#directory-structure)
     * [Solution Structure](#solution-structure)
+  * [The IGLibCore and Other Base Modules](#the-iglibcore-and-other-base-modules)
 * [To Do](#things-to-be-done)
+* [Versioning IHLib Modules]()
 
 ## Instructions for Developers
 
@@ -95,14 +97,11 @@ Division of modules into
 * Should **avoid dependcncies on NuGet packages** and should **only have dependencies on .NET base libraries**.
   * Should **avoid dependencies on complex .NET stuff** and stuff that is likely subject to changes (based on past experience) **such as serialization**.
 
+### Versioning IGLib Modules
 
+In this context, IGLib Module means a set of projects contained in a single repository.
 
-
-## In Development
-
-### Versioning
-
-We use **`GitVersion`** for versioning. This is done by including the following in .NET project files (.csproj):
+We use **`[GitVersion]()`** for versioning. This is done by including the following in .NET project files (.csproj):
 
 ~~~xml
 	<ItemGroup>
