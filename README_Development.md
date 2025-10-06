@@ -143,7 +143,28 @@ When building a C# project from a repository, the GitVersion tool will **add the
 > `GitVersion` **does not work when projects / solutions are built in Visual Studio**. This is because `GitVersion` developers only support later .NET LTS and the tool needs .NET Core runtime (see [this Github Discussion](https://github.com/GitTools/GitVersion/discussions/4130)). `Visual Studio` uses stand-alone `MSBuild` that is built *for .NET Framework*, and this cannot be changed (Microsoft only releases MsBuild that is built for .NET Framework).
 > When **building or packaging with the `dotnet` tool**, **`GitVersion` works** because the `dotnet` tool contains an embedded MSBuild that is built for .NET (Core) (see [this Stack Overflow answer](https://stackoverflow.com/questions/79584977/how-can-i-force-visual-studio-to-use-msbuild-for-net-9)).
 
-In order to use 
+In order to use GitVersion efficiently, you should tag at least the versions of main branch that are released ot published somewhere. If you know the version you want to asign, can do this on a local repostory using something like this:
+
+~~~powershell
+# Tag the current commit on main as 1.4.0:
+git checkout main
+git pull
+git tag -a v1.4.0 -m "Release 1.4.0"
+git push origin v1.4.0
+~~~
+
+Manual tagging is error prone, and it is easy to create a wrong tag. One mitigation is to run a script where after updating the main branch, the current version is calculated by GitVersion (which correctly increments major, minor and patch numbers when commits are added and branched merged), then use this version in tagging. Below is a **PowerShell script* that tags the `main` branch with correct version number*:
+
+~~~powershell
+# Update the main branch:
+git checkout main
+git pull  # optional - uncomment if convenient
+# Get the current version on the main branch:
+$CurrentVersion = $(dotnet gitversion /showvariable FullSemVer)
+# Tag the version and push it:
+git tag -a "v${CurrentVersion}" -m "Released version ${CurrentVersion}"
+git push origin "v${CurrentVersion}"
+~~~
 
 **Example Workflow**:
 
