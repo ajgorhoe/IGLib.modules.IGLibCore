@@ -99,6 +99,8 @@ Division of modules into
 
 ### Versioning IGLib Modules
 
+**See also** the [Versioning document o Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/general/CiCd/Versioning.md) (private repo!)
+
 In this context, IGLib Module means a set of projects contained in a single repository.
 
 We use **`[GitVersion]()`** for versioning. This is done by including the following in .NET project files (.csproj):
@@ -111,4 +113,33 @@ We use **`[GitVersion]()`** for versioning. This is done by including the follow
 
 This integrates directly with MSBuild; restore pulls it in, and it computes versions during build. The tool is configured in `GitVersion.yml` ([local version here](./GitVersion.yml)).
 
-**Workflow**:
+In order for the tool to be able to compute the version, it needas a branch, and there must be a **commit with a version tag** (such as `4.1.12` or `v4.1.12`) reachable from that branch. If the branch itself is tagged, this defines the version. Otherwise, the **[semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (*SemVer*)** (`major.minor.patch`) is calculated from the path leading from the closest tagged commit to the current commit, according to configured rules. For example, one can define which part of the version (mayor/minor/patch) gets incremented for a specific branch.
+
+The version for the current or a specified locommit in a local repository can be calculated by using a **global dotnet tool**. **Install** the tool in the following way:
+
+~~~powershell
+dotnet tool install -g GitVersion.Tool
+~~~
+
+Then, in order to calculate version number for the currently checked-out branch, run one of the following commands:
+
+~~~powershell
+dotnet gitversion /showvariable SemVer
+dotnet gitversion /showvariable FullSemVer
+dotnet gitversion /showvariable NuGetVersionV2
+~~~
+
+Or, to get various version information in JSON:
+
+~~~powershell
+$gv = dotnet gitversion /output json | ConvertFrom-Json
+~~~
+
+When building a C# project from a repository, the GitVersion tool will **add the version-related properties** `Version` (e.g. `1.2.3`), `AssemblyVersion` (e.g. `1.2.0.0`), `FileVersion` (e.g. `1.2.3.0`) and InformationalVersion` (e.g. `1.2.3+Branch.main.Sha.abcdef`) **to** the generated **assembly**. When creating a `NuGet` package with `dotnet pack`, version will be set for the NuGet package.
+
+**Example Workflow**:
+
+* tag the last verison on the `main` branch
+* branch off `develop` and other branches like `feature` or `release` branches; they will be versioned according to rules specified in basic configuration plus additional configuration (e.g. `GitVersion.yml` in the repository root).
+* when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool.
+* start again from the second pooint.
