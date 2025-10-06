@@ -1,31 +1,19 @@
 <#
 .SYNOPSIS
-  Tags the specified branch (default: main) with a version computed by GitVersion,
-  optionally bumping major/minor/patch beyond what GitVersion returns.
-
-.DESCRIPTION
-  - Runs in the script's directory by default. Use -Directory to target another repo path
-    (relative to script location or absolute path).
-  - Validates that the target directory is a Git repository.
-  - Optionally pulls latest changes before calculating version (-Pull).
-  - Supports -Branch to tag a branch other than 'main'.
-  - Supports one of -BumpMajor / -BumpMinor / -BumpPatch to increment beyond GitVersion.
-  - Restores the original working directory even on error.
+  Tags a branch (default: main) with a version computed by GitVersion.
+  Supports optional bumping (major/minor/patch), optional pull, and safe dir handling.
 
 .NOTES
-  Requires:
-    - Git
-    - .NET SDK
-    - GitVersion.Tool (global or local). If not present as a local tool,
-      the script will auto-create a local tool manifest and install it.
-
+  - If -Directory is omitted: the script runs in its own folder and only requires that
+    folder to be *inside* a Git repo (not necessarily the repo root).
+  - If -Directory is provided: that directory must be the *repo root*.
 #>
 
 [CmdletBinding()]
 param(
-  [string] $Directory,                       # Optional: repo path (relative to script dir or absolute)
-  [string] $Branch = 'main',                 # Branch to tag
-  [switch] $Pull,                            # Pull latest before tagging
+  [string] $Directory,
+  [string] $Branch = 'main',
+  [switch] $Pull,
   [switch] $BumpMajor,
   [switch] $BumpMinor,
   [switch] $BumpPatch
@@ -48,35 +36,64 @@ function Resolve-TargetDirectory {
   }
 }
 
-function Assert-GitRepository {
+function Normalize-PathCanonical {
+  param([string]$PathText)
+
+  if ([string]::IsNullOrWhiteSpace($PathText)) { return $PathText }
+
+  # Replace forward slashes from `git rev-parse --show-toplevel` with OS separator,
+  # then get a full canonical path and trim trailing separators.
+  $sep = [IO.Path]::DirectorySeparatorChar
+  $p = $PathText -replace '[\\/]', [string]$sep
+  $full = [IO.Path]::GetFullPath($p)
+  # Trim trailing separator (except root like "C:\")
+  if ($full.Length -gt 3) { $full = $full.TrimEnd($sep) }
+  return $full
+}
+
+function Get-GitTopLevel {
   param([string]$Path)
+  $top = (git -C "$Path" rev-parse --show-toplevel 2>$null).Trim()
+  if (-not $top) { return $null }
+  return (Normalize-PathCanonical $top)
+}
 
-  # At minimum, require .git directory
-  if (-not (Test-Path -LiteralPath (Join-Path $Path '.git'))) {
-    throw "Directory '$Path' does not contain a .git folder. Not a Git repository."
-  }
+function Assert-GitRepository {
+  param(
+    [string]$Path,
+    [bool]  $RequireTopLevel
+  )
 
-  # Stronger checks
-  $inside = (git -C "$Path" rev-parse --is-inside-work-tree).Trim()
+  # Check we're inside a Git work tree at all
+  $inside = (git -C "$Path" rev-parse --is-inside-work-tree 2>$null).Trim()
   if ($inside -ne 'true') {
-    throw "Path '$Path' is not recognized by Git as a working tree."
+    if ($RequireTopLevel) {
+      throw "Path '$Path' is not the root of a Git repository (or not a Git working tree)."
+    } else {
+      throw "Path '$Path' is not inside a Git working tree."
+    }
   }
 
-  # Ensure the toplevel equals the path we think it is
-  $top = (git -C "$Path" rev-parse --show-toplevel).Trim()
-  $normPath = (Resolve-Path -LiteralPath $Path).ProviderPath
-  if ($top -ne $normPath) {
-    throw "Path mismatch: repo toplevel is '$top' but script targeted '$normPath'."
+  if ($RequireTopLevel) {
+    # Compare normalized repo root to normalized $Path
+    $repoRoot = Get-GitTopLevel -Path $Path
+    if (-not $repoRoot) {
+      throw "Could not determine repository toplevel for '$Path'."
+    }
+    $normPath = Normalize-PathCanonical $Path
+
+    if (-not [String]::Equals($repoRoot, $normPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+      throw "Path mismatch: repo toplevel is '$repoRoot' but script targeted '$normPath'."
+    }
   }
 }
 
 function Ensure-GitVersionTool {
-  # Try a quick probe
   try {
     $null = & dotnet gitversion /version
     return
   } catch {
-    Write-Host "GitVersion.Tool not available as a dotnet tool here. Installing locally..." -ForegroundColor Yellow
+    Write-Host "GitVersion.Tool not available. Installing locally (tool manifest)..." -ForegroundColor Yellow
     if (-not (Test-Path -LiteralPath ".config/dotnet-tools.json")) {
       dotnet new tool-manifest | Out-Null
     }
@@ -86,32 +103,24 @@ function Ensure-GitVersionTool {
 
 function Get-GitVersionJson {
   Ensure-GitVersionTool
-  # Fetch full JSON once
   $raw = & dotnet gitversion /output json
   return ($raw | ConvertFrom-Json)
 }
 
 function Compute-BumpedVersion {
   param(
-    [string]$SemVerBase,   # e.g. 2.0.26 or 2.0.26-beta.5 (we'll sanitize)
+    [string]$SemVerBase,   # e.g., "2.0.26" or "2.0.26-beta.5"
     [switch]$Maj,
     [switch]$Min,
     [switch]$Pat
   )
 
-  # Disallow multiple bump switches
   $count = @($Maj, $Min, $Pat | Where-Object { $_ }).Count
-  if ($count -gt 1) {
-    throw "Provide only one of -BumpMajor, -BumpMinor, or -BumpPatch."
-  }
-
-  # If no bump requested, return $null so caller can decide to use FullSemVer
+  if ($count -gt 1) { throw "Provide only one of -BumpMajor, -BumpMinor, or -BumpPatch." }
   if ($count -eq 0) { return $null }
 
-  # Strip prerelease/build if present (anything after first '-')
-  $numeric = $SemVerBase.Split('-', 2)[0]  # e.g., "2.0.26"
-  # Also strip any +build metadata if present (shouldn't be in SemVer typically)
-  $numeric = $numeric.Split('+', 2)[0]
+  # Strip prerelease/build parts before bump
+  $numeric = $SemVerBase.Split('-', 2)[0].Split('+', 2)[0]
 
   if ($numeric -notmatch '^(?<maj>\d+)\.(?<min>\d+)\.(?<pat>\d+)$') {
     throw "Unable to parse SemVer '$SemVerBase' for bumping."
@@ -132,14 +141,23 @@ function Compute-BumpedVersion {
   return "{0}.{1}.{2}" -f $maj, $min, $pat
 }
 
-# Preserve caller's working dir
+# Preserve caller's working dir for guaranteed restore
 $orig = Get-Location
 try {
   $targetDir = Resolve-TargetDirectory -Dir $Directory
   Set-Location -LiteralPath $targetDir
 
-  # Validate repository
-  Assert-GitRepository -Path (Get-Location).Path
+  # Repo validation rules:
+  # - If -Directory is provided: targetDir MUST be repo root
+  # - Else: targetDir just needs to be inside a repo (any depth)
+  $requireRoot = -not [string]::IsNullOrWhiteSpace($Directory)
+  Assert-GitRepository -Path (Get-Location).Path -RequireTopLevel:$requireRoot
+
+  # If not requiring root (no -Directory), it's useful to show where the root is:
+  if (-not $requireRoot) {
+    $root = Get-GitTopLevel -Path (Get-Location).Path
+    if ($root) { Write-Host "Detected repo root: $root" -ForegroundColor DarkGray }
+  }
 
   # Switch branch if needed
   $currentBranch = (git rev-parse --abbrev-ref HEAD).Trim()
@@ -148,19 +166,17 @@ try {
     git checkout "$Branch" | Out-Null
   }
 
-  # Optionally update from origin
+  # Optional pull (fetch tags too)
   if ($Pull) {
-    Write-Host "Fetching and pulling latest changes (with tags)..." -ForegroundColor Cyan
-    git fetch --tags origin | Out-Null
-    git pull --ff-only | Out-Null
+    Write-Host "Fetching and pulling latest changes..." -ForegroundColor Cyan
+    git fetch --tags origin 2>$null | Out-Null
+    git pull --ff-only 2>$null | Out-Null
   }
 
-  # Compute version via GitVersion
+  # Compute version from GitVersion
   $gv = Get-GitVersionJson
 
-  # Decide which version to tag:
-  # - If a bump is requested, use bumped SemVer (stable).
-  # - Else, use FullSemVer for fidelity (may include -beta.N / +metadata).
+  # Decide tagged version
   $bumped = Compute-BumpedVersion -SemVerBase $gv.SemVer `
                                   -Maj:$BumpMajor -Min:$BumpMinor -Pat:$BumpPatch
 
@@ -186,9 +202,9 @@ try {
     throw "Tag '$tagName' already exists. Aborting."
   }
 
-  # Create annotated tag and push
   Write-Host "Tagging '$Branch' at $(git rev-parse --short HEAD) with '$tagName'..." -ForegroundColor Green
   git tag -a "$tagName" -m "$tagMessage"
+
   Write-Host "Pushing tag '$tagName' to origin..." -ForegroundColor Green
   git push origin "$tagName"
 
