@@ -111,7 +111,9 @@ We use **`[GitVersion]()`** for versioning. This is done by including the follow
 	</ItemGroup>
 ~~~
 
-This integrates directly with MSBuild; restore pulls it in, and it computes versions during build. The tool is configured in `GitVersion.yml` ([local version here](./GitVersion.yml)).
+The attribute `<PrivateAssets>all</PrivateAssets>` prevents the task from becoming a dependency of the package we build.
+
+This integrates directly with MSBuild as `MSBuild task`; restore pulls the tool in, and the tool computes versions during builds (or packaging, etc.) and integrated them into generated artifacts. The tool is configured in `GitVersion.yml` ([local version here](./GitVersion.yml)).
 
 In order for the tool to be able to compute the version, it needas a branch, and there must be a **commit with a version tag** (such as `4.1.12` or `v4.1.12`) reachable from that branch. If the branch itself is tagged, this defines the version. Otherwise, the **[semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (*SemVer*)** (`major.minor.patch`) is calculated from the path leading from the closest tagged commit to the current commit, according to configured rules. For example, one can define which part of the version (mayor/minor/patch) gets incremented for a specific branch.
 
@@ -137,9 +139,15 @@ $gv = dotnet gitversion /output json | ConvertFrom-Json
 
 When building a C# project from a repository, the GitVersion tool will **add the version-related properties** `Version` (e.g. `1.2.3`), `AssemblyVersion` (e.g. `1.2.0.0`), `FileVersion` (e.g. `1.2.3.0`) and InformationalVersion` (e.g. `1.2.3+Branch.main.Sha.abcdef`) **to** the generated **assembly**. When creating a `NuGet` package with `dotnet pack`, version will be set for the NuGet package.
 
+> **Warnig**:
+> `GitVersion` **does not work when projects / solutions are built in Visual Studio**. This is because `GitVersion` developers only support later .NET LTS and the tool needs .NET Core runtime (see [this Github Discussion](https://github.com/GitTools/GitVersion/discussions/4130)). `Visual Studio` uses stand-alone `MSBuild` that is built *for .NET Framework*, and this cannot be changed (Microsoft only releases MsBuild that is built for .NET Framework).
+> When **building or packaging with the `dotnet` tool**, **`GitVersion` works** because the `dotnet` tool contains an embedded MSBuild that is built for .NET (Core) (see [this Stack Overflow answer](https://stackoverflow.com/questions/79584977/how-can-i-force-visual-studio-to-use-msbuild-for-net-9)).
+
+In order to use 
+
 **Example Workflow**:
 
 * tag the last verison on the `main` branch
-* branch off `develop` and other branches like `feature` or `release` branches; they will be versioned according to rules specified in basic configuration plus additional configuration (e.g. `GitVersion.yml` in the repository root).
-* when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool.
-* start again from the second pooint.
+* branch off `develop` and other branches like `feature` or `release` branches; they will be versioned according to rules specified in basic configuration plus additional configuration (e.g. `GitVersion.yml` in the repository root)
+* when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool
+* start again from the second pooint

@@ -1,6 +1,7 @@
 mode: ContinuousDeployment
 workflow: GitHubFlow/v1
 strategies:
+# This enables incrementing the patch number on main branch with each commit:
 # - ConfiguredNextVersion
 - Mainline
 branches:
