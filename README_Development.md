@@ -187,6 +187,46 @@ git tag -a "v${CurrentVersion}" -m "Released version ${CurrentVersion}"
 git push origin "v${CurrentVersion}"
 ~~~
 
+**Manually Handling Tags**:
+
+It may happen that come commits were wrongly tagged by version tags. In such cases, manual interventions with checking, deleting or re-aplying correct tags may be necessary. Here are some basic tips.
+
+Showing tags:
+
+~~~powershell
+# list local tags:
+git tag
+# list tags on the specified remote (origin in this case):
+git ls-remote --tags origin
+# List both local tags and tags from certain remote (origin):
+git fetch --tags
+git tag
+git ls-remote --tags
+# or:
+git fetch --tags
+git tag -l
+~~~
+
+Removing tags:
+
+~~~powershell
+# Remove the tag ("v1.2.3" in this case) only locally:
+git tag -d v1.2.3
+# Remove the tag on the remote called origin:
+git push origin --delete tag v1.2.3
+~~~
+
+After cleanup, adding the correct tag:
+
+~~~powershell
+git checkout main  # or whatever branch needs to be tagged
+git pull           # if necessary to get sync changes
+git tag -a v1.2.3 -m "Version 1.2.3"
+git push origin v1.2.3
+~~~
+
+
+
 **Example Workflow**:
 
 * tag the last verison on the `main` branch
