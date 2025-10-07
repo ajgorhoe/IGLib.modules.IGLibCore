@@ -1,4 +1,4 @@
-2.0.26
+2.0.26 test-feature
 # Example:
 # After updating the version numbers:
 # On default branch (usually main, or master), execute:
