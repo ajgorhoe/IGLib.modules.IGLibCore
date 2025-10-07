@@ -173,3 +173,4 @@ git push origin "v${CurrentVersion}"
 * when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool
 * start again from the second pooint
 
+ 
