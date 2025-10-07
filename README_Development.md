@@ -172,3 +172,4 @@ git push origin "v${CurrentVersion}"
 * branch off `develop` and other branches like `feature` or `release` branches; they will be versioned according to rules specified in basic configuration plus additional configuration (e.g. `GitVersion.yml` in the repository root)
 * when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool
 * start again from the second pooint
+
