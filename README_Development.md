@@ -151,7 +151,14 @@ Or, to get various version information in JSON:
 $gv = dotnet gitversion /output json | ConvertFrom-Json
 ~~~
 
-When building a C# project from a repository, the GitVersion tool will **add the version-related properties** `Version` (e.g. `1.2.3`), `AssemblyVersion` (e.g. `1.2.0.0`), `FileVersion` (e.g. `1.2.3.0`) and InformationalVersion` (e.g. `1.2.3+Branch.main.Sha.abcdef`) **to** the generated **assembly**. When creating a `NuGet` package with `dotnet pack`, version will be set for the NuGet package.
+When building a C# project from a repository, the GitVersion tool will **calculate the version** and **add the version-related properties** `Version` (e.g. `1.2.3`), `AssemblyVersion` (e.g. `1.2.0.0`), `FileVersion` (e.g. `1.2.3.0`) and InformationalVersion` (e.g. `1.2.3+Branch.main.Sha.abcdef`) **to** the generated **assembly**. When creating a `NuGet` package with `dotnet pack`, version will be set for the NuGet package.
+
+You can **override behavior with certain strings in commit messages** ([see configuration doc](https://gitversion.net/docs/reference/configuration)):
+
+* `+semver: major` (or `+semver: breaking`) in commit message will cause bump (increase) in major version
+* `+semver: minor` (or `semver: feature`) will cause bump in minor version
+* `+semver: patch` or `+semver: fix` will cause bump in patch version
+* `+semver: skip` or `+semver: none` will cause that bump that would otherwise be made (automatically) is skipped
 
 > **Warnig**:
 > `GitVersion` **does not work when projects / solutions are built in Visual Studio**. This is because `GitVersion` developers only support later .NET LTS and the tool needs .NET Core runtime (see [this Github Discussion](https://github.com/GitTools/GitVersion/discussions/4130)). `Visual Studio` uses stand-alone `MSBuild` that is built *for .NET Framework*, and this cannot be changed (Microsoft only releases MsBuild that is built for .NET Framework).
