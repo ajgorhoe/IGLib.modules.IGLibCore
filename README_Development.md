@@ -103,7 +103,7 @@ Division of modules into
 
 In this context, IGLib Module means a set of projects contained in a single repository.
 
-We use **`[GitVersion]()`** for versioning. This is done by including the following in .NET project files (.csproj):
+We use **`[GitVersion](https://gitversion.net/docs/usage/msbuild)`** for versioning. This is done by including the following in .NET project files (.csproj):
 
 ~~~xml
 	<ItemGroup>
@@ -115,9 +115,23 @@ The attribute `<PrivateAssets>all</PrivateAssets>` prevents the task from becomi
 
 This integrates directly with MSBuild as `MSBuild task`; restore pulls the tool in, and the tool computes versions during builds (or packaging, etc.) and integrated them into generated artifacts. The tool is configured in `GitVersion.yml` ([local version here](./GitVersion.yml)).
 
-In order for the tool to be able to compute the version, it needas a branch, and there must be a **commit with a version tag** (such as `4.1.12` or `v4.1.12`) reachable from that branch. If the branch itself is tagged, this defines the version. Otherwise, the **[semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (*SemVer*)** (`major.minor.patch`) is calculated from the path leading from the closest tagged commit to the current commit, according to configured rules. For example, one can define which part of the version (mayor/minor/patch) gets incremented for a specific branch.
+In order for the tool to be able to compute the version, it needas a branch, and there must be a **commit with a version tag** (such as `4.1.12` or `v4.1.12`) reachable from that branch. If the branch itself is tagged, this defines the version. Otherwise, the **[semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (*SemVer*)** (`major.minor.patch`) is calculated from the path leading from the closest tagged commit to the current commit, according to configured rules. For example, one can define which part of the version (mayor/minor/patch) gets incremented for a specific branch. For more information, you can check these **GitVersion documentation** pags:
 
-The version for the current or a specified locommit in a local repository can be calculated by using a **global dotnet tool**. **Install** the tool in the following way:
+* [GitVersion - Commandline Arguments](https://gitversion.net/docs/usage/cli/arguments), [assembly patching](https://gitversion.net/docs/usage/cli/assembly-patch)
+* [GitVersion - MSBuild Task](https://gitversion.net/docs/usage/msbuild)
+* [GitVersion - Configuration](https://gitversion.net/docs/reference/configuration), [version variables](https://gitversion.net/docs/reference/variables)
+* [GitVersion - Reuirements](https://gitversion.net/docs/reference/requirements)
+* [GitVersion - Version Incrementing](https://gitversion.net/docs/reference/version-increments),  [Version Sources](https://gitversion.net/docs/reference/version-sources)
+* [GitVersion - Varsioning Modes](https://gitversion.net/docs/reference/modes/)
+* [Branching Strategies](https://gitversion.net/docs/learn/branching-strategies/)
+  * [Brenching Strategies - Overview](https://gitversion.net/docs/learn/branching-strategies/overview)
+    * [Branchig strategy - GitFlow](https://gitversion.net/docs/learn/branching-strategies/gitflow/), [examples](https://gitversion.net/docs/learn/branching-strategies/gitflow/examples)
+    * [Branchig strategy - GitHubFlow](https://gitversion.net/docs/learn/branching-strategies/githubflow/), [examples](https://gitversion.net/docs/learn/branching-strategies/githubflow/examples)
+
+> **Important** - use in **GitHub Acions**:
+> You must **disable shallow fetch** by setting **`fetch-depth: 0`** in your checkout step; without it, GitHub Actions might perform a shallow clone, which will cause GitVersion to display an error message.
+
+The version for the current or a specified commit in a local repository can be calculated by using a **global dotnet tool**. **Install** the tool in the following way:
 
 ~~~powershell
 dotnet tool install -g GitVersion.Tool
