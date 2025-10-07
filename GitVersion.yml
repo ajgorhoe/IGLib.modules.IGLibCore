@@ -18,7 +18,7 @@ branches:
     regex: ^develop$
     # Add the "beta" + incremented number suffix on develop branch:
     label: beta
-    increment: Minor
+    increment: Patch
 ignore:
   sha: []
 commit-message-incrementing: Enabled
