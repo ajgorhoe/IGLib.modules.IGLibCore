@@ -171,7 +171,11 @@ You can **override behavior with certain strings in commit messages** ([see conf
 > `GitVersion` **does not work when projects / solutions are built in Visual Studio**. This is because `GitVersion` developers only support later .NET LTS and the tool needs .NET Core runtime (see [this Github Discussion](https://github.com/GitTools/GitVersion/discussions/4130)). `Visual Studio` uses stand-alone `MSBuild` that is built *for .NET Framework*, and this cannot be changed (Microsoft only releases MsBuild that is built for .NET Framework).
 > When **building or packaging with the `dotnet` tool**, **`GitVersion` works** because the `dotnet` tool contains an embedded MSBuild that is built for .NET (Core) (see [this Stack Overflow answer](https://stackoverflow.com/questions/79584977/how-can-i-force-visual-studio-to-use-msbuild-for-net-9)).
 
-In order to use GitVersion efficiently, you should tag at least the versions of main branch that are released ot published somewhere. If you know the version you want to asign, can do this on a local repostory using something like this:
+### Manually Handling Tags
+
+In order to use GitVersion efficiently, you should **tag at least the versions of main branch that are released ot published somewhere**.
+
+If you know the version tag you want to asign, you can do this on a local repostory using something like this:
 
 ~~~powershell
 # Tag the current commit on main as 1.4.0:
@@ -181,7 +185,7 @@ git tag -a v1.4.0 -m "Release 1.4.0"
 git push origin v1.4.0
 ~~~
 
-Manual tagging is error prone, and it is easy to create a wrong tag. One mitigation is to run a script where after updating the main branch, the current version is calculated by GitVersion (which correctly increments major, minor and patch numbers when commits are added and branched merged), then use this version in tagging. Below is a **PowerShell script* that tags the `main` branch with correct version number*:
+Manual **tagging a branch** is error prone, and it is easy to create a wrong tag. One mitigation is to run a script where the **current version** is **calculated by GitVersion** (which correctly increments major, minor and patch numbers when commits are added and branched merged), then use this version in tagging. Below is a **PowerShell script** that **tags the `main` branch with correct version number**:
 
 ~~~powershell
 # Update the main branch:
@@ -193,8 +197,6 @@ $CurrentVersion = $(dotnet gitversion /showvariable FullSemVer)
 git tag -a "v${CurrentVersion}" -m "Released version ${CurrentVersion}"
 git push origin "v${CurrentVersion}"
 ~~~
-
-**Manually Handling Tags**:
 
 It may happen that come commits were wrongly tagged by version tags. In such cases, manual interventions with checking, deleting or re-aplying correct tags may be necessary. Here are some basic tips.
 
@@ -254,7 +256,7 @@ See detailed workflow on the Wiki .
 
 This section contains unarranged quick notes on what needs to be done.
 
-### Versioning
+**Versioning**:
 
 * Documentation
   * Wiki:
@@ -263,11 +265,11 @@ This section contains unarranged quick notes on what needs to be done.
 * scripts/TagVersion.ps1:
   * Restore branch after operation: move `$currentBranch = ...` before try, restore in finally block
   * Check Bump (ensure all variants work)
-   * add Bump...Num *NumBumps* - specifies how much to bump
-   * Copy the right version of script and GitVersion.yml to:
-     * IGLibScripts
-     * All IGLib Core repos
-     * Selected IGLib legacy repos
+  * Add Bump...Num *NumBumps* - specifies how much to bump
+  * Copy the right version of script and GitVersion.yml to:
+    * IGLibScripts
+    * All IGLib Core repos
+    * Selected IGLib legacy repos
 
 ### Helper Scripts
 
