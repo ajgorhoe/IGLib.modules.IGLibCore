@@ -1,9 +1,3 @@
-<#
-Tags a branch (default: main) with a version computed by GitVersion.
-- If -Directory is omitted: script may run from any folder INSIDE a Git repo.
-- If -Directory is provided: it MUST be the repo root.
-#>
-
 [CmdletBinding()]
 param(
   [string] $Directory,
@@ -18,9 +12,7 @@ $ErrorActionPreference = 'Stop'
 
 function Resolve-TargetDirectory {
   param([string]$Dir)
-
   if ([string]::IsNullOrWhiteSpace($Dir)) { return $PSScriptRoot }
-
   if ([System.IO.Path]::IsPathRooted($Dir)) {
     return (Resolve-Path -LiteralPath $Dir).ProviderPath
   } else {
@@ -47,10 +39,7 @@ function Get-GitTopLevel {
 }
 
 function Assert-GitRepository {
-  param(
-    [string]$Path,
-    [bool]  $RequireTopLevel
-  )
+  param([string]$Path, [bool]$RequireTopLevel)
   $inside = (git -C "$Path" rev-parse --is-inside-work-tree 2>$null).Trim()
   if ($inside -ne 'true') {
     if ($RequireTopLevel) { throw "Path '$Path' is not the root of a Git repository (or not a working tree)." }
@@ -84,9 +73,12 @@ function Get-GitVersionJson {
 function Compute-BumpedVersion {
   param(
     [string]$SemVerBase,
-    [switch]$Maj, [switch]$Min, [switch]$Pat
+    [bool]$BumpMajor,
+    [bool]$BumpMinor,
+    [bool]$BumpPatch
   )
-  $count = @($Maj, $Min, $Pat | Where-Object { $_ }).Count
+
+  $count = @($BumpMajor, $BumpMinor, $BumpPatch | Where-Object { $_ }).Count
   if ($count -gt 1) { throw "Provide only one of -BumpMajor, -BumpMinor, or -BumpPatch." }
   if ($count -eq 0) { return $null }
 
@@ -94,23 +86,26 @@ function Compute-BumpedVersion {
   if ($numeric -notmatch '^(?<maj>\d+)\.(?<min>\d+)\.(?<pat>\d+)$') {
     throw "Unable to parse SemVer '$SemVerBase' for bumping."
   }
-  $maj = [int]$Matches['maj']; $min = [int]$Matches['min']; $pat = [int]$Matches['pat']
-  if ($Maj) { $maj += 1; $min = 0; $pat = 0 }
-  elseif ($Min) { $min += 1; $pat = 0 }
+
+  $maj = [int]$Matches['maj']
+  $min = [int]$Matches['min']
+  $pat = [int]$Matches['pat']
+
+  if ($BumpMajor) { $maj += 1; $min = 0; $pat = 0 }
+  elseif ($BumpMinor) { $min += 1; $pat = 0 }
   else { $pat += 1 }
+
   return "{0}.{1}.{2}" -f $maj, $min, $pat
 }
 
 function Test-TagExistsLocal {
   param([string]$TagName)
-  # Uses exit code instead of try/catch
   $null = git show-ref --verify --quiet "refs/tags/$TagName"
   return ($LASTEXITCODE -eq 0)
 }
 
 function Test-TagExistsRemote {
   param([string]$TagName, [string]$Remote = 'origin')
-  # Returns non-empty output if remote has the tag
   $out = git ls-remote --tags $Remote "refs/tags/$TagName" 2>$null
   return -not [string]::IsNullOrWhiteSpace($out)
 }
@@ -128,7 +123,6 @@ try {
     if ($root) { Write-Host "Detected repo root: $root" -ForegroundColor DarkGray }
   }
 
-  # Switch branch
   $currentBranch = (git rev-parse --abbrev-ref HEAD).Trim()
   if ($currentBranch -ne $Branch) {
     Write-Host "Checking out branch '$Branch' (was '$currentBranch')..." -ForegroundColor Cyan
@@ -144,7 +138,9 @@ try {
   $gv = Get-GitVersionJson
 
   $bumped = Compute-BumpedVersion -SemVerBase $gv.SemVer `
-            -Maj:$BumpMajor -Min:$BumpMinor -Pat:$BumpPatch
+            -BumpMajor:([bool]$BumpMajor.IsPresent) `
+            -BumpMinor:([bool]$BumpMinor.IsPresent) `
+            -BumpPatch:([bool]$BumpPatch.IsPresent)
 
   if ($bumped) {
     $versionToTag = $bumped
@@ -156,7 +152,6 @@ try {
 
   $tagName = if ($versionToTag -match '^[vV]\d') { $versionToTag } else { "v$versionToTag" }
 
-  # ✅ Fixed: check exit codes / output rather than try/catch
   if (Test-TagExistsLocal $tagName) { throw "Tag '$tagName' already exists locally. Aborting." }
   if (Test-TagExistsRemote $tagName) { throw "Tag '$tagName' already exists on 'origin'. Aborting." }
 
