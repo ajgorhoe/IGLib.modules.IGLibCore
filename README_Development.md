@@ -149,7 +149,7 @@ Then, in order to calculate version number for the currently checked-out branch,
 ~~~powershell
 dotnet gitversion /showvariable SemVer
 dotnet gitversion /showvariable FullSemVer
-dotnet gitversion /showvariable NuGetVersionV2
+dotnet gitversion /showvariable AssemblySemFileVer
 ~~~
 
 Or, to get various version information in JSON:
