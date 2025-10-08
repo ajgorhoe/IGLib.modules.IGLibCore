@@ -14,8 +14,10 @@ This repository contains basic portions of the restructured ***Investigative Gen
     * [Directory Structure](#directory-structure)
     * [Solution Structure](#solution-structure)
   * [The IGLibCore and Other Base Modules](#the-iglibcore-and-other-base-modules)
-* [To Do](#things-to-be-done)
-* [Versioning IHLib Modules]()
+  * [CI/CD]()
+    * [Versioning IGLib Modules](#versioning-iglib-modules)
+      * See also the [Versioning document on Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/general/CiCd/Versioning.md) (*private repo*!)
+* **[To Do](#things-to-be-done)**
 
 ## Instructions for Developers
 
@@ -97,18 +99,22 @@ Division of modules into
 * Should **avoid dependcncies on NuGet packages** and should **only have dependencies on .NET base libraries**.
   * Should **avoid dependencies on complex .NET stuff** and stuff that is likely subject to changes (based on past experience) **such as serialization**.
 
+## IGLib CI/CD
+
+We currently use Github Actions for Continuous integration. [GitVersion](#versioning-iglib-modules) is used to automatize versioning.
+
 ### Versioning IGLib Modules
 
-**See also** the [Versioning document o Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/general/CiCd/Versioning.md) (private repo!)
+**See also** the [Versioning document on Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/general/CiCd/Versioning.md) (*private repo*!)
 
 In this context, IGLib Module means a set of projects contained in a single repository.
 
-We use **`[GitVersion](https://gitversion.net/docs/usage/msbuild)`** for versioning. This is done by including the following in .NET project files (.csproj):
+We use **[GitVersion](https://gitversion.net/docs/usage/msbuild)** for versioning. This is done by including the following in .NET project files (.csproj):
 
 ~~~xml
-	<ItemGroup>
-		<PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
-	</ItemGroup>
+<ItemGroup>
+  <PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
+</ItemGroup>
 ~~~
 
 The attribute `<PrivateAssets>all</PrivateAssets>` prevents the task from becoming a dependency of the package we build.
@@ -225,8 +231,6 @@ git tag -a v1.2.3 -m "Version 1.2.3"
 git push origin v1.2.3
 ~~~
 
-
-
 **Example Workflow**:
 
 * tag the last verison on the `main` branch
@@ -234,4 +238,8 @@ git push origin v1.2.3
 * when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool
 * start again from the second pooint
 
-  
+
+
+## Things to Be Done
+
+This section contains unarranged quick notes on what needs to be done.
