@@ -12,34 +12,37 @@
 		<LangVersion>latest</LangVersion>
 		<IsPackable>true</IsPackable>
 		<RootNamespace>IGLib</RootNamespace>
+		<NeutralLanguage>en-us</NeutralLanguage>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<!-- Attributes previously in AsemblyInfo.cs: -->
+		<!-- This group contains attributes previously in AsemblyInfo.cs. -->
 		<AssemblyName>IGLib.Core</AssemblyName>
 		<PackageId>IGLib.Core</PackageId>
-		<Version>2.1.0</Version>
-		<AssemblyVersion>2.1.0</AssemblyVersion>
-		<FileVersion>2.1.0</FileVersion>
-		<Authors>Igor Grešovnik et al.</Authors>
+		<!-- Versioning is handled with GitVersion (attributes: Version, AssemblyVersion, FileVersion). -->
+		<Authors>Igor Grešovnik</Authors>
 		<Company>none</Company>
-		<Product>IGLib</Product>
-		<NeutralLanguage>en</NeutralLanguage>
+		<ProductName>IGLib - Core</ProductName>
+		<Product>Investigative Generic Library (IGLib) - Core Library</Product>
 		<Description>Library for some core utilities, with only baisc dependencies.</Description>
-		<PackageProjectUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/</PackageProjectUrl>
-		<PackageIconUrl>https://ajgorhoe.github.io/icons/IGLibIcon_64x64.png</PackageIconUrl>
-		<RepositoryUrl></RepositoryUrl>
+		<RepositoryUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>Tags</PackageTags>
-		<PackageReleaseNotes>Release</PackageReleaseNotes>
+		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+		<PackageIconUrl>https://ajgorhoe.github.io/icons/IGLibIcon_64x64.png</PackageIconUrl>
+		<PackageTags>IGLib</PackageTags>
+		<PackageReleaseNotes>See README.md in packge repository.</PackageReleaseNotes>
 		
 		<Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
-		<!-- PackageLicenseExpression available only for OSI AND fsf approved licenses.
-		<PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
-		-->
+		<!-- Remark: PackageLicenseExpression tag is available only for OSI AND FSF approved licenses. -->
 		<PackageLicenseUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md</PackageLicenseUrl>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<!-- For automatic versioning with GitVersion tool (https://gitversion.net/docs/usage/cli/) 
+			- versions specified from Git tags (like v.1.4.2 on min branch) & history : -->
+		<PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<Compile Remove="FromIGLibBase\**" />
 		<EmbeddedResource Remove="FromIGLibBase\**" />

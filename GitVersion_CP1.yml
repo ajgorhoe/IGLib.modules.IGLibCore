@@ -1,3 +1,6 @@
+# This version is the result of experimentation with tweaking some parameters,
+# in order to find versioning regime that suits the needs. Please keeep it for
+# some time (until the final workflow is well settled).
 
 # Configuration file for the GitVersion tool.
 

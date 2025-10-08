@@ -13,7 +13,12 @@ This repository contains basic portions of the restructured ***Investigative Gen
   * [Unified Structure](#unified-structure-of-iglib-modules)
     * [Directory Structure](#directory-structure)
     * [Solution Structure](#solution-structure)
-* [To Do](#things-to-be-done)
+  * [The IGLibCore and Other Base Modules](#the-iglibcore-and-other-base-modules)
+  * **[CI/CD](#iglib-cicd)** for IGLib Repositories
+    * **[Versioning IGLib Modules](#versioning-iglib-modules)**
+      * See also the [Versioning document on Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/general/CiCd/Versioning.md) (*private repo*!)
+* Old doc. on [CI/CD on GitLab](./doc/readme.GitLab_CI_CD_old.md) (currently not relevant)
+* **[To Do](#things-to-be-done)**
 
 ## Instructions for Developers
 
@@ -94,3 +99,180 @@ Division of modules into
 * Should **not have dependencies on external source projects**.
 * Should **avoid dependcncies on NuGet packages** and should **only have dependencies on .NET base libraries**.
   * Should **avoid dependencies on complex .NET stuff** and stuff that is likely subject to changes (based on past experience) **such as serialization**.
+
+## IGLib CI/CD
+
+We currently use Github Actions for Continuous integration. [GitVersion](#versioning-iglib-modules) is used to automatize versioning.
+
+### Versioning IGLib Modules
+
+**See also** the [Versioning document on Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/general/CiCd/Versioning.md) (*private repo*!)
+
+In this context, IGLib Module means a set of projects contained in a single repository.
+
+We use **[GitVersion](https://gitversion.net/docs/usage/msbuild)** for versioning. This is done by including the following in .NET project files (.csproj):
+
+~~~xml
+<ItemGroup>
+  <PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
+</ItemGroup>
+~~~
+
+The attribute `<PrivateAssets>all</PrivateAssets>` prevents the task from becoming a dependency of the package we build.
+
+This integrates directly with MSBuild as `MSBuild task`; restore pulls the tool in, and the tool computes versions during builds (or packaging, etc.) and integrated them into generated artifacts. The tool is configured in `GitVersion.yml` ([local version here](./GitVersion.yml)).
+
+In order for the tool to be able to compute the version, it needas a branch, and there must be a **commit with a version tag** (such as `4.1.12` or `v4.1.12`) reachable from that branch. If the branch itself is tagged, this defines the version. Otherwise, the **[semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (*SemVer*)** (`major.minor.patch`) is calculated from the path leading from the closest tagged commit to the current commit, according to configured rules. For example, one can define which part of the version (mayor/minor/patch) gets incremented for a specific branch. For more information, you can check these **GitVersion documentation** pags:
+
+* [GitVersion - Commandline Arguments](https://gitversion.net/docs/usage/cli/arguments), [assembly patching](https://gitversion.net/docs/usage/cli/assembly-patch)
+* [GitVersion - MSBuild Task](https://gitversion.net/docs/usage/msbuild)
+* [GitVersion - Configuration](https://gitversion.net/docs/reference/configuration), [version variables](https://gitversion.net/docs/reference/variables)
+* [GitVersion - Reuirements](https://gitversion.net/docs/reference/requirements)
+* [GitVersion - Version Incrementing](https://gitversion.net/docs/reference/version-increments),  [Version Sources](https://gitversion.net/docs/reference/version-sources)
+* [GitVersion - Varsioning Modes](https://gitversion.net/docs/reference/modes/)
+* [Branching Strategies](https://gitversion.net/docs/learn/branching-strategies/)
+  * [Brenching Strategies - Overview](https://gitversion.net/docs/learn/branching-strategies/overview)
+    * [Branchig strategy - GitFlow](https://gitversion.net/docs/learn/branching-strategies/gitflow/), [examples](https://gitversion.net/docs/learn/branching-strategies/gitflow/examples)
+    * [Branchig strategy - GitHubFlow](https://gitversion.net/docs/learn/branching-strategies/githubflow/), [examples](https://gitversion.net/docs/learn/branching-strategies/githubflow/examples)
+
+> **Important** - use in **GitHub Acions**:
+> You must **disable shallow fetch** by setting **`fetch-depth: 0`** in your checkout step; without it, GitHub Actions might perform a shallow clone, which will cause GitVersion to display an error message.
+
+The version for the current or a specified commit in a local repository can be calculated by using a **global dotnet tool**. **Install** the tool in the following way:
+
+~~~powershell
+dotnet tool install -g GitVersion.Tool
+~~~
+
+Then, in order to calculate version number for the currently checked-out branch, run one of the following commands:
+
+~~~powershell
+dotnet gitversion /showvariable SemVer
+dotnet gitversion /showvariable FullSemVer
+dotnet gitversion /showvariable NuGetVersionV2
+~~~
+
+Or, to get various version information in JSON:
+
+~~~powershell
+$gv = dotnet gitversion /output json | ConvertFrom-Json
+~~~
+
+When building a C# project from a repository, the GitVersion tool will **calculate the version** and **add the version-related properties** `Version` (e.g. `1.2.3`), `AssemblyVersion` (e.g. `1.2.0.0`), `FileVersion` (e.g. `1.2.3.0`) and InformationalVersion` (e.g. `1.2.3+Branch.main.Sha.abcdef`) **to** the generated **assembly**. When creating a `NuGet` package with `dotnet pack`, version will be set for the NuGet package.
+
+You can **override behavior with certain strings in commit messages** ([see configuration doc](https://gitversion.net/docs/reference/configuration)):
+
+* `+semver: major` (or `+semver: breaking`) in commit message will cause bump (increase) in major version
+* `+semver: minor` (or `semver: feature`) will cause bump in minor version
+* `+semver: patch` or `+semver: fix` will cause bump in patch version
+* `+semver: skip` or `+semver: none` will cause that bump that would otherwise be made (automatically) is skipped
+
+> **Warnig**:
+> `GitVersion` **does not work when projects / solutions are built in Visual Studio**. This is because `GitVersion` developers only support later .NET LTS and the tool needs .NET Core runtime (see [this Github Discussion](https://github.com/GitTools/GitVersion/discussions/4130)). `Visual Studio` uses stand-alone `MSBuild` that is built *for .NET Framework*, and this cannot be changed (Microsoft only releases MsBuild that is built for .NET Framework).
+> When **building or packaging with the `dotnet` tool**, **`GitVersion` works** because the `dotnet` tool contains an embedded MSBuild that is built for .NET (Core) (see [this Stack Overflow answer](https://stackoverflow.com/questions/79584977/how-can-i-force-visual-studio-to-use-msbuild-for-net-9)).
+
+In order to use GitVersion efficiently, you should tag at least the versions of main branch that are released ot published somewhere. If you know the version you want to asign, can do this on a local repostory using something like this:
+
+~~~powershell
+# Tag the current commit on main as 1.4.0:
+git checkout main
+git pull
+git tag -a v1.4.0 -m "Release 1.4.0"
+git push origin v1.4.0
+~~~
+
+Manual tagging is error prone, and it is easy to create a wrong tag. One mitigation is to run a script where after updating the main branch, the current version is calculated by GitVersion (which correctly increments major, minor and patch numbers when commits are added and branched merged), then use this version in tagging. Below is a **PowerShell script* that tags the `main` branch with correct version number*:
+
+~~~powershell
+# Update the main branch:
+git checkout main
+git pull  # optional - uncomment if convenient
+# Get the current version on the main branch:
+$CurrentVersion = $(dotnet gitversion /showvariable FullSemVer)
+# Tag the version and push it:
+git tag -a "v${CurrentVersion}" -m "Released version ${CurrentVersion}"
+git push origin "v${CurrentVersion}"
+~~~
+
+**Manually Handling Tags**:
+
+It may happen that come commits were wrongly tagged by version tags. In such cases, manual interventions with checking, deleting or re-aplying correct tags may be necessary. Here are some basic tips.
+
+Showing tags:
+
+~~~powershell
+# list local tags:
+git tag
+# list tags on the specified remote (origin in this case):
+git ls-remote --tags origin
+# List both local tags and tags from certain remote (origin):
+git fetch --tags
+git tag
+git ls-remote --tags
+# or:
+git fetch --tags
+git tag -l
+~~~
+
+Removing tags added by accident:
+
+~~~powershell
+# Remove the tag ("v1.2.3" in this case) only locally:
+git tag -d v1.2.3
+# Remove the tag on the remote called origin:
+git push origin --delete tag v1.2.3
+~~~
+
+After cleanup, adding the correct tag:
+
+~~~powershell
+git checkout main  # or whatever branch needs to be tagged
+git pull           # if necessary to get sync changes
+git tag -a v1.2.3 -m "Version 1.2.3"
+git push origin v1.2.3
+~~~
+
+### Example Workflow
+
+See detailed workflow on the Wiki .
+
+* tag the last version on the `main` branch
+* branch off `develop` and other branches like `feature` or `release` branches; they will be versioned according to rules specified in basic configuration plus additional configuration (e.g. `GitVersion.yml` in the repository root)
+* when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool
+* start again from the second point
+
+### Version Other Repositories
+
+* IGLib Core repos:
+  * Copy from IGLibCore (the core repo):
+    * GitVersion.yml
+    * scripts/TagVersion
+  * Tag repo's versions manually if necessary
+  * When creating releases, Sync-tag repos versions via sync-tag
+
+## Things to Be Done
+
+This section contains unarranged quick notes on what needs to be done.
+
+### Versioning
+
+* Documentation
+  * Wiki:
+    * Detailed workflow
+    * Compile document About versioning with GitVersion (mention alternatives, exclude scripts documentation)
+* scripts/TagVersion.ps1:
+  * Restore branch after operation: move `$currentBranch = ...` before try, restore in finally block
+  * Check Bump (ensure all variants work)
+   * add Bump...Num *NumBumps* - specifies how much to bump
+   * Copy the right version of script and GitVersion.yml to:
+     * IGLibScripts
+     * All IGLib Core repos
+     * Selected IGLib legacy repos
+
+### Helper Scripts
+
+**[scripts/TagVersion.ps1](./scripts/TagVersion.ps1)** creates a version tag on the main branch or any other specified branch. The tag assigned to the branch is calculated by GitVersion. Version number assigned can also be modified, e.g. any part of SemBer can be forcibly increased. This script is intended for use on the local repository.
+
+
+
+

@@ -38,7 +38,7 @@
 		<PackageReleaseNotes>Release</PackageReleaseNotes>
 
 		<Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
-		<PackageLicenseExpression>From License file.</PackageLicenseExpression>
+		<!-- PackageLicenseExpression tag is available only for OSI AND fsf approved licenses. -->
 		<PackageLicenseUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md</PackageLicenseUrl>
 	</PropertyGroup>
 
