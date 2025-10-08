@@ -149,7 +149,7 @@ Then, in order to calculate version number for the currently checked-out branch,
 ~~~powershell
 dotnet gitversion /showvariable SemVer
 dotnet gitversion /showvariable FullSemVer
-dotnet gitversion /showvariable NuGetVersionV2
+dotnet gitversion /showvariable AssemblySemFileVer
 ~~~
 
 Or, to get various version information in JSON:
@@ -266,10 +266,10 @@ This section contains unarranged quick notes on what needs to be done.
   * Restore branch after operation: move `$currentBranch = ...` before try, restore in finally block
   * Check Bump (ensure all variants work)
   * Add Bump...Num *NumBumps* - specifies how much to bump
-  * Copy the right version of script and GitVersion.yml to:
-    * IGLibScripts
-    * All IGLib Core repos
-    * Selected IGLib legacy repos
+   * Copy the right version of script and GitVersion.yml to:
+     * IGLibScripts
+     * All IGLib Core repos
+     * Selected IGLib legacy repos
 
 ### Helper Scripts
 
