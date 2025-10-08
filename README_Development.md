@@ -271,7 +271,7 @@ This section contains unarranged quick notes on what needs to be done.
 
 ### Helper Scripts
 
-**[scripts/TagVersion.ps1](./scripts/TagVersion.ps1)** creates a version tag on the main branch or any other specified branch. The tag assigned to the branch is calculated by GitVersion. Version number assigned can also be modified, e.g. any part of SemBer can be forcibly increased. This script is intended for use on the local repository.
+**[scripts/TagVersion.ps1](./scripts/TagVersion.ps1)** **creates a version tag** on the main branch or any other specified branch **and pushes it** to the remote origin. The tag assigned to the branch is calculated by GitVersion. Version number assigned can also be modified, e.g. any part of SemBer can be forcibly increased. This script is intended for use on the local repository.
 
 
 
