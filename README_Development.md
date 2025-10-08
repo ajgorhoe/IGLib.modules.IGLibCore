@@ -17,6 +17,7 @@ This repository contains basic portions of the restructured ***Investigative Gen
   * **[CI/CD](#iglib-cicd)** for IGLib Repositories
     * **[Versioning IGLib Modules](#versioning-iglib-modules)**
       * See also the [Versioning document on Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/general/CiCd/Versioning.md) (*private repo*!)
+* Old doc. on [CI/CD on GitLab](./doc/readme.GitLab_CI_CD_old.md) (currently not relevant)
 * **[To Do](#things-to-be-done)**
 
 ## Instructions for Developers
@@ -267,6 +268,11 @@ This section contains unarranged quick notes on what needs to be done.
      * IGLibScripts
      * All IGLib Core repos
      * Selected IGLib legacy repos
-     
+
+### Helper Scripts
+
+**[scripts/TagVersion.ps1](./scripts/TagVersion.ps1)** creates a version tag on the main branch or any other specified branch. The tag assigned to the branch is calculated by GitVersion. Version number assigned can also be modified, e.g. any part of SemBer can be forcibly increased. This script is intended for use on the local repository.
+
+
 
 
