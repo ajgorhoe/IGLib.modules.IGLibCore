@@ -213,7 +213,7 @@ git fetch --tags
 git tag -l
 ~~~
 
-Removing tags:
+Removing tags added by accident:
 
 ~~~powershell
 # Remove the tag ("v1.2.3" in this case) only locally:
@@ -231,15 +231,42 @@ git tag -a v1.2.3 -m "Version 1.2.3"
 git push origin v1.2.3
 ~~~
 
-**Example Workflow**:
+### Example Workflow
 
-* tag the last verison on the `main` branch
+See detailed workflow on the Wiki .
+
+* tag the last version on the `main` branch
 * branch off `develop` and other branches like `feature` or `release` branches; they will be versioned according to rules specified in basic configuration plus additional configuration (e.g. `GitVersion.yml` in the repository root)
 * when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool
-* start again from the second pooint
+* start again from the second point
 
+### Version Other Repositories
 
+* IGLib Core repos:
+  * Copy from IGLibCore (the core repo):
+    * GitVersion.yml
+    * scripts/TagVersion
+  * Tag repo's versions manually if necessary
+  * When creating releases, Sync-tag repos versions via sync-tag
 
 ## Things to Be Done
 
 This section contains unarranged quick notes on what needs to be done.
+
+### Versioning
+
+* Documentation
+  * Wiki:
+    * Detailed workflow
+    * Compile document About versioning with GitVersion (mention alternatives, exclude scripts documentation)
+* scripts/TagVersion.ps1:
+  * Restore branch after operation: move `$currentBranch = ...` before try, restore in finally block
+  * Check Bump (ensure all variants work)
+   * add Bump...Num *NumBumps* - specifies how much to bump
+   * Copy the right version of script and GitVersion.yml to:
+     * IGLibScripts
+     * All IGLib Core repos
+     * Selected IGLib legacy repos
+     
+
+
