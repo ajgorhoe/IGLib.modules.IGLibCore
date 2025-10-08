@@ -14,8 +14,8 @@ This repository contains basic portions of the restructured ***Investigative Gen
     * [Directory Structure](#directory-structure)
     * [Solution Structure](#solution-structure)
   * [The IGLibCore and Other Base Modules](#the-iglibcore-and-other-base-modules)
-  * [CI/CD]()
-    * [Versioning IGLib Modules](#versioning-iglib-modules)
+  * **[CI/CD](#iglib-cicd)** for IGLib Repositories
+    * **[Versioning IGLib Modules](#versioning-iglib-modules)**
       * See also the [Versioning document on Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/general/CiCd/Versioning.md) (*private repo*!)
 * **[To Do](#things-to-be-done)**
 

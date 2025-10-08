@@ -1,9 +1,9 @@
 # mode: ContinuousDeployment # commented - we leave it to built-in config
 workflow: GitHubFlow/v1
-# strategies:
+strategies:
 # This enables incrementing the patch number on main branch with each commit:
 # # - ConfiguredNextVersion
-# - Mainline
+- Mainline
 branches:
   # Configuration for main branch:
   main:
@@ -17,7 +17,7 @@ branches:
   develop:
     regex: ^develop$
     # Add the "alpha" + incremented number suffix on develop branch:
-    label: `alpha`
+    label: 'alpha'
     increment: Patch
 ignore:
   sha: []
