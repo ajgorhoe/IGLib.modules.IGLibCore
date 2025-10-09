@@ -406,8 +406,10 @@ function Invoke-RepoSecondPass {
         }
       }
       catch {
-        $result.Error = $_.Exception.Message
-        Write-Error "    ERROR caught when pushing the tag to origin: $result.Error "
+        # $result.Error = $_.Exception.Message
+        # Write-Error "    ERROR caught when pushing the tag to origin: $result.Error "
+        # return $result
+        Write-Error "    ERROR caught when pushing the tag to origin."
         return $result
       }
     }
