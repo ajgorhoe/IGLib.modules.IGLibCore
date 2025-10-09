@@ -199,6 +199,8 @@ function Invoke-RepoFirstPass {
     [switch]$Pull
   )
 
+  Write-Host "  Checking repository at '$OrigPath' ..." -ForegroundColor DarkCyan
+
   $result = [PSCustomObject]@{
     OrigPath   = $OrigPath
     AbsPath    = $AbsPath
@@ -212,11 +214,13 @@ function Invoke-RepoFirstPass {
 
   $origLoc = Get-Location
   $initialBranch = $null
+  Write-Host "    Setting and validating dir: '$AbsPath' ..." -ForegroundColor DarkCyan
   try {
     Set-Location -LiteralPath $AbsPath
 
     if (-not (Is-GitRoot $AbsPath)) {
       $result.Error = "Not a valid Git repository root."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
@@ -225,13 +229,16 @@ function Invoke-RepoFirstPass {
     # checkout target
     $target = $Branch
     $checkoutOk = $true
+    Write-Host "    Checking out '$target' ..." -ForegroundColor DarkCyan
     try { git checkout "$target" 2>$null | Out-Null } catch { $checkoutOk = $false }
 
     # fallback to master if requested main is missing
-    if (-not $checkoutOk -and $Branch -eq 'main') {
+    if (-not $checkoutOk -and $Branch -ne 'main') {
+      Write-Host "    Fallback from 'main' to 'master' branch ..." -ForegroundColor DarkCyan
       git rev-parse --verify --quiet "refs/heads/master" 2>$null | Out-Null
       if ($LASTEXITCODE -eq 0) {
         try {
+          Write-Host "    Checking out 'master' branch ..." -ForegroundColor DarkCyan
           git checkout master 2>$null | Out-Null
           $target = 'master'
           $checkoutOk = $true
@@ -241,34 +248,41 @@ function Invoke-RepoFirstPass {
 
     if (-not $checkoutOk) {
       $result.Error = "Cannot check out branch '$Branch' (no fallback)."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
     $result.UsedBranch = $target
 
     if ($Pull) {
-      Write-Host ("  [{0}] pulling latest on '{1}'..." -f $result.RepoName, $target) -ForegroundColor DarkCyan
+      Write-Host ("    [{0}] pulling latest on '{1}'..." -f $result.RepoName, $target) -ForegroundColor DarkCyan
       git fetch --tags origin 2>$null | Out-Null
       git pull --ff-only 2>$null | Out-Null
     }
 
+    Write-Host "    Ensuring that GitVersion is available ..." -ForegroundColor DarkCyan
     if (-not (Ensure-GitVersionTool)) {
       $result.Error = "GitVersion.Tool installation failed."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
+    Write-Host "    Retrieving the current version ..." -ForegroundColor DarkCyan
     $gv = Get-GitVersionJson
     if ($null -eq $gv -or [string]::IsNullOrWhiteSpace($gv.FullSemVer)) {
       $result.Error = "GitVersion did not return a valid version."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
     $result.Version = $gv.FullSemVer
     $result.Success = $true
+    Write-Host "    Returning current version: $result.Version " -ForegroundColor DarkCyan
     return $result
   }
   catch {
     $result.Error = $_.Exception.Message
+      Write-Error "    ERROR caught: $result.Error "
     return $result
   }
   finally {
@@ -511,7 +525,7 @@ for ($i=0; $i -lt $rows.Count; $i++) {
   }
 
   if ($already) {
-    Write-Host ("  [{0}] version already matches '{1}' — skipping tag." -f $row.RepoName, $finalTag) -ForegroundColor DarkYellow
+    Write-Host ("  [{0}] version already matches '{1}' - skipping tag." -f $row.RepoName, $finalTag) -ForegroundColor DarkYellow
     $row.FinalTag = $finalTag
     $row.Skipped2 = $true
     continue
