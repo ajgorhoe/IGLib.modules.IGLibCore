@@ -385,6 +385,7 @@ function Invoke-RepoSecondPass {
         Write-Error "    ERROR: $result.Error "
         return $result
       }
+      Write-Host ("  [{0}] pushing tag '{1}' to origin ..." -f $result.RepoName, $tag) -ForegroundColor Green
       $null = git push origin "$tag" 2>$null | Out-Null
       if ($LASTEXITCODE -ne 0) {
         $result.Error = "Failed to push tag '$tag' to origin."
