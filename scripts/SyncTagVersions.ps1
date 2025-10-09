@@ -389,7 +389,7 @@ function Invoke-RepoSecondPass {
       }
       catch {
         $result.Error = $_.Exception.Message
-        Write-Error "    ERROR when creating tag: $result.Error "
+        Write-Error "    ERROR caught when creating tag: $result.Error "
         return $result
       }
       try {
@@ -402,7 +402,9 @@ function Invoke-RepoSecondPass {
         }
       }
       catch {
-        <#Do this if a terminating exception happens#>
+        $result.Error = $_.Exception.Message
+        Write-Error "    ERROR caught when pushing the tag to origin: $result.Error "
+        return $result
       }
     }
 
