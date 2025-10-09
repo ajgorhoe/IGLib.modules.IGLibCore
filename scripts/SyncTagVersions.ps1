@@ -379,12 +379,14 @@ function Invoke-RepoSecondPass {
       Write-Host ("  [{0}] tag '{1}' already exists (local or remote) - skipping." -f $result.RepoName, $tag) -ForegroundColor DarkYellow
     } else {
       try {
-      Write-Host ("  [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
+        Write-Host ("  [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
         $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
         if ($LASTEXITCODE -ne 0) {
           $result.Error = "Failed to create tag '$tag'."
           Write-Error "    ERROR: $result.Error "
           return $result
+        } else {
+          Write-Host "    ... tagging performed successfully." -ForegroundColor DarkCyan
         }
       }
       catch {
@@ -399,6 +401,8 @@ function Invoke-RepoSecondPass {
           $result.Error = "Failed to push tag '$tag' to origin."
           Write-Error "    ERROR: $result.Error "
           return $result
+        } else {
+          Write-Host "    ... tag pushed successfully." -ForegroundColor DarkCyan
         }
       }
       catch {
@@ -408,7 +412,7 @@ function Invoke-RepoSecondPass {
       }
     }
 
-    Write-Host "    Ensure GitVersion is available..." -ForegroundColor DarkCyan
+    Write-Host "    Ensure that GitVersion is available..." -ForegroundColor DarkCyan
     if (-not (Ensure-GitVersionTool)) {
       $result.Error = "GitVersion.Tool installation failed for recalculation."
       Write-Error "    ERROR: $result.Error "
