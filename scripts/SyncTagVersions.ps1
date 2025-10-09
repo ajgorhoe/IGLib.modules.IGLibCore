@@ -379,18 +379,30 @@ function Invoke-RepoSecondPass {
       Write-Host ("  [{0}] tag '{1}' already exists (local or remote) - skipping." -f $result.RepoName, $tag) -ForegroundColor DarkYellow
     } else {
       Write-Host ("  [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
-      $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
-      if ($LASTEXITCODE -ne 0) {
-        $result.Error = "Failed to create tag '$tag'."
-        Write-Error "    ERROR: $result.Error "
+      try {
+        $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+          $result.Error = "Failed to create tag '$tag'."
+          Write-Error "    ERROR: $result.Error "
+          return $result
+        }
+      }
+      catch {
+        $result.Error = $_.Exception.Message
+        Write-Error "    ERROR when creating tag: $result.Error "
         return $result
       }
-      Write-Host ("  [{0}] pushing tag '{1}' to origin ..." -f $result.RepoName, $tag) -ForegroundColor Green
-      $null = git push origin "$tag" 2>$null | Out-Null
-      if ($LASTEXITCODE -ne 0) {
-        $result.Error = "Failed to push tag '$tag' to origin."
-        Write-Error "    ERROR: $result.Error "
-        return $result
+      try {
+        Write-Host ("  [{0}] pushing tag '{1}' to origin ..." -f $result.RepoName, $tag) -ForegroundColor Green
+        $null = git push origin "$tag" 2>$null | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+          $result.Error = "Failed to push tag '$tag' to origin."
+          Write-Error "    ERROR: $result.Error "
+          return $result
+        }
+      }
+      catch {
+        <#Do this if a terminating exception happens#>
       }
     }
 
