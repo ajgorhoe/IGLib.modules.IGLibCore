@@ -233,7 +233,7 @@ function Invoke-RepoFirstPass {
     # - Else if Branch == main and master exists, fall back to master.
     # - Else error.
     $target = $Branch
-Write-Host "    Checking out '$target' ..." -ForegroundColor DarkCyan
+    Write-Host "    Checking out '$target' ..." -ForegroundColor DarkCyan
 
     $null = git show-ref --verify --quiet ("refs/heads/" + $target)
     $existsRequested = ($LASTEXITCODE -eq 0)
@@ -311,7 +311,10 @@ Write-Host "    Checking out '$target' ..." -ForegroundColor DarkCyan
           $null = git checkout "$initialBranch" 2>$null | Out-Null
         }
       }
-    } catch { }
+    } catch {
+      $result.Error = $_.Exception.Message
+      Write-Error "    ERROR when restoring the branch: $result.Error "
+    }
     Set-Location $origLoc
   }
 }
@@ -342,6 +345,7 @@ function Invoke-RepoSecondPass {
 
   $origLoc = Get-Location
   $initialBranch = $null
+  Write-Host "    Setting and validating dir: '$AbsPath' ..." -ForegroundColor DarkCyan
   try {
     Set-Location -LiteralPath $AbsPath
 
@@ -356,6 +360,7 @@ function Invoke-RepoSecondPass {
     $null = git show-ref --verify --quiet ("refs/heads/" + $UsedBranch)
     if ($LASTEXITCODE -ne 0) {
       $result.Error = "Branch '$UsedBranch' does not exist locally."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
@@ -363,6 +368,7 @@ function Invoke-RepoSecondPass {
       $null = git checkout "$UsedBranch" 2>$null | Out-Null
       if ($LASTEXITCODE -ne 0) {
         $result.Error = "Cannot check out branch '$UsedBranch'."
+        Write-Error "    ERROR: $result.Error "
         return $result
       }
     }
@@ -376,23 +382,27 @@ function Invoke-RepoSecondPass {
       $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
       if ($LASTEXITCODE -ne 0) {
         $result.Error = "Failed to create tag '$tag'."
+        Write-Error "    ERROR: $result.Error "
         return $result
       }
       $null = git push origin "$tag" 2>$null | Out-Null
       if ($LASTEXITCODE -ne 0) {
         $result.Error = "Failed to push tag '$tag' to origin."
+        Write-Error "    ERROR: $result.Error "
         return $result
       }
     }
 
     if (-not (Ensure-GitVersionTool)) {
-      $result.Error = "GitVersion.Tool installation failed for recalc."
+      $result.Error = "GitVersion.Tool installation failed for recalculation."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
     $gv2 = Get-GitVersionJson
     if ($null -eq $gv2 -or [string]::IsNullOrWhiteSpace($gv2.FullSemVer)) {
       $result.Error = "GitVersion did not return a valid version after tagging."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
@@ -402,6 +412,7 @@ function Invoke-RepoSecondPass {
   }
   catch {
     $result.Error = $_.Exception.Message
+    Write-Error "    ERROR caught: $result.Error "
     return $result
   }
   finally {
@@ -412,7 +423,10 @@ function Invoke-RepoSecondPass {
           $null = git checkout "$initialBranch" 2>$null | Out-Null
         }
       }
-    } catch { }
+    } catch { 
+      $result.Error = $_.Exception.Message
+      Write-Error "    ERROR when restoring the branch: $result.Error "
+    }
     Set-Location $origLoc
   }
 }
