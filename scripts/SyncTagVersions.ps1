@@ -200,6 +200,8 @@ function Invoke-RepoFirstPass {
     [switch]$Pull
   )
 
+  Write-Host "  Checking repository at '$OrigPath' ..." -ForegroundColor DarkCyan
+
   $result = [PSCustomObject]@{
     OrigPath   = $OrigPath
     AbsPath    = $AbsPath
@@ -213,12 +215,13 @@ function Invoke-RepoFirstPass {
 
   $origLoc = Get-Location
   $initialBranch = $null
+  Write-Host "    Setting and validating dir: '$AbsPath' ..." -ForegroundColor DarkCyan
   try {
-    Write-Host "  Checking repository at '$OrigPath' ..." -ForegroundColor DarkGray
     Set-Location -LiteralPath $AbsPath
 
     if (-not (Is-GitRoot $AbsPath)) {
       $result.Error = "Not a valid Git repository root."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
@@ -230,6 +233,7 @@ function Invoke-RepoFirstPass {
     # - Else if Branch == main and master exists, fall back to master.
     # - Else error.
     $target = $Branch
+    Write-Host "    Checking out '$target' ..." -ForegroundColor DarkCyan
 
     $null = git show-ref --verify --quiet ("refs/heads/" + $target)
     $existsRequested = ($LASTEXITCODE -eq 0)
@@ -237,6 +241,7 @@ function Invoke-RepoFirstPass {
     if (-not $existsRequested -and $Branch -eq 'main') {
       $null = git show-ref --verify --quiet "refs/heads/master"
       if ($LASTEXITCODE -eq 0) {
+		Write-Host "    Checking out 'master' branch ..." -ForegroundColor DarkCyan
         $target = 'master'
         Write-Host "    Falling back from 'main' to 'master' for this repo." -ForegroundColor DarkYellow
       }
@@ -247,6 +252,7 @@ function Invoke-RepoFirstPass {
     $existsTarget = ($LASTEXITCODE -eq 0)
     if (-not $existsTarget) {
       $result.Error = "Target branch '$target' does not exist locally."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
@@ -271,23 +277,29 @@ function Invoke-RepoFirstPass {
       # No need to hard-fail on pull non-zero; GitVersion can still compute
     }
 
+	Write-Host "    Ensuring that GitVersion is available ..." -ForegroundColor DarkCyan
     if (-not (Ensure-GitVersionTool)) {
       $result.Error = "GitVersion.Tool installation failed."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
+    Write-Host "    Retrieving the current version ..." -ForegroundColor DarkCyan
     $gv = Get-GitVersionJson
     if ($null -eq $gv -or [string]::IsNullOrWhiteSpace($gv.FullSemVer)) {
       $result.Error = "GitVersion did not return a valid version."
+      Write-Error "    ERROR: $result.Error "
       return $result
     }
 
     $result.Version = $gv.FullSemVer
     $result.Success = $true
+    Write-Host "    Returning current version: $result.Version " -ForegroundColor DarkCyan
     return $result
   }
   catch {
     $result.Error = $_.Exception.Message
+    Write-Error "    ERROR caught: $result.Error "
     return $result
   }
   finally {
@@ -299,12 +311,126 @@ function Invoke-RepoFirstPass {
           $null = git checkout "$initialBranch" 2>$null | Out-Null
         }
       }
-    } catch { }
+    } catch {
+      $result.Error = $_.Exception.Message
+      Write-Error "    ERROR when restoring the branch: $result.Error "
+    }
     Set-Location $origLoc
   }
 }
 
-Invoke-RepoSecondPass
+function Invoke-RepoSecondPass {
+  <#
+    Validate root, checkout UsedBranch, apply tag if needed, push, recalc version.
+    Never throw; return result object.
+  #>
+  param(
+    [string]$OrigPath,
+    [string]$AbsPath,
+    [string]$UsedBranch,
+    [string]$TagToApply
+  )
+
+  $result = [PSCustomObject]@{
+    OrigPath   = $OrigPath
+    AbsPath    = $AbsPath
+    RepoName   = (Split-Path -Leaf $AbsPath)
+    Branch     = $UsedBranch
+    AppliedTag = $TagToApply
+    Recalc     = $null
+    Skipped    = $false
+    Error      = $null
+    Success    = $false
+  }
+
+  $origLoc = Get-Location
+  $initialBranch = $null
+  Write-Host "    Setting and validating dir: '$AbsPath' ..." -ForegroundColor DarkCyan
+  try {
+    Set-Location -LiteralPath $AbsPath
+
+    if (-not (Is-GitRoot $AbsPath)) {
+      $result.Error = "Not a valid Git repository root."
+      return $result
+    }
+
+    $initialBranch = (git rev-parse --abbrev-ref HEAD 2>$null).Trim()
+
+    # Ensure target branch exists locally before switching
+    $null = git show-ref --verify --quiet ("refs/heads/" + $UsedBranch)
+    if ($LASTEXITCODE -ne 0) {
+      $result.Error = "Branch '$UsedBranch' does not exist locally."
+      Write-Error "    ERROR: $result.Error "
+      return $result
+    }
+
+    if ($initialBranch -ne $UsedBranch) {
+      $null = git checkout "$UsedBranch" 2>$null | Out-Null
+      if ($LASTEXITCODE -ne 0) {
+        $result.Error = "Cannot check out branch '$UsedBranch'."
+        Write-Error "    ERROR: $result.Error "
+        return $result
+      }
+    }
+
+    $tag = $TagToApply
+    if (Test-TagExistsLocal $tag -or Test-TagExistsRemote $tag) {
+      $result.Skipped = $true
+      Write-Host ("  [{0}] tag '{1}' already exists (local or remote) - skipping." -f $result.RepoName, $tag) -ForegroundColor DarkYellow
+    } else {
+      Write-Host ("  [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
+      $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
+      if ($LASTEXITCODE -ne 0) {
+        $result.Error = "Failed to create tag '$tag'."
+        Write-Error "    ERROR: $result.Error "
+        return $result
+      }
+      $null = git push origin "$tag" 2>$null | Out-Null
+      if ($LASTEXITCODE -ne 0) {
+        $result.Error = "Failed to push tag '$tag' to origin."
+        Write-Error "    ERROR: $result.Error "
+        return $result
+      }
+    }
+
+    if (-not (Ensure-GitVersionTool)) {
+      $result.Error = "GitVersion.Tool installation failed for recalculation."
+      Write-Error "    ERROR: $result.Error "
+      return $result
+    }
+
+    $gv2 = Get-GitVersionJson
+    if ($null -eq $gv2 -or [string]::IsNullOrWhiteSpace($gv2.FullSemVer)) {
+      $result.Error = "GitVersion did not return a valid version after tagging."
+      Write-Error "    ERROR: $result.Error "
+      return $result
+    }
+
+    $result.Recalc  = $gv2.FullSemVer
+    $result.Success = $true
+    return $result
+  }
+  catch {
+    $result.Error = $_.Exception.Message
+    Write-Error "    ERROR caught: $result.Error "
+    return $result
+  }
+  finally {
+    try {
+      if ($initialBranch) {
+        $curr = (git rev-parse --abbrev-ref HEAD 2>$null).Trim()
+        if ($curr -and ($curr -ne $initialBranch)) {
+          $null = git checkout "$initialBranch" 2>$null | Out-Null
+        }
+      }
+    } catch { 
+      $result.Error = $_.Exception.Message
+      Write-Error "    ERROR when restoring the branch: $result.Error "
+    }
+    Set-Location $origLoc
+  }
+}
+
 # ---------- Param echo / preprocessing ----------
 
 # Effective increments: integers override switches; switches imply +1
@@ -454,10 +580,12 @@ for ($i=0; $i -lt $rows.Count; $i++) {
   }
 
   if ($already) {
-    Write-Host ("  [{0}] version already matches '{1}' - skipping tag." -f $row.RepoName, $finalTag) -ForegroundColor DarkYellow
-    $row.FinalTag = $finalTag
-    $row.Skipped2 = $true
-    continue
+    # Remark: even if the version matches, the tag might not exist (locally or remotely).
+    # So we report the match but do NOT skip; we still attempt to apply the tag.
+    Write-Host ("  [{0}] version already matches '{1}', still attempting to apply the tag as this does not mean the tag exists." -f $row.RepoName, $finalTag) -ForegroundColor DarkYellow
+    # $row.FinalTag = $finalTag
+    # $row.Skipped2 = $true
+    # continue
   }
 
   $used = $row.Branch
