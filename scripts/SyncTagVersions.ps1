@@ -189,8 +189,9 @@ function Test-TagExistsRemote {
 
 function Invoke-RepoFirstPass {
   <#
-    Validate root, checkout branch (fallback to master), optional pull,
-    compute GitVersion's FullSemVer. Never throw; return result object.
+    Validate root, select target branch (fallback to master if main missing),
+    optional pull, compute GitVersion's FullSemVer.
+    Never throw; return result object.
   #>
   param(
     [string]$OrigPath,
@@ -224,43 +225,59 @@ function Invoke-RepoFirstPass {
       return $result
     }
 
+    # What branch are we on now?
     $initialBranch = (git rev-parse --abbrev-ref HEAD 2>$null).Trim()
 
-    # checkout target
+    # Decide which branch to use:
+    # - If requested Branch exists locally, use it.
+    # - Else if Branch == main and master exists, fall back to master.
+    # - Else error.
     $target = $Branch
-    $checkoutOk = $true
-    Write-Host "    Checking out '$target' ..." -ForegroundColor DarkCyan
-    try { git checkout "$target" 2>$null | Out-Null } catch { $checkoutOk = $false }
+Write-Host "    Checking out '$target' ..." -ForegroundColor DarkCyan
 
-    # fallback to master if requested main is missing
-    if (-not $checkoutOk -and $Branch -eq 'main') {
-      Write-Host "    Fallback from 'main' to 'master' branch ..." -ForegroundColor DarkCyan
-      git rev-parse --verify --quiet "refs/heads/master" 2>$null | Out-Null
+    $null = git show-ref --verify --quiet ("refs/heads/" + $target)
+    $existsRequested = ($LASTEXITCODE -eq 0)
+
+    if (-not $existsRequested -and $Branch -eq 'main') {
+      $null = git show-ref --verify --quiet "refs/heads/master"
       if ($LASTEXITCODE -eq 0) {
-        try {
-          Write-Host "    Checking out 'master' branch ..." -ForegroundColor DarkCyan
-          git checkout master 2>$null | Out-Null
-          $target = 'master'
-          $checkoutOk = $true
-        } catch { $checkoutOk = $false }
+		Write-Host "    Checking out 'master' branch ..." -ForegroundColor DarkCyan
+        $target = 'master'
+        Write-Host "    Falling back from 'main' to 'master' for this repo." -ForegroundColor DarkYellow
       }
     }
 
-    if (-not $checkoutOk) {
-      $result.Error = "Cannot check out branch '$Branch' (no fallback)."
+    # Re-check existence for the decided target
+    $null = git show-ref --verify --quiet ("refs/heads/" + $target)
+    $existsTarget = ($LASTEXITCODE -eq 0)
+    if (-not $existsTarget) {
+      $result.Error = "Target branch '$target' does not exist locally."
       Write-Error "    ERROR: $result.Error "
       return $result
+    }
+
+    # Switch only if needed
+    if ($initialBranch -ne $target) {
+      Write-Host "    Checking out '$target' ..." -ForegroundColor DarkCyan
+      $null = git checkout "$target" 2>$null | Out-Null
+      if ($LASTEXITCODE -ne 0) {
+        $result.Error = "Failed to checkout branch '$target'."
+        return $result
+      }
+    } else {
+      Write-Host "    Already on '$target'." -ForegroundColor DarkGray
     }
 
     $result.UsedBranch = $target
 
     if ($Pull) {
-      Write-Host ("    [{0}] pulling latest on '{1}'..." -f $result.RepoName, $target) -ForegroundColor DarkCyan
-      git fetch --tags origin 2>$null | Out-Null
-      git pull --ff-only 2>$null | Out-Null
+      Write-Host ("    Pulling latest on '{0}' ..." -f $target) -ForegroundColor DarkCyan
+      $null = git fetch --tags origin 2>$null | Out-Null
+      $null = git pull --ff-only 2>$null | Out-Null
+      # No need to hard-fail on pull non-zero; GitVersion can still compute
     }
 
-    Write-Host "    Ensuring that GitVersion is available ..." -ForegroundColor DarkCyan
+	Write-Host "    Ensuring that GitVersion is available ..." -ForegroundColor DarkCyan
     if (-not (Ensure-GitVersionTool)) {
       $result.Error = "GitVersion.Tool installation failed."
       Write-Error "    ERROR: $result.Error "
@@ -282,14 +299,17 @@ function Invoke-RepoFirstPass {
   }
   catch {
     $result.Error = $_.Exception.Message
-      Write-Error "    ERROR caught: $result.Error "
+    Write-Error "    ERROR caught: $result.Error "
     return $result
   }
   finally {
+    # Restore original branch and directory
     try {
       if ($initialBranch) {
         $curr = (git rev-parse --abbrev-ref HEAD 2>$null).Trim()
-        if ($curr -and ($curr -ne $initialBranch)) { git checkout "$initialBranch" 2>$null | Out-Null }
+        if ($curr -and ($curr -ne $initialBranch)) {
+          $null = git checkout "$initialBranch" 2>$null | Out-Null
+        }
       }
     } catch { }
     Set-Location $origLoc
@@ -332,18 +352,37 @@ function Invoke-RepoSecondPass {
 
     $initialBranch = (git rev-parse --abbrev-ref HEAD 2>$null).Trim()
 
-    try { git checkout "$UsedBranch" 2>$null | Out-Null } catch {
-      $result.Error = "Cannot check out branch '$UsedBranch'."
+    # Ensure target branch exists locally before switching
+    $null = git show-ref --verify --quiet ("refs/heads/" + $UsedBranch)
+    if ($LASTEXITCODE -ne 0) {
+      $result.Error = "Branch '$UsedBranch' does not exist locally."
       return $result
+    }
+
+    if ($initialBranch -ne $UsedBranch) {
+      $null = git checkout "$UsedBranch" 2>$null | Out-Null
+      if ($LASTEXITCODE -ne 0) {
+        $result.Error = "Cannot check out branch '$UsedBranch'."
+        return $result
+      }
     }
 
     $tag = $TagToApply
     if (Test-TagExistsLocal $tag -or Test-TagExistsRemote $tag) {
       $result.Skipped = $true
+      Write-Host ("  [{0}] tag '{1}' already exists (local or remote) - skipping." -f $result.RepoName, $tag) -ForegroundColor DarkYellow
     } else {
-      Write-Host ("  [{0}] tagging '{1}' with '{2}'..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
-      git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
-      git push origin "$tag" 2>$null | Out-Null
+      Write-Host ("  [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
+      $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
+      if ($LASTEXITCODE -ne 0) {
+        $result.Error = "Failed to create tag '$tag'."
+        return $result
+      }
+      $null = git push origin "$tag" 2>$null | Out-Null
+      if ($LASTEXITCODE -ne 0) {
+        $result.Error = "Failed to push tag '$tag' to origin."
+        return $result
+      }
     }
 
     if (-not (Ensure-GitVersionTool)) {
@@ -369,7 +408,9 @@ function Invoke-RepoSecondPass {
     try {
       if ($initialBranch) {
         $curr = (git rev-parse --abbrev-ref HEAD 2>$null).Trim()
-        if ($curr -and ($curr -ne $initialBranch)) { git checkout "$initialBranch" 2>$null | Out-Null }
+        if ($curr -and ($curr -ne $initialBranch)) {
+          $null = git checkout "$initialBranch" 2>$null | Out-Null
+        }
       }
     } catch { }
     Set-Location $origLoc
