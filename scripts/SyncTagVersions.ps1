@@ -566,6 +566,8 @@ for ($i=0; $i -lt $rows.Count; $i++) {
   }
 
   if ($already) {
+    # Remark: even if the version matches, the tag might not exist (locally or remotely).
+    # So we report the match but do NOT skip; we still attempt to apply the tag.
     Write-Host ("  [{0}] version already matches '{1}', still attempting to apply the tag as this does not mean the tag exists." -f $row.RepoName, $finalTag) -ForegroundColor DarkYellow
     # $row.FinalTag = $finalTag
     # $row.Skipped2 = $true
