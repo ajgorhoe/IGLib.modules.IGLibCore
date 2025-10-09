@@ -1,7 +1,8 @@
 <#
 .SYNOPSIS
   Tags a branch (default: main) with a version computed by GitVersion, optionally
-  bumping major/minor/patch by 1 or by an arbitrary amount.
+  bumping major/minor/patch by 1 or by an arbitrary amount, and optionally
+  re-applying a prerelease label after a bump.
 
 .DESCRIPTION
   - If -Directory is omitted, the script runs in its own folder and only requires
@@ -12,6 +13,7 @@
   - Supports bump switches (-BumpMajor/-BumpMinor/-BumpPatch) to bump by 1.
   - Supports increment integers (-IncrementMajor/-IncrementMinor/-IncrementPatch) to bump
     by an arbitrary amount; these override the switches if > 0.
+  - If a bump occurs and -PreReleaseLabel is supplied, the tag becomes X.Y.Z-<label>.1.
   - Restores the original working directory AND the originally checked-out branch
     (if the script switched branches), even on error.
 
@@ -46,29 +48,22 @@
   Integer (default 0). If > 0, bumps PATCH by that amount.
   Overrides -BumpPatch.
 
-.EXAMPLE
-  .\TagVersion.ps1
-  # Tags the current repo’s 'main' with GitVersion’s FullSemVer.
-
-.EXAMPLE
-  .\TagVersion.ps1 -Pull
-  # Same as above, but fetches and pulls first.
-
-.EXAMPLE
-  .\TagVersion.ps1 -Directory ..\..\my-repo -Branch release
-  # Runs in the specified repo root, tagging the 'release' branch.
+.PARAMETER PreReleaseLabel
+  Optional prerelease label to apply **after** a bump (e.g., 'beta', 'rc', 'dev', 'feature.x').
+  Resulting tag is `X.Y.Z-<label>.1`. Must match `[0-9A-Za-z\-\.]+`.
+  Ignored if no bump occurs (in that case we tag with GitVersion's FullSemVer as-is).
 
 .EXAMPLE
   .\TagVersion.ps1 -BumpPatch
-  # Uses GitVersion’s SemVer base, bumps PATCH by 1, and tags a stable X.Y.Z.
+  # From 2.0.44[-something], tags v2.0.45 (stable)
 
 .EXAMPLE
-  .\TagVersion.ps1 -IncrementMinor 2
-  # Bumps MINOR by 2 (resets patch to 0) and tags a stable X.(Y+2).0.
+  .\TagVersion.ps1 -BumpMinor -PreReleaseLabel rc
+  # From 2.0.44[-something], tags v2.1.0-rc.1
 
-.NOTES
-  Requires Git, .NET SDK, and GitVersion.Tool. If GitVersion.Tool is not present
-  in the repo, the script will create a local tool manifest and install it.
+.EXAMPLE
+  .\TagVersion.ps1 -IncrementMinor 2 -PreReleaseLabel feature.widgets
+  # From 2.0.44[-something], tags v2.2.0-feature.widgets.1
 #>
 
 [CmdletBinding()]
@@ -81,7 +76,8 @@ param(
   [switch] $BumpPatch,
   [int] $IncrementMajor = 0,
   [int] $IncrementMinor = 0,
-  [int] $IncrementPatch = 0
+  [int] $IncrementPatch = 0,
+  [string] $PreReleaseLabel
 )
 
 $ErrorActionPreference = 'Stop'
@@ -128,8 +124,7 @@ function Assert-GitRepository {
     if (-not $repoRoot) { throw "Could not determine repository toplevel for '$Path'." }
     $normPath = Normalize-PathCanonical $Path
     if (-not [String]::Equals($repoRoot, $normPath, [System.StringComparison]::OrdinalIgnoreCase)) {
-      throw "Path mismatch: repo toplevel is '$repoRoot' but script targeted '$normPath'."
-    }
+      throw "Path mismatch: repo toplevel is '$repoRoot' but script targeted '$normPath'." }
   }
 }
 
@@ -236,7 +231,6 @@ try {
   $effMaj = $IncrementMajor
   $effMin = $IncrementMinor
   $effPat = $IncrementPatch
-
   if ($BumpMajor.IsPresent -and $effMaj -le 0) { $effMaj = 1 }
   if ($BumpMinor.IsPresent -and $effMin -le 0) { $effMin = 1 }
   if ($BumpPatch.IsPresent -and $effPat -le 0) { $effPat = 1 }
@@ -245,14 +239,29 @@ try {
   $bumped = Compute-BumpedVersion -SemVerBase $gv.SemVer `
              -IncrementMajor $effMaj -IncrementMinor $effMin -IncrementPatch $effPat
 
+  # Validate prerelease label (if provided)
+  if (-not [string]::IsNullOrWhiteSpace($PreReleaseLabel)) {
+    if ($PreReleaseLabel -notmatch '^[0-9A-Za-z\-.]+$') {
+      throw "Invalid -PreReleaseLabel '$PreReleaseLabel'. Allowed: letters, digits, '-' and '.'"
+    }
+  }
+
   if ($bumped) {
-    $versionToTag = $bumped
-    $tagMessage   = "Release $versionToTag (bumped from $($gv.FullSemVer))"
+    # If we bumped, optionally apply -PreReleaseLabel
+    if (-not [string]::IsNullOrWhiteSpace($PreReleaseLabel)) {
+      $versionToTag = "$bumped-$PreReleaseLabel.1"
+      $tagMessage   = "Release $versionToTag (bumped from $($gv.FullSemVer))"
+    } else {
+      $versionToTag = $bumped
+      $tagMessage   = "Release $versionToTag (bumped from $($gv.FullSemVer))"
+    }
   } else {
+    # No bump requested → tag FullSemVer exactly
     $versionToTag = $gv.FullSemVer
     $tagMessage   = "Release $versionToTag"
   }
 
+  # Normalize tag with 'v' prefix
   $tagName = if ($versionToTag -match '^[vV]\d') { $versionToTag } else { "v$versionToTag" }
 
   if (Test-TagExistsLocal $tagName)  { throw "Tag '$tagName' already exists locally. Aborting." }
@@ -280,7 +289,7 @@ finally {
         git checkout "$initialBranch" | Out-Null
       }
     }
-  } catch { } # best-effort; don't hide earlier exceptions
+  } catch { } # best-effort
 
   # Restore caller's directory
   Set-Location $orig
