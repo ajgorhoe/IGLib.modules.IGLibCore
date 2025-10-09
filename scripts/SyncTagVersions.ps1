@@ -378,8 +378,8 @@ function Invoke-RepoSecondPass {
       $result.Skipped = $true
       Write-Host ("  [{0}] tag '{1}' already exists (local or remote) - skipping." -f $result.RepoName, $tag) -ForegroundColor DarkYellow
     } else {
-      Write-Host ("  [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
       try {
+      Write-Host ("  [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
         $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
         if ($LASTEXITCODE -ne 0) {
           $result.Error = "Failed to create tag '$tag'."
@@ -408,12 +408,14 @@ function Invoke-RepoSecondPass {
       }
     }
 
+    Write-Host "    Ensure GitVersion is available..." -ForegroundColor DarkCyan
     if (-not (Ensure-GitVersionTool)) {
       $result.Error = "GitVersion.Tool installation failed for recalculation."
       Write-Error "    ERROR: $result.Error "
       return $result
     }
 
+    Write-Host "    Re-calculating version information..." -ForegroundColor DarkCyan
     $gv2 = Get-GitVersionJson
     if ($null -eq $gv2 -or [string]::IsNullOrWhiteSpace($gv2.FullSemVer)) {
       $result.Error = "GitVersion did not return a valid version after tagging."
