@@ -233,7 +233,7 @@ function Invoke-RepoFirstPass {
     try { git checkout "$target" 2>$null | Out-Null } catch { $checkoutOk = $false }
 
     # fallback to master if requested main is missing
-    if (-not $checkoutOk -and $Branch -ne 'main') {
+    if (-not $checkoutOk -and $Branch -eq 'main') {
       Write-Host "    Fallback from 'main' to 'master' branch ..." -ForegroundColor DarkCyan
       git rev-parse --verify --quiet "refs/heads/master" 2>$null | Out-Null
       if ($LASTEXITCODE -eq 0) {
