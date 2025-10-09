@@ -65,7 +65,7 @@
   .\TagVersion.ps1 -IncrementMinor 2 -PreReleaseLabel feature.widgets
   # From 2.0.44[-something], tags v2.2.0-feature.widgets.1
 #>
- 
+
 [CmdletBinding()]
 param(
   [string] $Directory,
