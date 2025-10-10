@@ -104,6 +104,19 @@ function Write-ErrorReport {
     }
 }
 
+# Invoke a native command and return structured result (PS 5.1 safe)
+function Invoke-Native {
+  param(
+    [Parameter(Mandatory)][string]$FilePath,
+    [string[]]$ArgumentList
+  )
+  $output = & $FilePath @ArgumentList 2>&1
+  [PSCustomObject]@{
+    Output = $output
+    ExitCode = $LASTEXITCODE
+  }
+}
+
 function Resolve-CanonicalPath {
   param([string]$PathText)
   if ([string]::IsNullOrWhiteSpace($PathText)) { return $PathText }
@@ -388,40 +401,48 @@ function Invoke-RepoSecondPass {
     $tag = $TagToApply
     if (Test-TagExistsLocal $tag -or Test-TagExistsRemote $tag) {
       $result.Skipped = $true
-      Write-Host ("  [{0}] tag '{1}' already exists (local or remote) - skipping." -f $result.RepoName, $tag) -ForegroundColor DarkYellow
+      Write-Host ("    [{0}] tag '{1}' already exists (local or remote) - skipping." -f $result.RepoName, $tag) -ForegroundColor DarkYellow
     } else {
-      try {
+      # try {
         Write-Host ("  [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
-        $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
-        if ($LASTEXITCODE -ne 0) {
+        # $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
+        # if ($LASTEXITCODE -ne 0) { ... }
+        
+        # Execute: git tag -a "$tag" -m "Sync release $tag"
+        $r = Invoke-Native git @('tag', '-a', "$tag", '-m', "Sync version $tag")
+        if ($r.ExitCode -ne 0) {
           $result.Error = "Failed to create tag '$tag'."
-          Write-ErrorReport "    ERROR: $result.Error "
+          Write-ErrorReport "    ERROR creating tag: $result.Error "
           return $result
         } else {
           Write-Host "    ... tagging performed successfully." -ForegroundColor DarkCyan
         }
-      }
-      catch {
-        $result.Error = $_.Exception.Message
-        Write-ErrorReport "    ERROR caught when creating tag: $result.Error "
-        return $result
-      }
-      try {
+      # }
+      # catch {
+      #   $result.Error = $_.Exception.Message
+      #   Write-ErrorReport "    ERROR caught when creating tag: $result.Error "
+      #   return $result
+      # }
+      # try {
         Write-Host ("  [{0}] pushing tag '{1}' to origin ..." -f $result.RepoName, $tag) -ForegroundColor Green
-        $null = git push origin "$tag" 2>$null | Out-Null
-        if ($LASTEXITCODE -ne 0) {
+        # $null = git push origin "$tag" 2>$null | Out-Null
+        # if ($LASTEXITCODE -ne 0) {
+        
+        # Execute: git push origin "$tag"
+        $r = Invoke-Native git @('push', 'origin')
+        if ($r.ExitCode -ne 0) {
           $result.Error = "Failed to push tag '$tag' to origin."
-          Write-ErrorReport "    ERROR: $result.Error "
+          Write-ErrorReport "    ERROR pushing tag: $result.Error "
           return $result
         } else {
           Write-Host "    ... tag pushed successfully." -ForegroundColor DarkCyan
         }
-      }
-      catch {
-        $result.Error = $_.Exception.Message
-        Write-ErrorReport "    ERROR caught when pushing the tag to origin: $result.Error "
-        return $result
-      }
+      # }
+      # catch {
+      #   $result.Error = $_.Exception.Message
+      #   Write-ErrorReport "    ERROR caught when pushing the tag to origin: $result.Error "
+      #   return $result
+      # }
     }
 
     Write-Host "    Ensure that GitVersion is available..." -ForegroundColor DarkCyan
