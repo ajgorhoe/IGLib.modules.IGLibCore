@@ -622,7 +622,7 @@ for ($i=0; $i -lt $rows.Count; $i++) {
     }
   }
   catch {
-    Report-Error "ERROR caught in Invoke-RepoSecondPass: $($_.Exception.Message)"
+    Write-Error "ERROR caught in Invoke-RepoSecondPass: $($_.Exception.Message)"
     continue
   }
 
