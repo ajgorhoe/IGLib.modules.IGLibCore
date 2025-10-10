@@ -80,7 +80,20 @@ param(
   [string] $PreReleaseLabel
 )
 
-$ErrorActionPreference = 'Stop'
+# We don't want Write-Error to stop the script, but we want to see errors;
+# use default ('Continue'):
+$ErrorActionPreference = 'Continue' # Never stop; handle errors manually
+
+
+# Writes a red message; if -Throw switch is on, also throws exception 
+# with this message.
+function Write-ErrorReport {
+    param([string]$Message, [switch]$Throw)
+    Write-Host "ERROR: $Message" -ForegroundColor Red
+    if ($Throw) {
+        throw $Message
+    }
+}
 
 function Resolve-TargetDirectory {
   param([string]$Dir)
@@ -276,8 +289,8 @@ try {
   Write-Host "Done. Created and pushed tag: $tagName" -ForegroundColor Green
 }
 catch {
-  Write-Error $_.Exception.Message
-  throw
+  # In case of error, write message in red and re-throw:
+  Write-ErrorReport $_.Exception.Message -Throw
 }
 finally {
   # Restore original branch if we switched and still in a git repo

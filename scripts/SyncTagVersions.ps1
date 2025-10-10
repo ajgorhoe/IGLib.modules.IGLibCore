@@ -56,6 +56,10 @@
   occurred, final tag becomes X.Y.Z-<label>.1. Allowed chars: [0-9A-Za-z-.].
   Ignored if no bump occurs.
 
+
+.PARAMETER DryRun
+  If set, performs all operations except actually creating or pushing tags.
+
 .EXAMPLE
   .\SyncTagVersions.ps1 -RepoDirs ..\RepoA, ..\RepoB
   # Inspects versions on 'main' (fallback to 'master'), picks maximum, tags both.
@@ -85,7 +89,9 @@ param(
   [int] $IncrementMinor = 0,
   [int] $IncrementPatch = 0,
 
-  [string] $PreReleaseLabel
+  [string] $PreReleaseLabel,
+
+  [switch] $DryRun
 )
 
 # We don't want Write-Error to stop the script, but we want to see errors;
@@ -403,7 +409,7 @@ function Invoke-RepoSecondPass {
       $result.Skipped = $true
       Write-Host ("    [{0}] tag '{1}' already exists (local or remote) - skipping." -f $result.RepoName, $tag) -ForegroundColor DarkYellow
     } else {
-        Write-Host ("  [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
+        Write-Host ("    [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
         # Execute: git tag -a "$tag" -m "Sync release $tag"
         $r = Invoke-Native git @('tag', '-a', "$tag", '-m', "Sync version $tag")
         if ($r.ExitCode -ne 0) {
@@ -411,9 +417,9 @@ function Invoke-RepoSecondPass {
           Write-ErrorReport "    ERROR creating tag: $result.Error "
           return $result
         } else {
-          Write-Host "    ... tagging performed successfully." -ForegroundColor DarkCyan
+          Write-Host "      ... tagging performed successfully." -ForegroundColor DarkCyan
         }
-        Write-Host ("  [{0}] pushing tag '{1}' to origin ..." -f $result.RepoName, $tag) -ForegroundColor Green
+        Write-Host ("    [{0}] pushing tag '{1}' to origin ..." -f $result.RepoName, $tag) -ForegroundColor Green
         # Execute: git push origin "$tag"
         $r = Invoke-Native git @('push', 'origin')
         if ($r.ExitCode -ne 0) {
@@ -421,7 +427,7 @@ function Invoke-RepoSecondPass {
           Write-ErrorReport "    ERROR pushing tag: $result.Error "
           return $result
         } else {
-          Write-Host "    ... tag pushed successfully." -ForegroundColor DarkCyan
+          Write-Host "      ... tag pushed successfully." -ForegroundColor DarkCyan
         }
     }
 
@@ -594,65 +600,71 @@ Write-Host ("Final synchronized tag to apply: {0}" -f $finalTag) -ForegroundColo
 
 # ---------- Pass 2 ----------
 
-Write-Host "`n--- Pass 2: apply tag to all repos ---" -ForegroundColor Cyan
-for ($i=0; $i -lt $rows.Count; $i++) {
-  $row = $rows[$i]
-  Write-Host ("[{0}/{1}] {2}" -f ($i+1), $rows.Count, $row.OrigPath) -ForegroundColor DarkCyan
+if ($DryRun.IsPresent) {
+  Write-Host "`n`nDryRun is set; no tags will be created or pushed.`n" -ForegroundColor Yellow
+} else {
 
-  # Determine what tag pass 1 implied for this repo (normalize with 'v')
-  $rowFirstTag = $null
-  if (-not [string]::IsNullOrWhiteSpace($row.Version1)) {
-    $rowFirstTag = $row.Version1
-    if ($rowFirstTag -notmatch '^[vV]\d') { $rowFirstTag = "v" + $rowFirstTag }
-  }
+  Write-Host "`n--- Pass 2: apply tag to all repos ---" -ForegroundColor Cyan
+  for ($i=0; $i -lt $rows.Count; $i++) {
+    $row = $rows[$i]
+    Write-Host ("[{0}/{1}] {2}" -f ($i+1), $rows.Count, $row.OrigPath) -ForegroundColor DarkCyan
 
-  $already = $false
-  if (-not [string]::IsNullOrWhiteSpace($rowFirstTag)) {
-    if ([String]::Equals($rowFirstTag, $finalTag, [StringComparison]::OrdinalIgnoreCase)) {
-      $already = $true
+    # Determine what tag pass 1 implied for this repo (normalize with 'v')
+    $rowFirstTag = $null
+    if (-not [string]::IsNullOrWhiteSpace($row.Version1)) {
+      $rowFirstTag = $row.Version1
+      if ($rowFirstTag -notmatch '^[vV]\d') { $rowFirstTag = "v" + $rowFirstTag }
     }
-  }
 
-  if ($already) {
-    # Remark: even if the version matches, the tag might not exist (locally or remotely).
-    # So we report the match but do NOT skip; we still attempt to apply the tag.
-    Write-Host ("  [{0}] version already matches '{1}', still attempting to apply the tag." -f $row.RepoName, $finalTag) -ForegroundColor DarkYellow
-    # $row.FinalTag = $finalTag
-    # $row.Skipped2 = $true
-    # continue
-  }
+    $already = $false
+    if (-not [string]::IsNullOrWhiteSpace($rowFirstTag)) {
+      if ([String]::Equals($rowFirstTag, $finalTag, [StringComparison]::OrdinalIgnoreCase)) {
+        $already = $true
+      }
+    }
 
-  $used = $row.Branch
-  if (-not [string]::IsNullOrWhiteSpace($row.UsedBranch)) { $used = $row.UsedBranch }
+    if ($already) {
+      # Remark: even if the version matches, the tag might not exist (locally or remotely).
+      # So we report the match but do NOT skip; we still attempt to apply the tag.
+      Write-Host ("  [{0}] version already matches '{1}', still attempting to apply the tag." -f $row.RepoName, $finalTag) -ForegroundColor DarkYellow
+      # $row.FinalTag = $finalTag
+      # $row.Skipped2 = $true
+      # continue
+    }
 
-  try {
-    $r2 = Invoke-RepoSecondPass -OrigPath $row.OrigPath -AbsPath $row.AbsPath -UsedBranch $used -TagToApply $finalTag
-    if ($null -eq $r2) {
-      $row.Error2 = "Unknown error (null result)"
+    $used = $row.Branch
+    if (-not [string]::IsNullOrWhiteSpace($row.UsedBranch)) { $used = $row.UsedBranch }
+
+    try {
+      $r2 = Invoke-RepoSecondPass -OrigPath $row.OrigPath -AbsPath $row.AbsPath -UsedBranch $used -TagToApply $finalTag
+      if ($null -eq $r2) {
+        $row.Error2 = "Unknown error (null result)"
+        continue
+      }
+    }
+    catch {
+      Write-ErrorReport "ERROR caught in Invoke-RepoSecondPass: $($_.Exception.Message)"
       continue
     }
-  }
-  catch {
-    Write-ErrorReport "ERROR caught in Invoke-RepoSecondPass: $($_.Exception.Message)"
-    continue
+
+    $row.FinalTag = $finalTag
+    $row.Skipped2 = $r2.Skipped
+    if ($r2.Success) { $row.Version2 = $r2.Recalc } else { $row.Error2 = $r2.Error }
   }
 
-  $row.FinalTag = $finalTag
-  $row.Skipped2 = $r2.Skipped
-  if ($r2.Success) { $row.Version2 = $r2.Recalc } else { $row.Error2 = $r2.Error }
-}
+  Write-Host "`n=== Survey after Pass 2 (tag results) ===" -ForegroundColor Cyan
+  foreach ($row in $rows) {
+    $v1 = "''"; if (-not [string]::IsNullOrWhiteSpace($row.Version1)) { $v1 = "'" + $row.Version1 + "'" }
+    $tagOut = "''"; if (-not [string]::IsNullOrWhiteSpace($row.FinalTag)) { $tagOut = "'" + $row.FinalTag + "'" }
+    $v2 = "''"; if (-not [string]::IsNullOrWhiteSpace($row.Version2)) { $v2 = "'" + $row.Version2 + "'" }
+    $used = $row.Branch; if (-not [string]::IsNullOrWhiteSpace($row.UsedBranch)) { $used = $row.UsedBranch }
+    $flag = ""
+    if ($row.Skipped2) { $flag = " (skipped)" }
+    elseif (-not [string]::IsNullOrWhiteSpace($row.Error2)) { $flag = " (error)" }
+    Write-Host ("{0,-25}  Orig='{1}'  Branch={2}  V1={3}  Tag={4}  V2={5}{6}" -f $row.RepoName, $row.OrigPath, $used, $v1, $tagOut, $v2, $flag)
+    if (-not [string]::IsNullOrWhiteSpace($row.Error1)) { Write-Host ("  Pass1 error: {0}" -f $row.Error1) -ForegroundColor DarkRed }
+    if (-not [string]::IsNullOrWhiteSpace($row.Error2)) { Write-Host ("  Pass2 error: {0}" -f $row.Error2) -ForegroundColor DarkRed }
+  }
 
-Write-Host "`n=== Survey after Pass 2 (tag results) ===" -ForegroundColor Cyan
-foreach ($row in $rows) {
-  $v1 = "''"; if (-not [string]::IsNullOrWhiteSpace($row.Version1)) { $v1 = "'" + $row.Version1 + "'" }
-  $tagOut = "''"; if (-not [string]::IsNullOrWhiteSpace($row.FinalTag)) { $tagOut = "'" + $row.FinalTag + "'" }
-  $v2 = "''"; if (-not [string]::IsNullOrWhiteSpace($row.Version2)) { $v2 = "'" + $row.Version2 + "'" }
-  $used = $row.Branch; if (-not [string]::IsNullOrWhiteSpace($row.UsedBranch)) { $used = $row.UsedBranch }
-  $flag = ""
-  if ($row.Skipped2) { $flag = " (skipped)" }
-  elseif (-not [string]::IsNullOrWhiteSpace($row.Error2)) { $flag = " (error)" }
-  Write-Host ("{0,-25}  Orig='{1}'  Branch={2}  V1={3}  Tag={4}  V2={5}{6}" -f $row.RepoName, $row.OrigPath, $used, $v1, $tagOut, $v2, $flag)
-  if (-not [string]::IsNullOrWhiteSpace($row.Error1)) { Write-Host ("  Pass1 error: {0}" -f $row.Error1) -ForegroundColor DarkRed }
-  if (-not [string]::IsNullOrWhiteSpace($row.Error2)) { Write-Host ("  Pass2 error: {0}" -f $row.Error2) -ForegroundColor DarkRed }
-}
+} # if not DryRun
 Write-Host "===================== SyncTagVersions completed.`n" -ForegroundColor Cyan
