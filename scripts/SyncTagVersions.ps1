@@ -94,8 +94,15 @@ $ErrorActionPreference = 'Continue' # Never stop; handle errors manually
 
 # ---------- Utility helpers ----------
 
-
-
+# Writes a red message; if -Throw switch is on, also throws exception 
+# with this message.
+function Write-ErrorReport {
+    param([string]$Message, [switch]$Throw)
+    Write-Host "ERROR: $Message" -ForegroundColor Red
+    if ($Throw) {
+        throw $Message
+    }
+}
 
 function Resolve-CanonicalPath {
   param([string]$PathText)
@@ -226,7 +233,7 @@ function Invoke-RepoFirstPass {
 
     if (-not (Is-GitRoot $AbsPath)) {
       $result.Error = "Not a valid Git repository root."
-      Write-Error "    ERROR: $result.Error "
+      Write-ErrorReport "    ERROR: $result.Error "
       return $result
     }
 
@@ -257,7 +264,7 @@ function Invoke-RepoFirstPass {
     $existsTarget = ($LASTEXITCODE -eq 0)
     if (-not $existsTarget) {
       $result.Error = "Target branch '$target' does not exist locally."
-      Write-Error "    ERROR: $result.Error "
+      Write-ErrorReport "    ERROR: $result.Error "
       return $result
     }
 
@@ -285,7 +292,7 @@ function Invoke-RepoFirstPass {
 	Write-Host "    Ensuring that GitVersion is available ..." -ForegroundColor DarkCyan
     if (-not (Ensure-GitVersionTool)) {
       $result.Error = "GitVersion.Tool installation failed."
-      Write-Error "    ERROR: $result.Error "
+      Write-ErrorReport "    ERROR: $result.Error "
       return $result
     }
 
@@ -293,7 +300,7 @@ function Invoke-RepoFirstPass {
     $gv = Get-GitVersionJson
     if ($null -eq $gv -or [string]::IsNullOrWhiteSpace($gv.FullSemVer)) {
       $result.Error = "GitVersion did not return a valid version."
-      Write-Error "    ERROR: $result.Error "
+      Write-ErrorReport "    ERROR: $result.Error "
       return $result
     }
 
@@ -304,7 +311,7 @@ function Invoke-RepoFirstPass {
   }
   catch {
     $result.Error = $_.Exception.Message
-    Write-Error "    ERROR caught: $result.Error "
+    Write-ErrorReport "    ERROR caught: $result.Error "
     return $result
   }
   finally {
@@ -318,7 +325,7 @@ function Invoke-RepoFirstPass {
       }
     } catch {
       $result.Error = $_.Exception.Message
-      Write-Error "    ERROR when restoring the branch: $result.Error "
+      Write-ErrorReport "    ERROR when restoring the branch: $result.Error "
     }
     Set-Location $origLoc
   }
@@ -365,7 +372,7 @@ function Invoke-RepoSecondPass {
     $null = git show-ref --verify --quiet ("refs/heads/" + $UsedBranch)
     if ($LASTEXITCODE -ne 0) {
       $result.Error = "Branch '$UsedBranch' does not exist locally."
-      Write-Error "    ERROR: $result.Error "
+      Write-ErrorReport "    ERROR: $result.Error "
       return $result
     }
 
@@ -373,7 +380,7 @@ function Invoke-RepoSecondPass {
       $null = git checkout "$UsedBranch" 2>$null | Out-Null
       if ($LASTEXITCODE -ne 0) {
         $result.Error = "Cannot check out branch '$UsedBranch'."
-        Write-Error "    ERROR: $result.Error "
+        Write-ErrorReport "    ERROR: $result.Error "
         return $result
       }
     }
@@ -388,7 +395,7 @@ function Invoke-RepoSecondPass {
         $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
         if ($LASTEXITCODE -ne 0) {
           $result.Error = "Failed to create tag '$tag'."
-          Write-Error "    ERROR: $result.Error "
+          Write-ErrorReport "    ERROR: $result.Error "
           return $result
         } else {
           Write-Host "    ... tagging performed successfully." -ForegroundColor DarkCyan
@@ -396,7 +403,7 @@ function Invoke-RepoSecondPass {
       }
       catch {
         $result.Error = $_.Exception.Message
-        Write-Error "    ERROR caught when creating tag: $result.Error "
+        Write-ErrorReport "    ERROR caught when creating tag: $result.Error "
         return $result
       }
       try {
@@ -404,7 +411,7 @@ function Invoke-RepoSecondPass {
         $null = git push origin "$tag" 2>$null | Out-Null
         if ($LASTEXITCODE -ne 0) {
           $result.Error = "Failed to push tag '$tag' to origin."
-          Write-Error "    ERROR: $result.Error "
+          Write-ErrorReport "    ERROR: $result.Error "
           return $result
         } else {
           Write-Host "    ... tag pushed successfully." -ForegroundColor DarkCyan
@@ -412,7 +419,7 @@ function Invoke-RepoSecondPass {
       }
       catch {
         $result.Error = $_.Exception.Message
-        Write-Error "    ERROR caught when pushing the tag to origin: $result.Error "
+        Write-ErrorReport "    ERROR caught when pushing the tag to origin: $result.Error "
         return $result
       }
     }
@@ -420,7 +427,7 @@ function Invoke-RepoSecondPass {
     Write-Host "    Ensure that GitVersion is available..." -ForegroundColor DarkCyan
     if (-not (Ensure-GitVersionTool)) {
       $result.Error = "GitVersion.Tool installation failed for recalculation."
-      Write-Error "    ERROR: $result.Error "
+      Write-ErrorReport "    ERROR: $result.Error "
       return $result
     }
 
@@ -428,7 +435,7 @@ function Invoke-RepoSecondPass {
     $gv2 = Get-GitVersionJson
     if ($null -eq $gv2 -or [string]::IsNullOrWhiteSpace($gv2.FullSemVer)) {
       $result.Error = "GitVersion did not return a valid version after tagging."
-      Write-Error "    ERROR: $result.Error "
+      Write-ErrorReport "    ERROR: $result.Error "
       return $result
     }
 
@@ -438,7 +445,7 @@ function Invoke-RepoSecondPass {
   }
   catch {
     $result.Error = $_.Exception.Message
-    Write-Error "    ERROR caught in Invoke-RepoSecondPass: $result.Error "
+    Write-ErrorReport "    ERROR caught in Invoke-RepoSecondPass: $result.Error "
     return $result
   }
   finally {
@@ -451,7 +458,7 @@ function Invoke-RepoSecondPass {
       }
     } catch { 
       $result.Error = $_.Exception.Message
-      Write-Error "    ERROR caught when restoring the branch: $result.Error "
+      Write-ErrorReport "    ERROR caught when restoring the branch: $result.Error "
     }
     Set-Location $origLoc
   }
@@ -608,7 +615,7 @@ for ($i=0; $i -lt $rows.Count; $i++) {
   if ($already) {
     # Remark: even if the version matches, the tag might not exist (locally or remotely).
     # So we report the match but do NOT skip; we still attempt to apply the tag.
-    Write-Host ("  [{0}] version already matches '{1}', still attempting to apply the tag as this does not mean the tag exists." -f $row.RepoName, $finalTag) -ForegroundColor DarkYellow
+    Write-Host ("  [{0}] version already matches '{1}', still attempting to apply the tag." -f $row.RepoName, $finalTag) -ForegroundColor DarkYellow
     # $row.FinalTag = $finalTag
     # $row.Skipped2 = $true
     # continue
@@ -625,7 +632,7 @@ for ($i=0; $i -lt $rows.Count; $i++) {
     }
   }
   catch {
-    Write-Error "ERROR caught in Invoke-RepoSecondPass: $($_.Exception.Message)"
+    Write-ErrorReport "ERROR caught in Invoke-RepoSecondPass: $($_.Exception.Message)"
     continue
   }
 
