@@ -435,7 +435,7 @@ function Invoke-RepoSecondPass {
   }
   catch {
     $result.Error = $_.Exception.Message
-    Write-Error "    ERROR caught: $result.Error "
+    Write-Error "    ERROR caught in Invoke-RepoSecondPass: $result.Error "
     return $result
   }
   finally {
@@ -448,7 +448,7 @@ function Invoke-RepoSecondPass {
       }
     } catch { 
       $result.Error = $_.Exception.Message
-      Write-Error "    ERROR when restoring the branch: $result.Error "
+      Write-Error "    ERROR caught when restoring the branch: $result.Error "
     }
     Set-Location $origLoc
   }
