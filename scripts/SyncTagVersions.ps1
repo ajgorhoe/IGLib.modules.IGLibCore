@@ -406,10 +406,8 @@ function Invoke-RepoSecondPass {
         }
       }
       catch {
-        # $result.Error = $_.Exception.Message
-        # Write-Error "    ERROR caught when pushing the tag to origin: $result.Error "
-        # return $result
-        Write-Error "    ERROR caught when pushing the tag to origin."
+        $result.Error = $_.Exception.Message
+        Write-Error "    ERROR caught when pushing the tag to origin: $result.Error "
         return $result
       }
     }
@@ -470,7 +468,7 @@ if (-not [string]::IsNullOrWhiteSpace($PreReleaseLabel)) {
   }
 }
 
-Write-Host "=== SyncTagVersions parameters ===" -ForegroundColor Cyan
+Write-Host `n`n"=== SyncTagVersions parameters ===" -ForegroundColor Cyan
 Write-Host ("Repos: {0}" -f ($RepoDirs -join ", "))
 Write-Host ("Branch: {0}  (fallback to 'master' per-repo if 'main' missing)" -f $Branch)
 Write-Host ("Pull: {0}" -f ($Pull.IsPresent))
@@ -644,4 +642,4 @@ foreach ($row in $rows) {
   if (-not [string]::IsNullOrWhiteSpace($row.Error1)) { Write-Host ("  Pass1 error: {0}" -f $row.Error1) -ForegroundColor DarkRed }
   if (-not [string]::IsNullOrWhiteSpace($row.Error2)) { Write-Host ("  Pass2 error: {0}" -f $row.Error2) -ForegroundColor DarkRed }
 }
-Write-Host "==========================================" -ForegroundColor Cyan
+Write-Host "===================== SyncTagVersions completed.`n" -ForegroundColor Cyan
