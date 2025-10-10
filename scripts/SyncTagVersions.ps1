@@ -403,11 +403,7 @@ function Invoke-RepoSecondPass {
       $result.Skipped = $true
       Write-Host ("    [{0}] tag '{1}' already exists (local or remote) - skipping." -f $result.RepoName, $tag) -ForegroundColor DarkYellow
     } else {
-      # try {
         Write-Host ("  [{0}] tagging '{1}' with '{2}' ..." -f $result.RepoName, $UsedBranch, $tag) -ForegroundColor Green
-        # $null = git tag -a "$tag" -m "Sync release $tag" 2>$null | Out-Null
-        # if ($LASTEXITCODE -ne 0) { ... }
-        
         # Execute: git tag -a "$tag" -m "Sync release $tag"
         $r = Invoke-Native git @('tag', '-a', "$tag", '-m', "Sync version $tag")
         if ($r.ExitCode -ne 0) {
@@ -417,17 +413,7 @@ function Invoke-RepoSecondPass {
         } else {
           Write-Host "    ... tagging performed successfully." -ForegroundColor DarkCyan
         }
-      # }
-      # catch {
-      #   $result.Error = $_.Exception.Message
-      #   Write-ErrorReport "    ERROR caught when creating tag: $result.Error "
-      #   return $result
-      # }
-      # try {
         Write-Host ("  [{0}] pushing tag '{1}' to origin ..." -f $result.RepoName, $tag) -ForegroundColor Green
-        # $null = git push origin "$tag" 2>$null | Out-Null
-        # if ($LASTEXITCODE -ne 0) {
-        
         # Execute: git push origin "$tag"
         $r = Invoke-Native git @('push', 'origin')
         if ($r.ExitCode -ne 0) {
@@ -437,12 +423,6 @@ function Invoke-RepoSecondPass {
         } else {
           Write-Host "    ... tag pushed successfully." -ForegroundColor DarkCyan
         }
-      # }
-      # catch {
-      #   $result.Error = $_.Exception.Message
-      #   Write-ErrorReport "    ERROR caught when pushing the tag to origin: $result.Error "
-      #   return $result
-      # }
     }
 
     Write-Host "    Ensure that GitVersion is available..." -ForegroundColor DarkCyan
