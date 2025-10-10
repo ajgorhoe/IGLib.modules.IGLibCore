@@ -614,9 +614,15 @@ for ($i=0; $i -lt $rows.Count; $i++) {
   $used = $row.Branch
   if (-not [string]::IsNullOrWhiteSpace($row.UsedBranch)) { $used = $row.UsedBranch }
 
-  $r2 = Invoke-RepoSecondPass -OrigPath $row.OrigPath -AbsPath $row.AbsPath -UsedBranch $used -TagToApply $finalTag
-  if ($null -eq $r2) {
-    $row.Error2 = "Unknown error (null result)"
+  try {
+    $r2 = Invoke-RepoSecondPass -OrigPath $row.OrigPath -AbsPath $row.AbsPath -UsedBranch $used -TagToApply $finalTag
+    if ($null -eq $r2) {
+      $row.Error2 = "Unknown error (null result)"
+      continue
+    }
+  }
+  catch {
+    Report-Error "ERROR caught in Invoke-RepoSecondPass: $($_.Exception.Message)"
     continue
   }
 
