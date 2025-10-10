@@ -88,9 +88,14 @@ param(
   [string] $PreReleaseLabel
 )
 
-$ErrorActionPreference = 'Stop'
+# We don't want Write-Error to stop the script, but we want to see errors;
+# use default ('Continue'):
+$ErrorActionPreference = 'Continue' # Never stop; handle errors manually
 
 # ---------- Utility helpers ----------
+
+
+
 
 function Resolve-CanonicalPath {
   param([string]$PathText)
