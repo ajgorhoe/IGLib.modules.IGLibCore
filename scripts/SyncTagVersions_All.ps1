@@ -79,12 +79,12 @@ if ($RepoDirs -and $RepoDirs.Count -gt 0) {
 
 $RelativeSyncScriptPath = "./SyncTagVersions.ps1"  # relative to this script
 
-
-Write-Host "`nBefore setting InitialRepoDirs..."
-
-
 $InitialRepoDirs = @(
-  # "../",
+  "../",
+  "../../MyLib",
+  "../../MyApp",
+  "../../IGLibEventAggregator/",
+  "../../IGLibScripts"
   "../../IGLibCore"
 )
 
@@ -97,6 +97,7 @@ $IsDryRun = $true  # FORCE dry-run for safety; remove to allow real changes
 
 # ----------------------------------------------------------------------
 
+# Resolves a path to canonical absolute form (rooted, full, no trailing slash)
 function Resolve-CanonicalPath {
   param([string]$PathText)
   if ([string]::IsNullOrWhiteSpace($PathText)) { return $PathText }
@@ -112,6 +113,8 @@ function Resolve-CanonicalPath {
   return $full
 }
 
+# Merges two string arrays of paths, de-duplicating (case-insensitive) on 
+# canonical absolute path
 function Merge-RepoDirs {
   param([string[]]$Base, [string[]]$Extra)
 
@@ -122,10 +125,6 @@ function Merge-RepoDirs {
   foreach ($x in @($Extra)) {
     if (-not [string]::IsNullOrWhiteSpace($x)) { $list.Add($x) }
   }
-
-
-  Write-Host "`nMerging repo lists..."
-
   # De-duplicate while preserving first-seen order (compare on canonical absolute path)
   $seen = New-Object System.Collections.Generic.HashSet[string] ([StringComparer]::OrdinalIgnoreCase)
   $merged = New-Object System.Collections.Generic.List[string]
@@ -146,18 +145,22 @@ if (-not $MergedRepoDirs -or $MergedRepoDirs.Count -eq 0) {
   return
 }
 
-# Locate SyncTagVersions.ps1 next to this wrapper
+# Locate the script for syncing version tags
 $syncPath = Join-Path -Path $PSScriptRoot -ChildPath "$RelativeSyncScriptPath"
 Write-Host ("`nScript path: {0}`n" -f $syncPath) -ForegroundColor Cyan
 
 if (-not (Test-Path -LiteralPath $syncPath)) {
-  Write-Host "SyncTagVersions.ps1 not found at: $syncPath" -ForegroundColor Red
+  Write-Host "Version tag synchronization script not found at:`n    $syncPath" -ForegroundColor Red
   return
+}
+
+if ($IsDryRun) {
+  Write-Host "`n*** DRY RUN MODE: No tags will be created or pushed. ***`n" -ForegroundColor Yellow
 }
 
 # Echo parameters
 Write-Host "=== RunSyncTagVersions parameters ===" -ForegroundColor Cyan
-Write-Host ("Repos (merged): {0}" -f ($MergedRepoDirs -join ", `n"))
+Write-Host ("Repos (merged): `n  {0}" -f ($MergedRepoDirs -join ",`n  "))
 Write-Host ("Branch: {0}" -f $Branch)
 Write-Host ("Pull: {0}" -f ($Pull.IsPresent))
 Write-Host ("Increments -> Major:{0} Minor:{1} Patch:{2}" -f $IncrementMajor, $IncrementMinor, $IncrementPatch)
