@@ -67,10 +67,21 @@ Write-Host "`n`n=== RunSyncTagVersions.ps1 ===`n" -ForegroundColor Cyan
 Write-Host "This script merges a base set of repos with any passed via -RepoDirs," -ForegroundColor Cyan
 Write-Host "  then calls SyncTagVersions.ps1 with all parameters." -ForegroundColor Cyan
 
+if ($RepoDirs -and $RepoDirs.Count -gt 0) {
+  Write-Host ("Additional RepoDirs passed: `n{0}" -f ($RepoDirs -join ", `n")) -ForegroundColor Cyan
+} else {
+  Write-Host "No additional RepoDirs passed (null  or empty array)." -ForegroundColor Cyan
+}
+
+
 # ---------------- Configurable parameters: ----------------
 # Relative paths are resolved against THIS script's directory.
 
 $RelativeSyncScriptPath = ./SyncTagVersions.ps1  # relative to this script
+
+
+Write-Host "`nBefore setting InitialRepoDirs..."
+
 
 $InitialRepoDirs = @(
   "../",
@@ -114,6 +125,9 @@ function Merge-RepoDirs {
   foreach ($x in @($Extra)) {
     if (-not [string]::IsNullOrWhiteSpace($x)) { $list.Add($x) }
   }
+
+
+  Write-Host "`nMerging repo lists..."
 
   # De-duplicate while preserving first-seen order (compare on canonical absolute path)
   $seen = New-Object System.Collections.Generic.HashSet[string] ([StringComparer]::OrdinalIgnoreCase)
@@ -177,7 +191,9 @@ $params = @{
 $orig = Get-Location
 try {
   Set-Location -LiteralPath $PSScriptRoot
-  & $syncPath @params
+  
+  Write-Host "`nCalling SyncTagVersions.ps1...`n" -ForegroundColor Cyan 
+  # & $syncPath @params
 }
 finally {
   Set-Location $orig
