@@ -1,3 +1,10 @@
+
+# Copyright © Igor Grešovnik.
+# Part of IGLib: https://github.com/ajgorhoe/IGLib.modules.IGLibScripts
+# License:
+# https://github.com/ajgorhoe/IGLib.modules.IGLibScripts/blob/main/LICENSE.md
+# Doc: https://github.com/ajgorhoe/IGLib.modules.IGLibScripts/blob/main/psutils/RepositoryVersionTagging/README_VersionTaggingToolkit.md
+
 <#
 .SYNOPSIS
   Wrapper that calls SyncTagVersions.ps1 with a merged repo list.
@@ -80,18 +87,28 @@ if ($RepoDirs -and $RepoDirs.Count -gt 0) {
 $RelativeSyncScriptPath = "./SyncTagVersions.ps1"  # relative to this script
 
 $InitialRepoDirs = @(
-  "../",
-  "../../MyLib",
-  "../../MyApp",
-  "../../IGLibEventAggregator/",
-  "../../IGLibScripts"
-  "../../IGLibCore"
+  # IGLib Core repositories:
+  "../../IGLibCore",
+  "../../IGLibGraphics3D",
+  "../../IGLibScripting",
+  "../../IGLibScriptingCs",
+  "../../IGLibSandbox",
+  "../../IGLibScripts",
+  "../../IGLibEventAggregator",
+  # IGLib Framework repositories (legacy):
+  "../../iglib",
+  "../../iglibexternal",
+  "../../igsolutions",
+  "../../shelldev",
+  "../../unittests",
+  "../../igsandbox",
+  "../../iglibapp"
 )
 
 [bool] $IsDryRun = $DryRun.IsPresent
 
-Write-Host "`nNote: This wrapper currently forces -DryRun for safety; remove line below to allow real changes.`n" -ForegroundColor Yellow 
-$IsDryRun = $true  # FORCE dry-run for safety; remove to allow real changes
+# Write-Host "`nNote: This wrapper currently forces -DryRun for safety; remove line below to allow real changes.`n" -ForegroundColor Yellow 
+# $IsDryRun = $true  # FORCE dry-run (overrides parameter); remove to allow real changes
 
 # The base set of repos to always include:
 
@@ -144,16 +161,7 @@ function Merge-RepoDirs {
   }
   $retMerged = $merged.ToArray()
   $retMergedCanonical = $mergedCanonical.ToArray()
-
-  # Write-Host "`n`nMerged repo directories (lists before return):"
-  # Write-Host "retMerged:"
-  # foreach ($x in $retMerged) { Write-Host "  $x" }
-  # Write-Host "retMergedCanonical:"
-  # foreach ($x in $retMergedCanonical) { Write-Host "  $x" }
-  # Write-Host "`n"
-
   return $retMerged, $retMergedCanonical
-  # return ,($merged.ToArray())
 }
 
 # Build merged RepoDirs
@@ -194,7 +202,6 @@ Write-Host "=====================================" -ForegroundColor Cyan
 
 # Splat params to the sync script
 $params = @{
-  # RepoDirs        = $MergedRepoDirs
   RepoDirs        = $MergedRepoDirsCanonical
   Branch          = $Branch
   Pull            = $Pull.IsPresent

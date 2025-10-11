@@ -1,3 +1,10 @@
+
+# Copyright © Igor Grešovnik.
+# Part of IGLib: https://github.com/ajgorhoe/IGLib.modules.IGLibScripts
+# License:
+# https://github.com/ajgorhoe/IGLib.modules.IGLibScripts/blob/main/LICENSE.md
+# Doc: https://github.com/ajgorhoe/IGLib.modules.IGLibScripts/blob/main/psutils/RepositoryVersionTagging/README_VersionTaggingToolkit.md
+
 <#
 .SYNOPSIS
   Tags a branch (default: main) with a version computed by GitVersion, optionally
