@@ -56,7 +56,6 @@
   occurred, final tag becomes X.Y.Z-<label>.1. Allowed chars: [0-9A-Za-z-.].
   Ignored if no bump occurs.
 
-
 .PARAMETER DryRun
   If set, performs all operations except actually creating or pushing tags.
 
@@ -601,7 +600,7 @@ Write-Host ("Final synchronized tag to apply: {0}" -f $finalTag) -ForegroundColo
 # ---------- Pass 2 ----------
 
 if ($DryRun.IsPresent) {
-  Write-Host "`n`nDryRun is set; no tags will be created or pushed.`n" -ForegroundColor Yellow
+  Write-Host "`n`nDryRun is set; no tags are created or pushed.`n" -ForegroundColor Yellow
 } else {
 
   Write-Host "`n--- Pass 2: apply tag to all repos ---" -ForegroundColor Cyan

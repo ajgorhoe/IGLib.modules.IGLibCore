@@ -67,17 +67,11 @@ Write-Host "`n`n=== RunSyncTagVersions.ps1 ===`n" -ForegroundColor Cyan
 Write-Host "This script merges a base set of repos with any passed via -RepoDirs," -ForegroundColor Cyan
 Write-Host "  then calls SyncTagVersions.ps1 with all parameters." -ForegroundColor Cyan
 
-# ---------------- Configurable parameters: ----------------
+# ---------------- Configurable: your base set of repos ----------------
 # Relative paths are resolved against THIS script's directory.
-
-$RelativeSyncScriptPath = ./SyncTagVersions.ps1  # relative to this script
-
 $InitialRepoDirs = @(
-  "../",
-  "../../IGLibCore",
-  "../../MyLibrary/",
-  "../../IGLibEventAggregator"
-  # , "../../IGLibScripts"
+  # "../",
+  "../../IGLibCore"
 )
 
 [bool] $IsDryRun = $DryRun.IsPresent
@@ -136,8 +130,7 @@ if (-not $MergedRepoDirs -or $MergedRepoDirs.Count -eq 0) {
 }
 
 # Locate SyncTagVersions.ps1 next to this wrapper
-$syncPath = Join-Path -Path $PSScriptRoot -ChildPath "$RelativeSyncScriptPath"
-Write-Host ("`nSyncTagVersions.ps1 path: {0}`n" -f $syncPath) -ForegroundColor Cyan
+$syncPath = Join-Path -Path $PSScriptRoot -ChildPath 'SyncTagVersions.ps1'
 if (-not (Test-Path -LiteralPath $syncPath)) {
   Write-Host "SyncTagVersions.ps1 not found at: $syncPath" -ForegroundColor Red
   return
