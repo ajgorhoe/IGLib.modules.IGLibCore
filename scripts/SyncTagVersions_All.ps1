@@ -128,18 +128,36 @@ function Merge-RepoDirs {
   # De-duplicate while preserving first-seen order (compare on canonical absolute path)
   $seen = New-Object System.Collections.Generic.HashSet[string] ([StringComparer]::OrdinalIgnoreCase)
   $merged = New-Object System.Collections.Generic.List[string]
+  $mergedCanonical = New-Object System.Collections.Generic.List[string]
   foreach ($x in $list) {
     $canon = Resolve-CanonicalPath $x
     if (-not $seen.Contains($canon)) {
       $null = $seen.Add($canon)
-      $merged.Add($x)  # keep original expression for user-facing echo; sync script resolves again
+      # Keep original expression for user-facing echo:
+      $merged.Add($x)
+      # Keep canonical paths for sync script because the script does its own 
+      # path resolution of relative paths, possibly with a different base dir:
+      $mergedCanonical.Add($canon)
+      # Write-Host "Added to merged: $x"
+      # Write-Host "Added to mergedCanonical: $canon"
     }
   }
-  return ,($merged.ToArray())
+  $retMerged = $merged.ToArray()
+  $retMergedCanonical = $mergedCanonical.ToArray()
+
+  # Write-Host "`n`nMerged repo directories (lists before return):"
+  # Write-Host "retMerged:"
+  # foreach ($x in $retMerged) { Write-Host "  $x" }
+  # Write-Host "retMergedCanonical:"
+  # foreach ($x in $retMergedCanonical) { Write-Host "  $x" }
+  # Write-Host "`n"
+
+  return $retMerged, $retMergedCanonical
+  # return ,($merged.ToArray())
 }
 
 # Build merged RepoDirs
-$MergedRepoDirs = Merge-RepoDirs -Base $InitialRepoDirs -Extra $RepoDirs
+($MergedRepoDirs, $MergedRepoDirsCanonical) = Merge-RepoDirs -Base $InitialRepoDirs -Extra $RepoDirs
 if (-not $MergedRepoDirs -or $MergedRepoDirs.Count -eq 0) {
   Write-Host "No repositories specified or configured. Nothing to do." -ForegroundColor Yellow
   return
@@ -161,6 +179,7 @@ if ($IsDryRun) {
 # Echo parameters
 Write-Host "=== RunSyncTagVersions parameters ===" -ForegroundColor Cyan
 Write-Host ("Repos (merged): `n  {0}" -f ($MergedRepoDirs -join ",`n  "))
+Write-Host ("Repos (merged, canonical): `n  {0}" -f ($MergedRepoDirsCanonical -join ",`n  "))
 Write-Host ("Branch: {0}" -f $Branch)
 Write-Host ("Pull: {0}" -f ($Pull.IsPresent))
 Write-Host ("Increments -> Major:{0} Minor:{1} Patch:{2}" -f $IncrementMajor, $IncrementMinor, $IncrementPatch)
@@ -175,7 +194,8 @@ Write-Host "=====================================" -ForegroundColor Cyan
 
 # Splat params to the sync script
 $params = @{
-  RepoDirs        = $MergedRepoDirs
+  # RepoDirs        = $MergedRepoDirs
+  RepoDirs        = $MergedRepoDirsCanonical
   Branch          = $Branch
   Pull            = $Pull.IsPresent
   BumpMajor       = $BumpMajor.IsPresent
