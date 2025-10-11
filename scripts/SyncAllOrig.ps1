@@ -73,8 +73,16 @@ if ($RepoDirs -and $RepoDirs.Count -gt 0) {
   Write-Host "No additional RepoDirs passed (null  or empty array)." -ForegroundColor Cyan
 }
 
-# ---------------- Configurable: your base set of repos ----------------
+
+# ---------------- Configurable parameters: ----------------
 # Relative paths are resolved against THIS script's directory.
+
+$RelativeSyncScriptPath = "./SyncTagVersions.ps1"  # relative to this script
+
+
+Write-Host "`nBefore setting InitialRepoDirs..."
+
+
 $InitialRepoDirs = @(
   # "../",
   "../../IGLibCore"
@@ -139,11 +147,8 @@ if (-not $MergedRepoDirs -or $MergedRepoDirs.Count -eq 0) {
 }
 
 # Locate SyncTagVersions.ps1 next to this wrapper
-$syncPath = Join-Path -Path $PSScriptRoot -ChildPath 'SyncTagVersions.ps1'
-
-# $syncPath = Join-Path -Path $PSScriptRoot -ChildPath "$RelativeSyncScriptPath"
-Write-Host ("`nscript path: {0}`n" -f $syncPath) -ForegroundColor Cyan
-
+$syncPath = Join-Path -Path $PSScriptRoot -ChildPath "$RelativeSyncScriptPath"
+Write-Host ("`nScript path: {0}`n" -f $syncPath) -ForegroundColor Cyan
 
 if (-not (Test-Path -LiteralPath $syncPath)) {
   Write-Host "SyncTagVersions.ps1 not found at: $syncPath" -ForegroundColor Red
@@ -183,7 +188,8 @@ $params = @{
 # Run SyncTagVersions.ps1 from this directory; restore caller location afterward
 $orig = Get-Location
 try {
-  Set-Location -LiteralPath $PSScriptRoot
+  Set-Location -LiteralPath $PSScriptRoot  
+  Write-Host "`nCalling SyncTagVersions.ps1...`n" -ForegroundColor Cyan 
   & $syncPath @params
 }
 finally {
