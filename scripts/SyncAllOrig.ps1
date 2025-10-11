@@ -67,6 +67,12 @@ Write-Host "`n`n=== RunSyncTagVersions.ps1 ===`n" -ForegroundColor Cyan
 Write-Host "This script merges a base set of repos with any passed via -RepoDirs," -ForegroundColor Cyan
 Write-Host "  then calls SyncTagVersions.ps1 with all parameters." -ForegroundColor Cyan
 
+if ($RepoDirs -and $RepoDirs.Count -gt 0) {
+  Write-Host ("Additional RepoDirs passed: `n{0}" -f ($RepoDirs -join ", `n")) -ForegroundColor Cyan
+} else {
+  Write-Host "No additional RepoDirs passed (null  or empty array)." -ForegroundColor Cyan
+}
+
 # ---------------- Configurable: your base set of repos ----------------
 # Relative paths are resolved against THIS script's directory.
 $InitialRepoDirs = @(
@@ -109,6 +115,9 @@ function Merge-RepoDirs {
     if (-not [string]::IsNullOrWhiteSpace($x)) { $list.Add($x) }
   }
 
+
+  Write-Host "`nMerging repo lists..."
+
   # De-duplicate while preserving first-seen order (compare on canonical absolute path)
   $seen = New-Object System.Collections.Generic.HashSet[string] ([StringComparer]::OrdinalIgnoreCase)
   $merged = New-Object System.Collections.Generic.List[string]
@@ -131,6 +140,11 @@ if (-not $MergedRepoDirs -or $MergedRepoDirs.Count -eq 0) {
 
 # Locate SyncTagVersions.ps1 next to this wrapper
 $syncPath = Join-Path -Path $PSScriptRoot -ChildPath 'SyncTagVersions.ps1'
+
+# $syncPath = Join-Path -Path $PSScriptRoot -ChildPath "$RelativeSyncScriptPath"
+Write-Host ("`nscript path: {0}`n" -f $syncPath) -ForegroundColor Cyan
+
+
 if (-not (Test-Path -LiteralPath $syncPath)) {
   Write-Host "SyncTagVersions.ps1 not found at: $syncPath" -ForegroundColor Red
   return
