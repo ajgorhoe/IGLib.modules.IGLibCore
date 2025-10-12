@@ -2,6 +2,9 @@
 
 # Run: .\TestScript.ps1 -RepoDirs @("ab", "cd") -Sw
 
+# This is for testing transferring parameters and switches to called scripts.
+# REMOVE when not needed any more.
+
 [CmdletBinding()]
 param(
   [string[]] $RepoDirs = @(),
@@ -10,6 +13,8 @@ param(
 
 
 Write-Host "`n`nScript TestScript was called."
+
+Write-Host "`nThis tests transfer of parameters to called scripts."
 
 Write-Host ("`nRepoDirs: `n{0}" -f ($RepoDirs -join ", `n"))
 

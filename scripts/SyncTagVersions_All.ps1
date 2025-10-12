@@ -102,7 +102,12 @@ $InitialRepoDirs = @(
   "../../shelldev",
   "../../unittests",
   "../../igsandbox",
-  "../../iglibapp"
+  "../../iglibapp",
+  # Learning repos:
+  "../../iglearn",
+  "../../iglearn/wiki.IGLib",
+  "../../iglearn/learn_sluzba",
+  "../../iglearn/learn_anka_igor"
 )
 
 [bool] $IsDryRun = $DryRun.IsPresent
