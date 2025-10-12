@@ -15,6 +15,11 @@ This repository contains basic portions of the restructured ***Investigative Gen
     * [Solution Structure](#solution-structure)
   * [The IGLibCore and Other Base Modules](#the-iglibcore-and-other-base-modules)
   * **[CI/CD](#iglib-cicd)** for IGLib Repositories
+    * **[Tagging Toolkit]()** (scripts)
+    * **[Multi-Repository GitVersion Tagging Toolkit](https://github.com/ajgorhoe/IGLib.modules.IGLibScripts/blob/main/psutils/RepositoryVersionTagging/README_VersionTaggingToolkit.md)** on GitHub - a set of scripts for tagging versions and for synchronization of version tags across GitHub repositories;
+      * [Local path to the document](../IGLibScripts/psutils/RepositoryVersionTagging/README_VersionTaggingToolkit.md) (works if IGLibScripts is cloned side-by-side)
+      * Scripts availablr in [scripts/](./scripts/) directory
+
     * **[Versioning IGLib Modules](#versioning-iglib-modules)**
       * See also the [Versioning document on Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/general/CiCd/Versioning.md) (*private repo*!)
 * Old doc. on [CI/CD on GitLab](./doc/readme.GitLab_CI_CD_old.md) (currently not relevant)
@@ -121,6 +126,12 @@ We use **[GitVersion](https://gitversion.net/docs/usage/msbuild)** for versionin
 The attribute `<PrivateAssets>all</PrivateAssets>` prevents the task from becoming a dependency of the package we build.
 
 This integrates directly with MSBuild as `MSBuild task`; restore pulls the tool in, and the tool computes versions during builds (or packaging, etc.) and integrated them into generated artifacts. The tool is configured in `GitVersion.yml` ([local version here](./GitVersion.yml)).
+
+> **Important** - using *GitVersion* with local configuration (`GitVersion.yml`) has the potential of **causing errors in the build, packaging, or tagging** (see [Helper Scripts](#helper-scripts-for-version-tagging)) **process** due to **errors in configuration files**.
+> These errors are **sometimes not reported in the same way** as other errors and may therefore be more difficult to find.
+> If you encounter unusual error behavior with no clear indication of the root cause, quickly **check whether GitVersion operates correctly** on the affected branch: checkout the branch on which the failed procedure is executed and **execute** the following **command line** within the repository directory:
+> `  `**`dotnet gitversion /showvariable FullSemVer`**
+> If there are problems with the tool (often due to misconfiguration), `GitVersion` will fail to calculate the version of the checked-out commit, and you will normally get some useful indication of the cause.
 
 In order for the tool to be able to compute the version, it needas a branch, and there must be a **commit with a version tag** (such as `4.1.12` or `v4.1.12`) reachable from that branch. If the branch itself is tagged, this defines the version. Otherwise, the **[semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (*SemVer*)** (`major.minor.patch`) is calculated from the path leading from the closest tagged commit to the current commit, according to configured rules. For example, one can define which part of the version (mayor/minor/patch) gets incremented for a specific branch. For more information, you can check these **GitVersion documentation** pags:
 
@@ -252,6 +263,26 @@ See detailed workflow on the Wiki .
   * Tag repo's versions manually if necessary
   * When creating releases, Sync-tag repos versions via sync-tag
 
+### Helper Scripts for Version Tagging
+
+There are a couple of scripts that assist with tagging the current version in repositories. Below is the list of these scripts with very brief descriptions, while for more information, refer to links under the `See also` (end of this section).
+
+**[scripts/TagVersion.ps1](./scripts/TagVersion.ps1)** **creates a version tag** on the main branch (default is `main`, with fallback to `master` when main does not exist) or any other specified branch **and pushes it** to the remote origin. The tag assigned to the branch is calculated by GitVersion, and can be increased via `-bump*` switches or `-increment*` parameters ($* \in$ \{Major, Minor, Patch\}). Version number assigned can also be modified, e.g. any part of *SemVer* can be forcibly increased. This script is intended for use on the current local repository. Every repository should have this script in its `scritps/` directory.
+
+** **[scripts/SyncTagVersions.ps1](./scripts/SyncTagVersions.ps1)** - **synchronized** creation of version tags **across repositories**. **Creates version tags** on the main branch (default) or any other specified branch **on the specified groups of repositories** and **pushes it** to the corresponding remote origin. It **calculates the maximum version** on the specified branch across repositories, then applies this tag in all repositories. Repositories are specified via `-RepoDirs` parameter (array of strings); `-dryrun` switch can be used to just print the information on what would be applied (*no side effects*). Tagging itself works in the same way as in `TagVersion.ps1`. This script is available in `IGLibCore`'s `scripts/` directory and is typically run via helper script, `SyncTagVersions_All.ps1`.
+
+** **[scripts/SyncTagVersions_All.ps1](./scripts/SyncTagVersions.ps1)** or similar - a helper script for **synchronized** creation of version tags **across repositories**. **Calls `SyncTagVersions.ps1`** to do the job and accepts the same parameters, but has the **default group of repositories pre-defined** (hard-coded), such that in many cases it is run without any parameter passed to the script.
+
+**See also**:
+
+* [Multi-Repository GitVersion Tagging Toolkit](https://github.com/ajgorhoe/IGLib.modules.IGLibScripts/blob/main/psutils/RepositoryVersionTagging/README_VersionTaggingToolkit.md) on GitHub contains detailed descriptions and *user manuals* for the above mentioned scripts.
+  * [Containing directory](https://github.com/ajgorhoe/IGLib.modules.IGLibScripts/tree/main/psutils/RepositoryVersionTagging) on GitHub
+  * [Local path to the document](../../IGLibScripts/psutils/RepositoryVersionTagging/README_VersionTaggingToolkit.md) (works if IGLibScripts is cloned side-by-side)
+* Related Documentation:
+  * [Versioning IGLib Modules](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README_Development.md#versioning-iglib-modules) - developers' documentation for IGLib
+    * [Local path to the document](../README_Development.md#versioning-iglib-modules)
+  * [Versioning document on Wiki](https://github.com/ajgorhoe/wiki.IGLib/blob/main/IGLib/general/CiCd/Versioning.md) (*private repo*!)
+
 ## Things to Be Done
 
 This section contains unarranged quick notes on what needs to be done.
@@ -270,11 +301,6 @@ This section contains unarranged quick notes on what needs to be done.
       * IGLibScripts
       * All IGLib Core repos
       * Selected IGLib legacy repos
-
-### Helper Scripts
-
-**[scripts/TagVersion.ps1](./scripts/TagVersion.ps1)** **creates a version tag** on the main branch or any other specified branch **and pushes it** to the remote origin. The tag assigned to the branch is calculated by GitVersion. Version number assigned can also be modified, e.g. any part of SemBer can be forcibly increased. This script is intended for use on the local repository.
-
 
 
 
