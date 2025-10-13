@@ -277,14 +277,17 @@ See detailed workflow on the Wiki .
 * tag the last version on the `main` branch
   
 * branch off `develop` and other branches like `feature` or `release` branches; they will be versioned according to rules specified in basic configuration plus additional configuration (e.g. `GitVersion.yml` in the repository root)
-* when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool; 
-  * use the 'scripts/TagVersion.ps1' script of a repository to do this (run it without parameters)
+* when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool;
+  * use the `scripts/TagVersion.ps1` script of a repository to do this (run it without parameters)
   * not every commit needs to be tagged; you can explicitly tag only important versions
 * start again from the second point
 * ...
 * If applicable, you can synchronize version tags across a group of related repositories
-  * Use the 'scripts/SyncTagVersions_All.ps1' script within the locally cloned `IGLibCore` repository to do that
+  * Use the `scripts/SyncTagVersions_All.ps1` script within the locally cloned `IGLibCore` repository to do that
   * Only important versions are usually synchronized across the repositories; this may be used to signify important benchmarks in development of multiple related repos that constitute a larger software
+  * In many cases, you can run it without parameters, but:
+    * It may be good if you run with `-DryRun` first, to indentify any potential issues
+    * Sometimes you may also want to add a custom tag via `-CustomTag` parameter (and possibly a `CustomTagMessage`)
 
 ### Version Other Repositories
 
@@ -323,16 +326,22 @@ This section contains unarranged quick notes on what needs to be done.
 
 * Documentation
   * Wiki:
-    * Detailed workflow
     * Compile document About versioning with GitVersion (mention alternatives, exclude scripts documentation)
-* scripts/TagVersion.ps1:
-  * Restore branch after operation: move `$currentBranch = ...` before try, restore in finally block
-  * Check Bump (ensure all variants work)
-  * Add Bump...Num *NumBumps* - specifies how much to bump
-    * Copy the right version of script and GitVersion.yml to:
-      * IGLibScripts
-      * All IGLib Core repos
-      * Selected IGLib legacy repos
+* CI/CD:
+  * Create CI/CD scripts for event aggregator repo
+    * Do / solve:
+      * Updete dependend repositories
+      * Build solution
+        * Build for different targets
+      * Execute tests
+        * Questions: for which targets? Maybe only .NET Framework and latest .NET?
+      * Create artifacts
+        * Do we also need artifacts for test projects?
+      * Create a package
+        * Solve: 
+          * Which targets included?
+          * 
+      * Publish a package
 
 
 
