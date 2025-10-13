@@ -217,7 +217,6 @@ Showing tags:
 # list local tags:
 git tag
 
-
 # list tags on the specified remote (origin in this case):
 git ls-remote --tags origin
 # List both local tags and tags from certain remote (origin):
@@ -238,10 +237,13 @@ git for-each-ref refs/tags --format="%(refname:short) %(objectname:short) %(tagg
 # v2.0.90 5801c85 2025-10-13 Name Surname <name.surname@gmail.com>: 'Sync version v2.0.90'
 
 # Listing in CUSTOM format, SORTED by dates:
-git for-each-ref refs/tags --sort=taggerdate --format="%(refname:short) %(taggerdate:short) '%(subject)'"
+git for-each-ref refs/tags --sort=taggerdate --format="%(refname:short)  %(objectname:short)  %(taggerdate:short)  '%(subject)'"
 # Sample output:
-# v2.0.84 2025-10-12 'Sync version v2.0.84'
-# v2.0.90 2025-10-13 'Sync version v2.0.90'
+# v2.0.84  85265a7  2025-10-12  'Sync version v2.0.84'
+# v2.0.90  5801c85  2025-10-13  'Sync version v2.0.90'
+
+# Show detailed information about specific tag:
+git show v2.0.91
 ~~~
 
 Removing tags added by accident:
@@ -251,6 +253,12 @@ Removing tags added by accident:
 git tag -d v1.2.3
 # Remove the tag on the remote called origin:
 git push origin --delete tag v1.2.3
+
+# Fetch tags and verify the tags were actually deleted:
+git fetch --tags --verbose
+git tag
+# Or, use date-sorted output with additional information:
+git for-each-ref refs/tags --sort=taggerdate --format="%(refname:short)  %(objectname:short)  %(taggerdate:short)  '%(subject)'"
 ~~~
 
 After cleanup, adding the correct tag:
@@ -267,9 +275,16 @@ git push origin v1.2.3
 See detailed workflow on the Wiki .
 
 * tag the last version on the `main` branch
+  
 * branch off `develop` and other branches like `feature` or `release` branches; they will be versioned according to rules specified in basic configuration plus additional configuration (e.g. `GitVersion.yml` in the repository root)
-* when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool
+* when merging back to the `main` branch, tag the main branch with the version calculated by the GitVersion tool; 
+  * use the 'scripts/TagVersion.ps1' script of a repository to do this (run it without parameters)
+  * not every commit needs to be tagged; you can explicitly tag only important versions
 * start again from the second point
+* ...
+* If applicable, you can synchronize version tags across a group of related repositories
+  * Use the 'scripts/SyncTagVersions_All.ps1' script within the locally cloned `IGLibCore` repository to do that
+  * Only important versions are usually synchronized across the repositories; this may be used to signify important benchmarks in development of multiple related repos that constitute a larger software
 
 ### Version Other Repositories
 
