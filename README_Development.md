@@ -216,6 +216,8 @@ Showing tags:
 ~~~powershell
 # list local tags:
 git tag
+
+
 # list tags on the specified remote (origin in this case):
 git ls-remote --tags origin
 # List both local tags and tags from certain remote (origin):
@@ -225,6 +227,21 @@ git ls-remote --tags
 # or:
 git fetch --tags
 git tag -l
+
+# Listing of tags with hashes:
+git show-ref --tags
+
+# Listing in CUSTOM format, with arbitrary details:
+git for-each-ref refs/tags --format="%(refname:short) %(objectname:short) %(taggerdate:short) %(taggername) %(taggeremail): '%(subject)'"
+# Sample output:
+# v2.0.84 85265a7 2025-10-12 Name Surname <name.surname@gmail.com>: 'Sync version v2.0.84'
+# v2.0.90 5801c85 2025-10-13 Name Surname <name.surname@gmail.com>: 'Sync version v2.0.90'
+
+# Listing in CUSTOM format, SORTED by dates:
+git for-each-ref refs/tags --sort=taggerdate --format="%(refname:short) %(taggerdate:short) '%(subject)'"
+# Sample output:
+# v2.0.84 2025-10-12 'Sync version v2.0.84'
+# v2.0.90 2025-10-13 'Sync version v2.0.90'
 ~~~
 
 Removing tags added by accident:
