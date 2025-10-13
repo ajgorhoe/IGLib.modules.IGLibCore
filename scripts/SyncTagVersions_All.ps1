@@ -37,6 +37,12 @@
 .PARAMETER PreReleaseLabel
   Optional prerelease label applied AFTER a bump/increment (X.Y.Z-<label>.1).
 
+.PARAMETER CustomTag
+  Optional custom tag to be created and pushed beside the calculated version tag.
+
+.PARAMETER CustomTagMessage
+  Message for the custom tag. If not specified, a default message is used.
+
 .PARAMETER DryRun
   If set, performs all operations except actually creating or pushing tags.
 
@@ -67,6 +73,9 @@ param(
 
   [string] $PreReleaseLabel,
 
+  [string] $CustomTag,
+  [string] $CustomTagMessage,
+
   [switch] $DryRun
 )
 
@@ -86,7 +95,7 @@ if ($RepoDirs -and $RepoDirs.Count -gt 0) {
 
 $RelativeSyncScriptPath = "./SyncTagVersions.ps1"  # relative to this script
 
-# Relative path to the base directory containing repositories to tag
+# Relative path to the base directory containing repositories to tag:
 $ModulesPath = "../../"
 
 $InitialRepoDirs = @(
@@ -205,6 +214,16 @@ if ([string]::IsNullOrWhiteSpace($PreReleaseLabel)) {
 } else {
   Write-Host ("PreReleaseLabel: {0}" -f $PreReleaseLabel)
 }
+if ([string]::IsNullOrWhiteSpace($CustomTag)) {
+  Write-Host "CustomTag: <none>"
+} else {
+  Write-Host ("CustomTag: {0}" -f $CustomTag)
+}
+if ([string]::IsNullOrWhiteSpace($CustomTagMessage)) {
+  Write-Host "CustomTagMessage: <none>"
+} else {
+  Write-Host ("CustomTagMessage: {0}" -f $CustomTagMessage)
+}
 Write-Host ("IsDryrun: {0} " -f $IsDryRun)
 Write-Host "=====================================" -ForegroundColor Cyan
 
@@ -220,6 +239,8 @@ $params = @{
   IncrementMinor  = $IncrementMinor
   IncrementPatch  = $IncrementPatch
   PreReleaseLabel = $PreReleaseLabel
+  CustomTag       = $CustomTag
+  CustomTagMessage= $CustomTagMessage
   DryRun          = $IsDryRun
 }
 
