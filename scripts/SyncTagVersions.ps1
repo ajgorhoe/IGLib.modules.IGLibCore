@@ -63,6 +63,12 @@
   occurred, final tag becomes X.Y.Z-<label>.1. Allowed chars: [0-9A-Za-z-.].
   Ignored if no bump occurs.
 
+.PARAMETER CustomTag
+  Optional custom tag to be created and pushed beside the calculated version tag.
+
+.PARAMETER CustomTagMessage
+  Message for the custom tag. If not specified, a default message is used.
+
 .PARAMETER DryRun
   If set, performs all operations except actually creating or pushing tags.
 
@@ -96,6 +102,9 @@ param(
   [int] $IncrementPatch = 0,
 
   [string] $PreReleaseLabel,
+
+  [string] $CustomTag,
+  [string] $CustomTagMessage,
 
   [switch] $DryRun
 )
@@ -410,6 +419,7 @@ function Invoke-RepoSecondPass {
       }
     }
 
+    # Create version tag if not already existing:
     $tag = $TagToApply
     if (Test-TagExistsLocal $tag -or Test-TagExistsRemote $tag) {
       $result.Skipped = $true
@@ -434,6 +444,36 @@ function Invoke-RepoSecondPass {
           return $result
         } else {
           Write-Host "      ... tag pushed successfully." -ForegroundColor DarkCyan
+        }
+    }
+
+    # Create and push custom tag if specified and not existing:
+    if (-not [string]::IsNullOrWhiteSpace($CustomTag)) {
+        Write-Host ("  [{0}] creating custom tag '{1}'..." -f $result.RepoName, $CustomTag) -ForegroundColor Cyan
+
+        # Check if tag already exists
+        & git show-ref --verify --quiet ("refs/tags/" + $CustomTag)
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host ("    Custom tag '{0}' already exists, skipping." -f $CustomTag) -ForegroundColor DarkYellow
+        }
+        else {
+            # Create and push the custom tag
+            $outTag = & git tag -a "$CustomTag" -m "$CustomTagMessage" 2>&1
+            $exitTag = $LASTEXITCODE
+            if ($exitTag -ne 0) {
+                Write-Host ("    Failed to create custom tag '{0}': {1}" -f $CustomTag, $outTag) -ForegroundColor Red
+            }
+            else {
+                Write-Host ("    Custom tag '{0}' created, pushing..." -f $CustomTag) -ForegroundColor Green
+                $outPush = & git push origin "$CustomTag" 2>&1
+                $exitPush = $LASTEXITCODE
+                if ($exitPush -ne 0) {
+                    Write-Host ("    Failed to push custom tag '{0}': {1}" -f $CustomTag, $outPush) -ForegroundColor Red
+                }
+                else {
+                    Write-Host ("    Custom tag '{0}' pushed successfully." -f $CustomTag) -ForegroundColor Green
+                }
+            }
         }
     }
 
@@ -501,6 +541,16 @@ Write-Host ("Increments -> Major:{0} Minor:{1} Patch:{2}" -f $effMaj, $effMin, $
 $preText = "<none>"
 if (-not [string]::IsNullOrWhiteSpace($PreReleaseLabel)) { $preText = $PreReleaseLabel }
 Write-Host ("PreReleaseLabel: {0}" -f $preText)
+if (-not [string]::IsNullOrWhiteSpace($CustomTag)) {
+    if ([string]::IsNullOrWhiteSpace($CustomTagMessage)) {
+        $CustomTagMessage = "Tag '${CustomTag}', synchronized alongside version tag"
+    }
+    Write-Host ("CustomTag: {0}" -f $CustomTag)
+    Write-Host ("CustomTagMessage: {0}" -f $CustomTagMessage)
+} else {
+    Write-Host "CustomTag: <none>"
+}
+Write-Host ("DryRun: {0}" -f $DryRun.IsPresent)
 Write-Host "==================================" -ForegroundColor Cyan
 
 # Build rows
@@ -603,6 +653,9 @@ $finalTag = $finalVersion
 if ($finalTag -notmatch '^[vV]\d') { $finalTag = "v" + $finalTag }
 
 Write-Host ("Final synchronized tag to apply: {0}" -f $finalTag) -ForegroundColor Green
+if (-not [string]::IsNullOrWhiteSpace($CustomTag)) {
+    Write-Host ("Custom tag to apply: {0}" -f $CustomTag) -ForegroundColor Green
+}
 
 # ---------- Pass 2 ----------
 
