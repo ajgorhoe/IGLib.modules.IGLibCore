@@ -8,6 +8,9 @@ on:
     branches:
       - main
   workflow_dispatch: # Allows manual triggering
+  env:
+    REPODIR: IGLibCore
+    # Placeholder: ${{ env.REPODIR }}
 
 jobs:
 
@@ -23,8 +26,8 @@ jobs:
       - name: Clone Main Repository
         uses: actions/checkout@v4
         with:
-          repository: ajgorhoe/IGLib.modules.IGLibCore
-          path: IGLibCore
+          repository: ajgorhoe/IGLib.modules.${{ env.REPODIR }}
+          path: ${{ env.REPODIR }}
           ref: main
           # Important: set fetch-depth 0 to avoid shallow clones (needed
           #   for GitVersion):
@@ -87,7 +90,7 @@ jobs:
 
       # RUN PRE-BUILD SCRIPT (PowerShell)
       - name: Run Pre-Build PowerShell Script
-        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
+        run: pwsh -File ${{ env.REPODIR }}/scripts/PrintEnv.ps1
 
       # CHECK .NET SDK version and global tools:
       - name: Check .NET SDK and global tools
@@ -97,31 +100,31 @@ jobs:
           dotnet --version
           Write-Host "Listing global dotnet tools..."
           dotnet tool list --global
-          Write-Host "Checking GitVersion..."
-          cd IGLibCore
+          Write-Host "Repo VERSION via GitVersion..."
+          cd ${{ env.REPODIR }}
           dotnet gitversion /showvariable FullSemVer
 
       # RESTORE DEPENDENCIES
       - name: Restore NuGet packages
-        run: dotnet restore IGLibCore/IGLibCore.sln
+        run: dotnet restore ${{ env.REPODIR }}/${{ env.REPODIR }}.sln
 
       # BUILD Main Project & Test Project in Release Mode
       - name: Build Solution
-        run: dotnet build IGLibCore/IGLibCore.sln --configuration Release --no-restore
+        run: dotnet build ${{ env.REPODIR }}/${{ env.REPODIR }}.sln --configuration Release --no-restore
 
       # RUN TESTS & COLLECT RESULTS
       - name: Run Unit Tests
         # Remark: use the solution instead of projects.
-        run: dotnet test IGLibCore/IGLibCore.sln --configuration Release --logger trx --results-directory test-results
-        # run: dotnet test IGLibCore/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj --configuration Release --logger trx --results-directory test-results
+        run: dotnet test ${{ env.REPODIR }}/${{ env.REPODIR }}.sln --configuration Release --logger trx --results-directory test-results
+        # run: dotnet test ${{ env.REPODIR }}/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj --configuration Release --logger trx --results-directory test-results
 
       # UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: BuildArtifacts
-          path: IGLibCore/src/IGLib.Core/bin/Release/
+          path: ${{ env.REPODIR }}/src/IGLib.Core/bin/Release/
 
       # RUN a TEST SCRIPT (PowerShell)
       - name: Run Post-Build PowerShell Script
-        run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
+        run: pwsh -File ${{ env.REPODIR }}/scripts/PrintEnv.ps1
