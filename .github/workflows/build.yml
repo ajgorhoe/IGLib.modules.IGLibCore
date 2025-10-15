@@ -26,7 +26,7 @@ jobs:
           repository: ajgorhoe/IGLib.modules.IGLibCore
           path: IGLibCore
           ref: main
-          # Important: set --depth 0 to avoid shallow clones (needed
+          # Important: set fetch-depth 0 to avoid shallow clones (needed
           #   for GitVersion):
           fetch-depth: 0
           # Temporary token created automatically for the main repo (owner of the workflow) 
@@ -38,7 +38,7 @@ jobs:
         # Important: set --depth 0 to avoid shallow clones (needed
         #   for GitVersion)
         run: |
-          git clone --depth 0 https://github.com/ajgorhoe/IGLib.modules.IGLibScripts `
+          git clone https://github.com/ajgorhoe/IGLib.modules.IGLibScripts `
             IGLibScripts
 
       # CHECKOUT IGLibScripting
@@ -56,7 +56,7 @@ jobs:
         # Important: set --depth 0 to avoid shallow clones (needed
         #   for GitVersion)
         run: |
-          git clone --depth 0 https://${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}@github.com/ajgorhoe/IGLib.modules.IGLibScripting `
+          git clone https://${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}@github.com/ajgorhoe/IGLib.modules.IGLibScripting `
             IGLibScripting1
 
       # # SET UP .NET SDK 8.0
