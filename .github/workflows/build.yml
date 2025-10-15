@@ -10,9 +10,12 @@ on:
   workflow_dispatch: # Allows manual triggering
   
 env:
-  # Main repository directory: 
+  # Main repository directory:
   # Placeholder: ${{ env.REPO_DIR }}
   REPO_DIR: IGLibCore
+  # Main source project directory:
+  # Placeholder: ${{ env.SOURCE_DIR }}
+  SOURCE_DIR: IGLibCore/src/IGLib.Core
   # Whether failed tests are ignored (should normally be false):
   # Placeholder: ${{ env.IGNORE_TEST_ERRORS }}
   IGNORE_TEST_ERRORS: false
@@ -118,18 +121,26 @@ jobs:
         run: dotnet build ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln --configuration Release --no-restore
 
       # RUN TESTS & COLLECT RESULTS
-      - name: Run Unit Tests
-        shell: pwsh
-        continue-on-error: ${{ env.IGNORE_TEST_ERRORS }}
+      - name: Run Tests
+        id: teststep
+        # shell: pwsh
         # Remark: we use the solution instead of projects.
         run: dotnet test ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln --configuration Release --logger trx --results-directory test-results
+        continue-on-error: false
+        # ${{ env.IGNORE_TEST_ERRORS }}
+
+      # Report tests failure
+      - name: Report tests failure
+        if: steps.teststep.outcome == 'failure'
+        run: echo "❌ Some tests failed, but build will continue."
+
 
       # UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: BuildArtifacts
-          path: ${{ env.REPO_DIR }}/src/IGLib.Core/bin/Release/
+          path: ${{ env.SOURCE_DIR }}/bin/Release/
 
       # RUN a TEST SCRIPT (PowerShell)
       - name: Run Post-Build PowerShell Script
