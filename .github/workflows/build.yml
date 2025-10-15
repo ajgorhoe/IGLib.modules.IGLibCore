@@ -48,6 +48,7 @@ jobs:
           repository: ajgorhoe/IGLib.modules.IGLibScripting
           path: IGLibScripting
           ref: main
+          # Use automatically generated token (private repo, same owner)
           token: ${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}
 
       # CLONE IGLibScripting 
@@ -75,21 +76,30 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+      
+      # INSTALL global DOTNET TOOLS
+      - name: INSTALL global DOTNET TOOLS
+        run: |
+          dotnet tool install --global GitVersion.Tool
 
       - name: Setup MSBuild for .NET Framework
         uses: microsoft/setup-msbuild@v1  # Needed for .NET Framework builds
-
 
       # RUN PRE-BUILD SCRIPT (PowerShell)
       - name: Run Pre-Build PowerShell Script
         run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
-      # CHECK .NET SDK version
-      - name: Check .NET SDK
+      # CHECK .NET SDK version and global tools:
+      - name: Check .NET SDK and global tools
         shell: pwsh
         run: |
           Write-Host "Checking .NET SDK version..."
           dotnet --version
+          Write-Host "Listing global dotnet tools..."
+          dotnet tool list --global
+          Write-Host "Checking GitVersion..."
+          cd IGLibCore
+          gitversion /showvariable FullSemVer
 
       # RESTORE DEPENDENCIES
       - name: Restore NuGet packages
