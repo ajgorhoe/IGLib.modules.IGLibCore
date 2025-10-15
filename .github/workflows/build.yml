@@ -8,9 +8,10 @@ on:
     branches:
       - main
   workflow_dispatch: # Allows manual triggering
-  env:
-    REPODIR: IGLibCore
-    # Placeholder: ${{ env.REPODIR }}
+  
+env:
+  REPODIR: IGLibCore
+  # Placeholder: ${{ env.REPODIR }}
 
 jobs:
 
@@ -128,3 +129,4 @@ jobs:
       # RUN a TEST SCRIPT (PowerShell)
       - name: Run Post-Build PowerShell Script
         run: pwsh -File ${{ env.REPODIR }}/scripts/PrintEnv.ps1
+
