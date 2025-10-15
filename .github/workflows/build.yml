@@ -10,7 +10,7 @@ on:
   workflow_dispatch: # Allows manual triggering
   
 env:
-  # Main repository directory:
+  # Main repository directory: 
   # Placeholder: ${{ env.REPODIR }}
   REPODIR: IGLibCore
   # Whether failed tests are ignored (should normally be false):
