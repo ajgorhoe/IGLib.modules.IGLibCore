@@ -12,7 +12,7 @@ on:
 env:
   # Main repository directory:
   # Placeholder: ${{ env.REPODIR }}
-  REPODIR: IGLibGraphics3D
+  REPODIR: IGLibCore
   # Whether failed tests are ignored (should normally be false):
   # Placeholder: ${{ env.IGNORE_TEST_ERRORS }}
   IGNORE_TEST_ERRORS: false
