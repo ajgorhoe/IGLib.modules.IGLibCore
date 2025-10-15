@@ -26,6 +26,9 @@ jobs:
           repository: ajgorhoe/IGLib.modules.IGLibCore
           path: IGLibCore
           ref: main
+          # Important: set --depth 0 to avoid shallow clones (needed
+          #   for GitVersion):
+          fetch-depth: 0
           # Temporary token created automatically for the main repo (owner of the workflow) 
           token: ${{ secrets.GITHUB_TOKEN  }}
 
