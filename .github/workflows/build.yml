@@ -10,8 +10,12 @@ on:
   workflow_dispatch: # Allows manual triggering
   
 env:
-  REPODIR: IGLibCore
+  # Main repository directory:
   # Placeholder: ${{ env.REPODIR }}
+  REPODIR: IGLibGraphics3D
+  # Whether failed tests are ignored (should normally be false):
+  # Placeholder: ${{ env.IGNORE_TEST_ERRORS }}
+  IGNORE_TEST_ERRORS: false
 
 jobs:
 
@@ -115,9 +119,10 @@ jobs:
 
       # RUN TESTS & COLLECT RESULTS
       - name: Run Unit Tests
-        # Remark: use the solution instead of projects.
+        shell: pwsh
+        continue-on-error: ${{ env.IGNORE_TEST_ERRORS }}
+        # Remark: we use the solution instead of projects.
         run: dotnet test ${{ env.REPODIR }}/${{ env.REPODIR }}.sln --configuration Release --logger trx --results-directory test-results
-        # run: dotnet test ${{ env.REPODIR }}/test/IGLib.Core.Tests/IGLib.Core.Tests.csproj --configuration Release --logger trx --results-directory test-results
 
       # UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
       - name: Upload Build Artifacts
