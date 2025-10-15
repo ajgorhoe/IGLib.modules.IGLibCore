@@ -99,7 +99,7 @@ jobs:
           dotnet tool list --global
           Write-Host "Checking GitVersion..."
           cd IGLibCore
-          gitversion /showvariable FullSemVer
+          dotnet gitversion /showvariable FullSemVer
 
       # RESTORE DEPENDENCIES
       - name: Restore NuGet packages
