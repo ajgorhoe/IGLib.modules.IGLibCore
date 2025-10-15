@@ -2,11 +2,11 @@
 
 	<PropertyGroup>
 		<!--
-		All potentially interesting targets for testing:
-		<TargetFramework>net10.0;net8.0;net6.0;net48;netstandard2.0</TargetFramework>
-		Current targets for this project that must work with both IGLib legacy and the new IGLib:
-		-->
+		This project should normally be build for all relevant platforms: the newest stable
+		.NET 8 or later; legacy .NET Framework 4.8; .NET Standard 2.0 for really wide compatibility.
 		<TargetFrameworks>net10.0;net8.0;net48;netstandard2.0</TargetFrameworks>
+		-->
+		<TargetFrameworks>net8.0;net48;netstandard2.0</TargetFrameworks>
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
