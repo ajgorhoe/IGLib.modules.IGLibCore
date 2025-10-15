@@ -11,8 +11,8 @@ on:
   
 env:
   # Main repository directory: 
-  # Placeholder: ${{ env.REPODIR }}
-  REPODIR: IGLibCore
+  # Placeholder: ${{ env.REPO_DIR }}
+  REPO_DIR: IGLibCore
   # Whether failed tests are ignored (should normally be false):
   # Placeholder: ${{ env.IGNORE_TEST_ERRORS }}
   IGNORE_TEST_ERRORS: false
@@ -31,8 +31,8 @@ jobs:
       - name: Clone Main Repository
         uses: actions/checkout@v4
         with:
-          repository: ajgorhoe/IGLib.modules.${{ env.REPODIR }}
-          path: ${{ env.REPODIR }}
+          repository: ajgorhoe/IGLib.modules.${{ env.REPO_DIR }}
+          path: ${{ env.REPO_DIR }}
           ref: main
           # Important: set fetch-depth 0 to avoid shallow clones (needed
           #   for GitVersion):
@@ -95,7 +95,7 @@ jobs:
 
       # RUN PRE-BUILD SCRIPT (PowerShell)
       - name: Run Pre-Build PowerShell Script
-        run: pwsh -File ${{ env.REPODIR }}/scripts/PrintEnv.ps1
+        run: pwsh -File ${{ env.REPO_DIR }}/scripts/PrintEnv.ps1
 
       # CHECK .NET SDK version and global tools:
       - name: Check .NET SDK and global tools
@@ -106,32 +106,32 @@ jobs:
           Write-Host "Listing global dotnet tools..."
           dotnet tool list --global
           Write-Host "Repo VERSION via GitVersion..."
-          cd ${{ env.REPODIR }}
+          cd ${{ env.REPO_DIR }}
           dotnet gitversion /showvariable FullSemVer
 
       # RESTORE DEPENDENCIES
       - name: Restore NuGet packages
-        run: dotnet restore ${{ env.REPODIR }}/${{ env.REPODIR }}.sln
+        run: dotnet restore ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln
 
       # BUILD Main Project & Test Project in Release Mode
       - name: Build Solution
-        run: dotnet build ${{ env.REPODIR }}/${{ env.REPODIR }}.sln --configuration Release --no-restore
+        run: dotnet build ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln --configuration Release --no-restore
 
       # RUN TESTS & COLLECT RESULTS
       - name: Run Unit Tests
         shell: pwsh
         continue-on-error: ${{ env.IGNORE_TEST_ERRORS }}
         # Remark: we use the solution instead of projects.
-        run: dotnet test ${{ env.REPODIR }}/${{ env.REPODIR }}.sln --configuration Release --logger trx --results-directory test-results
+        run: dotnet test ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln --configuration Release --logger trx --results-directory test-results
 
       # UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: BuildArtifacts
-          path: ${{ env.REPODIR }}/src/IGLib.Core/bin/Release/
+          path: ${{ env.REPO_DIR }}/src/IGLib.Core/bin/Release/
 
       # RUN a TEST SCRIPT (PowerShell)
       - name: Run Post-Build PowerShell Script
-        run: pwsh -File ${{ env.REPODIR }}/scripts/PrintEnv.ps1
+        run: pwsh -File ${{ env.REPO_DIR }}/scripts/PrintEnv.ps1
 
