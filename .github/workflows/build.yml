@@ -81,6 +81,13 @@ jobs:
       - name: Run Pre-Build PowerShell Script
         run: pwsh -File IGLibCore/scripts/PrintEnv.ps1
 
+      # CHECK .NET SDK version
+      - name: Check .NET SDK
+        shell: pwsh
+        run: |
+          Write-Host "Checking .NET SDK version..."
+          dotnet --version
+
       # RESTORE DEPENDENCIES
       - name: Restore NuGet packages
         run: dotnet restore IGLibCore/IGLibCore.sln
