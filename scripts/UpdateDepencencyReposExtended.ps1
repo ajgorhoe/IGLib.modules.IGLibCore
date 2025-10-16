@@ -1,6 +1,6 @@
 
 # Clones or updates the depencencies repositories for IGLibCore.
-Write-Host "`n`nCloning / updating EXTENDED dependency repositories of IGLibCoreD ..."
+Write-Host "`n`nCloning / updating EXTENDED dependency repositories of IGLibCore ..."
 
 # Get the script directory such that relative paths can be resolved:
 $scriptPath = $MyInvocation.MyCommand.Path

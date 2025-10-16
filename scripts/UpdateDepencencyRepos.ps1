@@ -12,5 +12,5 @@ Write-Host "Script directory: $scriptDir"
 Write-Host "`nUpdating IGLibScripts:"
 & $(Join-Path $scriptDir "UpdateRepo_IGLibScripts.ps1")
 
-Write-Host "  ... updating IGLibGraphics3D dependencies complete.`n`n"
+Write-Host "  ... updating IGLibCore dependencies complete.`n`n"
 

@@ -48,9 +48,20 @@
 			- versions specified from Git tags (like v.1.4.2 on min branch) & history : -->
 		<PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<!-- The referenced InitModules below ensures that source code repositories are cloned to correct relative locations.
+			Attributes:
+		To prevent copying output of referenced project to output of this project (e.g. DLLs, but not text files):
+		  ReferenceOutputAssembly="false"
+		To prevent this reference to appear in NuGet package of this project:
+		  PrivateAssets="All"
+		ReferenceOutputAssembly="false" PrivateAssets="All"   -->
+		<ProjectReference Include="..\..\src\0InitModules\InitModulesCore\InitModulesCore.csproj"
+			ReferenceOutputAssembly="false" PrivateAssets="All" />
+	</ItemGroup>
 	
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\0InitModules\InitModulesCore\InitModulesCore.csproj" />
 		<ProjectReference Include="..\..\src\IGLib.Core\IGLib.Core.csproj" />
 		<ProjectReference Include="..\..\src\IGLib.CoreExtended\IGLib.CoreExtended.csproj" />
 		<ProjectReference Include="..\IGLib.TestBase\IGLib.TestBase.csproj" />
