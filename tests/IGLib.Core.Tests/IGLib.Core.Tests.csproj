@@ -12,7 +12,7 @@
 		.NET 8 or later; legacy .NET Framework 4.8; Don't use .NET Standard (not a runnable platform).
 		<TargetFrameworks>net10.0;net8.0;net48</TargetFrameworks>
 		-->
-		<TargetFrameworks>net8.0;net48</TargetFrameworks>
+		<TargetFrameworks>net10.0;net8.0;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
