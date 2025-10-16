@@ -151,9 +151,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Obsolete_Sandbox", "Obsolet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.CoreExtended", "src\IGLib.CoreExtended\IGLib.CoreExtended.csproj", "{BF264449-127A-BDDE-05D7-72E941A4F558}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_InitModules", "1_InitModules", "{63A33519-8EC8-4EBB-96AC-7B9D2D5ECB8A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_InitModules_Graphics3D", "1_InitModules_Graphics3D", "{63A33519-8EC8-4EBB-96AC-7B9D2D5ECB8A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_InitModules", "1_InitModules", "{7902DBD7-327F-4979-81AA-DD0F78909972}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_InitModules_Core", "1_InitModules_Core", "{7902DBD7-327F-4979-81AA-DD0F78909972}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources_Sandbox", "Sources_Sandbox", "{DE3F0788-1D28-4748-83E6-A09784CE20CD}"
 EndProject
@@ -165,7 +165,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventAggregator", "..\IGLib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventAggregatorTests", "..\IGLibEventAggregator\src\EventAggregatorTests\EventAggregatorTests.csproj", "{9B05A283-0099-0F37-343D-F351686F0C15}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems", "0_SolutionItems", "{B9C02C0A-1C29-4E38-B3A2-7093DC1F60BD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_EventAggregator", "0_SolutionItems_EventAggregator", "{B9C02C0A-1C29-4E38-B3A2-7093DC1F60BD}"
 	ProjectSection(SolutionItems) = preProject
 		..\IGLibEventAggregator\EventAggregatorGeneric.jpg = ..\IGLibEventAggregator\EventAggregatorGeneric.jpg
 		..\IGLibEventAggregator\LICENSE.md = ..\IGLibEventAggregator\LICENSE.md
@@ -173,7 +173,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems", "0_Soluti
 		..\IGLibEventAggregator\repository_ajgorhoe_IGLib.modules.IGLibEventAggregator.url = ..\IGLibEventAggregator\repository_ajgorhoe_IGLib.modules.IGLibEventAggregator.url
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_InitModules", "1_InitModules", "{77FBEEDD-8DA6-4929-834F-BF7B4DDC02B5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_InitModules_EventAggregator", "1_InitModules_EventAggregator", "{77FBEEDD-8DA6-4929-834F-BF7B4DDC02B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItem_LegacyIGLib", "0_SolutionItem_LegacyIGLib", "{BA134817-27D0-47ED-891D-CEEDF4A15618}"
 EndProject
@@ -192,6 +192,32 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesGraphics3D", "..\IGLibGraphics3D\src\0InitModules\InitModulesGraphics3D\InitModulesGraphics3D.csproj", "{BA564BC0-FFF4-349D-0D80-C9F8DAC3D8DF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesCore", "src\0InitModules\InitModulesIGLibCore\InitModulesCore.csproj", "{ADF456F1-F446-A7D4-E181-AD2FA9E36A1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{71CD4AD4-8297-42C6-8244-B4271665F5BA}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{74963407-5CD7-4B88-900C-610A14565698}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibGraphics3D\.github\workflows\build.yml = ..\IGLibGraphics3D\.github\workflows\build.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{44C750A9-CBBF-4BC7-BDFC-A82FD5EFA0EA}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibEventAggregator\.github\workflows\build.yml = ..\IGLibEventAggregator\.github\workflows\build.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_InitModules_Sandbox", "1_InitModules_Sandbox", "{6DF59C1F-BBEB-46D9-A600-B8DCB71C3215}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{CABA28D7-7E03-4833-BCD7-AE22D171D5F2}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibSandbox\.github\workflows\build.yml = ..\IGLibSandbox\.github\workflows\build.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{7A266F5B-D680-4F67-A99B-DB4388A6DCD0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{B72777E7-76D0-4879-B060-C614CEE93406}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -421,6 +447,13 @@ Global
 		{B9373BC6-01C2-4516-AB6C-63A69B27F02F} = {1F37D3D2-5309-41EB-B7A1-BEB99A3A77D0}
 		{BA564BC0-FFF4-349D-0D80-C9F8DAC3D8DF} = {63A33519-8EC8-4EBB-96AC-7B9D2D5ECB8A}
 		{ADF456F1-F446-A7D4-E181-AD2FA9E36A1A} = {7902DBD7-327F-4979-81AA-DD0F78909972}
+		{71CD4AD4-8297-42C6-8244-B4271665F5BA} = {6A6A4F7E-E005-4C88-A167-C213C8AB0933}
+		{74963407-5CD7-4B88-900C-610A14565698} = {B4E44EC8-EF08-4CF8-8410-FD825D2CAD8B}
+		{44C750A9-CBBF-4BC7-BDFC-A82FD5EFA0EA} = {B9C02C0A-1C29-4E38-B3A2-7093DC1F60BD}
+		{6DF59C1F-BBEB-46D9-A600-B8DCB71C3215} = {F9A1F5C6-211C-498E-8A4E-40D4FC56F7A9}
+		{CABA28D7-7E03-4833-BCD7-AE22D171D5F2} = {F99F4531-75A3-4249-9D3E-BBEAF2F83260}
+		{7A266F5B-D680-4F67-A99B-DB4388A6DCD0} = {DD76168B-914E-4610-A432-DFF34B6F528C}
+		{B72777E7-76D0-4879-B060-C614CEE93406} = {C7582123-B0B4-43CB-9C45-51D3E416FD65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
