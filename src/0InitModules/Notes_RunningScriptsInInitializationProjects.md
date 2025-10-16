@@ -1,4 +1,15 @@
 
+# Notes - Running Initialization Scripts form .NET Projects (.csproj Files)
+
+**Contents**:
+
+* [Defining Command-Line in Multiple Lines](#defining-command-line-in-multiple-lines)
+* [Git Actions Jobs TroubleShooting and Diagnostics](#git-actions-jobs-troubleshooting-and-diagnostics)
+* [Using Copilot in Visual Studio](#using-copilot-in-visual-studio)
+  * [Agent Mode and Model Context Protocol (MCP)](#agent-mode-and-model-context-protocol-mcp)
+
+## Git Actions Jobs TroubleShooting and Diagnostics
+
 > Q: What are the likely causes hanging of building of a project that references another project that runs a powershell script, when MSBuild is run in GitHub Actions (CI)? 
 
 Here are some diagnostics and fixes you can apply to eliminate the possibility of hanging when building a project running a PowerShell script during build, and to get useful logs when you re-run the job.
@@ -94,11 +105,7 @@ If you re-run with these changes and paste the diagnostic msbuild output around 
 
 ---
 
----
-
----
-
----
+## Defining Command-Line in Multiple Lines
 
 > Q: In .csproj project files, is there a way to define a property across multiple lines in the way that results in a single-line value (like back-tick in PowerShell or backslash in some other shells, at the end of the lines that are supposed to be continued)?
 
@@ -154,12 +161,39 @@ Additional practical tips
 
 If you want, paste your exact .csproj fragment and I’ll convert it to one of the options above with correct escaping for your MSBuild variables.
 
+## Using Copilot in Visual Studio
 
+### Agent Mode and Model Context Protocol (MCP)
 
+*Agent Mode* turns GitHub Copilot into an autonomous assistant that can plan and execute multi-step tasks, while the **Model Context Protocol (MCP)** is an open standard that lets Copilot connect to external tools and data sources to enhance its capabilities. When combined, Agent Mode uses MCP servers to give Copilot the ability to perform complex, context-aware workflows that go beyond simple code completion without needing to switch contexts between different tools or platforms. 
 
+#### Agent Mode
 
+* **Function**:
+  * Allows Copilot to act as an intelligent pair programmer that understands complex tasks, plans the steps, and executes them.
+* **Capabilities**:
+  * Analyzes your project to build context (e.g., code structure, dependencies).
+  * Plans and proposes changes based on your natural language requests.
+  * Automatically executes changes, such as editing files or running terminal commands.
+  * Provides summaries of the work completed. 
+* **Use case**: Ideal for more complex tasks like refactoring, adding features, or debugging that involve multiple steps. 
 
+#### Model Context Protocol (MCP)
 
+* **Function**: An open standard that provides a unified interface for AI models to interact with external tools and data sources.
+* **Capabilities**:
+  * Enables Copilot to access external data (like issue trackers or APIs) for more information.
+  * Allows Copilot to use external tools (like a web browser or a UI testing framework) to perform actions.
+* Provides a way to integrate Copilot into existing workflows and services without custom integrations. 
 
+**Use case**: Connecting Copilot to external resources to give it the ability to perform tasks that require information or actions beyond the immediate codebase. 
 
+**How they work together**:
 
+* When Agent Mode is combined with MCP, Copilot can dynamically find relevant information from external sources and use it to adapt its approach to a task.
+* For example, Copilot in Agent Mode could use an MCP server to access a bug tracker, find information about a reported issue, and then use that information to automatically fix the code, all without you having to manually switch between applications.
+* This combination allows for a more seamless and powerful "agentic" workflow where Copilot can complete tasks with significantly less human intervention.
+
+---
+
+---
