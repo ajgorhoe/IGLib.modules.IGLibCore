@@ -50,6 +50,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+		<ProjectReference Include="..\..\src\0InitModules\InitModulesCore\InitModulesCore.csproj" />
 		<ProjectReference Include="..\..\src\IGLib.Core\IGLib.Core.csproj" />
 		<ProjectReference Include="..\..\src\IGLib.CoreExtended\IGLib.CoreExtended.csproj" />
 		<ProjectReference Include="..\IGLib.TestBase\IGLib.TestBase.csproj" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35728.132
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11111.16 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems", "0_SolutionItems", "{633BD4B2-3198-47BE-A26F-0E48453D428E}"
 	ProjectSection(SolutionItems) = preProject
@@ -24,6 +24,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core.Tests", "tests\I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.TestBase", "tests\IGLib.TestBase\IGLib.TestBase.csproj", "{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{A7F22E90-40C0-4D41-A2B0-F790D9C89847}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InitModules", "InitModules", "{D2443D8D-9545-4700-8621-445849491F39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesCore", "src\0InitModules\InitModulesCore\InitModulesCore.csproj", "{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,12 +48,17 @@ Global
 		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{21254F1A-A508-46CA-B3F9-D8CF2218C042} = {633BD4B2-3198-47BE-A26F-0E48453D428E}
+		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6} = {D2443D8D-9545-4700-8621-445849491F39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
