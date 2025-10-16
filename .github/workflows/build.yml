@@ -30,6 +30,7 @@ jobs:
         dotnet-version: [ '10.0' ]
 
     steps:
+      
       # CHECKOUT Main Repository
       - name: Clone Main Repository
         uses: actions/checkout@v4
@@ -71,17 +72,7 @@ jobs:
           git clone https://${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}@github.com/ajgorhoe/IGLib.modules.IGLibScripting `
             IGLibScripting1
 
-      # # SET UP .NET SDK 8.0
-      # - name: Setup .NET 8
-      #   uses: actions/setup-dotnet@v3
-      #   with:
-      #     dotnet-version: 8.0.x
 
-      # # SET UP .NET SDK 6.0
-      # - name: Setup .NET 6
-      #   uses: actions/setup-dotnet@v3
-      #   with:
-      #     dotnet-version: 6.0.x
 
       - name: SET UP .NET SDK
         uses: actions/setup-dotnet@v4
