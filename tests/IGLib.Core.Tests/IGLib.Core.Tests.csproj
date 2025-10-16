@@ -48,7 +48,7 @@
 			- versions specified from Git tags (like v.1.4.2 on min branch) & history : -->
 		<PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\IGLib.Core\IGLib.Core.csproj" />
 		<ProjectReference Include="..\..\src\IGLib.CoreExtended\IGLib.CoreExtended.csproj" />
