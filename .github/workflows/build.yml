@@ -52,14 +52,14 @@ jobs:
           echo "Cloning dependencies via repo's own script (UpdateDepencencyReposExtended.ps1)`n`n..."
           ./${{ env.REPO_DIR }}/scripts/UpdateDepencencyReposExtended.ps1
 
-      # CLONE IGLibScripts
-      - name: Clone IGLibScripts
-        shell: pwsh
-        # Important: set --depth 0 to avoid shallow clones (needed
-        #   for GitVersion)
-        run: |
-          git clone https://github.com/ajgorhoe/IGLib.modules.IGLibScripts `
-            IGLibScripts
+      # # CLONE IGLibScripts
+      # - name: Clone IGLibScripts
+      #   shell: pwsh
+      #   # Important: set --depth 0 to avoid shallow clones (needed
+      #   #   for GitVersion)
+      #   run: |
+      #     git clone https://github.com/ajgorhoe/IGLib.modules.IGLibScripts `
+      #       IGLibScripts
 
       # CHECKOUT IGLibScripting
       - name: Clone IGLibScripting
