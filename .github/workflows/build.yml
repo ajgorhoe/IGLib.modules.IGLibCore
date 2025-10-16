@@ -42,6 +42,13 @@ jobs:
           fetch-depth: 0
           # Temporary token created automatically for the main repo (owner of the workflow) 
           token: ${{ secrets.GITHUB_TOKEN  }}
+      
+      # CLONE DEPENDENCY repositories:
+      -name: CLONE DEPENDENCY repos
+        shell: pwsh
+        run: |
+          echo "Cloning dependencies..."
+          ./scripts/UpdateDepencencyReposExtended.ps1
 
       # CLONE IGLibScripts
       - name: Clone IGLibScripts
