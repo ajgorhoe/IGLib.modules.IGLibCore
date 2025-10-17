@@ -76,7 +76,7 @@ jobs:
       # Print out tree view of the base directory, in order to verify that
       # all checkouts were performed correctly. Tune the depth and including
       # hidden files to get the information needed.
-      -name: CHECK DIRECTORY STRUCTURE
+      - name: CHECK DIRECTORY STRUCTURE
         shell: pwsh
         run: |
           Write-Host "`n`nChecking directory structure...`n"
