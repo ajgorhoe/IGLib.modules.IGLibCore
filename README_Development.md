@@ -137,7 +137,17 @@ This is immediately followed by this error:
 
 **Attempt to fix** this issue:
 
-Multiple remotes were detected in the dependency repository `IGLibCore` because it was cloned via `UpdateDepencencyReposExtended.ps1`, which in turn calls 'UpdateRepo_IGLibCore.ps1', which calls `UpdateOrCloneRepository.ps1` to do the job. A fix was attempted by **detecting whether the script runs on GitHub Actions**, and **if yes, removing the additional remotes**. The most generic solution would be to do this in the `UpdateOrCloneRepository.ps1` because this script is always called, and it is centrally maintained in the `IGLibScripts` repository. However, such a hard-coded solution in a general script would be exaggerated (though convenient), and currently this is handled in each repository's scripts for cloning a specific dependency repository, such as [scripts/UpdateRepo_IGLibCore.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/blob/main/scripts/UpdateRepo_IGLibCore.ps1) in the `IGLibGraphics3D` repository. IGLibGraphics3D also contains the UpdateRepo_IGLibScripts.ps1, but this repo dows not need to exclude additional remotes when run on GitHub Actions because it is not in involved in builds via MSBuild. 
+Multiple remotes were detected in the dependency repository `IGLibCore` because it was cloned via `UpdateDepencencyReposExtended.ps1`, which in turn calls 'UpdateRepo_IGLibCore.ps1', which calls `UpdateOrCloneRepository.ps1` to do the job. A fix was attempted by **detecting whether the script runs on GitHub Actions**, and **if yes, removing the additional remotes**. The most generic solution would be to do this in the `UpdateOrCloneRepository.ps1` because this script is always called, and it is centrally maintained in the `IGLibScripts` repository. However, such a hard-coded solution in a general script would be exaggerated (though convenient), and currently this is handled in each repository's scripts for cloning a specific dependency repository, such as [scripts/UpdateRepo_IGLibCore.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/blob/main/scripts/UpdateRepo_IGLibCore.ps1) in the `IGLibGraphics3D` repository. IGLibGraphics3D also contains the UpdateRepo_IGLibScripts.ps1, but this repo dows not need to exclude additional remotes when run on GitHub Actions because it is not in involved in builds via MSBuild. The fix is provided by the following code at the end of the configuration section of `UpdateRepo_IGLibCore.ps1`:
+
+~~~powershell
+# Remove secondary and tertiary remotes when running on GitHub Actions:
+if ($env:GITHUB_ACTIONS -eq "true") {
+    $global:CurrentRepo_AddressSecondary = $null
+    $global:CurrentRepo_RemoteSecondary = $null
+    $global:CurrentRepo_AddressTertiary = $null
+    $global:CurrentRepo_RemoteTertiary = $null
+}
+~~~
 
 ### Versioning IGLib Modules
 
