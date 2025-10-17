@@ -107,7 +107,37 @@ Division of modules into
 
 ## IGLib CI/CD
 
-We currently use Github Actions for Continuous integration. [GitVersion](#versioning-iglib-modules) is used to automatize versioning.
+We currently use Github Actions for Continuous integration. [GitVersion](#versioning-iglib-modules) is used to automatize versioning. The setup is intended to be simple and to fully support continuous delivery if necessary. Currently, the priority is to make workflows simple and enable efficient work in the current conditions.
+
+### Basic Setup for Continuous Integration
+
+The template setup for continuous integration is in the [IGLibLore](https://github.com/ajgorhoe/IGLib.modules.IGLibCore) repository. This is supported by **GitHub Actions configuration files** in the [.github/workflows/ directory](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/tree/main/.github/workflows) ([build.yml](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/.github/workflows/build.yml)) and some **scripts in the [scripts/](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/tree/main/scripts) directory** of each repository that are also intended to support continuous integration, for example:
+
+* [UpdateDepencencyRepos.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/UpdateDepencencyRepos.ps1) and [UpdateDepencencyReposExtended.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/UpdateDepencencyReposExtended.ps1) are intended to clone or update all repositories containing dependencies of the certain repository that are referenced via source projects.
+  * Each repository contains its own version; customized versions of these scripts are available in all IGLib repositories that have such dependencies, and they call scripts for cloning/updating individual repositories, such as [UpdateRepo_IGLibScripts.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/UpdateRepo_IGLibScripts.ps1) in IGLibCore, or [UpdateRepo_IGLibCore.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/blob/main/scripts/UpdateRepo_IGLibCore.ps1) in the IGLibGraphics3D repository; specific scripts available depend on what is referenced via source code projects by projects of the specific repository.
+  * Updating/cloning scripts for individual repositories rely on [UpdateOrCloneRepository.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/UpdateOrCloneRepository.ps1) to do the job, and the end script only provide 
+* [TagVersion.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/TagVersion.ps1) is intended to create a version tag on the specified branch.
+* [SyncTagVersions_All.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/SyncTagVersions_All.ps1) is intended to synchronize version tags across IGLib repositories (the list or repositories is baked in the script but it can be extended) and relies on [SyncTagVersions.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/SyncTagVersions.ps1) to do the job. These scripts are only available in the IGLibCore repository, which is also used for central administration of other repositories. The latter script is maintained in the [IGLibScripts](https://github.com/ajgorhoe/IGLib.modules.IGLibScripts/tree/main/psutils/RepositoryVersionTagging) repository.
+* [ShowDirectoryTree.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/ShowDirectoryTree.ps1) is used in continuous integration to inspect directory structure on the runner;s host machine, which may be very useful for troubleshooting when something goes wrong.
+
+Note that the IGLib Core repository does not have actual dependencies in source code. Handling on such dependencies in continuous integration is better demonstrated in other repositories, such as [IGLibGraphics3D](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D).
+
+PowerShell **scripts** are often used to **make certain tasks** (such as cloning repositories, building and testing code, tagging versions) **more uniform** across local development environments and CI hosts.
+
+#### Trap: Multiple Remotes not Allowed in GitHub Actions
+
+GitHub Actions do **not allow multiple remotes** for repositories checked out in GitHub Actions when these repositories contains code that is built. This can be seen e.g. in [commit 8616617](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/commit/8616617e11d3dcd824c1c0aca4923e2973940fc6), where [CI build failed](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/actions/runs/18587784528/job/52995585273#step:12:21) because the dependency repository `IGLibCore` was cloned with multiple remotes assigned. The following error is reported:
+
+`WARN [25-10-17 8:59:07:80] An error occurred:
+  **2 remote(s) have been detected**. When being run on a build server, the Git repository is expected to bear one (and no more than one) remote.`
+
+This is immediately followed by this error:
+
+`...\.nuget\packages\gitversion.msbuild\6.4.0\tools\GitVersion.MsBuild.targets(26,9): error MSB3073: The **command "dotnet --roll-forward Major** "...\gitversion.dll" "...\IGLibCore\tests\IGLib.TestBase"  -output file -outputfile "obj\gitversion.json"" exited with code 1.`
+
+**Attempt to fix** this issue:
+
+Multiple remotes were detected in the dependency repository `IGLibCore` because it was cloned via `UpdateDepencencyReposExtended.ps1`, which in turn calls 'UpdateRepo_IGLibCore.ps1', which calls `UpdateOrCloneRepository.ps1` to do the job. A fix was attempted by **detecting whether the script runs on GitHub Actions**, and **if yes, removing the additional remotes**. The most generic solution would be to do this in the `UpdateOrCloneRepository.ps1` because this script is always called, and it is centrally maintained in the `IGLibScripts` repository. However, such a hard-coded solution in a general script would be exaggerated (though convenient), and currently this is handled in each repository's scripts for cloning a specific dependency repository, such as [scripts/UpdateRepo_IGLibCore.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/blob/main/scripts/UpdateRepo_IGLibCore.ps1) in the `IGLibGraphics3D` repository. IGLibGraphics3D also contains the UpdateRepo_IGLibScripts.ps1, but this repo dows not need to exclude additional remotes when run on GitHub Actions because it is not in involved in builds via MSBuild. 
 
 ### Versioning IGLib Modules
 
