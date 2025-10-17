@@ -73,6 +73,15 @@ jobs:
             IGLibScripting1
 
 
+      # Print out tree view of the base directory, in order to verify that
+      # all checkouts were performed correctly. Tune the depth and including
+      # hidden files to get the information needed.
+      -name: CHECK DIRECTORY STRUCTURE
+        shell: pwsh
+        run: |
+          Write-Host "`n`nChecking directory structure...`n"
+          Write-Host "Current directory: $(Get-Location)`n"
+          ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path . -MaxDepth 2 -IncludeHidden
 
       - name: SET UP .NET SDK
         uses: actions/setup-dotnet@v4
