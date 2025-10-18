@@ -50,8 +50,8 @@ jobs:
         # Important: set --depth 0 to avoid shallow clones (needed
         #   for GitVersion)
         run: |
-          echo "Cloning dependencies via repo's own script (UpdateDepencencyReposExtended.ps1)`n`n..."
-          ./${{ env.REPO_DIR }}/scripts/UpdateDepencencyReposExtended.ps1
+          echo "Cloning dependencies via repo's own script (UpdateDependencyReposExtended.ps1)`n`n..."
+          ./${{ env.REPO_DIR }}/scripts/UpdateDependencyReposExtended.ps1
 
       # CHECKOUT IGLibScripting
       - name: Clone IGLibScripting
@@ -81,6 +81,7 @@ jobs:
         run: |
           Write-Host "`n`nChecking directory structure...`n"
           Write-Host "Current directory: $(Get-Location)`n"
+          Write-Host "Directory Contents:`n"
           ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path . -MaxDepth 2 -IncludeHidden
 
       - name: SET UP .NET SDK
@@ -89,7 +90,7 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
       
       # INSTALL global DOTNET TOOLS
-      - name: INSTALL global DOTNET TOOLS
+      - name: INSTALL global DOTNET TOOLS (GitVersion)
         run: |
           dotnet tool install --global GitVersion.Tool
 
@@ -100,16 +101,25 @@ jobs:
       - name: Run Pre-Build PowerShell Script
         run: pwsh -File ${{ env.REPO_DIR }}/scripts/PrintEnv.ps1
 
-      # CHECK .NET SDK version and global tools:
-      - name: Check .NET SDK and global tools
+      # Verify .NET SDK version and global tools to insure everything we need is installed:
+      - name: VERIFY .NET SDK and global tools
         shell: pwsh
         run: |
           Write-Host "Checking .NET SDK version..."
           dotnet --version
           Write-Host "Listing global dotnet tools..."
           dotnet tool list --global
-          Write-Host "Repo VERSION via GitVersion..."
+
+      # Verify that GitVersion works properly & printing the calculated version of the current commit:
+      # Remark: malfunctioning of GitVersion (likely due to misconfiguration) is often a cause for
+      # subsequent build to fail.
+      - name: CHECK GitVersion
+        shell: pwsh
+        run: |
+          Write-Host "Verifying GitVersion and printing version of the current commit..."
           cd ${{ env.REPO_DIR }}
+          Write-Host "Directory for getting the version:`n  $($(Get-Location).Path)"
+          Write-Host "Repository VERSION returned by GitVersion:"
           dotnet gitversion /showvariable FullSemVer
 
       # RESTORE DEPENDENCIES
