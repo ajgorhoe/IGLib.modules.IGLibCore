@@ -78,6 +78,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_Sandbox", "0_SolutionItems_Sandbox", "{F99F4531-75A3-4249-9D3E-BBEAF2F83260}"
 	ProjectSection(SolutionItems) = preProject
 		..\IGLibSandbox\.gitignore = ..\IGLibSandbox\.gitignore
+		..\IGLibSandbox\ajgorhoe_IGLib.modules.IGLibSandbox.url = ..\IGLibSandbox\ajgorhoe_IGLib.modules.IGLibSandbox.url
+		..\IGLibSandbox\GitVersion.yml = ..\IGLibSandbox\GitVersion.yml
 		..\IGLibSandbox\LICENSE.md = ..\IGLibSandbox\LICENSE.md
 		..\IGLibSandbox\README.md = ..\IGLibSandbox\README.md
 	EndProjectSection
@@ -139,6 +141,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_Graphics3D", "0_SolutionItems_Graphics3D", "{B4E44EC8-EF08-4CF8-8410-FD825D2CAD8B}"
 	ProjectSection(SolutionItems) = preProject
 		..\IGLibGraphics3D\ajgorhoe_IGLib.modules.IGLibGraphics3D.url = ..\IGLibGraphics3D\ajgorhoe_IGLib.modules.IGLibGraphics3D.url
+		..\IGLibGraphics3D\GitVersion.yml = ..\IGLibGraphics3D\GitVersion.yml
+		..\IGLibGraphics3D\IGLibGraphics3D.sln = ..\IGLibGraphics3D\IGLibGraphics3D.sln
 		..\IGLibGraphics3D\LICENSE.md = ..\IGLibGraphics3D\LICENSE.md
 		..\IGLibGraphics3D\README.md = ..\IGLibGraphics3D\README.md
 	EndProjectSection

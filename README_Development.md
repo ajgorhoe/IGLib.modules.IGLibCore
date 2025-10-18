@@ -126,6 +126,19 @@ Note that the IGLib Core repository does not have actual dependencies in source 
 
 PowerShell **scripts** are often used to **make certain tasks** (such as cloning repositories, building and testing code, tagging versions) **more uniform** across local development environments and CI hosts.
 
+Beside **CI-related** configuration and supporting scripts, there are also some **settings in project files** that support continuous integration. First of all, IGLib projects need to reference the GitVersion package, whch provides the service of automatically versioning of build assemblies according to Git history and verson tags. This is done in the following way:
+
+~~~xml
+<ItemGroup>
+  <!-- For automatic versioning with GitVersion tool (https://gitversion.net/docs/usage/cli/) 
+    - versions specified from Git tags (like v.1.4.2 on min branch) & history : -->
+  <PackageReference Include="GitVersion.MsBuild" Version="*" 
+      PrivateAssets="All" />
+</ItemGroup>
+~~~
+
+There are also some agreements that should be kept across IGLib code projects. Since versioning is done avtomatically as described above, properties defining versions should be excluded from project files. Standard properties stating copyright, defining project as part of IGLib, and provide a link to GitHub repository and to license file there should be included.
+
 #### Issue: Multiple Remotes not Allowed in GitHub Actions
 
 GitHub Actions do **not allow multiple remotes** for repositories checked out in GitHub Actions when these repositories contains code that is built. This can be seen e.g. in [commit 8616617](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/commit/8616617e11d3dcd824c1c0aca4923e2973940fc6), where [CI build failed](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/actions/runs/18587784528/job/52995585273#step:12:21) because the dependency repository `IGLibCore` was cloned with multiple remotes assigned. The following error is reported:
