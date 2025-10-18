@@ -15,6 +15,8 @@ This repository contains basic portions of the restructured ***Investigative Gen
     * [Solution Structure](#solution-structure)
   * [The IGLibCore and Other Base Modules](#the-iglibcore-and-other-base-modules)
   * **[CI/CD](#iglib-cicd)** for IGLib Repositories
+    * [Basic Setup for Continuous Integration](#basic-setup-for-continuous-integration)
+      * [Issue: Multiple Remotes not Allowed in GitHub Actions](#issue-multiple-remotes-not-allowed-in-github-actions)
     * **[Tagging Toolkit]()** (scripts)
     * **[Multi-Repository GitVersion Tagging Toolkit](https://github.com/ajgorhoe/IGLib.modules.IGLibScripts/blob/main/psutils/RepositoryVersionTagging/README_VersionTaggingToolkit.md)** on GitHub - a set of scripts for tagging versions and for synchronization of version tags across GitHub repositories;
       * [Local path to the document](../IGLibScripts/psutils/RepositoryVersionTagging/README_VersionTaggingToolkit.md) (works if IGLibScripts is cloned side-by-side)
@@ -111,7 +113,7 @@ We currently use Github Actions for Continuous integration. [GitVersion](#versio
 
 ### Basic Setup for Continuous Integration
 
-The template setup for continuous integration is in the [IGLibLore](https://github.com/ajgorhoe/IGLib.modules.IGLibCore) repository. This is supported by **GitHub Actions configuration files** in the [.github/workflows/ directory](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/tree/main/.github/workflows) ([build.yml](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/.github/workflows/build.yml)) and some **scripts in the [scripts/](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/tree/main/scripts) directory** of each repository that are also intended to support continuous integration, for example:
+The template setup for continuous integration is in the [IGLibLore](https://github.com/ajgorhoe/IGLib.modules.IGLibCore) repository, and [IGLibGraphics3D](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D) can also be referred to for handling dependencies. This is supported by **GitHub Actions configuration files** in the [.github/workflows/ directory](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/tree/main/.github/workflows) ([build.yml](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/.github/workflows/build.yml)) and some **scripts in the [scripts/](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/tree/main/scripts) directory** of each repository that are also intended to support continuous integration, for example:
 
 * [UpdateDepencencyRepos.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/UpdateDepencencyRepos.ps1) and [UpdateDepencencyReposExtended.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/UpdateDepencencyReposExtended.ps1) are intended to clone or update all repositories containing dependencies of the certain repository that are referenced via source projects.
   * Each repository contains its own version; customized versions of these scripts are available in all IGLib repositories that have such dependencies, and they call scripts for cloning/updating individual repositories, such as [UpdateRepo_IGLibScripts.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/scripts/UpdateRepo_IGLibScripts.ps1) in IGLibCore, or [UpdateRepo_IGLibCore.ps1](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/blob/main/scripts/UpdateRepo_IGLibCore.ps1) in the IGLibGraphics3D repository; specific scripts available depend on what is referenced via source code projects by projects of the specific repository.
@@ -124,7 +126,7 @@ Note that the IGLib Core repository does not have actual dependencies in source 
 
 PowerShell **scripts** are often used to **make certain tasks** (such as cloning repositories, building and testing code, tagging versions) **more uniform** across local development environments and CI hosts.
 
-#### Trap: Multiple Remotes not Allowed in GitHub Actions
+#### Issue: Multiple Remotes not Allowed in GitHub Actions
 
 GitHub Actions do **not allow multiple remotes** for repositories checked out in GitHub Actions when these repositories contains code that is built. This can be seen e.g. in [commit 8616617](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/commit/8616617e11d3dcd824c1c0aca4923e2973940fc6), where [CI build failed](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D/actions/runs/18587784528/job/52995585273#step:12:21) because the dependency repository `IGLibCore` was cloned with multiple remotes assigned. The following error is reported:
 
