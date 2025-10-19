@@ -218,6 +218,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".githu
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{7A266F5B-D680-4F67-A99B-DB4388A6DCD0}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibScripting\.github\workflows\build.yml = ..\IGLibScripting\.github\workflows\build.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{B72777E7-76D0-4879-B060-C614CEE93406}"
 EndProject

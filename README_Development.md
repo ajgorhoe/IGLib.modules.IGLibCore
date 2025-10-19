@@ -398,5 +398,11 @@ This section contains unarranged quick notes on what needs to be done.
           * 
       * Publish a package
 
+#### ToDo: Cloning of WestWind.Scripting in IGLibSandbox
 
+Cloning of **WestWind.Scripting** into **iglibmodules/_external** via the original extended dependencies update script (`UpdateDependencyReposExtended.ps1`) in the **`IGLibSandbox` repository** does not work: directory is created but the repository is not cloned.
 
+It seems that locally the same script works properly and clones complete WestWind.Scripting to the specified location. Some clues:
+
+* Originally, cloning was done of my fork
+* The branch was not the main branch butt my custom branch with some additional documentation files.
