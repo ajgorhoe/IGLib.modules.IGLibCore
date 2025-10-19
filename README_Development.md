@@ -382,20 +382,24 @@ This section contains unarranged quick notes on what needs to be done.
 * Documentation
   * Wiki:
     * Compile document About versioning with GitVersion (mention alternatives, exclude scripts documentation)
+    * Add document about **conditional execution** in PowerShell and .csproj files (regarding the host OS, whether running on CI host, whether running within Visual Studio, etc.)
 * CI/CD:
-  * Create CI/CD scripts for event aggregator repo
-    * Do / solve:
-      * Updete dependend repositories
-      * Build solution
-        * Build for different targets
-      * Execute tests
-        * Questions: for which targets? Maybe only .NET Framework and latest .NET?
-      * Create artifacts
-        * Do we also need artifacts for test projects?
-      * Create a package
+  * Create initial CI/CD scripts for the following repositories:
+    * IGLibScripting
+      * almost done
+    * IGLibScriptingCs
+      * Also start from Graphics3D, take care of dependencies
+    * iglib
+      * make uniform dependency repositories checkout
+      * make the basic repo build on CI/CD
+      * also **provide packaging** whn this is solved for IGLb Core libraries
+  * Update CI/CD scripts for template repositiories (`IGLibCore` and `IGLibGraphics3D`)
+    * ToDo / solve:
+      * **Create a package**
         * Solve: 
           * Which targets included?
-          * 
+          * Include dependencies that are slose to the package? (probabbly not)
+          * How to deal with dependencies? How to know which ranges of dependency versions are allowed?
       * Publish a package
 
 #### ToDo: Cloning of WestWind.Scripting in IGLibSandbox
