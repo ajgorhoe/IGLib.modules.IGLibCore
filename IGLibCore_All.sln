@@ -213,6 +213,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".githu
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{B72777E7-76D0-4879-B060-C614CEE93406}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibScriptingCs\.github\workflows\build.yml = ..\IGLibScriptingCs\.github\workflows\build.yml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesCore", "src\0InitModules\InitModulesCore\InitModulesCore.csproj", "{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}"
 EndProject
@@ -225,6 +228,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_WestwindScr
 		..\_external\Westwind.Scripting\ScriptAndTemplates.md = ..\_external\Westwind.Scripting\ScriptAndTemplates.md
 		..\_external\Westwind.Scripting\Todo.md = ..\_external\Westwind.Scripting\Todo.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesScriptingCs", "..\IGLibScriptingCs\src\0InitModules\InitModulesScriptingCs\InitModulesScriptingCs.csproj", "{4A91050A-EF67-0DB8-A2A9-D1627E6FC8C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesScriptingCsExtended", "..\IGLibScriptingCs\src\0InitModules\InitModulesScriptingCsExtended\InitModulesScriptingCsExtended.csproj", "{0D570594-D69C-27B8-E10B-0775F88672FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -372,6 +379,14 @@ Global
 		{5F882FC6-6AD4-F4FD-CD06-3A0E43E21EDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F882FC6-6AD4-F4FD-CD06-3A0E43E21EDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F882FC6-6AD4-F4FD-CD06-3A0E43E21EDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A91050A-EF67-0DB8-A2A9-D1627E6FC8C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A91050A-EF67-0DB8-A2A9-D1627E6FC8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A91050A-EF67-0DB8-A2A9-D1627E6FC8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A91050A-EF67-0DB8-A2A9-D1627E6FC8C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D570594-D69C-27B8-E10B-0775F88672FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D570594-D69C-27B8-E10B-0775F88672FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D570594-D69C-27B8-E10B-0775F88672FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D570594-D69C-27B8-E10B-0775F88672FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -450,6 +465,8 @@ Global
 		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6} = {7902DBD7-327F-4979-81AA-DD0F78909972}
 		{5F882FC6-6AD4-F4FD-CD06-3A0E43E21EDC} = {A7510F07-3CD0-445F-BF2F-7CD0FB916340}
 		{7458B73A-F958-46D7-9290-61C568D11DAC} = {63276182-6815-4037-B6C0-1808410E8788}
+		{4A91050A-EF67-0DB8-A2A9-D1627E6FC8C6} = {B9373BC6-01C2-4516-AB6C-63A69B27F02F}
+		{0D570594-D69C-27B8-E10B-0775F88672FF} = {B9373BC6-01C2-4516-AB6C-63A69B27F02F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
