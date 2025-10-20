@@ -45,16 +45,21 @@
 				-Arg1 "$(SomeArg)" -Arg2 "$(AnotherArg)"  
 				-->
 		</InitCommand>
-
+		<InitCommand1  Condition="'$(GITHUB_ACTIONS)' == 'true'">
+			$(_PSExe) -NoProfile $(_ExecPolicy) -Command "Write-Host \"`n`nSKIPPING INITIALIZATION of dependency repositories in GitHub Actions environment.`n`n\""
+		</InitCommand1>
 	</PropertyGroup>
 
 	<!-- Execution of the script that clones or updates all the dependency repositories: -->
 	<Target Name="RunInitializationScripts" AfterTargets="PostBuildEvent">
 
-		<Message Text="---" Importance="high" />
+		<Message Text="
+========== Initialization Project ==========" Importance="high" />
+		<Message Text="From InitModulesCore:" Importance="high" />
 		<Message Text="Initialization command:" Importance="high" />
-		<Message Text="  $(InitCommand)" Importance="high" />
-		<Message Text="---" Importance="high" />
+		<Message Text="  $(InitCommand1)" Importance="high" />
+		<Message Text="----------
+" Importance="high" />
 
 		<!--
 		This target runs the script that clones or updates all the dependency repositories.
