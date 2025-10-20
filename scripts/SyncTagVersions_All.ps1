@@ -112,9 +112,11 @@ $InitialRepoDirs = @(
   ($ModulesPath + "iglibexternal"),
   ($ModulesPath + "igsolutions"),
   ($ModulesPath + "shelldev"),
-  ($ModulesPath + "unittests"),
   ($ModulesPath + "igsandbox"),
   ($ModulesPath + "iglibapp"),
+  ($ModulesPath + "unittests"),
+  ($ModulesPath + "igtest"),
+  ($ModulesPath + "data"),
   # Learning repos:
   ($ModulesPath + "iglearn"),
   ($ModulesPath + "iglearn/wiki.IGLib"),
