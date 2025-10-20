@@ -1,4 +1,5 @@
-﻿// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
+﻿// Copyright © Igor Grešovnik (2008 - present). License:
+// https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md
 
 using System;
 using System.Collections.Generic;

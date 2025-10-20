@@ -1,4 +1,6 @@
-﻿
+﻿// Copyright © Igor Grešovnik (2008 - present). License:
+// https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/LICENSE.md
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
