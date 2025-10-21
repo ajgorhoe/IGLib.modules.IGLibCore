@@ -234,6 +234,67 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesSandbox", "..\IG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesSandboxExtended", "..\IGLibSandbox\src\0InitModules\InitModulesSandvoxExtended\InitModulesSandboxExtended.csproj", "{B07B3057-2026-22A6-4C41-9EB5570D0B1B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{0F162D81-9D37-417F-9C51-F5891DA9B375}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\PrintEnv.ps1 = scripts\PrintEnv.ps1
+		scripts\ShowDirectoryTree.ps1 = scripts\ShowDirectoryTree.ps1
+		scripts\SyncTagVersions.ps1 = scripts\SyncTagVersions.ps1
+		scripts\SyncTagVersions_All.ps1 = scripts\SyncTagVersions_All.ps1
+		scripts\TagVersion.ps1 = scripts\TagVersion.ps1
+		scripts\TestScript.ps1 = scripts\TestScript.ps1
+		scripts\UpdateDependencyRepos.ps1 = scripts\UpdateDependencyRepos.ps1
+		scripts\UpdateDependencyReposExtended.ps1 = scripts\UpdateDependencyReposExtended.ps1
+		scripts\UpdateOrCloneRepository.ps1 = scripts\UpdateOrCloneRepository.ps1
+		scripts\UpdateRepo_IGLibScripts.ps1 = scripts\UpdateRepo_IGLibScripts.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{BDCF1DD0-C89A-479D-AA31-42AD429FE1B5}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibGraphics3D\scripts\PrintEnv.ps1 = ..\IGLibGraphics3D\scripts\PrintEnv.ps1
+		..\IGLibGraphics3D\scripts\ShowDirectoryTree.ps1 = ..\IGLibGraphics3D\scripts\ShowDirectoryTree.ps1
+		..\IGLibGraphics3D\scripts\UpdateDependencyRepos.ps1 = ..\IGLibGraphics3D\scripts\UpdateDependencyRepos.ps1
+		..\IGLibGraphics3D\scripts\UpdateDependencyReposExtended.ps1 = ..\IGLibGraphics3D\scripts\UpdateDependencyReposExtended.ps1
+		..\IGLibGraphics3D\scripts\UpdateOrCloneRepository.ps1 = ..\IGLibGraphics3D\scripts\UpdateOrCloneRepository.ps1
+		..\IGLibGraphics3D\scripts\UpdateRepo_IGLibCore.ps1 = ..\IGLibGraphics3D\scripts\UpdateRepo_IGLibCore.ps1
+		..\IGLibGraphics3D\scripts\UpdateRepo_IGLibScripts.ps1 = ..\IGLibGraphics3D\scripts\UpdateRepo_IGLibScripts.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{4373BABB-D775-408A-8644-C8A862A88D73}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibGraphics3D\scripts\PrintEnv.ps1 = ..\IGLibGraphics3D\scripts\PrintEnv.ps1
+		..\IGLibGraphics3D\scripts\ShowDirectoryTree.ps1 = ..\IGLibGraphics3D\scripts\ShowDirectoryTree.ps1
+		..\IGLibGraphics3D\scripts\UpdateDependencyRepos.ps1 = ..\IGLibGraphics3D\scripts\UpdateDependencyRepos.ps1
+		..\IGLibGraphics3D\scripts\UpdateDependencyReposExtended.ps1 = ..\IGLibGraphics3D\scripts\UpdateDependencyReposExtended.ps1
+		..\IGLibGraphics3D\scripts\UpdateOrCloneRepository.ps1 = ..\IGLibGraphics3D\scripts\UpdateOrCloneRepository.ps1
+		..\IGLibGraphics3D\scripts\UpdateRepo_IGLibCore.ps1 = ..\IGLibGraphics3D\scripts\UpdateRepo_IGLibCore.ps1
+		..\IGLibGraphics3D\scripts\UpdateRepo_IGLibScripts.ps1 = ..\IGLibGraphics3D\scripts\UpdateRepo_IGLibScripts.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{57A0B7D5-7E2B-4395-81AC-731C4A81250A}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibScripting\scripts\PrintEnv.ps1 = ..\IGLibScripting\scripts\PrintEnv.ps1
+		..\IGLibScripting\scripts\ShowDirectoryTree.ps1 = ..\IGLibScripting\scripts\ShowDirectoryTree.ps1
+		..\IGLibScripting\scripts\UpdateDependencyRepos.ps1 = ..\IGLibScripting\scripts\UpdateDependencyRepos.ps1
+		..\IGLibScripting\scripts\UpdateDependencyReposExtended.ps1 = ..\IGLibScripting\scripts\UpdateDependencyReposExtended.ps1
+		..\IGLibScripting\scripts\UpdateOrCloneRepository.ps1 = ..\IGLibScripting\scripts\UpdateOrCloneRepository.ps1
+		..\IGLibScripting\scripts\UpdateRepo_IGLibCore.ps1 = ..\IGLibScripting\scripts\UpdateRepo_IGLibCore.ps1
+		..\IGLibScripting\scripts\UpdateRepo_IGLibScripts.ps1 = ..\IGLibScripting\scripts\UpdateRepo_IGLibScripts.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{2F11CC88-83BB-46A4-B77B-04F89F3169B0}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibScriptingCs\scripts\PrintEnv.ps1 = ..\IGLibScriptingCs\scripts\PrintEnv.ps1
+		..\IGLibScriptingCs\scripts\ShowDirectoryTree.ps1 = ..\IGLibScriptingCs\scripts\ShowDirectoryTree.ps1
+		..\IGLibScriptingCs\scripts\UpdateDependencyRepos.ps1 = ..\IGLibScriptingCs\scripts\UpdateDependencyRepos.ps1
+		..\IGLibScriptingCs\scripts\UpdateDependencyReposExtended.ps1 = ..\IGLibScriptingCs\scripts\UpdateDependencyReposExtended.ps1
+		..\IGLibScriptingCs\scripts\UpdateDependencyReposExtendedAll.ps1 = ..\IGLibScriptingCs\scripts\UpdateDependencyReposExtendedAll.ps1
+		..\IGLibScriptingCs\scripts\UpdateOrCloneRepository.ps1 = ..\IGLibScriptingCs\scripts\UpdateOrCloneRepository.ps1
+		..\IGLibScriptingCs\scripts\UpdateRepoExternal_Roslyn.ps1 = ..\IGLibScriptingCs\scripts\UpdateRepoExternal_Roslyn.ps1
+		..\IGLibScriptingCs\scripts\UpdateRepoExternal_Westwind.Scripting.ps1 = ..\IGLibScriptingCs\scripts\UpdateRepoExternal_Westwind.Scripting.ps1
+		..\IGLibScriptingCs\scripts\UpdateRepo_IGLibCore.ps1 = ..\IGLibScriptingCs\scripts\UpdateRepo_IGLibCore.ps1
+		..\IGLibScriptingCs\scripts\UpdateRepo_IGLibScripts.ps1 = ..\IGLibScriptingCs\scripts\UpdateRepo_IGLibScripts.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -478,6 +539,11 @@ Global
 		{0D570594-D69C-27B8-E10B-0775F88672FF} = {B9373BC6-01C2-4516-AB6C-63A69B27F02F}
 		{10A9890B-A2ED-5026-A92E-BBD8236B37B5} = {6DF59C1F-BBEB-46D9-A600-B8DCB71C3215}
 		{B07B3057-2026-22A6-4C41-9EB5570D0B1B} = {6DF59C1F-BBEB-46D9-A600-B8DCB71C3215}
+		{0F162D81-9D37-417F-9C51-F5891DA9B375} = {6A6A4F7E-E005-4C88-A167-C213C8AB0933}
+		{BDCF1DD0-C89A-479D-AA31-42AD429FE1B5} = {B4E44EC8-EF08-4CF8-8410-FD825D2CAD8B}
+		{4373BABB-D775-408A-8644-C8A862A88D73} = {F99F4531-75A3-4249-9D3E-BBEAF2F83260}
+		{57A0B7D5-7E2B-4395-81AC-731C4A81250A} = {DD76168B-914E-4610-A432-DFF34B6F528C}
+		{2F11CC88-83BB-46A4-B77B-04F89F3169B0} = {C7582123-B0B4-43CB-9C45-51D3E416FD65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
