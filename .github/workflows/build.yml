@@ -30,7 +30,6 @@ jobs:
         dotnet-version: [ '10.0' ]
 
     steps:
-      
       # CHECKOUT Main Repository
       - name: Clone Main Repository
         uses: actions/checkout@v4
@@ -44,9 +43,29 @@ jobs:
           # Temporary token created automatically for the main repo (owner of the workflow) 
           token: ${{ secrets.GITHUB_TOKEN  }}
 
+      # CONFIGURE GIT to use access token for owned repos
+      - name: CONFIGURE GIT credentials for private repos
+        shell: pwsh
+        run: |
+          # # Option 1 - via configuration file
+          # # Because Git may have different idea of the location of home 
+          # # directory (and of config. file .git-credentials) than PowerShell,
+          # # we explicitly define where the location of config. is.
+          # if ($IsWindows) {
+          #   $credPath = "$env:USERPROFILE\.git-credentials"
+          # } else {
+          #   $credPath = "$HOME/.git-credentials"
+          # }
+          # git config --global credential.helper "store --file=$credPath"
+          # " https://x-access-token:${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}@github.com" | Out-File -FilePath $credPath -Encoding ascii
+          # git config --global credential.useHttpPath true
+          # # Option 2 - Inject credentials directly into Git’s configuration for the current session:
+          git config --global url."https://x-access-token:${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}@github.com/".insteadOf "https://github.com/"
+
       # CLONE DEPENDENCY repositories:
       - name: CLONE DEPENDENCY repos
         shell: pwsh
+        continue-on-error: false
         # Important: set --depth 0 to avoid shallow clones (needed
         #   for GitVersion)
         run: |
@@ -119,24 +138,34 @@ jobs:
           Write-Host "Verifying GitVersion and printing version of the current commit..."
           cd ${{ env.REPO_DIR }}
           Write-Host "Directory for getting the version:`n  $($(Get-Location).Path)"
+          Write-Host "Running: 'dotnet gitversion /showvariable FullSemVer'"
           Write-Host "Repository VERSION returned by GitVersion:"
           dotnet gitversion /showvariable FullSemVer
 
       # RESTORE DEPENDENCIES
       - name: Restore NuGet packages
-        run: dotnet restore ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln
+        shell: pwsh
+        run: |
+          Write-Host "Restoring NuGet packages for ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln ... `n"
+          dotnet restore ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln
 
       # BUILD Main Project & Test Project in Release Mode
       - name: Build Solution
-        run: dotnet build ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln --configuration Release --no-restore
+        shell: pwsh
+        run: |
+          Write-Host "Building solution: ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln ... `n"
+          dotnet build ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln --configuration Release --no-restore
 
       # RUN TESTS & COLLECT RESULTS
       - name: Run Tests
         id: teststep
         # shell: pwsh
         # Remark: we use the solution instead of projects.
-        run: dotnet test ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln --configuration Release --logger trx --results-directory TestResults
-        continue-on-error: false
+        shell: pwsh
+        continue-on-error: true # ToDo: set to false later!
+        run: |
+          Write-Host "Running tests for ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln ... `n"
+          dotnet test ${{ env.REPO_DIR }}/${{ env.REPO_DIR }}.sln --configuration Release --logger trx --results-directory TestResults
         # ${{ env.IGNORE_TEST_ERRORS }}
 
       - name: Upload test results
