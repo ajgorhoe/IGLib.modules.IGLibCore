@@ -308,6 +308,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_Scripting",
 		..\IGLibScripting\README.md = ..\IGLibScripting\README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitIGLibModulesBasic", "..\iglib\00_initmodules\InitIGLibModulesBasic\InitIGLibModulesBasic.csproj", "{18842D07-F845-0112-D907-0FFA8706ACD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -498,6 +500,10 @@ Global
 		{25CE281D-27D9-151A-6D94-F522C84F02AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25CE281D-27D9-151A-6D94-F522C84F02AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25CE281D-27D9-151A-6D94-F522C84F02AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18842D07-F845-0112-D907-0FFA8706ACD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18842D07-F845-0112-D907-0FFA8706ACD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18842D07-F845-0112-D907-0FFA8706ACD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18842D07-F845-0112-D907-0FFA8706ACD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -592,6 +598,7 @@ Global
 		{84F685AF-55EC-4323-6F6E-D96E8BF9088B} = {EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5}
 		{25CE281D-27D9-151A-6D94-F522C84F02AA} = {EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5}
 		{2E8146BF-8058-4E26-956B-8531E6EB5764} = {A2B0D15D-28C9-48EC-B165-3FEADEE4FC76}
+		{18842D07-F845-0112-D907-0FFA8706ACD5} = {AD2BFCCA-B736-49EB-80FA-FC7C742C6788}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
