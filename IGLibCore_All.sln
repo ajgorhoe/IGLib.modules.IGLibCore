@@ -102,13 +102,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Scripting", "..\IGLib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Scripting.Tests", "..\IGLibScripting\tests\IGLib.Scripting.Tests\IGLib.Scripting.Tests.csproj", "{8F46F015-390A-4245-AFD8-5FE89020E39C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItem_Scripting", "0_SolutionItem_Scripting", "{DD76168B-914E-4610-A432-DFF34B6F528C}"
-	ProjectSection(SolutionItems) = preProject
-		..\IGLibScripting\ajgorhoe_IGLib.modules.IGLibScripting.url = ..\IGLibScripting\ajgorhoe_IGLib.modules.IGLibScripting.url
-		..\IGLibScripting\LICENSE.md = ..\IGLibScripting\LICENSE.md
-		..\IGLibScripting\README.md = ..\IGLibScripting\README.md
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint", "..\iglibexternal\IGLibExternal\Jint\Jint\Jint.csproj", "{62174740-1B51-E39F-76A4-046EB848438D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Numerics", "..\iglibexternal\IGLibExternal\mathnet-numerics\src\Numerics\Numerics.csproj", "{EDD493FB-9B17-CD2A-20FF-D2916CE94648}"
@@ -166,7 +159,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_EventAggreg
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_InitModules_EventAggregator", "1_InitModules_EventAggregator", "{77FBEEDD-8DA6-4929-834F-BF7B4DDC02B5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItem_LegacyIGLib", "0_SolutionItem_LegacyIGLib", "{BA134817-27D0-47ED-891D-CEEDF4A15618}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_LegacyIGLib", "0_SolutionItems_LegacyIGLib", "{BA134817-27D0-47ED-891D-CEEDF4A15618}"
+	ProjectSection(SolutionItems) = preProject
+		..\iglib\contributors.md = ..\iglib\contributors.md
+		..\iglib\GitVersion.yml = ..\iglib\GitVersion.yml
+		..\iglib\LICENSE.md = ..\iglib\LICENSE.md
+		..\iglib\README.md = ..\iglib\README.md
+		..\iglib\repository_ajgorhoe_IGLib.workspace.base.iglib.url = ..\iglib\repository_ajgorhoe_IGLib.workspace.base.iglib.url
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_InitModules_LegacyIGLib", "1_InitModules_LegacyIGLib", "{AD2BFCCA-B736-49EB-80FA-FC7C742C6788}"
 EndProject
@@ -202,11 +202,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{CABA28D7-7E03-4833-BCD7-AE22D171D5F2}"
 	ProjectSection(SolutionItems) = preProject
 		..\IGLibSandbox\.github\workflows\build.yml = ..\IGLibSandbox\.github\workflows\build.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{7A266F5B-D680-4F67-A99B-DB4388A6DCD0}"
-	ProjectSection(SolutionItems) = preProject
-		..\IGLibScripting\.github\workflows\build.yml = ..\IGLibScripting\.github\workflows\build.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{B72777E7-76D0-4879-B060-C614CEE93406}"
@@ -270,17 +265,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{4373
 		..\IGLibGraphics3D\scripts\UpdateRepo_IGLibScripts.ps1 = ..\IGLibGraphics3D\scripts\UpdateRepo_IGLibScripts.ps1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{57A0B7D5-7E2B-4395-81AC-731C4A81250A}"
-	ProjectSection(SolutionItems) = preProject
-		..\IGLibScripting\scripts\PrintEnv.ps1 = ..\IGLibScripting\scripts\PrintEnv.ps1
-		..\IGLibScripting\scripts\ShowDirectoryTree.ps1 = ..\IGLibScripting\scripts\ShowDirectoryTree.ps1
-		..\IGLibScripting\scripts\UpdateDependencyRepos.ps1 = ..\IGLibScripting\scripts\UpdateDependencyRepos.ps1
-		..\IGLibScripting\scripts\UpdateDependencyReposExtended.ps1 = ..\IGLibScripting\scripts\UpdateDependencyReposExtended.ps1
-		..\IGLibScripting\scripts\UpdateOrCloneRepository.ps1 = ..\IGLibScripting\scripts\UpdateOrCloneRepository.ps1
-		..\IGLibScripting\scripts\UpdateRepo_IGLibCore.ps1 = ..\IGLibScripting\scripts\UpdateRepo_IGLibCore.ps1
-		..\IGLibScripting\scripts\UpdateRepo_IGLibScripts.ps1 = ..\IGLibScripting\scripts\UpdateRepo_IGLibScripts.ps1
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{2F11CC88-83BB-46A4-B77B-04F89F3169B0}"
 	ProjectSection(SolutionItems) = preProject
 		..\IGLibScriptingCs\scripts\PrintEnv.ps1 = ..\IGLibScriptingCs\scripts\PrintEnv.ps1
@@ -293,6 +277,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{2F11
 		..\IGLibScriptingCs\scripts\UpdateRepoExternal_Westwind.Scripting.ps1 = ..\IGLibScriptingCs\scripts\UpdateRepoExternal_Westwind.Scripting.ps1
 		..\IGLibScriptingCs\scripts\UpdateRepo_IGLibCore.ps1 = ..\IGLibScriptingCs\scripts\UpdateRepo_IGLibCore.ps1
 		..\IGLibScriptingCs\scripts\UpdateRepo_IGLibScripts.ps1 = ..\IGLibScriptingCs\scripts\UpdateRepo_IGLibScripts.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{EB3A35C3-14B4-4055-B50B-AC2513E3953D}"
+	ProjectSection(SolutionItems) = preProject
+		..\iglib\.github\workflows\build.yml = ..\iglib\.github\workflows\build.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jint", "Jint", "{EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint", "..\_external\Jint\Jint\Jint.csproj", "{8927DE1D-E399-7C8A-473C-41B72D5EEB53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint.AotExample", "..\_external\Jint\Jint.AotExample\Jint.AotExample.csproj", "{2AFE04E7-9DD4-C847-ADC5-FA1F67015D17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint.Benchmark", "..\_external\Jint\Jint.Benchmark\Jint.Benchmark.csproj", "{F2D0EAD8-E708-39AC-AF14-FD69A4E31593}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint.Repl", "..\_external\Jint\Jint.Repl\Jint.Repl.csproj", "{D3276362-7AAC-3EC8-8F52-55621E7B00C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint.Tests", "..\_external\Jint\Jint.Tests\Jint.Tests.csproj", "{5029D8AE-2A91-7CE9-EE67-42586A07112D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint.Tests.PublicInterface", "..\_external\Jint\Jint.Tests.PublicInterface\Jint.Tests.PublicInterface.csproj", "{84F685AF-55EC-4323-6F6E-D96E8BF9088B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint.Tests.Test262", "..\_external\Jint\Jint.Tests.Test262\Jint.Tests.Test262.csproj", "{25CE281D-27D9-151A-6D94-F522C84F02AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_Scripting", "0_SolutionItems_Scripting", "{2E8146BF-8058-4E26-956B-8531E6EB5764}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibScripting\ajgorhoe_IGLib.modules.IGLibScripting.url = ..\IGLibScripting\ajgorhoe_IGLib.modules.IGLibScripting.url
+		..\IGLibScripting\GitVersion.yml = ..\IGLibScripting\GitVersion.yml
+		..\IGLibScripting\LICENSE.md = ..\IGLibScripting\LICENSE.md
+		..\IGLibScripting\README.md = ..\IGLibScripting\README.md
 	EndProjectSection
 EndProject
 Global
@@ -457,6 +470,34 @@ Global
 		{B07B3057-2026-22A6-4C41-9EB5570D0B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B07B3057-2026-22A6-4C41-9EB5570D0B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B07B3057-2026-22A6-4C41-9EB5570D0B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8927DE1D-E399-7C8A-473C-41B72D5EEB53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8927DE1D-E399-7C8A-473C-41B72D5EEB53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8927DE1D-E399-7C8A-473C-41B72D5EEB53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8927DE1D-E399-7C8A-473C-41B72D5EEB53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AFE04E7-9DD4-C847-ADC5-FA1F67015D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AFE04E7-9DD4-C847-ADC5-FA1F67015D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AFE04E7-9DD4-C847-ADC5-FA1F67015D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AFE04E7-9DD4-C847-ADC5-FA1F67015D17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2D0EAD8-E708-39AC-AF14-FD69A4E31593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2D0EAD8-E708-39AC-AF14-FD69A4E31593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2D0EAD8-E708-39AC-AF14-FD69A4E31593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2D0EAD8-E708-39AC-AF14-FD69A4E31593}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3276362-7AAC-3EC8-8F52-55621E7B00C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3276362-7AAC-3EC8-8F52-55621E7B00C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3276362-7AAC-3EC8-8F52-55621E7B00C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3276362-7AAC-3EC8-8F52-55621E7B00C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5029D8AE-2A91-7CE9-EE67-42586A07112D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5029D8AE-2A91-7CE9-EE67-42586A07112D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5029D8AE-2A91-7CE9-EE67-42586A07112D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5029D8AE-2A91-7CE9-EE67-42586A07112D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84F685AF-55EC-4323-6F6E-D96E8BF9088B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84F685AF-55EC-4323-6F6E-D96E8BF9088B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84F685AF-55EC-4323-6F6E-D96E8BF9088B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84F685AF-55EC-4323-6F6E-D96E8BF9088B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25CE281D-27D9-151A-6D94-F522C84F02AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25CE281D-27D9-151A-6D94-F522C84F02AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25CE281D-27D9-151A-6D94-F522C84F02AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25CE281D-27D9-151A-6D94-F522C84F02AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -497,7 +538,6 @@ Global
 		{C7582123-B0B4-43CB-9C45-51D3E416FD65} = {1F37D3D2-5309-41EB-B7A1-BEB99A3A77D0}
 		{B23C3AC6-348D-4519-8DD8-B6C890AF07E4} = {A2B0D15D-28C9-48EC-B165-3FEADEE4FC76}
 		{8F46F015-390A-4245-AFD8-5FE89020E39C} = {A2B0D15D-28C9-48EC-B165-3FEADEE4FC76}
-		{DD76168B-914E-4610-A432-DFF34B6F528C} = {A2B0D15D-28C9-48EC-B165-3FEADEE4FC76}
 		{62174740-1B51-E39F-76A4-046EB848438D} = {42C7FB8D-E985-4C39-85D6-0DD6CA58C67F}
 		{EDD493FB-9B17-CD2A-20FF-D2916CE94648} = {42C7FB8D-E985-4C39-85D6-0DD6CA58C67F}
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {F9A1F5C6-211C-498E-8A4E-40D4FC56F7A9}
@@ -530,7 +570,6 @@ Global
 		{44C750A9-CBBF-4BC7-BDFC-A82FD5EFA0EA} = {B9C02C0A-1C29-4E38-B3A2-7093DC1F60BD}
 		{6DF59C1F-BBEB-46D9-A600-B8DCB71C3215} = {F9A1F5C6-211C-498E-8A4E-40D4FC56F7A9}
 		{CABA28D7-7E03-4833-BCD7-AE22D171D5F2} = {F99F4531-75A3-4249-9D3E-BBEAF2F83260}
-		{7A266F5B-D680-4F67-A99B-DB4388A6DCD0} = {DD76168B-914E-4610-A432-DFF34B6F528C}
 		{B72777E7-76D0-4879-B060-C614CEE93406} = {C7582123-B0B4-43CB-9C45-51D3E416FD65}
 		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6} = {7902DBD7-327F-4979-81AA-DD0F78909972}
 		{5F882FC6-6AD4-F4FD-CD06-3A0E43E21EDC} = {A7510F07-3CD0-445F-BF2F-7CD0FB916340}
@@ -542,8 +581,17 @@ Global
 		{0F162D81-9D37-417F-9C51-F5891DA9B375} = {6A6A4F7E-E005-4C88-A167-C213C8AB0933}
 		{BDCF1DD0-C89A-479D-AA31-42AD429FE1B5} = {B4E44EC8-EF08-4CF8-8410-FD825D2CAD8B}
 		{4373BABB-D775-408A-8644-C8A862A88D73} = {F99F4531-75A3-4249-9D3E-BBEAF2F83260}
-		{57A0B7D5-7E2B-4395-81AC-731C4A81250A} = {DD76168B-914E-4610-A432-DFF34B6F528C}
 		{2F11CC88-83BB-46A4-B77B-04F89F3169B0} = {C7582123-B0B4-43CB-9C45-51D3E416FD65}
+		{EB3A35C3-14B4-4055-B50B-AC2513E3953D} = {BA134817-27D0-47ED-891D-CEEDF4A15618}
+		{EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5} = {4B37EC0E-20A9-4E3B-8AD3-0EC68CC65939}
+		{8927DE1D-E399-7C8A-473C-41B72D5EEB53} = {EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5}
+		{2AFE04E7-9DD4-C847-ADC5-FA1F67015D17} = {EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5}
+		{F2D0EAD8-E708-39AC-AF14-FD69A4E31593} = {EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5}
+		{D3276362-7AAC-3EC8-8F52-55621E7B00C0} = {EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5}
+		{5029D8AE-2A91-7CE9-EE67-42586A07112D} = {EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5}
+		{84F685AF-55EC-4323-6F6E-D96E8BF9088B} = {EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5}
+		{25CE281D-27D9-151A-6D94-F522C84F02AA} = {EC3E7B5C-6BF6-41CE-B1DB-946D683AA7A5}
+		{2E8146BF-8058-4E26-956B-8531E6EB5764} = {A2B0D15D-28C9-48EC-B165-3FEADEE4FC76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
