@@ -51,7 +51,7 @@ namespace IGLib.Tests.Base
         /// <para>This fictional demonstrative example tests that the + operator correctly sums two integer
         /// numbers.</para></summary>
         [Fact]    // Attribute [Fact] marks this method as test method (spcifics of the XUnit framework)
-        public void TestDemo_Simple_Addition_Test()
+        protected void TestDemo_Simple_Addition_Test()
         {
             Output.WriteLine($"Testing addition of two numbers of type int:");
             // ** Arrange:
@@ -81,7 +81,7 @@ namespace IGLib.Tests.Base
         [InlineData(-4, -5, -9)]
         [InlineData(-2, 5, 3)]
         [InlineData(2, -6, -4)]
-        public void TestDemo_Addition_Test(int a, int b, int expectedResult)
+        protected void TestDemo_Addition_Test(int a, int b, int expectedResult)
         {
             Output.WriteLine($"Testing addition of two numbers of type int:");
             // Arrange
@@ -120,7 +120,7 @@ namespace IGLib.Tests.Base
         //    new double[] { 4, 6 },
         //    new double[] { 10, 8 },
         //    new double[] { 14, 14, 22 })]  // wrong expected result (wrong length); test will fail for this dataset
-        public void TestDemo_Array_Addition_Test(double[] arr1, double[] arr2, double[] expected)
+        protected void TestDemo_Array_Addition_Test(double[] arr1, double[] arr2, double[] expected)
         {
             // Arrange:
             double[] result = new double[arr1.Length];
@@ -156,7 +156,7 @@ namespace IGLib.Tests.Base
             new double[] { 1.2344, 1.2, 1.3 }
             // , new double[][] { new double[] { 1.1, 1.2, 1.3 } }
             )]
-        public void TestDemo_Array2dRectangular_Example(double[] array) // the following does not work: , double[][] jaggedaArray
+        protected void TestDemo_Array2dRectangular_Example(double[] array) // the following does not work: , double[][] jaggedaArray
         {
 #if false
             // Various ways to initialize arrays, to try using them in definition of inline parameters
