@@ -7,7 +7,12 @@ using System.IO;
 
 namespace IGLib.Tests.Base
 {
-    public class TestBase<TestClass>
+    
+    /// <summary>Base class for test classes. Provides utilities such as output (via the properties 
+    /// <see cref="Output"/> and <see cref="Console"/>, which reference the same object but can be used according
+    /// to what the name emphasizes).</summary>
+    /// <typeparam name="TestClassType">Actual type of the test class, or at leastt its base class. Can be abstract.</typeparam>
+    public abstract class TestBase<TestClassType>
     {
 
         /// <summaryConstructor of the common test classes' base class.</summary>
