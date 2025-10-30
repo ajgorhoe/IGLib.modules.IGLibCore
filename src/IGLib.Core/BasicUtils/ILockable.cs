@@ -10,10 +10,13 @@ using System.Threading.Tasks;
 namespace IG.Lib
 {
 
-    /// <summary>Lockable object, has a Lock property that returns object on which
+    /// <summary>Lockable object, has a Lock property that returns a readonly object on which
     /// lock must be performed in order to lock the object.</summary>
     public interface ILockable
     {
+
+        /// <summary>Object used for locking access to internal resources of the current instance of 
+        /// the implementing class, necessary to safely call object's methods from multiple threads.</summary>
         object Lock { get; }
     }
 
