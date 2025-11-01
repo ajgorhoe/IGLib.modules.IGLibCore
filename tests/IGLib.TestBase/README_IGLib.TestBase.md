@@ -9,6 +9,10 @@ Support for ILogger messages is yet to be added.
 
 Some **dummy test samples** are provided to **demonstrate some uses of the** `XUnit` **framework**, especially different ways of providing test parameters, which can simplify the test structure.
 
+## Remark on Referencing IGLibCore
+
+The IGLib.Core project is referenced because of utilities in its 00_Fixes/ directory, such as HashCodeHelper and IsExternalInit. See [00_Fixes/0readme_Fixes.md](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core/00_Fixes/0readme_Fixes.md) in IGLib.Core project and its containing directory.
+
 ## Using the TestBase Class
 
 The 'TestBase' class can be used as base class for test classes and provides some **useful utilities like writing to test output**. It is a Generic class that takes the actual base class as generic parameter. Usage in Test classes can be as follows:

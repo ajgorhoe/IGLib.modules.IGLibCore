@@ -59,4 +59,8 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\IGLib.Core\IGLib.Core.csproj" />
+	</ItemGroup>
+
 </Project>
