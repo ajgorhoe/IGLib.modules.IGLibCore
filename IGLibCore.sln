@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11111.16 d18.0
+VisualStudioVersion = 18.0.11111.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems", "0_SolutionItems", "{633BD4B2-3198-47BE-A26F-0E48453D428E}"
 	ProjectSection(SolutionItems) = preProject
@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InitModules", "InitModules"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesCore", "src\0InitModules\InitModulesCore\InitModulesCore.csproj", "{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.TestBaseExamples", "tests\IGLib.TestBase.Examples\IGLib.TestBaseExamples.csproj", "{6D8906DE-E99E-0D38-E0BF-2151DECF2421}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D8906DE-E99E-0D38-E0BF-2151DECF2421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D8906DE-E99E-0D38-E0BF-2151DECF2421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D8906DE-E99E-0D38-E0BF-2151DECF2421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D8906DE-E99E-0D38-E0BF-2151DECF2421}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
