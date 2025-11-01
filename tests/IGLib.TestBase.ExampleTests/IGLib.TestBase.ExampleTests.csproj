@@ -15,8 +15,8 @@
 
 	<PropertyGroup>
 		<!-- This group contains attributes previously in AsemblyInfo.cs. -->
-		<AssemblyName>IGLib.TestBase</AssemblyName>
-		<PackageId>IGLib.TestBase</PackageId>
+		<AssemblyName>IGLib.TestBase.ExampleTests</AssemblyName>
+		<PackageId>IGLib.TestBase.ExampleTests</PackageId>
 		<!-- Versioning is handled with GitVersion (attributes: Version, AssemblyVersion, FileVersion). -->
 		<Authors>Igor Grešovnik</Authors>
 		<Company>none</Company>
