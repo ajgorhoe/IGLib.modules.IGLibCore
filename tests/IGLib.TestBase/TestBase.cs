@@ -12,7 +12,7 @@ namespace IGLib.Tests.Base
     /// <see cref="Output"/> and <see cref="Console"/>, which reference the same object but can be used according
     /// to what the name emphasizes).</summary>
     /// <typeparam name="TestClassType">Actual type of the test class, or at leastt its base class. Can be abstract.</typeparam>
-    public abstract class TestBase<TestClassType>
+    public abstract class TestBase<TestClassType>   // : TestBase
     {
 
         /// <summaryConstructor of the common test classes' base class.</summary>
@@ -21,10 +21,13 @@ namespace IGLib.Tests.Base
         /// can be used to write to the test output, too. The API is of type <see cref="ITestOutputHelper"/>
         /// and is more limited than consol, but it still enables some code that uses output to Consol to be directly
         /// copied into test methods.</param>
-        public TestBase(ITestOutputHelper output, bool assignConsole = true)
+        public TestBase(ITestOutputHelper output, bool assignConsole = true) // : base(output)
         {
             Output = output;
-            Console = output;
+            if (assignConsole)
+            {
+                Console = output;
+            }
             LoggerFactory = new LoggerFactory();
             LoggerFactory.AddProvider(new XUnitLoggerProvider(output));
         }
@@ -51,29 +54,32 @@ namespace IGLib.Tests.Base
         protected string ExportPathIGLibTemporary => Path.Combine(ExportPathIGLib, "temp");
 
         /// <summary>Enables writing to tests' output. Provided by the framework (injected via constructor).</summary>
-        public ITestOutputHelper Output { get; set; }
+        protected ITestOutputHelper Output { get; set; }
 
         /// <summary>This property makes possible to use the name Console instead of Output in
         /// test method of this class, such that code can be directly copied to console 
         /// applications while output is still visible in tests' output. Unfortunately, you 
         /// cannot use Console.Write(...) because the ITestOutputHelper does not have it.</summary>
-        protected static ITestOutputHelper Console { get; set; }
+        protected ITestOutputHelper Console { get; set; }
 
         private LoggerFactory LoggerFactory{ get; set; }
 
         // ToDo: provide a logger!
-
         //public ILogger GetLogger()
         //{
         //    throw new NotImplementedException();
         //    // return LoggerFactory.CreateLogger();
         //}
 
+
     }
 
     // For logging, see:
     // https://www.meziantou.net/how-to-get-asp-net-core-logs-in-the-output-of-xunit-tests.htm#how-to-create-an-ins
     // https://stackoverflow.com/questions/46169169/net-core-2-0-configurelogging-xunit-test
+
+
+
 
 
     public class XUnitLoggerProvider : ILoggerProvider
