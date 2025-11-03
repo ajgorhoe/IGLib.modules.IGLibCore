@@ -12,7 +12,7 @@ namespace IGLib.Tests.Base
     /// <see cref="Output"/> and <see cref="Console"/>, which reference the same object but can be used according
     /// to what the name emphasizes).</summary>
     /// <typeparam name="TestClassType">Actual type of the test class, or at leastt its base class. Can be abstract.</typeparam>
-    public abstract class TestBase<TestClassType>   // : TestBase
+    public abstract class TestBase<TestClassType>   // not needed any more: : TestBase
     {
 
         /// <summaryConstructor of the common test classes' base class.</summary>

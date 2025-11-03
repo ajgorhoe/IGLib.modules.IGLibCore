@@ -14,6 +14,7 @@ namespace IGLib.Tests.Base
     /// that the class <see cref="TestBase{TestClassType}.TestOutputWrapper"/> can access to the
     /// object that handles standard output of the test </summary>
     /// <param name="output"></para></param>
+    [Obsolete("This base class is not needed any more and will be removed in the future.")]
     public abstract class TestBase
     {
 
