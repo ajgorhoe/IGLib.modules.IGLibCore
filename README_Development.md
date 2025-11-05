@@ -1,4 +1,4 @@
-
+ 
 # IGLibCore (Investigative Generic Library) - Information for Developers
 
 <img src="https://ajgorhoe.github.io/icons/IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
