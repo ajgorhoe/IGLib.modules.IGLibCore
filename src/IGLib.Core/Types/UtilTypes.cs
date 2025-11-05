@@ -1,11 +1,13 @@
-﻿using System;
+﻿using IG.Lib;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using IG.Lib;
 
 namespace IGLib.Types.Extensions
 {
@@ -90,33 +92,7 @@ namespace IGLib.Types.Extensions
         public static bool IsDoubleCollection<CollectionElementType>(IEnumerable<CollectionElementType> collection)
         { return IsNumberCollectionOf<double, CollectionElementType>(collection); }
 
-        public static bool IsConvertibleToInt(this object value, bool precise = true)
-        {
-            if (value == null) { return false; }
-            if (value is int) { return true; }
-            if (value is string val) { return int.TryParse(val, out int _); }
-            if (value is IConvertible convertible)
-            {
-                try
-                {
-                    int converted = convertible.ToInt32(null);
-                    if (!precise)
-                        return true;
-                    // Convert back to the original type and compare.
-                    object roundTrip = Convert.ChangeType(converted, value.GetType());
-                    if (value.Equals(roundTrip))
-                        return true;
-                }
-                catch
-                {
-                    // Conversion back failed → definitely not precise
-                }
-            }
-            return false;
-        }
-
-
-        public static int ToInt(this object value, bool precise = false)
+        public static int ToInt_Old(this object value, bool precise = false)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -143,6 +119,80 @@ namespace IGLib.Types.Extensions
             }
             throw new InvalidOperationException(
                 $"Cannot precisely convert value {value} of type {value.GetType().Name} to int.");
+        }
+
+
+        public static bool IsConvertibleToInt(this object value, bool precise = true)
+        {
+            if (value == null) { return false; }
+            if (value is int) { return true; }
+            if (value is string val) { return int.TryParse(val, out int _); }
+            if (value is IConvertible convertible)
+            {
+                try
+                {
+                    int converted = convertible.ToInt32(null);
+                    if (!precise)
+                        return true;
+                    // Convert back to the original type and compare.
+                    object roundTrip = Convert.ChangeType(converted, value.GetType());
+                    if (value.Equals(roundTrip))
+                        return true;
+                }
+                catch
+                {
+                    // Conversion back failed → definitely not precise
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Converts a value to an integer. If <paramref name="precise"/> is true, 
+        /// only lossless conversions are accepted.
+        /// Uses InvariantCulture for string and IConvertible conversions.
+        /// </summary>
+        [RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
+        public static int ToInt(this object value, bool precise = false, IFormatProvider provider = null)
+        {
+            if (value is null)
+                throw new ArgumentNullException(nameof(value), $"{nameof(UtilTypes)}.{nameof(ToInt)}: Value is null.");
+
+            provider ??= CultureInfo.InvariantCulture;
+
+            if (value is int ret)
+                return ret;
+
+            if (value is string s)
+            {
+                if (int.TryParse(s, NumberStyles.Integer, provider, out int parsed))
+                    return parsed;
+                throw new FormatException(
+                    $"{nameof(UtilTypes)}.{nameof(ToInt)}: Cannot parse string '{s}' to int using {((CultureInfo)provider).Name} culture.");
+            }
+
+            if (value is IConvertible convertible)
+            {
+                int converted = convertible.ToInt32(provider);
+
+                if (!precise)
+                    return converted;
+
+                // Check if conversion was lossless
+                try
+                {
+                    object roundTrip = Convert.ChangeType(converted, value.GetType(), provider);
+                    if (Equals(value, roundTrip))
+                        return converted;
+                }
+                catch
+                {
+                    // Some types can't be round-tripped; fall through to exception
+                }
+            }
+
+            throw new InvalidOperationException(
+                $"{nameof(UtilTypes)}.{nameof(ToInt)}: Value {value} of type {value.GetType().Name} cannot be converted to int{(precise ? " precisely" : "")}.");
         }
 
 
