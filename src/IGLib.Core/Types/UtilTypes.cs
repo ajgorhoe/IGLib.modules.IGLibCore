@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IG.Lib;
 
-namespace IGLib.Types
+namespace IGLib.Types.Extensions
 {
 
     /// <summary>Provides some simple utilities for type conversions. These utilities do 
@@ -90,46 +90,33 @@ namespace IGLib.Types
         public static bool IsDoubleCollection<CollectionElementType>(IEnumerable<CollectionElementType> collection)
         { return IsNumberCollectionOf<double, CollectionElementType>(collection); }
 
-        public static bool IsConvertibleToInt(object value, bool precise = true)
+        public static bool IsConvertibleToInt(this object value, bool precise = true)
         {
             if (value == null) { return false; }
             if (value is int) { return true; }
             if (value is string val) { return int.TryParse(val, out int _); }
-            if (value is IConvertible convertible) 
-            { 
-                int converted = convertible.ToInt32(null); 
-                return value.Equals(converted); 
+            if (value is IConvertible convertible)
+            {
+                int converted = convertible.ToInt32(null);
+                if (!precise)
+                    return true;
+                try
+                {
+                    // Convert back to the original type and compare.
+                    object roundTrip = Convert.ChangeType(converted, value.GetType());
+                    if (value.Equals(roundTrip))
+                        return true;
+                }
+                catch
+                {
+                    // Conversion back failed → definitely not precise
+                }
             }
             return false;
         }
 
-        public static int ToInt_OLD(object value, bool precise = true)
-        {
-            if (value == null) { throw new ArgumentNullException(nameof(value), 
-                $"{typeof(UtilTypes).Name}.{nameof(ToInt_OLD)}: Argument to be converted is null."); }
-            if (value is int ret) { return ret; }
-            if (value is string val) { int.Parse(val); }
-            IConvertible convertible = value as IConvertible;
-            if (convertible != null)
-            { 
-                int converted = convertible.ToInt32(null);
-                if (!precise) 
-                { 
-                    return converted; 
-                }
-                else
-                {
-                    if (value.Equals(converted))
-                    {
-                        return converted;
-                    }
-                }
-            }
-            throw new InvalidOperationException(
-                $"{typeof(UtilTypes).Name}.{nameof(ToInt_OLD)}: Value {value} of type {value.GetType().Name} cannot be converted to target type int.");
-        }
 
-        public static int ToInt(object value, bool precise = false)
+        public static int ToInt(this object value, bool precise = false)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
