@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using IGLib.Tests.Base;
 
 using static IGLib.Types.Extensions.UtilTypes;
+using System.Numerics;
 
 #if false  // please leave this block such that 
 using static IGLib.Types.Extensions.UtilTypes;
@@ -100,10 +101,20 @@ namespace IGLib.Types.Tests
         [InlineData((long)int.MaxValue + 2, false, 0, true, "greater than max int")]
         [InlineData((long)int.MinValue - 2, false, 0, true, "less than min int")]
         // ****
+        // Conversion of unsigned int:
+        // ****
+        [InlineData((uint)2, false, 2)]
+        // Converson of unsigned int, OUT OF RANGE:
+        [InlineData((uint)int.MaxValue + 2, false, 0, true, "greater than max int")]
         // Conversion of bool:
         // ****
         [InlineData((bool)true, false, 1)]
         [InlineData((bool)false, false, 0)]
+        // ****
+        // Conversion of char:
+        // ****
+        [InlineData((char)'x', false, (int)'x', false, "conversion of ASCII character to int")]
+        [InlineData((char)2836, false, 2836, false, "conversion of non-ASCII character to int")]
         protected void ToInt_WorksCorrectly(object converted, bool precise, int expectedResult,
             bool exceptionExpected = false, string comment = null)
         {
