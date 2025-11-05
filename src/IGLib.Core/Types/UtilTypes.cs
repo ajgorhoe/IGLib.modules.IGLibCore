@@ -97,11 +97,11 @@ namespace IGLib.Types.Extensions
             if (value is string val) { return int.TryParse(val, out int _); }
             if (value is IConvertible convertible)
             {
-                int converted = convertible.ToInt32(null);
-                if (!precise)
-                    return true;
                 try
                 {
+                    int converted = convertible.ToInt32(null);
+                    if (!precise)
+                        return true;
                     // Convert back to the original type and compare.
                     object roundTrip = Convert.ChangeType(converted, value.GetType());
                     if (value.Equals(roundTrip))
