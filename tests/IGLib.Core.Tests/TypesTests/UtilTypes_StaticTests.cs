@@ -5,13 +5,13 @@ using Xunit.Abstractions;
 using System.Collections.Generic;
 using IGLib.Tests.Base;
 
-using static IGLib.Types.Extensions.UtilTypes;
-using System.Numerics;
+//using static IGLib.Types.Extensions.UtilTypes;
+
+using UtilTypes = IGLib.Types.Extensions.UtilTypes;
 
 #if false  // please leave this block such that 
 using static IGLib.Types.Extensions.UtilTypes;
 using IGLib.Types.Extensions;
-using UtilTypes = IGLib.Types.Extensions.UtilTypes;
 #endif
 
 namespace IGLib.Types.Tests
@@ -141,7 +141,7 @@ namespace IGLib.Types.Tests
             Console.WriteLine("Result of conversion:");
             try
             {
-                int result = converted.ToInt(precise: precise);
+                int result = UtilTypes.ToInt(converted, precise: precise);
                 Console.WriteLine($"Result of conversion: {result}, expected: {expectedResult}");
             }
             catch(Exception ex)
