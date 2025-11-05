@@ -166,6 +166,11 @@ namespace IGLib.Types.Tests
 
 
 
+
+        // ToDo: Unify testing of ToInt() and IsConvertibleToInt() by using a single function to do the job! 
+        // These two method sould work as complementary pair: IsConvertibleToInt() shouod return
+        // false exactly when ToInt() would throw exception.
+
         [Theory]
 
         //// ****
