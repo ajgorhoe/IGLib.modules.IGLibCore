@@ -120,13 +120,28 @@ namespace IGLib.Types.Tests
         [InlineData((char)'x', false, (int)'x', false, "conversion of ASCII character to int")]
         [InlineData((char)2836, false, 2836, false, "conversion of non-ASCII character to int")]
         protected void ToInt_WorksCorrectly(object converted, bool precise, int expectedResult,
-            bool exceptionExpected = false, string comment = null)
+            bool failureExpected = false, string comment = null)
+        {
+            TointTestCommon(true, converted, precise, expectedResult, failureExpected, comment);
+        }
+
+
+        /// <summary>Common method for testing both the method for conversion to int (<see cref="UtilTypes.ToInt(object, bool, IFormatProvider)"/>) 
+        /// and the method that tells whether an object can be converted to int (<see cref="UtilTypes.IsConvertibleToInt(object, bool, IFormatProvider)"/>)</summary>
+        /// <param name="testConversion"></param>
+        /// <param name="converted"></param>
+        /// <param name="precise"></param>
+        /// <param name="expectedResult"></param>
+        /// <param name="failureExpected"></param>
+        /// <param name="comment"></param>
+        protected void TointTestCommon(bool testConversion, object converted, bool precise, int expectedResult,
+            bool failureExpected = false, string comment = null)
         {
             Console.WriteLine($"Testing conversion of objects to type int:");
             Console.WriteLine($"Object to be converted: {converted}, type: {converted?.GetType().Name}");
             Console.WriteLine($"Precise conversion required: {(precise?"yes": "no")}.");
             Console.WriteLine("");
-            if (exceptionExpected)
+            if (failureExpected)
             {
                 Console.WriteLine("Exception is expected.");
             }
@@ -153,7 +168,7 @@ namespace IGLib.Types.Tests
                 exceptionThrown = true;
                 Console.WriteLine($"{ex.GetType().Name} thrown: {ex.Message}");
             }
-            if (exceptionExpected)
+            if (failureExpected)
             {
                 exceptionThrown.Should().BeTrue(because: "This conversion attempt is expected to throw an exception.");
             }
@@ -236,7 +251,7 @@ namespace IGLib.Types.Tests
         //[InlineData((char)'x', false, (int)'x', false, "conversion of ASCII character to int")]
         //[InlineData((char)2836, false, 2836, false, "conversion of non-ASCII character to int")]
 
-        protected void IsConvertibleToInt_WorksCorrectly(object converted, bool precise, bool expectedResult,
+        protected void IsConvertibleToInt_WorksCorrectly_Old(object converted, bool precise, bool expectedResult,
             string comment = null)
         {
             bool exceptionExpected = false;

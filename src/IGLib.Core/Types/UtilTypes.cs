@@ -122,20 +122,23 @@ namespace IGLib.Types.Extensions
         }
 
 
-        public static bool IsConvertibleToInt(this object value, bool precise = true)
+        public static bool IsConvertibleToInt(this object value, bool precise = true, IFormatProvider formatProvider = null)
         {
+
+            formatProvider ??= CultureInfo.InvariantCulture;
+
             if (value == null) { return false; }
             if (value is int) { return true; }
-            if (value is string val) { return int.TryParse(val, out int _); }
+            if (value is string val) { return int.TryParse(val, NumberStyles.Integer, formatProvider, out int _); }
             if (value is IConvertible convertible)
             {
                 try
                 {
-                    int converted = convertible.ToInt32(null);
+                    int converted = convertible.ToInt32(formatProvider);
                     if (!precise)
                         return true;
                     // Convert back to the original type and compare.
-                    object roundTrip = Convert.ChangeType(converted, value.GetType());
+                    object roundTrip = Convert.ChangeType(converted, value.GetType(), formatProvider);
                     if (value.Equals(roundTrip))
                         return true;
                 }
@@ -153,27 +156,27 @@ namespace IGLib.Types.Extensions
         /// Uses InvariantCulture for string and IConvertible conversions.
         /// </summary>
         [RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
-        public static int ToInt(this object value, bool precise = false, IFormatProvider provider = null)
+        public static int ToInt(this object value, bool precise = false, IFormatProvider formatProvider = null)
         {
             if (value is null)
                 throw new ArgumentNullException(nameof(value), $"{nameof(UtilTypes)}.{nameof(ToInt)}: Value is null.");
 
-            provider ??= CultureInfo.InvariantCulture;
+            formatProvider ??= CultureInfo.InvariantCulture;
 
             if (value is int ret)
                 return ret;
 
             if (value is string s)
             {
-                if (int.TryParse(s, NumberStyles.Integer, provider, out int parsed))
+                if (int.TryParse(s, NumberStyles.Integer, formatProvider, out int parsed))
                     return parsed;
                 throw new FormatException(
-                    $"{nameof(UtilTypes)}.{nameof(ToInt)}: Cannot parse string '{s}' to int using {((CultureInfo)provider).Name} culture.");
+                    $"{nameof(UtilTypes)}.{nameof(ToInt)}: Cannot parse string '{s}' to int using {((CultureInfo)formatProvider).Name} culture.");
             }
 
             if (value is IConvertible convertible)
             {
-                int converted = convertible.ToInt32(provider);
+                int converted = convertible.ToInt32(formatProvider);
 
                 if (!precise)
                     return converted;
@@ -181,7 +184,7 @@ namespace IGLib.Types.Extensions
                 // Check if conversion was lossless
                 try
                 {
-                    object roundTrip = Convert.ChangeType(converted, value.GetType(), provider);
+                    object roundTrip = Convert.ChangeType(converted, value.GetType(), formatProvider);
                     if (Equals(value, roundTrip))
                         return converted;
                 }
