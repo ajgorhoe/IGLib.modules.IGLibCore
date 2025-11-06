@@ -254,6 +254,128 @@ namespace IGLib.Types.Extensions
             return true;
         }
 
+
+
+
+
+
+
+
+        public static TargetType ConvertTo<TargetType>(
+            this object value,
+            bool precise = false,
+            IFormatProvider? provider = null)
+            where TargetType : IConvertible
+        {
+            if (value is null)
+                throw new ArgumentNullException(nameof(value), $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Value is null.");
+
+            provider ??= CultureInfo.InvariantCulture;
+
+            Type targetType = typeof(TargetType);
+            Type sourceType = value.GetType();
+
+            // 1️⃣ Already correct type
+            if (value is TargetType tVal)
+                return tVal;
+
+            // 2️⃣ String input → switch on known target types
+            if (value is string s)
+            {
+                object parsed = targetType switch
+                {
+                    Type t when t == typeof(int)
+                        => int.TryParse(s, NumberStyles.Integer, provider, out int i) ? i
+                           : throw new FormatException($"Cannot parse '{s}' as int."),
+
+                    Type t when t == typeof(double)
+                        => double.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands, provider, out double d) ? d
+                           : throw new FormatException($"Cannot parse '{s}' as double."),
+
+                    Type t when t == typeof(float)
+                        => float.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands, provider, out float f) ? f
+                           : throw new FormatException($"Cannot parse '{s}' as float."),
+
+                    Type t when t == typeof(decimal)
+                        => decimal.TryParse(s, NumberStyles.Number, provider, out decimal dec) ? dec
+                           : throw new FormatException($"Cannot parse '{s}' as decimal."),
+
+                    Type t when t == typeof(bool)
+                        => bool.TryParse(s, out bool b) ? b
+                           : throw new FormatException($"Cannot parse '{s}' as bool."),
+
+                    Type t when t == typeof(DateTime)
+                        => DateTime.TryParse(s, provider, DateTimeStyles.None, out DateTime dt) ? dt
+                           : throw new FormatException($"Cannot parse '{s}' as DateTime."),
+
+                    Type t when t == typeof(Guid)
+                        => Guid.TryParse(s, out Guid g) ? g
+                           : throw new FormatException($"Cannot parse '{s}' as Guid."),
+
+                    _ => Convert.ChangeType(s, targetType, provider)!
+                };
+
+                return (TargetType)parsed;
+            }
+
+            // 3️⃣ General numeric or convertible case
+            if (value is IConvertible convertible)
+            {
+                try
+                {
+                    object converted = Convert.ChangeType(convertible, targetType, provider)!;
+
+                    if (!precise)
+                        return (TargetType)converted;
+
+                    // Precision check for numeric types
+                    if (IsNumericType(targetType) && IsNumericType(sourceType))
+                    {
+                        double dOriginal = Convert.ToDouble(value, provider);
+                        double dConverted = Convert.ToDouble(converted, provider);
+                        if (Math.Abs(dOriginal - dConverted) < double.Epsilon)
+                            return (TargetType)converted;
+
+                        throw new InvalidOperationException(
+                            $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Conversion from {sourceType.Name} to {targetType.Name} loses precision.");
+                    }
+
+                    // Round-trip check
+                    object roundTrip = Convert.ChangeType(converted, sourceType, provider)!;
+                    if (Equals(value, roundTrip))
+                        return (TargetType)converted;
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(
+                        $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Cannot convert {sourceType.Name} to {targetType.Name}.", ex);
+                }
+            }
+
+            throw new InvalidOperationException(
+                $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Value {value} of type {sourceType.Name} cannot be converted to {targetType.Name}{(precise ? " precisely" : "")}.");
+        }
+
+        private static bool IsNumericType(Type type)
+        {
+            return type == typeof(byte) || type == typeof(sbyte)
+                || type == typeof(short) || type == typeof(ushort)
+                || type == typeof(int) || type == typeof(uint)
+                || type == typeof(long) || type == typeof(ulong)
+                || type == typeof(float) || type == typeof(double)
+                || type == typeof(decimal);
+        }
+
+
+
+
+
+
+
+
+
+
+
         public static void Test()
         {
             object[] ObjectArrayOfIntDouble = [1, 2, 3, 1.11, 2.22];
