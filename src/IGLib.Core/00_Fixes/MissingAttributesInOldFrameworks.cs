@@ -1,4 +1,6 @@
 ﻿
+#nullable disable
+
 // In .NET Standard, .NET Framework, and earlier versions of .NET (prior to 5.0),
 // the definition of attribute RequiresUnreferencedCode is missing. Code block below
 // solves this:
