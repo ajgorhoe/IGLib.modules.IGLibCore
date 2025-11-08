@@ -1,4 +1,7 @@
-﻿#if true
+﻿
+#nullable disable
+
+#if true
 
 using Xunit;
 using FluentAssertions;

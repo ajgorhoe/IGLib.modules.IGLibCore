@@ -1,4 +1,7 @@
-﻿using Xunit;
+﻿
+#nullable disable
+
+using Xunit;
 using FluentAssertions;
 using Xunit.Abstractions;
 using System.Collections.Generic;

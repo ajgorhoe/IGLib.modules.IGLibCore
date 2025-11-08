@@ -1,4 +1,7 @@
-﻿namespace LearnCs.Lib
+﻿
+#nullable disable
+
+namespace LearnCs.Lib
 {
 
     /// <summary>Interface for an array-like structures (potentially multidimensional) of number 

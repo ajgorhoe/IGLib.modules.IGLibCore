@@ -149,6 +149,7 @@ namespace IGLib.Types.Extensions
             return false;
         }
 
+
         /// <summary>
         /// Converts a value to an integer. If <paramref name="precise"/> is true, 
         /// only lossless conversions are accepted.

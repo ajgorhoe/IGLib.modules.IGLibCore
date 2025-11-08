@@ -1,4 +1,7 @@
-﻿using Xunit;
+﻿
+#nullable enable
+
+using Xunit;
 using FluentAssertions;
 using Xunit.Abstractions;
 using Microsoft.Extensions.Logging;
@@ -24,10 +27,7 @@ namespace IGLib.Tests.Base
         public TestBase(ITestOutputHelper output, bool assignConsole = true) // : base(output)
         {
             Output = output;
-            if (assignConsole)
-            {
-                Console = output;
-            }
+            Console = output;
             LoggerFactory = new LoggerFactory();
             LoggerFactory.AddProvider(new XUnitLoggerProvider(output));
         }
@@ -111,15 +111,18 @@ namespace IGLib.Tests.Base
             _categoryName = categoryName;
         }
 
+
+#pragma warning disable CS8633 // Nullability in constraints for type parameter doesn't match the constraints for type parameter in implicitly implemented interface method'.
         public IDisposable BeginScope<TState>(TState state)
             => NoopDisposable.Instance;
+#pragma warning restore CS8633 
 
         public bool IsEnabled(LogLevel logLevel)
             => true;
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception, string> formatter)
         {
-            _testOutputHelper.WriteLine($"{_categoryName} [{eventId}] {formatter(state, exception)}");
+            _testOutputHelper.WriteLine($"{_categoryName} [{eventId}] {formatter(state, exception??new())}");
             if (exception != null)
                 _testOutputHelper.WriteLine(exception.ToString());
         }
