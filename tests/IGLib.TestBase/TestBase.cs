@@ -1,9 +1,14 @@
-﻿using Xunit;
+﻿
+#nullable disable
+
+using Xunit;
 using FluentAssertions;
 using Xunit.Abstractions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+
+#nullable disable
 
 namespace IGLib.Tests.Base
 {

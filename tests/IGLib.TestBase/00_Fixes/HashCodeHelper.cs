@@ -1,4 +1,6 @@
 ﻿
+#nullable disable
+
 //// This file provides alternative implementation of the HashCode.Combine{T1}(T1) method for
 //// legacy .NET Framework and earlier versions of .NET Coree (below .NET 8).
 
