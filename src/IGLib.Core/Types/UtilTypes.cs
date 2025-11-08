@@ -1,4 +1,6 @@
-﻿using IG.Lib;
+﻿
+
+using IG.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -153,7 +155,7 @@ namespace IGLib.Types.Extensions
         /// Uses InvariantCulture for string and IConvertible conversions.
         /// </summary>
         [RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
-        public static int ToInt(this object value, bool precise = false, IFormatProvider provider = null)
+        public static int ToInt(this object value, bool precise = false, IFormatProvider? provider = null)
         {
             if (value is null)
                 throw new ArgumentNullException(nameof(value), $"{nameof(UtilTypes)}.{nameof(ToInt)}: Value is null.");
