@@ -1,4 +1,7 @@
-﻿using IG.Lib;
+﻿
+#nullable enable
+
+using IG.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -27,7 +30,7 @@ namespace IGLib.Types.Extensions
         /// <typeparam name="CollectionElementType">Declared type of collection elements.</typeparam>
         /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
         /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
-        public static bool IsNumberCollection<NumType, CollectionElementType>(IList<CollectionElementType> collection)
+        public static bool IsNumberCollection<NumType, CollectionElementType>(IList<CollectionElementType>? collection)
             where NumType: unmanaged
         {
             if (collection == null || collection.Count == 0)
@@ -57,9 +60,13 @@ namespace IGLib.Types.Extensions
         /// <typeparam name="CollectionElementType">Declared type of collection elements.</typeparam>
         /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
         /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
-        public static bool IsNumberCollectionOf<NumType, CollectionElementType>(IEnumerable<CollectionElementType> collection)
+        public static bool IsNumberCollectionOf<NumType, CollectionElementType>(IEnumerable<CollectionElementType>? collection)
             where NumType: unmanaged
         {
+            if (collection == null)
+            {
+                return true;
+            }
             foreach (CollectionElementType item in collection)
             {
                 if (item == null)
@@ -78,22 +85,22 @@ namespace IGLib.Types.Extensions
 
 #if false
 
-        public static bool IsIntCollectionOf<CollectionElementType>(IList<CollectionElementType> collection)
+        public static bool IsIntCollectionOf<CollectionElementType>(IList<CollectionElementType>? collection)
         { return IsNumberCollection<int, CollectionElementType>(collection); }
 
-        public static bool IsLongCollection<CollectionElementType>(IList<CollectionElementType> collection)
+        public static bool IsLongCollection<CollectionElementType>(IList<CollectionElementType>? collection)
         { return IsNumberCollection<long, CollectionElementType>(collection); }
 
-        public static bool IsDoubleCollection<CollectionElementType>(IList<CollectionElementType> collection)
+        public static bool IsDoubleCollection<CollectionElementType>(IList<CollectionElementType>? collection)
         { return IsNumberCollection<double, CollectionElementType>(collection); }
 
-        public static bool IsIntCollection<CollectionElementType>(IEnumerable<CollectionElementType> collection)
+        public static bool IsIntCollection<CollectionElementType>(IEnumerable<CollectionElementType>? collection)
         { return IsNumberCollectionOf<int, CollectionElementType>(collection); }
 
-        public static bool IsLongCollection<CollectionElementType>(IEnumerable<CollectionElementType> collection)
+        public static bool IsLongCollection<CollectionElementType>(IEnumerable<CollectionElementType>? collection)
         { return IsNumberCollectionOf<long, CollectionElementType>(collection); }
 
-        public static bool IsDoubleCollection<CollectionElementType>(IEnumerable<CollectionElementType> collection)
+        public static bool IsDoubleCollection<CollectionElementType>(IEnumerable<CollectionElementType>? collection)
         { return IsNumberCollectionOf<double, CollectionElementType>(collection); }
 
 #endif   // if false / true / ...
@@ -107,7 +114,7 @@ namespace IGLib.Types.Extensions
 
         [Obsolete("Methods for conversion to single specific type may be phased out where this can be done generically.")]
         [RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
-        public static bool IsConvertibleToInt(this object value, bool precise = true, IFormatProvider formatProvider = null)
+        public static bool IsConvertibleToInt(this object? value, bool precise = true, IFormatProvider? formatProvider = null)
         {
 
             formatProvider ??= CultureInfo.InvariantCulture;
@@ -142,7 +149,7 @@ namespace IGLib.Types.Extensions
         /// </summary>
         [Obsolete("Methods for conversion to single specific type may be phased out where this can be done generically.")]
         [RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
-        public static int ToInt(this object value, bool precise = false, IFormatProvider formatProvider = null)
+        public static int ToInt(this object? value, bool precise = false, IFormatProvider? formatProvider = null)
         {
             if (value is null)
                 throw new ArgumentNullException(nameof(value), $"{nameof(UtilTypes)}.{nameof(ToInt)}: Value is null.");
@@ -191,8 +198,17 @@ namespace IGLib.Types.Extensions
 
         #region GenericConversionOfBaseTypes
 
+        public static object ConvertToType(
+            this object? value,
+            Type targetType,
+            bool precise = false,
+            IFormatProvider? provider = null)
+        {
+            throw new NotImplementedException();
+        }
 
 
+        
 
         /// <summary>Converts the specified <paramref name="value"/> to the target type <typeparamref name="TargetType"/>.</summary>
         /// <typeparam name="TargetType">The destination type that implements <see cref="IConvertible"/>.</typeparam>
@@ -231,10 +247,7 @@ namespace IGLib.Types.Extensions
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> is <see langword="null"/>.</exception>
         /// <exception cref="FormatException">Thrown when parsing a string fails.</exception>
         /// <exception cref="InvalidOperationException">Thrown when conversion is not supported or cannot be performed precisely.</exception>
-        public static TargetType ConvertTo<TargetType>(
-            this object value,
-            bool precise = false,
-            IFormatProvider provider = null)
+        public static TargetType ConvertTo<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
             where TargetType : IConvertible
         {
             if (value is null)
@@ -334,6 +347,11 @@ namespace IGLib.Types.Extensions
                 $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Value {value} of type {sourceType.Name} cannot be converted to {targetType.Name}{(precise ? " precisely" : "")}.");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private static bool IsNumericType(Type type)
         {
             return type == typeof(byte) || type == typeof(sbyte)
@@ -364,9 +382,14 @@ namespace IGLib.Types.Extensions
         /// <typeparam name="CollectionElementType">Declared type of collection elements.</typeparam>
         /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
         /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
-        public static bool IsConvertibleToCollectionOf<ConvertedType, CollectionElementType>(IEnumerable<CollectionElementType> collection)
+        public static bool IsConvertibleToCollectionOf<ConvertedType, CollectionElementType>(
+                IEnumerable<CollectionElementType>? collection)
             where ConvertedType : IConvertible
         {
+            if (collection == null)
+            {
+                return true;
+            }
             foreach (CollectionElementType item in collection)
             {
                 if (item == null)
