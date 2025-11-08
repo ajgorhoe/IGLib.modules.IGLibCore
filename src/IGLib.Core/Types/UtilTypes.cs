@@ -187,7 +187,164 @@ namespace IGLib.Types.Extensions
         #endregion SingleTypeConversion
 
 
+
+
         #region GenericConversionOfBaseTypes
+
+
+
+
+        /// <summary>Converts the specified <paramref name="value"/> to the target type <typeparamref name="TargetType"/>.</summary>
+        /// <typeparam name="TargetType">The destination type that implements <see cref="IConvertible"/>.</typeparam>
+        /// <param name="value">The value to convert. May be any <see cref="object"/> implementing <see cref="IConvertible"/>,
+        /// which means basic types like byte, char, int, double, string, long, float, unsigned int, and similar.</param>
+        /// <param name="precise">
+        /// When <see langword="true"/>, the conversion must not lose precision; conversions such as 2.3 → 2 will throw an exception.
+        /// When <see langword="false"/>, lossy conversions are allowed. The default is <see langword="false"/>.
+        /// </param>
+        /// <param name="provider">
+        /// An optional <see cref="IFormatProvider"/> (such as <see cref="CultureInfo.InvariantCulture"/>) that controls formatting 
+        /// for string and numeric conversions. If <see langword="null"/>, <see cref="CultureInfo.InvariantCulture"/> is used.</param>
+        /// <returns>The converted value as <typeparamref name="TargetType"/>.</returns>
+        /// <remarks>
+        /// <para>
+        /// This method performs conversion using type-safe and trim-friendly logic:
+        /// </para>
+        /// <list type="bullet">
+        /// <item><description>
+        /// If <paramref name="value"/> is already of <typeparamref name="TargetType"/>, it is returned directly.
+        /// </description></item>
+        /// <item><description>
+        /// If <paramref name="value"/> is a <see cref="string"/>, built-in <c>TryParse</c> methods are used for well-known primitive types (e.g. <see cref="int"/>, <see cref="double"/>, <see cref="bool"/>).
+        /// </description></item>
+        /// <item><description>
+        /// For other <see cref="IConvertible"/> types, <see cref="Convert.ChangeType(object, Type, IFormatProvider?)"/> is used.
+        /// </description></item>
+        /// <item><description>
+        /// When <paramref name="precise"/> is <see langword="true"/>, numeric conversions that lose information will throw <see cref="InvalidOperationException"/>.
+        /// </description></item>
+        /// </list>
+        /// <para>This implementation does not use reflection and is safe for trimming and AOT compilation.</para>
+        /// Safe for trimming and AOT compilation when converting between built-in types that implement <see cref="IConvertible"/>.
+        /// Converting arbitrary user-defined types with <see cref="Convert.ChangeType(object, Type, IFormatProvider?)"/> 
+        /// may not be safe for trimming.</remarks>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> is <see langword="null"/>.</exception>
+        /// <exception cref="FormatException">Thrown when parsing a string fails.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when conversion is not supported or cannot be performed precisely.</exception>
+        public static TargetType ConvertTo<TargetType>(
+            this object value,
+            bool precise = false,
+            IFormatProvider provider = null)
+            where TargetType : IConvertible
+        {
+            if (value is null)
+                throw new ArgumentNullException(nameof(value), $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Value is null.");
+
+            provider ??= CultureInfo.InvariantCulture;
+
+            Type targetType = typeof(TargetType);
+            Type sourceType = value.GetType();
+
+            if (Nullable.GetUnderlyingType(targetType) is Type underlying)
+            {
+                if (value == null || (value is string str && string.IsNullOrWhiteSpace(str)))
+                    return default!;
+                targetType = underlying;
+            }
+
+
+            // 1. Already correct type:
+            if (value is TargetType tVal)
+                return tVal;
+
+            // 2️. String input → switch on known target types
+            if (value is string s)
+            {
+                object parsed = targetType switch
+                {
+                    Type t when t == typeof(int)
+                        => int.TryParse(s, NumberStyles.Integer, provider, out int i) ? i
+                           : throw new FormatException($"Cannot parse '{s}' as int."),
+
+                    Type t when t == typeof(double)
+                        => double.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands, provider, out double d) ? d
+                           : throw new FormatException($"Cannot parse '{s}' as double."),
+
+                    Type t when t == typeof(float)
+                        => float.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands, provider, out float f) ? f
+                           : throw new FormatException($"Cannot parse '{s}' as float."),
+
+                    Type t when t == typeof(decimal)
+                        => decimal.TryParse(s, NumberStyles.Number, provider, out decimal dec) ? dec
+                           : throw new FormatException($"Cannot parse '{s}' as decimal."),
+
+                    Type t when t == typeof(bool)
+                        => bool.TryParse(s, out bool b) ? b
+                           : throw new FormatException($"Cannot parse '{s}' as bool."),
+
+                    Type t when t == typeof(DateTime)
+                        => DateTime.TryParse(s, provider, DateTimeStyles.None, out DateTime dt) ? dt
+                           : throw new FormatException($"Cannot parse '{s}' as DateTime."),
+
+                    Type t when t == typeof(Guid)
+                        => Guid.TryParse(s, out Guid g) ? g
+                           : throw new FormatException($"Cannot parse '{s}' as Guid."),
+
+                    _ => Convert.ChangeType(s, targetType, provider)!
+                };
+
+                return (TargetType)parsed;
+            }
+
+            // 3️. General numeric or convertible case
+            if (value is IConvertible convertible)
+            {
+                try
+                {
+                    object converted = Convert.ChangeType(convertible, targetType, provider)!;
+
+                    if (!precise)
+                        return (TargetType)converted;
+
+                    // Precision check for numeric types
+                    if (IsNumericType(targetType) && IsNumericType(sourceType))
+                    {
+                        double dOriginal = Convert.ToDouble(value, provider);
+                        double dConverted = Convert.ToDouble(converted, provider);
+                        if (Math.Abs(dOriginal - dConverted) < double.Epsilon)
+                            return (TargetType)converted;
+
+                        throw new InvalidOperationException(
+                            $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Conversion from {sourceType.Name} to {targetType.Name} loses precision.");
+                    }
+
+                    // Round-trip check
+                    object roundTrip = Convert.ChangeType(converted, sourceType, provider)!;
+                    if (Equals(value, roundTrip))
+                        return (TargetType)converted;
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(
+                        $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Cannot convert {sourceType.Name} to {targetType.Name}.", ex);
+                }
+            }
+
+            throw new InvalidOperationException(
+                $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Value {value} of type {sourceType.Name} cannot be converted to {targetType.Name}{(precise ? " precisely" : "")}.");
+        }
+
+        private static bool IsNumericType(Type type)
+        {
+            return type == typeof(byte) || type == typeof(sbyte)
+                || type == typeof(short) || type == typeof(ushort)
+                || type == typeof(int) || type == typeof(uint)
+                || type == typeof(long) || type == typeof(ulong)
+                || type == typeof(float) || type == typeof(double)
+                || type == typeof(decimal);
+        }
+
+
 
 
 
