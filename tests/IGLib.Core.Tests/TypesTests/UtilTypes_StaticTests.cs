@@ -119,6 +119,7 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((char)'x', false, (int)'x', false, "conversion of ASCII character to int")]
         [InlineData((char)2836, false, 2836, false, "conversion of non-ASCII character to int")]
+        [Obsolete]
         protected void ToInt_WorksCorrectly(object converted, bool precise, int expectedResult,
             bool failureExpected = false, string comment = null)
         {
@@ -186,6 +187,7 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((char)'x', false, (int)'x', false, "conversion of ASCII character to int")]
         [InlineData((char)2836, false, 2836, false, "conversion of non-ASCII character to int")]
+        [Obsolete]
         protected void IsConvertibleToInt_WorksCorrectly(object converted, bool precise, int expectedResult,
             bool failureExpected = false, string comment = null)
         {
@@ -204,6 +206,7 @@ namespace IGLib.Types.Tests
         /// <param name="expectedResult">The expected result of conversion.</param>
         /// <param name="failureExpected">Whether the conversion should fail.</param>
         /// <param name="comment">Optional comment, which will be output and helps in checking and interpreting the results.</param>
+        [Obsolete]
         protected void ToIntTestCommon(bool testConversion, object converted, bool precise, int expectedResult,
             bool failureExpected = false, string comment = null)
         {
@@ -269,7 +272,7 @@ namespace IGLib.Types.Tests
                     isConvertible.Should().Be(!failureExpected, because: "Result of IsConvertible should be as expected.");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 isConvertibleThrewException = true;
             }

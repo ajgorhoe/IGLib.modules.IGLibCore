@@ -11,7 +11,7 @@ namespace System.Diagnostics.CodeAnalysis
     {
         public RequiresUnreferencedCodeAttribute(string message) => Message = message;
         public string Message { get; }
-        public string? Url { get; set; }
+        public string Url { get; set; }
     }
 }
 #endif

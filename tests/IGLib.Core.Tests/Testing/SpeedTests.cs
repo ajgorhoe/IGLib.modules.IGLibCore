@@ -88,7 +88,7 @@ namespace IGLib.Testing.Tests
 #if IncludeLegacyTests
         [Fact]
 #endif
-        public void Legacy_StandardSpeedTestGeometricSeries_OLD()
+        protected void Legacy_StandardSpeedTestGeometricSeries_OLD()
         {
             // Arrange
             int n = ConstGeom.NumExecutions;
@@ -131,7 +131,7 @@ namespace IGLib.Testing.Tests
 #if IncludeLegacyTests
         [Fact]
 #endif
-        public void Legacy_StandardSpeedTestGeometricSeries_DirectElementCalculation_OLD()
+        protected void Legacy_StandardSpeedTestGeometricSeries_DirectElementCalculation_OLD()
         {
             // Arrange
             int n = ConstGeomDirect.NumExecutions;

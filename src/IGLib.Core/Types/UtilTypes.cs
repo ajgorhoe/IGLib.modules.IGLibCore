@@ -74,6 +74,10 @@ namespace IGLib.Types.Extensions
             return true;
         }
 
+        #region UnUsed
+
+#if false
+
         public static bool IsIntCollectionOf<CollectionElementType>(IList<CollectionElementType> collection)
         { return IsNumberCollection<int, CollectionElementType>(collection); }
 
@@ -92,36 +96,17 @@ namespace IGLib.Types.Extensions
         public static bool IsDoubleCollection<CollectionElementType>(IEnumerable<CollectionElementType> collection)
         { return IsNumberCollectionOf<double, CollectionElementType>(collection); }
 
-        public static int ToInt_Old(this object value, bool precise = false)
-        {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-            if (value is int i)
-                return i;
-            if (value is string s)
-                return int.Parse(s);
-            if (value is IConvertible convertible)
-            {
-                int converted = convertible.ToInt32(null);
-                if (!precise)
-                    return converted;
-                try
-                {
-                    // Convert back to the original type and compare.
-                    object roundTrip = Convert.ChangeType(converted, value.GetType());
-                    if (value.Equals(roundTrip))
-                        return converted;
-                }
-                catch
-                {
-                    // Conversion back failed → definitely not precise
-                }
-            }
-            throw new InvalidOperationException(
-                $"Cannot precisely convert value {value} of type {value.GetType().Name} to int.");
-        }
+#endif   // if false / true / ...
+
+        #endregion UnUsed
 
 
+        #region SingleTypeConversion
+
+        // WARNING: Method from this region may be removed at some point!
+
+        [Obsolete("Methods for conversion to single specific type may be phased out where this can be done generically.")]
+        [RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
         public static bool IsConvertibleToInt(this object value, bool precise = true, IFormatProvider formatProvider = null)
         {
 
@@ -155,6 +140,7 @@ namespace IGLib.Types.Extensions
         /// only lossless conversions are accepted.
         /// Uses InvariantCulture for string and IConvertible conversions.
         /// </summary>
+        [Obsolete("Methods for conversion to single specific type may be phased out where this can be done generically.")]
         [RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
         public static int ToInt(this object value, bool precise = false, IFormatProvider formatProvider = null)
         {
@@ -198,37 +184,18 @@ namespace IGLib.Types.Extensions
                 $"{nameof(UtilTypes)}.{nameof(ToInt)}: Value {value} of type {value.GetType().Name} cannot be converted to int{(precise ? " precisely" : "")}.");
         }
 
+        #endregion SingleTypeConversion
 
 
-        ///// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
-        ///// are of the specified primitive (unmanaged, most commonly numeric) type (<typeparamref name="ConvertedType"/>).
-        ///// <para>For example, if the collection elements are of declared type object and the first type parameter
-        ///// is <see cref="int"/> then true is returned if and only if all elements of the collection are actually
-        ///// of type int and are NOT null.</para></summary>
-        ///// <typeparam name="ConvertedType">The type for which elements of the collection are checked. It must
-        ///// be an unmanaged type such as bool, int, char, byte, long, float, double, etc.</typeparam>
-        ///// <typeparam name="CollectionElementType">Declared type of collection elements.</typeparam>
-        ///// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
-        ///// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
-        //public static bool IsConvertibleToCollectionOf<ConvertedType, CollectionElementType>(IList<CollectionElementType> collection)
-        //    where ConvertedType : IConvertible
-        //{
-        //    if (collection == null || collection.Count == 0)
-        //        return false;
-        //    for (int i = 0; i < collection.Count; ++i)
-        //    {
-        //        CollectionElementType item = collection[i];
-        //        if (item == null)
-        //        {
-        //            return false;  // if number types, they cannot be null
-        //        }
-        //        if (item is not ConvertedType)
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    return true;
-        //}
+        #region GenericConversionOfBaseTypes
+
+
+
+
+        #endregion GenericConversionOfBaseTypes
+
+
+
 
         /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
         /// are of the specified primitive (unmanaged, most commonly numeric) type (<typeparamref name="ConvertedType"/>).
@@ -260,7 +227,7 @@ namespace IGLib.Types.Extensions
         public static void Test()
         {
             object[] ObjectArrayOfIntDouble = [1, 2, 3, 1.11, 2.22];
-            bool isIntCollection = IsIntCollectionOf(ObjectArrayOfIntDouble);
+            // bool isIntCollection = IsIntCollectionOf(ObjectArrayOfIntDouble);
             bool isIntCollection1 = IsNumberCollection<int, object>(ObjectArrayOfIntDouble);
         }
 
