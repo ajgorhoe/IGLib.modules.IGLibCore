@@ -1,3 +1,6 @@
+
+#nullable disable
+
 using NUnit.Framework;
 
 namespace EventAggregatorTests

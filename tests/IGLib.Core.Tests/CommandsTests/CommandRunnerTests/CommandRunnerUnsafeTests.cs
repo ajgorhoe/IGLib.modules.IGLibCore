@@ -1,4 +1,7 @@
-﻿using FluentAssertions;
+﻿
+#nullable disable
+
+using FluentAssertions;
 using IGLib.Tests.Base;
 using System;
 using System.Collections.Generic;

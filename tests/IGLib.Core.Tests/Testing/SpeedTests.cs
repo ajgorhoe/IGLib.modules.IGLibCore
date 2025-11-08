@@ -1,4 +1,7 @@
-﻿// To include legacy tests, uncomment the directive below:
+﻿
+#nullable disable
+
+// To include legacy tests, uncomment the directive below:
 //#define IncludeLegacyTests
 
 using Xunit;
