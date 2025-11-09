@@ -1,7 +1,4 @@
-﻿
-#nullable enable
-
-using Xunit;
+﻿using Xunit;
 using FluentAssertions;
 using Xunit.Abstractions;
 using Microsoft.Extensions.Logging;

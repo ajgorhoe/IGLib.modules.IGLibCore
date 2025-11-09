@@ -68,6 +68,7 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((char)'x', false, (int)'x', false, "conversion of ASCII character to int")]
         [InlineData((char)2836, false, 2836, false, "conversion of non-ASCII character to int")]
+        [Obsolete]
         protected void ToInt_CanBeCalledAsExtensionMethod(object converted, bool precise, int expectedResult,
     bool exceptionExpected = false, string comment = null)
         {
