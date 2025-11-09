@@ -3,10 +3,6 @@
 
 #nullable disable
 
-<<<<<<< HEAD
-
-=======
->>>>>>> dev/25_11_04_MovingCommandsFromSandbox
 using System;
 using System.Collections.Generic;
 using System.Linq;
