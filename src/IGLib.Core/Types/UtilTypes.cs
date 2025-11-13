@@ -31,7 +31,7 @@ namespace IGLib.Types.Extensions
         /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
         /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
         public static bool IsNumberCollection<NumType, CollectionElementType>(IList<CollectionElementType>? collection)
-            where NumType: unmanaged
+            where NumType : unmanaged
         {
             if (collection == null || collection.Count == 0)
                 return false;
@@ -61,7 +61,7 @@ namespace IGLib.Types.Extensions
         /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
         /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
         public static bool IsNumberCollectionOf<NumType, CollectionElementType>(IEnumerable<CollectionElementType>? collection)
-            where NumType: unmanaged
+            where NumType : unmanaged
         {
             if (collection == null)
             {
@@ -211,141 +211,195 @@ namespace IGLib.Types.Extensions
 
 
 
-        /// <summary>Converts the specified <paramref name="value"/> to the target type <typeparamref name="TargetType"/>.</summary>
-        /// <typeparam name="TargetType">The destination type that implements <see cref="IConvertible"/>.</typeparam>
-        /// <param name="value">The value to convert. May be any <see cref="object"/> implementing <see cref="IConvertible"/>,
-        /// which means basic types like byte, char, int, double, string, long, float, unsigned int, and similar.</param>
+        /// <summary>
+        /// Converts the specified <paramref name="value"/> to the specified <paramref name="targetType"/>.
+        /// Supports <see cref="Nullable{T}"/> target types. For string inputs, type-safe <c>TryParse</c> paths are used for well-known primitive types to avoid reflection.
+        /// Uses <see cref="Convert.ChangeType(object, Type, IFormatProvider?)"/> as a fallback for other IConvertible types.
+        /// </summary>
+        /// <param name="value">The value to convert. May be <see langword="null"/> if the target type is nullable.</param>
+        /// <param name="targetType">The target <see cref="Type"/>. Must implement <see cref="IConvertible"/> (or be a nullable of a type that does).</param>
         /// <param name="precise">
-        /// When <see langword="true"/>, the conversion must not lose precision; conversions such as 2.3 → 2 will throw an exception.
-        /// When <see langword="false"/>, lossy conversions are allowed. The default is <see langword="false"/>.
+        /// When <see langword="true"/>, ensures that numeric conversions are lossless (no fractional/truncation or other information loss).
+        /// When <see langword="false"/>, lossy conversions are allowed. Default is <see langword="false"/>.
         /// </param>
         /// <param name="provider">
-        /// An optional <see cref="IFormatProvider"/> (such as <see cref="CultureInfo.InvariantCulture"/>) that controls formatting 
-        /// for string and numeric conversions. If <see langword="null"/>, <see cref="CultureInfo.InvariantCulture"/> is used.</param>
-        /// <returns>The converted value as <typeparamref name="TargetType"/>.</returns>
-        /// <remarks>
-        /// <para>
-        /// This method performs conversion using type-safe and trim-friendly logic:
-        /// </para>
-        /// <list type="bullet">
-        /// <item><description>
-        /// If <paramref name="value"/> is already of <typeparamref name="TargetType"/>, it is returned directly.
-        /// </description></item>
-        /// <item><description>
-        /// If <paramref name="value"/> is a <see cref="string"/>, built-in <c>TryParse</c> methods are used for well-known primitive types (e.g. <see cref="int"/>, <see cref="double"/>, <see cref="bool"/>).
-        /// </description></item>
-        /// <item><description>
-        /// For other <see cref="IConvertible"/> types, <see cref="Convert.ChangeType(object, Type, IFormatProvider?)"/> is used.
-        /// </description></item>
-        /// <item><description>
-        /// When <paramref name="precise"/> is <see langword="true"/>, numeric conversions that lose information will throw <see cref="InvalidOperationException"/>.
-        /// </description></item>
-        /// </list>
-        /// <para>This implementation does not use reflection and is safe for trimming and AOT compilation.</para>
-        /// Safe for trimming and AOT compilation when converting between built-in types that implement <see cref="IConvertible"/>.
-        /// Converting arbitrary user-defined types with <see cref="Convert.ChangeType(object, Type, IFormatProvider?)"/> 
-        /// may not be safe for trimming.</remarks>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> is <see langword="null"/>.</exception>
-        /// <exception cref="FormatException">Thrown when parsing a string fails.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when conversion is not supported or cannot be performed precisely.</exception>
-        public static TargetType ConvertTo<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
-            where TargetType : IConvertible
+        /// Optional <see cref="IFormatProvider"/> (for example, <see cref="CultureInfo.InvariantCulture"/>).  
+        /// If <see langword="null"/>, <see cref="CultureInfo.InvariantCulture"/> is used.
+        /// </param>
+        /// <returns>
+        /// The converted value boxed as <see cref="object"/> (or <see langword="null"/> when the target is nullable and <paramref name="value"/> was <see langword="null"/> or an empty/whitespace string).
+        /// </returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="targetType"/> is <see langword="null"/>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if <paramref name="targetType"/> does not implement <see cref="IConvertible"/>, or conversion is not possible (or not precise when <paramref name="precise"/> is true).</exception>
+        /// <exception cref="FormatException">Thrown when parsing a string fails for known types (int, double, etc.).</exception>
+        public static object? ConvertToType(this object? value, Type targetType, bool precise = false, IFormatProvider? provider = null)
         {
-            if (value is null)
-                throw new ArgumentNullException(nameof(value), $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Value is null.");
+            if (targetType == null)
+                throw new ArgumentNullException(nameof(targetType));
 
             provider ??= CultureInfo.InvariantCulture;
 
-            Type targetType = typeof(TargetType);
+            // Handle nullable target types
+            Type? underlying = Nullable.GetUnderlyingType(targetType);
+            bool targetIsNullable = underlying != null;
+            Type effectiveTarget = underlying ?? targetType;
+
+            // If source is null: return null for nullable target, otherwise fail
+            if (value is null)
+                return targetIsNullable ? null : 
+                    throw new InvalidOperationException($"{nameof(UtilTypes)}.{nameof(ConvertToType)
+                    }: Cannot convert null to non-nullable target type {targetType.Name}.");
+
+            // If effective target doesn't implement IConvertible -> fail
+            if (!typeof(IConvertible).IsAssignableFrom(effectiveTarget))
+                throw new InvalidOperationException($"{nameof(UtilTypes)}.{nameof(ConvertToType)}: Target type {effectiveTarget.Name} does not implement IConvertible.");
+
             Type sourceType = value.GetType();
 
-            if (Nullable.GetUnderlyingType(targetType) is Type underlying)
-            {
-                if (value == null || (value is string str && string.IsNullOrWhiteSpace(str)))
-                    return default!;
-                targetType = underlying;
-            }
+            // If the value already matches the target (assignable), return it (handles reference types)
+            if (effectiveTarget.IsAssignableFrom(sourceType))
+                return value;
 
-
-            // 1. Already correct type:
-            if (value is TargetType tVal)
-                return tVal;
-
-            // 2️. String input → switch on known target types
+            // If value is string -> use explicit TryParse for known types (no reflection)
             if (value is string s)
             {
-                object parsed = targetType switch
+                // treat empty/whitespace as null for nullable target types
+                if (string.IsNullOrWhiteSpace(s) && targetIsNullable)
+                    return null;
+
+                if (effectiveTarget == typeof(int))
                 {
-                    Type t when t == typeof(int)
-                        => int.TryParse(s, NumberStyles.Integer, provider, out int i) ? i
-                           : throw new FormatException($"Cannot parse '{s}' as int."),
+                    if (int.TryParse(s, NumberStyles.Integer, provider, out var i)) return i;
+                    throw new FormatException($"Cannot parse '{s}' as int.");
+                }
 
-                    Type t when t == typeof(double)
-                        => double.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands, provider, out double d) ? d
-                           : throw new FormatException($"Cannot parse '{s}' as double."),
+                if (effectiveTarget == typeof(long))
+                {
+                    if (long.TryParse(s, NumberStyles.Integer, provider, out var l)) return l;
+                    throw new FormatException($"Cannot parse '{s}' as long.");
+                }
 
-                    Type t when t == typeof(float)
-                        => float.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands, provider, out float f) ? f
-                           : throw new FormatException($"Cannot parse '{s}' as float."),
+                if (effectiveTarget == typeof(short))
+                {
+                    if (short.TryParse(s, NumberStyles.Integer, provider, out var sh)) return sh;
+                    throw new FormatException($"Cannot parse '{s}' as short.");
+                }
 
-                    Type t when t == typeof(decimal)
-                        => decimal.TryParse(s, NumberStyles.Number, provider, out decimal dec) ? dec
-                           : throw new FormatException($"Cannot parse '{s}' as decimal."),
+                if (effectiveTarget == typeof(byte))
+                {
+                    if (byte.TryParse(s, NumberStyles.Integer, provider, out var by)) return by;
+                    throw new FormatException($"Cannot parse '{s}' as byte.");
+                }
 
-                    Type t when t == typeof(bool)
-                        => bool.TryParse(s, out bool b) ? b
-                           : throw new FormatException($"Cannot parse '{s}' as bool."),
+                if (effectiveTarget == typeof(uint))
+                {
+                    if (uint.TryParse(s, NumberStyles.Integer, provider, out var ui)) return ui;
+                    throw new FormatException($"Cannot parse '{s}' as uint.");
+                }
 
-                    Type t when t == typeof(DateTime)
-                        => DateTime.TryParse(s, provider, DateTimeStyles.None, out DateTime dt) ? dt
-                           : throw new FormatException($"Cannot parse '{s}' as DateTime."),
+                if (effectiveTarget == typeof(ulong))
+                {
+                    if (ulong.TryParse(s, NumberStyles.Integer, provider, out var ul)) return ul;
+                    throw new FormatException($"Cannot parse '{s}' as ulong.");
+                }
 
-                    Type t when t == typeof(Guid)
-                        => Guid.TryParse(s, out Guid g) ? g
-                           : throw new FormatException($"Cannot parse '{s}' as Guid."),
+                if (effectiveTarget == typeof(float))
+                {
+                    if (float.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands, provider, out var f)) return f;
+                    throw new FormatException($"Cannot parse '{s}' as float.");
+                }
 
-                    _ => Convert.ChangeType(s, targetType, provider)!
-                };
+                if (effectiveTarget == typeof(double))
+                {
+                    if (double.TryParse(s, NumberStyles.Float | NumberStyles.AllowThousands, provider, out var d)) return d;
+                    throw new FormatException($"Cannot parse '{s}' as double.");
+                }
 
-                return (TargetType)parsed;
-            }
+                if (effectiveTarget == typeof(decimal))
+                {
+                    if (decimal.TryParse(s, NumberStyles.Number, provider, out var dec)) return dec;
+                    throw new FormatException($"Cannot parse '{s}' as decimal.");
+                }
 
-            // 3️. General numeric or convertible case
-            if (value is IConvertible convertible)
-            {
+                if (effectiveTarget == typeof(bool))
+                {
+                    if (bool.TryParse(s, out var b)) return b;
+                    throw new FormatException($"Cannot parse '{s}' as bool.");
+                }
+
+                if (effectiveTarget == typeof(DateTime))
+                {
+                    if (DateTime.TryParse(s, provider, DateTimeStyles.None, out var dt)) return dt;
+                    throw new FormatException($"Cannot parse '{s}' as DateTime.");
+                }
+
+                if (effectiveTarget == typeof(Guid))
+                {
+                    if (Guid.TryParse(s, out var g)) return g;
+                    throw new FormatException($"Cannot parse '{s}' as Guid.");
+                }
+
+                if (effectiveTarget == typeof(char))
+                {
+                    if (char.TryParse(s, out var ch)) return ch;
+                    throw new FormatException($"Cannot parse '{s}' as Char.");
+                }
+
+                // Fallback for other IConvertible types: use Convert.ChangeType
                 try
                 {
-                    object converted = Convert.ChangeType(convertible, targetType, provider)!;
-
-                    if (!precise)
-                        return (TargetType)converted;
-
-                    // Precision check for numeric types
-                    if (IsNumericType(targetType) && IsNumericType(sourceType))
-                    {
-                        double dOriginal = Convert.ToDouble(value, provider);
-                        double dConverted = Convert.ToDouble(converted, provider);
-                        if (Math.Abs(dOriginal - dConverted) < double.Epsilon)
-                            return (TargetType)converted;
-
-                        throw new InvalidOperationException(
-                            $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Conversion from {sourceType.Name} to {targetType.Name} loses precision.");
-                    }
-
-                    // Round-trip check
-                    object roundTrip = Convert.ChangeType(converted, sourceType, provider)!;
-                    if (Equals(value, roundTrip))
-                        return (TargetType)converted;
+                    return Convert.ChangeType(s, effectiveTarget, provider)!;
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException(
-                        $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Cannot convert {sourceType.Name} to {targetType.Name}.", ex);
+                    throw new InvalidOperationException($"{nameof(UtilTypes)}.{nameof(ConvertToType)}: Cannot convert string '{s}' to {effectiveTarget.Name}.", ex);
                 }
             }
 
-            throw new InvalidOperationException(
-                $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Value {value} of type {sourceType.Name} cannot be converted to {targetType.Name}{(precise ? " precisely" : "")}.");
+            // If value implements IConvertible => general conversion via Convert.ChangeType
+            if (value is IConvertible)
+            {
+                try
+                {
+                    object converted = Convert.ChangeType(value, effectiveTarget, provider)!;
+
+                    if (!precise)
+                        return converted;
+
+                    // Precise mode: attempt round-trip to ensure no information loss
+                    try
+                    {
+                        object roundTrip = Convert.ChangeType(converted, sourceType, provider)!;
+                        if (Equals(value, roundTrip))
+                            return converted;
+
+                        throw new InvalidOperationException($"{nameof(UtilTypes)}.{nameof(ConvertToType)}: Conversion from {sourceType.Name} to {effectiveTarget.Name} loses precision.");
+                    }
+                    catch (InvalidCastException)
+                    {
+                        // If round-trip cannot be performed because sourceType is not convertible back, consider it not precise
+                        throw new InvalidOperationException($"{nameof(UtilTypes)}.{nameof(ConvertToType)}: Conversion to {effectiveTarget.Name} cannot be verified as precise (round-trip failed).");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException($"{nameof(UtilTypes)}.{nameof(ConvertToType)}: Cannot convert {sourceType.Name} to {effectiveTarget.Name}.", ex);
+                }
+            }
+
+            // Not convertible
+            throw new InvalidOperationException($"{nameof(UtilTypes)}.{nameof(ConvertToType)}: Value of type {sourceType.Name} cannot be converted to {effectiveTarget.Name}.");
+        }
+
+        /// <summary>
+        /// Generic wrapper that calls <see cref="ConvertToType(object?, Type, bool, IFormatProvider?)"/> and casts the result to <typeparamref name="TargetType"/>.
+        /// </summary>
+        public static TargetType? ConvertTo<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
+            where TargetType : IConvertible
+        {
+            object? result = ConvertToType(value, typeof(TargetType), precise, provider);
+            if (result is null) return default;
+            return (TargetType)result;
         }
 
 
