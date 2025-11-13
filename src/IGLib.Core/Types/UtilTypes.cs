@@ -248,7 +248,7 @@ namespace IGLib.Types.Extensions
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> is <see langword="null"/>.</exception>
         /// <exception cref="FormatException">Thrown when parsing a string fails.</exception>
         /// <exception cref="InvalidOperationException">Thrown when conversion is not supported or cannot be performed precisely.</exception>
-        public static TargetType ConvertTo_1111<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
+        public static TargetType ConvertTo<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
             where TargetType : IConvertible
         {
             if (value is null)
