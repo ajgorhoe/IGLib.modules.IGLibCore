@@ -198,17 +198,18 @@ namespace IGLib.Types.Extensions
 
         #region GenericConversionOfBaseTypes
 
-        public static object ConvertToType(
-            this object? value,
-            Type targetType,
-            bool precise = false,
-            IFormatProvider? provider = null)
+        public static object? ConvertToType(this object? value, Type targetType, bool precise = false, IFormatProvider? provider = null)
         {
             throw new NotImplementedException();
         }
 
+        public static object? ConvertTo<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
+            where TargetType : IConvertible
+        {
+            return ConvertToType(value, typeof(TargetType), precise, provider);
+        }
 
-        
+
 
         /// <summary>Converts the specified <paramref name="value"/> to the target type <typeparamref name="TargetType"/>.</summary>
         /// <typeparam name="TargetType">The destination type that implements <see cref="IConvertible"/>.</typeparam>
@@ -247,7 +248,7 @@ namespace IGLib.Types.Extensions
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="value"/> is <see langword="null"/>.</exception>
         /// <exception cref="FormatException">Thrown when parsing a string fails.</exception>
         /// <exception cref="InvalidOperationException">Thrown when conversion is not supported or cannot be performed precisely.</exception>
-        public static TargetType ConvertTo<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
+        public static TargetType ConvertTo_1111<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
             where TargetType : IConvertible
         {
             if (value is null)
