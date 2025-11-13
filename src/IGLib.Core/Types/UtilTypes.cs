@@ -198,16 +198,16 @@ namespace IGLib.Types.Extensions
 
         #region GenericConversionOfBaseTypes
 
-        public static object? ConvertToType(this object? value, Type targetType, bool precise = false, IFormatProvider? provider = null)
-        {
-            throw new NotImplementedException();
-        }
+        //public static object? ConvertToType2222(this object? value, Type targetType, bool precise = false, IFormatProvider? provider = null)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public static object? ConvertTo<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
-            where TargetType : IConvertible
-        {
-            return ConvertToType(value, typeof(TargetType), precise, provider);
-        }
+        //public static object? ConvertTo2222<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
+        //    where TargetType : IConvertible
+        //{
+        //    return ConvertToType2222(value, typeof(TargetType), precise, provider);
+        //}
 
 
 
