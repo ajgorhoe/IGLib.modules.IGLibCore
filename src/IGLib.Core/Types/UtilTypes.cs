@@ -348,11 +348,10 @@ namespace IGLib.Types.Extensions
                 $"{nameof(UtilTypes)}.{nameof(ConvertTo)}: Value {value} of type {sourceType.Name} cannot be converted to {targetType.Name}{(precise ? " precisely" : "")}.");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+
+        /// <summary>Returns true if <paramref name="type"/> is a numerical type (supporting arythmetic 
+        /// operations), false otherwise.</summary>
+        /// <param name="type">Type for which th query is performed.</param>
         private static bool IsNumericType(Type type)
         {
             return type == typeof(byte) || type == typeof(sbyte)
