@@ -108,90 +108,90 @@ namespace IGLib.Types.Extensions
         #endregion UnUsed
 
 
-        #region SingleTypeConversion
+        //#region SingleTypeConversion
 
-        // WARNING: Method from this region may be removed at some point!
+        //// WARNING: Method from this region may be removed at some point!
 
-        [Obsolete("Methods for conversion to single specific type may be phased out where this can be done generically.")]
-        [RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
-        public static bool IsConvertibleToInt(this object? value, bool precise = true, IFormatProvider? formatProvider = null)
-        {
+        //[Obsolete("Methods for conversion to single specific type may be phased out where this can be done generically.")]
+        //[RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
+        //public static bool IsConvertibleToInt(this object? value, bool precise = true, IFormatProvider? formatProvider = null)
+        //{
 
-            formatProvider ??= CultureInfo.InvariantCulture;
+        //    formatProvider ??= CultureInfo.InvariantCulture;
 
-            if (value == null) { return false; }
-            if (value is int) { return true; }
-            if (value is string val) { return int.TryParse(val, NumberStyles.Integer, formatProvider, out int _); }
-            if (value is IConvertible convertible)
-            {
-                try
-                {
-                    int converted = convertible.ToInt32(formatProvider);
-                    if (!precise)
-                        return true;
-                    // Convert back to the original type and compare.
-                    object roundTrip = Convert.ChangeType(converted, value.GetType(), formatProvider);
-                    if (value.Equals(roundTrip))
-                        return true;
-                }
-                catch
-                {
-                    // Conversion back failed → definitely not precise
-                }
-            }
-            return false;
-        }
+        //    if (value == null) { return false; }
+        //    if (value is int) { return true; }
+        //    if (value is string val) { return int.TryParse(val, NumberStyles.Integer, formatProvider, out int _); }
+        //    if (value is IConvertible convertible)
+        //    {
+        //        try
+        //        {
+        //            int converted = convertible.ToInt32(formatProvider);
+        //            if (!precise)
+        //                return true;
+        //            // Convert back to the original type and compare.
+        //            object roundTrip = Convert.ChangeType(converted, value.GetType(), formatProvider);
+        //            if (value.Equals(roundTrip))
+        //                return true;
+        //        }
+        //        catch
+        //        {
+        //            // Conversion back failed → definitely not precise
+        //        }
+        //    }
+        //    return false;
+        //}
 
-        /// <summary>
-        /// Converts a value to an integer. If <paramref name="precise"/> is true, 
-        /// only lossless conversions are accepted.
-        /// Uses InvariantCulture for string and IConvertible conversions.
-        /// </summary>
-        [Obsolete("Methods for conversion to single specific type may be phased out where this can be done generically.")]
-        [RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
-        public static int ToInt(this object? value, bool precise = false, IFormatProvider? formatProvider = null)
-        {
-            if (value is null)
-                throw new ArgumentNullException(nameof(value), $"{nameof(UtilTypes)}.{nameof(ToInt)}: Value is null.");
+        ///// <summary>
+        ///// Converts a value to an integer. If <paramref name="precise"/> is true, 
+        ///// only lossless conversions are accepted.
+        ///// Uses InvariantCulture for string and IConvertible conversions.
+        ///// </summary>
+        //[Obsolete("Methods for conversion to single specific type may be phased out where this can be done generically.")]
+        //[RequiresUnreferencedCode("Uses Convert.ChangeType, which may require metadata for dynamic conversions.")]
+        //public static int ToInt(this object? value, bool precise = false, IFormatProvider? formatProvider = null)
+        //{
+        //    if (value is null)
+        //        throw new ArgumentNullException(nameof(value), $"{nameof(UtilTypes)}.{nameof(ToInt)}: Value is null.");
 
-            formatProvider ??= CultureInfo.InvariantCulture;
+        //    formatProvider ??= CultureInfo.InvariantCulture;
 
-            if (value is int ret)
-                return ret;
+        //    if (value is int ret)
+        //        return ret;
 
-            if (value is string s)
-            {
-                if (int.TryParse(s, NumberStyles.Integer, formatProvider, out int parsed))
-                    return parsed;
-                throw new FormatException(
-                    $"{nameof(UtilTypes)}.{nameof(ToInt)}: Cannot parse string '{s}' to int using {((CultureInfo)formatProvider).Name} culture.");
-            }
+        //    if (value is string s)
+        //    {
+        //        if (int.TryParse(s, NumberStyles.Integer, formatProvider, out int parsed))
+        //            return parsed;
+        //        throw new FormatException(
+        //            $"{nameof(UtilTypes)}.{nameof(ToInt)}: Cannot parse string '{s}' to int using {((CultureInfo)formatProvider).Name} culture.");
+        //    }
 
-            if (value is IConvertible convertible)
-            {
-                int converted = convertible.ToInt32(formatProvider);
+        //    if (value is IConvertible convertible)
+        //    {
+        //        int converted = convertible.ToInt32(formatProvider);
 
-                if (!precise)
-                    return converted;
+        //        if (!precise)
+        //            return converted;
 
-                // Check if conversion was lossless
-                try
-                {
-                    object roundTrip = Convert.ChangeType(converted, value.GetType(), formatProvider);
-                    if (Equals(value, roundTrip))
-                        return converted;
-                }
-                catch
-                {
-                    // Some types can't be round-tripped; fall through to exception
-                }
-            }
+        //        // Check if conversion was lossless
+        //        try
+        //        {
+        //            object roundTrip = Convert.ChangeType(converted, value.GetType(), formatProvider);
+        //            if (Equals(value, roundTrip))
+        //                return converted;
+        //        }
+        //        catch
+        //        {
+        //            // Some types can't be round-tripped; fall through to exception
+        //        }
+        //    }
 
-            throw new InvalidOperationException(
-                $"{nameof(UtilTypes)}.{nameof(ToInt)}: Value {value} of type {value.GetType().Name} cannot be converted to int{(precise ? " precisely" : "")}.");
-        }
+        //    throw new InvalidOperationException(
+        //        $"{nameof(UtilTypes)}.{nameof(ToInt)}: Value {value} of type {value.GetType().Name} cannot be converted to int{(precise ? " precisely" : "")}.");
+        //}
 
-        #endregion SingleTypeConversion
+        //#endregion SingleTypeConversion
 
 
 
