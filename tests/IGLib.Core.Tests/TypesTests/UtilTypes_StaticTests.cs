@@ -324,8 +324,6 @@ namespace IGLib.Types.Tests
 
 
 
-
-
         #region GeneralConversion_Tests
 
         // Tests nongeneric general conversion methods
@@ -348,7 +346,7 @@ namespace IGLib.Types.Tests
         /// <param name="expectedResult">The expected result of conversion.</param>
         /// <param name="failureExpected">Whether the conversion should fail.</param>
         /// <param name="comment">Optional comment, which will be output and helps in checking and interpreting the results.</param>
-        protected void ConvertToTypeTestCommon(bool testConversion, Type targetType, object converted, bool precise, int expectedResult,
+        protected void ConvertToTypeTestsCommon(bool testConversion, Type targetType, object converted, bool precise, int expectedResult,
             bool failureExpected = false, string comment = null)
         {
             if (testConversion)
@@ -503,7 +501,7 @@ namespace IGLib.Types.Tests
         protected void ConvertToType_WorksCorrectlyFor_Int(object converted, bool precise, int expectedResult,
             bool failureExpected = false, string comment = null)
         {
-            ConvertToTypeTestCommon(true, typeof(int), converted, precise, expectedResult, failureExpected, comment);
+            ConvertToTypeTestsCommon(true, typeof(int), converted, precise, expectedResult, failureExpected, comment);
         }
 
 
@@ -578,7 +576,7 @@ namespace IGLib.Types.Tests
         protected void IsConvertibleToType_WorksCorrectlyFor_Int(object converted, bool precise, int expectedResult,
             bool failureExpected = false, string comment = null)
         {
-            ConvertToTypeTestCommon(false, typeof(int), converted, precise, expectedResult, failureExpected, comment);
+            ConvertToTypeTestsCommon(false, typeof(int), converted, precise, expectedResult, failureExpected, comment);
         }
 
 
