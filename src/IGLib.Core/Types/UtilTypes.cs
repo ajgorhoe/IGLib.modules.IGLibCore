@@ -108,6 +108,113 @@ namespace IGLib.Types.Extensions
         #endregion UnUsed
 
 
+        #region BasicUtilities
+
+
+        /// <summary>Returns true if <paramref name="type"/> is a numerical type (supporting arythmetic 
+        /// operations), false otherwise.</summary>
+        /// <param name="type">Type for which th query is performed.</param>
+        public static bool IsNumericType(Type type)
+        {
+            return type == typeof(byte) || type == typeof(sbyte)
+                || type == typeof(short) || type == typeof(ushort)
+                || type == typeof(int) || type == typeof(uint)
+                || type == typeof(long) || type == typeof(ulong)
+                || type == typeof(float) || type == typeof(double)
+                || type == typeof(decimal);
+        }
+
+
+        /// <summary>Returns true if <paramref name="o"/> is a numerical type (supporting arythmetic 
+        /// operations), false otherwise.</summary>
+        /// <param name="o">Object for which th query is performed.</param>
+        public static bool IsOfNumericType(this object? o, bool allowNullable = false)
+        {
+            if (o == null) return false;
+            Type type = o.GetType();
+
+            Type underlyingType = Nullable.GetUnderlyingType(type) ?? type;
+            // bool typeIsNullable = underlying != null;
+
+            return IsNumericType(underlyingType);
+        }
+
+        /// <summary>Checks whether all elements of <paramref name="enumerable"/> are of numeric types.</summary>
+        /// <param name="enumerable">Collection whose eleements are checked for whether being of numerical types.</param>
+        /// <returns>False if the collection <paramref name="enumerable"/> is null, if it is an empty
+        /// collection, if any of its elements are null, or if any of its elements is not of numeric type
+        /// (as determined by the <see cref="IsNumericType(Type)"/> method).</returns>
+        public static bool IsOfNumericType(this IEnumerable<object?> enumerable)
+        {
+            if (enumerable == null) return false;
+            bool ret = false;
+            foreach (object? item in enumerable)
+            {
+                if (!IsOfNumericType(item))
+                {
+                    return false;
+                }
+                if (!ret)
+                {
+                    ret = true;
+                }
+            }
+            return ret;
+        }
+
+        /// <summary>Returns true if all elements of <paramref name="enumerable"/> are of certain kind,
+        /// determined by the predicate delegate <paramref name="isElementOfKind"/>, false otherwise.
+        /// If the specified enumerable is null then false is returned. If <paramref name="allowNullElements"/>
+        /// is false then if any element is null, false is returnte, regardless of what the predicate would
+        /// return on null object.</summary>
+        /// <param name="enumerable">The collection that is checked for whether all its elements satisfy
+        /// the criteria determined by the predicate <paramref name="isElementOfKind"/>.</param>
+        /// <param name="isElementOfKind">The <see cref="Predicate{Object?}"/> delegate that specifies
+        /// the criteria that all elements need to satisfy for true to be returned.</param>
+        /// <param name="allowNullElements">If false then false is returned if any element of the
+        /// collection <paramref name="enumerable"/> is null, regardless of what the predicate
+        /// <paramref name="isElementOfKind"/> would return.</param>
+        /// <returns>False if <paramref name="enumerable"/> is null, if <paramref name="allowNullElements"/>
+        /// is false and any of the elements of <paramref name="enumerable"/> is null, or if the predicate 
+        /// <paramref name="isElementOfKind"/> returns false for any of the elements. True otherwise.</returns>
+        public static bool IsOfKind(this IEnumerable<object?> enumerable, Predicate<object?> isElementOfKind,
+            bool allowNullElements = true)
+        {
+            if (enumerable == null) return false;
+            bool ret = false;
+            foreach (object? item in enumerable)
+            {
+                if (!allowNullElements && item == null)
+                {
+                    return false;
+                }
+                if (!isElementOfKind(item))
+                {
+                    return false;
+                }
+                if (!ret)
+                {
+                    ret = true;
+                }
+            }
+            return ret;
+        }
+
+        #endregion BasicUtilities
+
+
+        #region CollectionConversions
+
+
+
+
+
+
+
+        #endregion CollectionConversions
+
+
+
 
         #region GenericConversionOfBaseTypes
 
@@ -356,24 +463,6 @@ namespace IGLib.Types.Extensions
             // If no exception was thrown then ovject is convertivle to TargetType
             return true;
         }
-
-
-        /// <summary>Returns true if <paramref name="type"/> is a numerical type (supporting arythmetic 
-        /// operations), false otherwise.</summary>
-        /// <param name="type">Type for which th query is performed.</param>
-        private static bool IsNumericType(Type type)
-        {
-            return type == typeof(byte) || type == typeof(sbyte)
-                || type == typeof(short) || type == typeof(ushort)
-                || type == typeof(int) || type == typeof(uint)
-                || type == typeof(long) || type == typeof(ulong)
-                || type == typeof(float) || type == typeof(double)
-                || type == typeof(decimal);
-        }
-
-
-
-
 
 
         #endregion GenericConversionOfBaseTypes
