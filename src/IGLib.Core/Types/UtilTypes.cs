@@ -391,6 +391,23 @@ namespace IGLib.Types.Extensions
             throw new InvalidOperationException($"{nameof(UtilTypes)}.{nameof(ConvertToType)}: Value of type {sourceType.Name} cannot be converted to {effectiveTarget.Name}.");
         }
 
+        /// <summary>Returns true if the specified object (<paramref name="value"/>) can be converted to the specific
+        /// type (<paramref name="targetType"/>), false otherwise.
+        /// <para>Parameters have the same meaning as in <see cref="ConvertToType(object?, Type, bool, IFormatProvider?)"/>.</para></summary>
+        public static bool IsConvertibleToType(this object? value, Type targetType, bool precise = true, IFormatProvider? formatProvider = null)
+        {
+            try
+            {
+                object? converted = ConvertToType(value, targetType, precise, formatProvider);
+            }
+            catch
+            {  
+                return false; 
+            }
+            // If no exception was thrown then ovject is convertivle to TargetType
+            return true;
+        }
+
         /// <summary>
         /// Generic wrapper that calls <see cref="ConvertToType(object?, Type, bool, IFormatProvider?)"/> and casts the result to <typeparamref name="TargetType"/>.
         /// </summary>
@@ -400,6 +417,24 @@ namespace IGLib.Types.Extensions
             object? result = ConvertToType(value, typeof(TargetType), precise, provider);
             if (result is null) return default;
             return (TargetType)result;
+        }
+
+        /// <summary>Returns true if the specified object (<paramref name="value"/>) can be converted to the specific
+        /// type (<typeparamref name="TargetType"/>), false otherwise.
+        /// <para>Parameters have the same meaig as in <see cref="ConvertTo{TargetType}(object?, bool, IFormatProvider?)"/>.</para></summary>
+        public static bool IsConvertibleTo<TargetType>(this object? value, bool precise = true, IFormatProvider? formatProvider = null)
+            where TargetType : IConvertible
+        {
+            try
+            {
+                TargetType? converted = ConvertTo<TargetType>(value, precise, formatProvider);
+            }
+            catch
+            {  
+                return false; 
+            }
+            // If no exception was thrown then ovject is convertivle to TargetType
+            return true;
         }
 
 

@@ -58,8 +58,7 @@
 		To prevent this reference to appear in NuGet package of this project:
 		  PrivateAssets="All"
 		ReferenceOutputAssembly="false" PrivateAssets="All"   -->
-		<ProjectReference Include="..\..\src\0InitModules\InitModulesCore\InitModulesCore.csproj"
-			ReferenceOutputAssembly="false" PrivateAssets="All" />
+		<ProjectReference Include="..\..\src\0InitModules\InitModulesCore\InitModulesCore.csproj" ReferenceOutputAssembly="false" PrivateAssets="All" />
 	</ItemGroup>
 	
 	<ItemGroup>
