@@ -177,6 +177,10 @@ namespace IGLib.Tests.Base
         }
 
 
+
+
+
+
         // Datasets for tests defined by static public methods returning IEnumerable<object[]>:
 
         /// <summary>Returns a collection (<see cref="IEnumerable{object[]}"/>) containing a single parameters set for testing 
@@ -230,6 +234,11 @@ namespace IGLib.Tests.Base
             r = ((double, double)[])[(3.2, 5), (3.4, 7), (3.6, 9)];
             yield return new object[] { a, b, r };
         }
+
+
+        // Datasets for test parameters defined via public static properrties of type
+        // TheoryData<T1, T2, T3, ...> (strongly typed!)
+
 
         /// <summary>A public static property containing a strongly typed <see cref="TheoryData{T1, T2, T3}"/>
         /// to hold a set of strongly typed datasets for tests (can be used with <see cref="MemberDataAttribute"/>
