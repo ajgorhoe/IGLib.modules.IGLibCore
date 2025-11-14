@@ -4,6 +4,7 @@
 #if true
 
 using FluentAssertions;
+using IGLib.Types.Extensions;
 using LearnCs.Lib;
 using System;
 using System.Collections.Generic;
@@ -177,8 +178,34 @@ namespace IGLib.Tests.Base
         }
 
 
+        // Datasets that provide test parameters can be defined via public static properties of type
+        // TheoryData<T1, T2, T3, ...>, which provides strongly typed sets:
 
+        /// <summary>Public static property of type <see cref="TheoryData{object, bool}"/> that defines
+        /// parameter sets for tests.</summary>
+        public static TheoryData<object, bool> Data_IsOfNumericType => new()
+        {
+            { new DateTime(2024, 1, 1), false },
+            { (decimal) 999.99m, true},
+            { (decimal) -5.34m, true },
+            { (System.IO.FileAccess) System.IO.FileAccess.Read, false },
+            { (ushort?) 158, true }
+        };
 
+        /// <summary>Exampl test that gets its parameter sets via public static property of type
+        /// TheoryData<object, bool> (strongly typed).</summary>
+        /// <param name="o"></param>
+        /// <param name="shouldBeNumeric"></param>
+        [Theory]
+        [MemberData(nameof(Data_IsOfNumericType))]
+        protected void IsOfNumericType_WorksCorrectly(object o, bool shouldBeNumeric)
+        {
+            Console.WriteLine("Checking whether the specified object is of numeric type.");
+            Console.WriteLine($"Object checked: {o}, type: {o?.GetType().Name ?? "<null>"}, should be numeric: {shouldBeNumeric}");
+            bool isNumeric = UtilTypes.IsOfNumericType(o);
+            Console.WriteLine($"Returned from {nameof(UtilTypes.IsNumericType)}: {isNumeric}");
+            isNumeric.Should().Be(shouldBeNumeric, because: $"this object is {(isNumeric ? "" : "NOT")} of numeric type.");
+        }
 
 
         // Datasets for tests defined by static public methods returning IEnumerable<object[]>:
