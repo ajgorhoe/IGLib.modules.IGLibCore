@@ -3,12 +3,12 @@
 
 #if true
 
-using Xunit;
 using FluentAssertions;
-using Xunit.Abstractions;
-using System.Collections.Generic;
-
 using LearnCs.Lib;
+using System;
+using System.Collections.Generic;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace IGLib.Tests.Base
 {
@@ -231,6 +231,24 @@ namespace IGLib.Tests.Base
             yield return new object[] { a, b, r };
         }
 
+        /// <summary>A public static property containing a strongly typed <see cref="TheoryData{T1, T2, T3}"/>
+        /// to hold a set of strongly typed datasets for tests (can be used with <see cref="MemberDataAttribute"/>
+        /// to provide parameter sets for tests annotated by the <see cref="TheoryAttribute"/>).
+        /// Huge advantage is that parameters are strongly typed but still different types of parameters can be combined.</summary>
+        public static TheoryData<ComplexVector, ComplexVector, ComplexVector> DataSet_ForComplexVectorSums => new()
+        {
+            {
+                (double[])[1, 2, 3],  // uses implicit conversion to double -> ComplexVector
+                (double[])[4, 5, 6],
+                (double[])[5, 7, 9]
+            },
+            {
+                ((double, double)[])[(1.1, 1), (1.2, 2), (1.3, 3)],
+                ((double, double)[])[(2.1, 4), (2.2, 5), (2.3, 6)],
+                ((double, double)[])[(3.2, 5), (3.4, 7), (3.6, 9)]
+            }
+        };
+
         /// <summary>Example of a parametric tests that has parameters of arbitrary types (in this case, all three 
         /// parameters are of type ComplexVector, but the same approach works for arbitrary parameter types).
         /// <para>When we have sets for parameters that are not of simple types (for which literals can be used 
@@ -246,7 +264,17 @@ namespace IGLib.Tests.Base
         /// <param name="bV">2nd parameter fo the test (the second summand).</param>
         /// <param name="expectedV">3rd parameter of the test (the expected result).</param>
         [Theory]
+        // Specify input data via methods that return IEnumerable<T>:
+        // First dataset defined by a method returning IEnumerable(object[]) for a single test run:
         [MemberData(nameof(Dataset_OperatorPlus))]
+        // Another 3 datasets defined in a similar way, for additional 3 test runs:
+        [MemberData(nameof(Dataset_OperatorPlus_2))]
+        [MemberData(nameof(Dataset_OperatorPlus_3))]
+        // Most INTERESTING:
+        // Datasets defined by more general, strongly typed generic property (also public & static),
+        // via TheoryData<ComplexVector, ComplexVector, ComplexVector> (types can be different, in
+        // general: TheoryData<T1, T2, T3, ...> - up to 10 typed parameters):
+        [MemberData(nameof(DataSet_ForComplexVectorSums))]
         protected void TestDemo_AddComplexVectors_Test(ComplexVector aV, ComplexVector bV, ComplexVector expectedV)
         {
             double operationTolerance = 1e-6;
