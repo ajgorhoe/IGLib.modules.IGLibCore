@@ -198,18 +198,6 @@ namespace IGLib.Types.Extensions
 
         #region GenericConversionOfBaseTypes
 
-        //public static object? ConvertToType2222(this object? value, Type targetType, bool precise = false, IFormatProvider? provider = null)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public static object? ConvertTo2222<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
-        //    where TargetType : IConvertible
-        //{
-        //    return ConvertToType2222(value, typeof(TargetType), precise, provider);
-        //}
-
-
 
         /// <summary>
         /// Converts the specified <paramref name="value"/> to the specified <paramref name="targetType"/>.
@@ -232,6 +220,10 @@ namespace IGLib.Types.Extensions
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="targetType"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">Thrown if <paramref name="targetType"/> does not implement <see cref="IConvertible"/>, or conversion is not possible (or not precise when <paramref name="precise"/> is true).</exception>
         /// <exception cref="FormatException">Thrown when parsing a string fails for known types (int, double, etc.).</exception>
+        /// <remarks><para>Tests for this method (may not show up in CodeLens due to indirect calls):</para>
+        /// <para>* IGLib.Types.Tests.UtilTypesTests.ConvertTo_Generic_WorksCorrectlyFor_Int(...)</para>
+        /// <para>* etc. (tested for some other types)</para>
+        /// <para>Tests of generic method also test correctness of this method because they rely on it.</para></remarks>
         public static object? ConvertToType(this object? value, Type targetType, bool precise = false, IFormatProvider? provider = null)
         {
             if (targetType == null)
@@ -394,6 +386,14 @@ namespace IGLib.Types.Extensions
         /// <summary>Returns true if the specified object (<paramref name="value"/>) can be converted to the specific
         /// type (<paramref name="targetType"/>), false otherwise.
         /// <para>Parameters have the same meaning as in <see cref="ConvertToType(object?, Type, bool, IFormatProvider?)"/>.</para></summary>
+        /// <remarks>Tests for this method:
+        /// <para>* IGLib.Types.Tests.UtilTypesTests.ConvertTo_Generic_WorksCorrectlyFor_Int(...)</para>
+        /// <para>* etc. (tested for some other types)</para>
+        /// <para>Tests of generic method also test correctness of this method because they rely on it.</para></remarks>
+        /// <remarks><para>Tests for this method (may not show up in CodeLens):</para>
+        /// <para>* IGLib.Types.Tests.UtilTypesTests.ConvertTo_Generic_WorksCorrectlyFor_Int(...)</para>
+        /// <para>* etc. (tested for some other types)</para>
+        /// <para>Tests of generic method also test correctness of this method because they rely on it.</para></remarks>
         public static bool IsConvertibleToType(this object? value, Type targetType, bool precise = true, IFormatProvider? formatProvider = null)
         {
             try
@@ -411,6 +411,10 @@ namespace IGLib.Types.Extensions
         /// <summary>
         /// Generic wrapper that calls <see cref="ConvertToType(object?, Type, bool, IFormatProvider?)"/> and casts the result to <typeparamref name="TargetType"/>.
         /// </summary>
+        /// <remarks><para>Tests for this method (may not show up in CodeLens due to indirect calls):</para>
+        /// <para>* IGLib.Types.Tests.UtilTypesTests.ConvertTo_Generic_WorksCorrectlyFor_Int(...)</para>
+        /// <para>* etc. (tested for some other types)</para>
+        /// <para>Tests of generic method also test correctness of this method because they rely on it.</para></remarks>
         public static TargetType? ConvertTo<TargetType>(this object? value, bool precise = false, IFormatProvider? provider = null)
             where TargetType : IConvertible
         {
@@ -422,6 +426,9 @@ namespace IGLib.Types.Extensions
         /// <summary>Returns true if the specified object (<paramref name="value"/>) can be converted to the specific
         /// type (<typeparamref name="TargetType"/>), false otherwise.
         /// <para>Parameters have the same meaig as in <see cref="ConvertTo{TargetType}(object?, bool, IFormatProvider?)"/>.</para></summary>
+        /// <remarks><para>Tests for this method (may not show up in CodeLens):</para>
+        /// <para>* IGLib.Types.Tests.UtilTypesTests.ConvertTo_Generic_WorksCorrectlyFor_Int(...)</para>
+        /// <para>* etc. (tested for some other types)</para></remarks>
         public static bool IsConvertibleTo<TargetType>(this object? value, bool precise = true, IFormatProvider? formatProvider = null)
             where TargetType : IConvertible
         {
