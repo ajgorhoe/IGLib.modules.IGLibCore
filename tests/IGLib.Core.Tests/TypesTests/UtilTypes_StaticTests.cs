@@ -1,13 +1,14 @@
 ﻿
-#nullable disable
+#nullable enable
 
-using System;
-using Xunit;
 using FluentAssertions;
-using Xunit.Abstractions;
-using System.Collections.Generic;
+using IGLib.Commands;
 using IGLib.Tests.Base;
-
+using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Xunit;
+using Xunit.Abstractions;
 // Enable use of only a specific type without stating namespace:
 using UtilTypes = IGLib.Types.Extensions.UtilTypes;
 
@@ -60,6 +61,99 @@ namespace IGLib.Types.Tests
 
         }
 #endif
+
+
+        #region BasicUtilitiesTests
+
+        /*
+          
+                  public static bool IsNumericType(Type type)
+        {
+            return type == typeof(byte) || type == typeof(sbyte)
+                || type == typeof(short) || type == typeof(ushort)
+                || type == typeof(int) || type == typeof(uint)
+                || type == typeof(long) || type == typeof(ulong)
+                || type == typeof(float) || type == typeof(double)
+                || type == typeof(decimal);
+        }
+
+          
+          
+         */
+
+
+
+        [Theory]
+        // Numeric types:
+        [InlineData(typeof(byte),    true)]
+        [InlineData(typeof(sbyte),   true)]
+        [InlineData(typeof(short),   true)]
+        [InlineData(typeof(ushort),  true)]
+        [InlineData(typeof(int),     true)]
+        [InlineData(typeof(uint),    true)]
+        [InlineData(typeof(long),    true)]
+        [InlineData(typeof(ulong),   true)]
+        [InlineData(typeof(float),   true)]
+        [InlineData(typeof(double),  true)]
+        [InlineData(typeof(decimal), true)]
+        // Types that are not numeric:
+        [InlineData(typeof(DateTime), false)]
+        [InlineData(typeof(string),   false)]
+        [InlineData(typeof(char),     false)]
+        [InlineData(typeof(UtilTypes), false)]
+        [InlineData(typeof(GenericCommandBase), false)]
+        [InlineData(typeof(IGenericCommand), false)]
+        [InlineData(typeof(System.IO.FileAccess), false)]
+        [InlineData(typeof(DayOfWeek), false)]
+        protected void IsNumericType_WorksCorrectly(Type type, bool shouldBeNumeric)
+        {
+            Console.WriteLine("Checking whether the specified type is numeric type.");
+            Console.WriteLine($"Type checked: {type.Name}; should be numeric: {shouldBeNumeric}");
+            bool isNumeric = UtilTypes.IsNumericType(type);
+            Console.WriteLine($"Returned from {nameof(UtilTypes.IsNumericType)}: {isNumeric}");
+            isNumeric.Should().Be(shouldBeNumeric, because: $"this type is {(isNumeric?"":"NOT")} a numeric type");
+        }
+
+        public static TheoryData<object?, bool> Data_IsOfNumericType => new()
+        {
+            { new DateTime(2024, 1, 1), false },
+            { (decimal) 999.99m, true},
+            { (decimal) -5.34m, true },
+            { (System.IO.FileAccess) System.IO.FileAccess.Read, false }
+        };
+
+        [Theory]
+        [MemberData(nameof(Data_IsOfNumericType))]
+        // Null objects should return fale:
+        [InlineData(null, false)]
+        // Numeric types:
+        [InlineData((byte) 35, true)]
+        [InlineData((sbyte) -47, true)]
+        [InlineData((short) -87, true)]
+        [InlineData((ushort) 127, true)]
+        [InlineData((int) -34, true)]
+        [InlineData((uint) 8932, true)]
+        [InlineData((long) -879947543, true)]
+        [InlineData((ulong) 8483956343, true)]
+        [InlineData((float) -1.23e6, true)]
+        [InlineData((double) 6.02e-23, true)]
+        //[InlineData((decimal) 4.24m, true)]
+        // Types that are not numeric:
+        [InlineData((string) "ABC", false)]
+        [InlineData((char) 'x', false)]
+        protected void IsOfNumericType_WorksCorrectly(object? o, bool shouldBeNumeric)
+        {
+            Console.WriteLine("Checking whether the specified object is of numeric type.");
+            Console.WriteLine($"Object checked: {o}, type: {o?.GetType().Name??"<null>"}, should be numeric: {shouldBeNumeric}");
+            bool isNumeric = UtilTypes.IsOfNumericType(o);
+            Console.WriteLine($"Returned from {nameof(UtilTypes.IsNumericType)}: {isNumeric}");
+            isNumeric.Should().Be(shouldBeNumeric, because: $"this object is {(isNumeric ? "" : "NOT")} of numeric type.");
+
+        }
+
+
+
+        #endregion BasicUtilitiesTests
 
 
 
