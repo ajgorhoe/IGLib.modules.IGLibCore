@@ -74,18 +74,18 @@ namespace IGLib.Types.Extensions
                 (ElementType item) => item is QueryType));
         }
 
-        ///// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
-        ///// are of the specified type (<typeparamref name="QueryType"/>), false otherwise. It also returns
-        ///// false if the collection is null or empty or any of its elements is null.</summary>
-        ///// <typeparam name="QueryType">The type for which elements of the collection are checked.</typeparam>
-        ///// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
-        ///// <returns>False if collection is null, if it is empty, or if any element is not of type <typeparamref name="QueryType"/>;
-        ///// true otherwise (if all elements are of the specified type).</returns>
-        //public static bool IsCollectionOfType<QueryType>(this IEnumerable<object?>? collection)
-        //{
-        //    return (collection is not null && collection.Any() && collection.All(
-        //        (object? item) => item is QueryType));
-        //}
+        /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
+        /// are of the specified type (<typeparamref name="QueryType"/>), false otherwise. It also returns
+        /// false if the collection is null or empty or any of its elements is null.</summary>
+        /// <typeparam name="QueryType">The type for which elements of the collection are checked.</typeparam>
+        /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
+        /// <returns>False if collection is null, if it is empty, or if any element is not of type <typeparamref name="QueryType"/>;
+        /// true otherwise (if all elements are of the specified type).</returns>
+        public static bool IsCollectionOfType<QueryType>(this IEnumerable<object?>? collection)
+        {
+            return (collection is not null && collection.Any() && collection.All(
+                (object? item) => item is QueryType));
+        }
 
 
         /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
