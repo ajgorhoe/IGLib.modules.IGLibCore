@@ -20,95 +20,9 @@ namespace IGLib.Types.Extensions
     public static class UtilTypes
     {
 
-        /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
-        /// are of the specified primitive (unmanaged, most commonly numeric) type (<typeparamref name="NumType"/>).
-        /// <para>For example, if the collection elements are of declared type object and the first type parameter
-        /// is <see cref="int"/> then true is returned if and only if all elements of the collection are actually
-        /// of type int and are NOT null.</para></summary>
-        /// <typeparam name="NumType">The type for which elements of the collection are checked. It must
-        /// be an unmanaged type such as bool, int, char, byte, long, float, double, etc.</typeparam>
-        /// <typeparam name="CollectionElementType">Declared type of collection elements.</typeparam>
-        /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
-        /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
-        public static bool IsNumberCollection<NumType, CollectionElementType>(IList<CollectionElementType>? collection)
-            where NumType : unmanaged
-        {
-            if (collection == null || collection.Count == 0)
-                return false;
-            for (int i = 0; i < collection.Count; ++i)
-            {
-                CollectionElementType item = collection[i];
-                if (item == null)
-                {
-                    return false;  // if number types, they cannot be null
-                }
-                if (item is not NumType)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
-        /// are of the specified primitive (unmanaged, most commonly numeric) type (<typeparamref name="NumType"/>).
-        /// <para>For example, if the collection elements are of declared type object and the first type parameter
-        /// is <see cref="int"/> then true is returned if and only if all elements of the collection are actually
-        /// of type int and are NOT null.</para></summary>
-        /// <typeparam name="NumType">The type for which elements of the collection are checked. It must
-        /// be an unmanaged type such as bool, int, char, byte, long, float, double, etc.</typeparam>
-        /// <typeparam name="CollectionElementType">Declared type of collection elements.</typeparam>
-        /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
-        /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
-        public static bool IsNumberCollectionOf<NumType, CollectionElementType>(IEnumerable<CollectionElementType>? collection)
-            where NumType : unmanaged
-        {
-            if (collection == null)
-            {
-                return true;
-            }
-            foreach (CollectionElementType item in collection)
-            {
-                if (item == null)
-                {
-                    return false;  // if number types, they cannot be null
-                }
-                if (item is not NumType)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        #region UnUsed
-
-#if false
-
-        public static bool IsIntCollectionOf<CollectionElementType>(IList<CollectionElementType>? collection)
-        { return IsNumberCollection<int, CollectionElementType>(collection); }
-
-        public static bool IsLongCollection<CollectionElementType>(IList<CollectionElementType>? collection)
-        { return IsNumberCollection<long, CollectionElementType>(collection); }
-
-        public static bool IsDoubleCollection<CollectionElementType>(IList<CollectionElementType>? collection)
-        { return IsNumberCollection<double, CollectionElementType>(collection); }
-
-        public static bool IsIntCollection<CollectionElementType>(IEnumerable<CollectionElementType>? collection)
-        { return IsNumberCollectionOf<int, CollectionElementType>(collection); }
-
-        public static bool IsLongCollection<CollectionElementType>(IEnumerable<CollectionElementType>? collection)
-        { return IsNumberCollectionOf<long, CollectionElementType>(collection); }
-
-        public static bool IsDoubleCollection<CollectionElementType>(IEnumerable<CollectionElementType>? collection)
-        { return IsNumberCollectionOf<double, CollectionElementType>(collection); }
-
-#endif   // if false / true / ...
-
-        #endregion UnUsed
-
 
         #region BasicUtilities
+
 
 
         /// <summary>Returns true if <paramref name="type"/> is a numerical type (supporting arythmetic 
@@ -127,78 +41,67 @@ namespace IGLib.Types.Extensions
 
         /// <summary>Returns true if <paramref name="o"/> is a numerical type (supporting arythmetic 
         /// operations), false otherwise.</summary>
-        /// <param name="o">Object for which th query is performed.</param>
-        public static bool IsOfNumericType(this object? o, bool allowNullable = false)
+        /// <param name="o">Object for which the query is performed.</param>
+        public static bool IsOfNumericType(this object? o)
         {
             if (o == null) return false;
             Type type = o.GetType();
-
-            Type underlyingType = Nullable.GetUnderlyingType(type) ?? type;
-            // bool typeIsNullable = underlying != null;
-
+            Type underlyingType = Nullable.GetUnderlyingType(type)??type;
             return IsNumericType(underlyingType);
         }
 
-        /// <summary>Checks whether all elements of <paramref name="enumerable"/> are of numeric types.</summary>
-        /// <param name="enumerable">Collection whose eleements are checked for whether being of numerical types.</param>
-        /// <returns>False if the collection <paramref name="enumerable"/> is null, if it is an empty
+        /// <summary>Checks whether all elements of <paramref name="collection"/> are of numeric types.</summary>
+        /// <param name="collection">Collection whose eleements are checked for whether being of numerical types.</param>
+        /// <returns>False if the collection <paramref name="collection"/> is null, if it is an empty
         /// collection, if any of its elements are null, or if any of its elements is not of numeric type
         /// (as determined by the <see cref="IsNumericType(Type)"/> method).</returns>
-        public static bool IsOfNumericType(this IEnumerable<object?> enumerable)
+        public static bool IsCollectionOfNumericType(this IEnumerable<object?>? collection)
         {
-            if (enumerable == null) return false;
-            bool ret = false;
-            foreach (object? item in enumerable)
-            {
-                if (!IsOfNumericType(item))
-                {
-                    return false;
-                }
-                if (!ret)
-                {
-                    ret = true;
-                }
-            }
-            return ret;
+            return (collection is not null && collection.Any() && collection.All(
+                (object? item) => IsOfNumericType(item)));
         }
 
-        /// <summary>Returns true if all elements of <paramref name="enumerable"/> are of certain kind,
-        /// determined by the predicate delegate <paramref name="isElementOfKind"/>, false otherwise.
-        /// If the specified enumerable is null then false is returned. If <paramref name="allowNullElements"/>
-        /// is false then if any element is null, false is returnte, regardless of what the predicate would
-        /// return on null object.</summary>
-        /// <param name="enumerable">The collection that is checked for whether all its elements satisfy
-        /// the criteria determined by the predicate <paramref name="isElementOfKind"/>.</param>
-        /// <param name="isElementOfKind">The <see cref="Predicate{Object?}"/> delegate that specifies
-        /// the criteria that all elements need to satisfy for true to be returned.</param>
-        /// <param name="allowNullElements">If false then false is returned if any element of the
-        /// collection <paramref name="enumerable"/> is null, regardless of what the predicate
-        /// <paramref name="isElementOfKind"/> would return.</param>
-        /// <returns>False if <paramref name="enumerable"/> is null, if <paramref name="allowNullElements"/>
-        /// is false and any of the elements of <paramref name="enumerable"/> is null, or if the predicate 
-        /// <paramref name="isElementOfKind"/> returns false for any of the elements. True otherwise.</returns>
-        public static bool IsOfKind(this IEnumerable<object?> enumerable, Predicate<object?> isElementOfKind,
-            bool allowNullElements = true)
+        /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
+        /// are of the specified type (<typeparamref name="QueryType"/>), false otherwise. It alsso returns 
+        /// false if the collection is null or empty or any element is null.</summary>
+        /// <typeparam name="QueryType">The type for which elements of the collection are checked.</typeparam>
+        /// <typeparam name="ElementType">Declared type of collection elements.</typeparam>
+        /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
+        /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
+        public static bool IsCollectionOfType<QueryType, ElementType>(this IEnumerable<ElementType>? collection)
         {
-            if (enumerable == null) return false;
-            bool ret = false;
-            foreach (object? item in enumerable)
-            {
-                if (!allowNullElements && item == null)
-                {
-                    return false;
-                }
-                if (!isElementOfKind(item))
-                {
-                    return false;
-                }
-                if (!ret)
-                {
-                    ret = true;
-                }
-            }
-            return ret;
+            return (collection is not null && collection.Any() && collection.All(
+                (ElementType item) => item is QueryType));
         }
+
+        ///// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
+        ///// are of the specified type (<typeparamref name="QueryType"/>), false otherwise. It also returns
+        ///// false if the collection is null or empty or any of its elements is null.</summary>
+        ///// <typeparam name="QueryType">The type for which elements of the collection are checked.</typeparam>
+        ///// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
+        ///// <returns>False if collection is null, if it is empty, or if any element is not of type <typeparamref name="QueryType"/>;
+        ///// true otherwise (if all elements are of the specified type).</returns>
+        //public static bool IsCollectionOfType<QueryType>(this IEnumerable<object?>? collection)
+        //{
+        //    return (collection is not null && collection.Any() && collection.All(
+        //        (object? item) => item is QueryType));
+        //}
+
+
+        /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
+        /// are of the specified type (<paramref name="queryType"/>), false otherwise. It alsso returns 
+        /// false if the collection is null or empty or any of its elements are null.</summary>
+        /// <typeparam name="QueryType">The type for which elements of the collection are queried.</typeparam>
+        /// <typeparam name="ElementType">Declared type of collection elements.</typeparam>
+        /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
+        /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
+        public static bool IsCollectionOfType<ElementType>(this IEnumerable<ElementType>? collection, Type queryType)
+        {
+            return collection is not null && collection.Any() && collection.All(
+                (ElementType item) => item != null && queryType.IsAssignableFrom(item.GetType()));
+        }
+
+
 
         #endregion BasicUtilities
 
@@ -502,12 +405,6 @@ namespace IGLib.Types.Extensions
             return true;
         }
 
-        public static void Test()
-        {
-            object[] ObjectArrayOfIntDouble = [1, 2, 3, 1.11, 2.22];
-            // bool isIntCollection = IsIntCollectionOf(ObjectArrayOfIntDouble);
-            bool isIntCollection1 = IsNumberCollection<int, object>(ObjectArrayOfIntDouble);
-        }
 
     }
 

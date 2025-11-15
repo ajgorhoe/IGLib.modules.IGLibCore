@@ -6,7 +6,8 @@ using IGLib.Commands;
 using IGLib.Tests.Base;
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using System.Diagnostics.Eventing.Reader;
+using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 // Enable use of only a specific type without stating namespace:
@@ -27,15 +28,15 @@ namespace IGLib.Types.Tests
     /// <para>For tests with extension methods, see <see cref="UtilTypes_ExtensionMetodsTests"/></para></summary>
     public class UtilTypesTests : TestBase<UtilTypesTests>
     {
-        
-        
+
+
         /// <summary>This constructor, when called by the test framework, will bring in an object 
         /// of type <see cref="ITestOutputHelper"/>, which will be used to write on the tests' output,
         /// accessed through the base class's <see cref="Output"/> property.</summary>
         /// <param name=""></param>
         public UtilTypesTests(ITestOutputHelper output) :
             base(output)  // calls base class's constructor
-        {   }
+        { }
 
 
 #if false  // change condition to true when testing effects of using directives!
@@ -85,21 +86,21 @@ namespace IGLib.Types.Tests
 
         [Theory]
         // Numeric types:
-        [InlineData(typeof(byte),    true)]
-        [InlineData(typeof(sbyte),   true)]
-        [InlineData(typeof(short),   true)]
-        [InlineData(typeof(ushort),  true)]
-        [InlineData(typeof(int),     true)]
-        [InlineData(typeof(uint),    true)]
-        [InlineData(typeof(long),    true)]
-        [InlineData(typeof(ulong),   true)]
-        [InlineData(typeof(float),   true)]
-        [InlineData(typeof(double),  true)]
+        [InlineData(typeof(byte), true)]
+        [InlineData(typeof(sbyte), true)]
+        [InlineData(typeof(short), true)]
+        [InlineData(typeof(ushort), true)]
+        [InlineData(typeof(int), true)]
+        [InlineData(typeof(uint), true)]
+        [InlineData(typeof(long), true)]
+        [InlineData(typeof(ulong), true)]
+        [InlineData(typeof(float), true)]
+        [InlineData(typeof(double), true)]
         [InlineData(typeof(decimal), true)]
         // Types that are not numeric:
         [InlineData(typeof(DateTime), false)]
-        [InlineData(typeof(string),   false)]
-        [InlineData(typeof(char),     false)]
+        [InlineData(typeof(string), false)]
+        [InlineData(typeof(char), false)]
         [InlineData(typeof(UtilTypes), false)]
         [InlineData(typeof(GenericCommandBase), false)]
         [InlineData(typeof(IGenericCommand), false)]
@@ -111,47 +112,98 @@ namespace IGLib.Types.Tests
             Console.WriteLine($"Type checked: {type.Name}; should be numeric: {shouldBeNumeric}");
             bool isNumeric = UtilTypes.IsNumericType(type);
             Console.WriteLine($"Returned from {nameof(UtilTypes.IsNumericType)}: {isNumeric}");
-            isNumeric.Should().Be(shouldBeNumeric, because: $"this type is {(isNumeric?"":"NOT")} a numeric type");
+            isNumeric.Should().Be(shouldBeNumeric, because: $"this type is {(isNumeric ? "" : "NOT")} a numeric type");
         }
 
-        public static TheoryData<object?, bool> Data_IsOfNumericType => new()
+        public static TheoryData<object?, bool> Dataset_IsOfNumericType => new()
         {
-            { new DateTime(2024, 1, 1), false },
+            { (ushort?) 143, true },
+            { (double?) 1.02e-26, true },
+            { (double?) null, false }, // null should alwatys result in false
             { (decimal) 999.99m, true},
             { (decimal) -5.34m, true },
-            { (System.IO.FileAccess) System.IO.FileAccess.Read, false }
+            { (System.IO.FileAccess) System.IO.FileAccess.Read, false },
+            { new DateTime(2024, 1, 1), false },
         };
 
         [Theory]
-        [MemberData(nameof(Data_IsOfNumericType))]
+        [MemberData(nameof(Dataset_IsOfNumericType))]
         // Null objects should return fale:
         [InlineData(null, false)]
         // Numeric types:
-        [InlineData((byte) 35, true)]
-        [InlineData((sbyte) -47, true)]
-        [InlineData((short) -87, true)]
-        [InlineData((ushort) 127, true)]
-        [InlineData((int) -34, true)]
-        [InlineData((uint) 8932, true)]
-        [InlineData((long) -879947543, true)]
-        [InlineData((ulong) 8483956343, true)]
-        [InlineData((float) -1.23e6, true)]
-        [InlineData((double) 6.02e-23, true)]
+        [InlineData((byte)35, true)]
+        [InlineData((sbyte)-47, true)]
+        [InlineData((short)-87, true)]
+        [InlineData((ushort)127, true)]
+        [InlineData((int)-34, true)]
+        [InlineData((uint)8932, true)]
+        [InlineData((long)-879947543, true)]
+        [InlineData((ulong)8483956343, true)]
+        [InlineData((float)-1.23e6, true)]
+        [InlineData((double)6.02e-23, true)]
         //[InlineData((decimal) 4.24m, true)]
         // Types that are not numeric:
-        [InlineData((string) "ABC", false)]
-        [InlineData((char) 'x', false)]
+        [InlineData((string)"ABC", false)]
+        [InlineData((char)'x', false)]
         protected void IsOfNumericType_WorksCorrectly(object? o, bool shouldBeNumeric)
         {
             Console.WriteLine("Checking whether the specified object is of numeric type.");
-            Console.WriteLine($"Object checked: {o}, type: {o?.GetType().Name??"<null>"}, should be numeric: {shouldBeNumeric}");
+            Console.WriteLine($"Object checked: {o}, type: {o?.GetType().Name ?? "<null>"}, should be numeric: {shouldBeNumeric}");
             bool isNumeric = UtilTypes.IsOfNumericType(o);
             Console.WriteLine($"Returned from {nameof(UtilTypes.IsNumericType)}: {isNumeric}");
-            isNumeric.Should().Be(shouldBeNumeric, because: $"this object is {(isNumeric ? "" : "NOT")} of numeric type.");
-
+            isNumeric.Should().Be(shouldBeNumeric, because: $"this object is {(isNumeric ? "" : "NOT")} of numeric type");
         }
 
 
+        IEnumerable<object> x = new object[] { (int)1, (int)2, (int)3 };
+
+        public static TheoryData<IEnumerable<object?>?, bool> Dataset_IsCollectionOfNumericType => 
+            new TheoryData<IEnumerable<object?>?, bool>
+            {
+                { [(int)1, (int)2, (int)3], true },
+                { [(double)1.23, (int)2 ], true },  // mixed numeric type elements
+                { [], false },  // empty enumerable
+                { null!, false },  // null enumerable
+                { ["str", (int) 1, (int) 2], false },  // mixed non-numeric and numeric elements
+                { [(int) 1, (int) 2, "str"], false },  // mixed non-numeric and numeric elements
+                { [(int) 1, "str", (int) 2], false },  // mixed non-numeric and numeric elements
+                { [null!, (int) 1, (int) 2], false },  // includes null elements
+                { [(int) 1, (int) 2, null!], false },  // includes null elements
+                { [(int) 1, null!, (int) 2], false },  // includes null elements
+                { new List<object>() { 1, 2, 3 }, true },
+                { new List<object>() {  }, false },
+                { new List<object>() { 1, 2, "xy" }, false },
+                { new List<object>() { 1, 2, null! }, false },
+                { new List<object>() { 1, 2, 3, 4.55 }, true },
+            };
+
+        [Theory]
+        [MemberData(nameof(Dataset_IsCollectionOfNumericType))]
+        protected void IsCollectionOfNumericType_WorksCorrectly(IEnumerable<object?>? enumerable, bool shouldBeNumeric)
+        {
+            Console.WriteLine("Checking whether the specified collection contains only elements of numeric types.");
+            Console.WriteLine("Collection checked: ");
+            if (enumerable == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (!enumerable.Any())
+            {
+                Console.WriteLine("  empty collection");
+            } else
+            {
+                int i = 0;
+                foreach (object? item in enumerable)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}");
+                    ++i;
+                }
+            }
+            Console.WriteLine($"Collection should be numeric: {shouldBeNumeric}");
+            bool isNumeric = UtilTypes.IsCollectionOfNumericType(enumerable);
+            Console.WriteLine($"Returned from {nameof(UtilTypes.IsCollectionOfNumericType)}: {isNumeric}");
+            isNumeric.Should().Be(shouldBeNumeric, because: $"this collection is {(isNumeric ? "" : "NOT")} of numeric types");
+        }
 
         #endregion BasicUtilitiesTests
 
@@ -173,8 +225,8 @@ namespace IGLib.Types.Tests
         /// <param name="expectedResult">The expected result of conversion.</param>
         /// <param name="failureExpected">Whether the conversion should fail.</param>
         /// <param name="comment">Optional comment, which will be output and helps in checking and interpreting the results.</param>
-        protected void ConvertToTypeGenericTestsCommon<TargetType>(bool testConversion, object converted, bool precise, int expectedResult,
-            bool failureExpected = false, string comment = null)
+        protected void ConvertToTypeGenericTestsCommon<TargetType>(bool testConversion, object? converted, bool precise, int expectedResult,
+            bool failureExpected = false, string? comment = null)
             where TargetType : IConvertible
         {
             if (testConversion)
@@ -207,7 +259,7 @@ namespace IGLib.Types.Tests
             Console.WriteLine("Result of conversion:");
             try
             {
-                TargetType result = UtilTypes.ConvertTo<TargetType>(converted, precise: precise);
+                TargetType? result = UtilTypes.ConvertTo<TargetType>(converted, precise: precise);
                 Console.WriteLine($"Result of conversion: {result}, expected: {expectedResult}");
                 if (testConversion)
                 {
@@ -326,8 +378,8 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((char)'x', false, (int)'x', false, "conversion of ASCII character to int")]
         [InlineData((char)2836, false, 2836, false, "conversion of non-ASCII character to int")]
-        protected void ConvertTo_Generic_WorksCorrectlyFor_Int(object converted, bool precise, int expectedResult,
-            bool failureExpected = false, string comment = null)
+        protected void ConvertTo_Generic_WorksCorrectlyFor_Int(object? converted, bool precise, int expectedResult,
+            bool failureExpected = false, string? comment = null)
         {
             ConvertToTypeGenericTestsCommon<int>(true, converted, precise, expectedResult, failureExpected, comment);
         }
@@ -401,8 +453,8 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((char)'x', false, (int)'x', false, "conversion of ASCII character to int")]
         [InlineData((char)2836, false, 2836, false, "conversion of non-ASCII character to int")]
-        protected void IsConvertibleTo_Generic_WorksCorrectlyFor_Int(object converted, bool precise, int expectedResult,
-            bool failureExpected = false, string comment = null)
+        protected void IsConvertibleTo_Generic_WorksCorrectlyFor_Int(object? converted, bool precise, int expectedResult,
+            bool failureExpected = false, string? comment = null)
         {
             ConvertToTypeGenericTestsCommon<int>(false, converted, precise, expectedResult, failureExpected, comment);
         }
@@ -440,8 +492,8 @@ namespace IGLib.Types.Tests
         /// <param name="expectedResult">The expected result of conversion.</param>
         /// <param name="failureExpected">Whether the conversion should fail.</param>
         /// <param name="comment">Optional comment, which will be output and helps in checking and interpreting the results.</param>
-        protected void ConvertToTypeTestsCommon(bool testConversion, Type targetType, object converted, bool precise, int expectedResult,
-            bool failureExpected = false, string comment = null)
+        protected void ConvertToTypeTestsCommon(bool testConversion, Type targetType, object? converted, bool precise, int expectedResult,
+            bool failureExpected = false, string? comment = null)
         {
             if (testConversion)
             {
@@ -473,7 +525,7 @@ namespace IGLib.Types.Tests
             Console.WriteLine("Result of conversion:");
             try
             {
-                object result = UtilTypes.ConvertToType(converted, targetType, precise: precise);
+                object? result = UtilTypes.ConvertToType(converted, targetType, precise: precise);
                 Console.WriteLine($"Result of conversion: {result}, expected: {expectedResult}");
                 if (testConversion)
                 {
@@ -592,8 +644,8 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((char)'x', false, (int)'x', false, "conversion of ASCII character to int")]
         [InlineData((char)2836, false, 2836, false, "conversion of non-ASCII character to int")]
-        protected void ConvertToType_WorksCorrectlyFor_Int(object converted, bool precise, int expectedResult,
-            bool failureExpected = false, string comment = null)
+        protected void ConvertToType_WorksCorrectlyFor_Int(object? converted, bool precise, int expectedResult,
+            bool failureExpected = false, string? comment = null)
         {
             ConvertToTypeTestsCommon(true, typeof(int), converted, precise, expectedResult, failureExpected, comment);
         }
@@ -667,8 +719,8 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((char)'x', false, (int)'x', false, "conversion of ASCII character to int")]
         [InlineData((char)2836, false, 2836, false, "conversion of non-ASCII character to int")]
-        protected void IsConvertibleToType_WorksCorrectlyFor_Int(object converted, bool precise, int expectedResult,
-            bool failureExpected = false, string comment = null)
+        protected void IsConvertibleToType_WorksCorrectlyFor_Int(object? converted, bool precise, int expectedResult,
+            bool failureExpected = false, string? comment = null)
         {
             ConvertToTypeTestsCommon(false, typeof(int), converted, precise, expectedResult, failureExpected, comment);
         }
