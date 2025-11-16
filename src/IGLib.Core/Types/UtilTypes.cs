@@ -13,6 +13,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
+using IGLib.Types;
+
 namespace IGLib.Types.Extensions
 {
 
@@ -197,7 +199,7 @@ namespace IGLib.Types.Extensions
         #region CollectionConversions
 
 
-
+        // GENERIC definition of TARGET TYPE
 
         /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
         /// can be converted to the specified basic type (<typeparamref name="TargetType"/>, which must
@@ -224,17 +226,13 @@ namespace IGLib.Types.Extensions
             bool ret = false;
             foreach (object? item in collection)
             {
-                if (item == null)
-                {
-                    return false;  // if null, we cannot reason about cnvertibility
-                }
-                if (!ret)
-                {
-                    ret = true;  // collection has a non-null element; if all elements OK, true will be returned 
-                }
                 if (!IsConvertibleTo<TargetType>(item, precise, formatProvider))
                 {
                     return false;
+                }
+                if (!ret)
+                {
+                    ret = true;  // collection has a convertible element; if all elements OK, true will be returned 
                 }
             }
             return ret;
@@ -249,8 +247,10 @@ namespace IGLib.Types.Extensions
         /// <param name="collection">Collection whose elements are converted.</param>
         /// <param name="precise">If true then conversions are only performed when precise conversions are
         /// possible, otherwise exception is thrown. This is important for conversions form floating point
-        /// to integer types or to floating point types with smaller precision.</param>
-        /// <param name="formatProvider"></param>
+        /// to integer types or to floating point types with smaller precision. Optional, default is false.</param>
+        /// <param name="formatProvider">Locale. Optional, default is <see cref="CultureInfo.InvariantCulture"/>.
+        /// This is important with conversion form string to numbers or dates, or vice versa, and one wants to
+        /// use a specific local or the one set on the machine (<see cref="CultureInfo.CurrentCulture"/>).</param>
         /// <returns></returns>
         public static List<TargetType?>? ConvertToListOf<TargetType>(IEnumerable? collection,
                 bool precise = false, IFormatProvider? formatProvider = null)
@@ -261,15 +261,93 @@ namespace IGLib.Types.Extensions
             List<TargetType?>? returned = null;
             foreach (object? item in collection)
             {
-                if (item == null)
-                {
-                    return null;  // if null, we cannot reason about cnvertibility
-                }
                 TargetType? convertedElement = UtilTypes.ConvertTo<TargetType>(item, precise, formatProvider);
                 if (returned == null)
                 {
                     // Create the list if not yet created - as late as possible, to avoid unnecessary creation
                     returned = new List<TargetType?>();
+                }
+                returned.Add(convertedElement);
+            }
+            return returned;
+        }
+
+
+
+        // TARGET TYPE defined AS Type PARAMETER
+
+
+
+
+        // GENERIC definition of TARGET TYPE
+
+        /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
+        /// can be converted to the specified basic type (<typeparamref name="TargetType"/>, which must
+        /// implement the <see cref="IConvertible"/> interface) by the 
+        /// <see cref="ConvertTo{TargetType}(object?, bool, IFormatProvider?)"/> method.
+        /// <para>False is returned if <paramref name="collection"/> is null or empty, if any of its elements
+        /// is null, or any of its elements are not convertible to <typeparamref name="TargetType"/> (i.e., the
+        /// <see cref="IsConvertibleTo{TargetType}(object?, bool, IFormatProvider?)"/> returns false on those
+        /// elements); otherwise, false is returned.</para></summary>
+        /// <typeparam name="TargetType">The type for which elements of the collection are queried. It must be a 
+        /// basic type implementing <see cref="IConvertible"/> interface, such as bool, int, char, byte, long,
+        /// float, double, string, etc.</typeparam>
+        /// <param name="collection">The collection whose elements are checked for whether they can be 
+        /// converted to the specified type.</param>
+        /// <returns>False if <paramref name="collection"/> is null or empty or any element is null or
+        /// any element cannot be converted to the specified type (<typeparamref name="TargetType"/>)
+        /// by the <see cref="ConvertTo{TargetType}(object?, bool, IFormatProvider?)"/> method.</returns>
+        public static bool IsConvertibleToCollectionOfType(IEnumerable? collection, Type targetType,
+                bool precise = false, IFormatProvider? formatProvider = null)
+        {
+            if (collection is null || !collection.GetEnumerator().MoveNext())
+            { return false; }
+            bool ret = false;
+            foreach (object? item in collection)
+            {
+                if (!IsConvertibleToType(item, targetType, precise, formatProvider))
+                {
+                    return false;
+                }
+                if (!ret)
+                {
+                    ret = true;  // collection has a convertible element; if all elements OK, true will be returned 
+                }
+            }
+            return ret;
+        }
+
+        /// <summary>Converts elements of <paramref name="collection"/> to the specified type (<typeparamref name="TargetType"/>)
+        /// and returns a list of converted elements, or throws exception if any element conversion fails.
+        /// Returns null if the collection is null or empty.
+        /// <para>Elements are converted by <see cref="ConvertTo{TargetType}(object?, bool, IFormatProvider?)"/>.</para></summary>
+        /// <typeparam name="TargetType">Type to whch elements of the collection are converted. Must
+        /// implement the <see cref="IConvertible"/> interface.</typeparam>
+        /// <param name="collection">Collection whose elements are converted.</param>
+        /// <param name="precise">If true then conversions are only performed when precise conversions are
+        /// possible, otherwise exception is thrown. This is important for conversions form floating point
+        /// to integer types or to floating point types with smaller precision. Optional, default is false.</param>
+        /// <param name="formatProvider">Locale. Optional, default is <see cref="CultureInfo.InvariantCulture"/>.
+        /// This is important with conversion form string to numbers or dates, or vice versa, and one wants to
+        /// use a specific local or the one set on the machine (<see cref="CultureInfo.CurrentCulture"/>).</param>
+        /// <returns></returns>
+        public static List<object?>? ConvertToListOfType(IEnumerable? collection, Type targetType,
+                bool precise = false, IFormatProvider? formatProvider = null)
+        {
+            if (collection is null || !collection.GetEnumerator().MoveNext())
+            { return null; }
+            List<object?>? returned = null;
+            foreach (object? item in collection)
+            {
+                if (item == null)
+                {
+                    return null;  // if null, we cannot reason about cnvertibility
+                }
+                object? convertedElement = UtilTypes.ConvertToType(item, targetType, precise, formatProvider);
+                if (returned == null)
+                {
+                    // Create the list if not yet created (as late as possible, to avoid unnecessary creation)
+                    returned = new List<object?>();
                 }
                 returned.Add(convertedElement);
             }
