@@ -215,26 +215,24 @@ namespace IGLib.Types.Extensions
         /// <returns>False if <paramref name="collection"/> is null or empty or any element is null or
         /// any element cannot be converted to the specified type (<typeparamref name="TargetType"/>)
         /// by the <see cref="ConvertTo{TargetType}(object?, bool, IFormatProvider?)"/> method.</returns>
-        public static bool IsConvertibleToCollectionOf<TargetType, CollectionElementType>(
-                IEnumerable<CollectionElementType>? collection)
+        public static bool IsConvertibleToCollectionOf<TargetType>(IEnumerable? collection, 
+                bool precise = false, IFormatProvider? formatProvider = null)
             where TargetType : IConvertible
         {
-            if (collection == null)
-            {
-                return true;
-            }
+            if (collection is null || !collection.GetEnumerator().MoveNext())
+            { return false; }
             bool ret = false;
-            foreach (CollectionElementType item in collection)
+            foreach (object? item in collection)
             {
                 if (item == null)
                 {
-                    return false;  // if number types, they cannot be null
+                    return false;  // if null, we cannot reason about cnvertibility
                 }
                 if (!ret)
                 {
-                    ret = true;  // collection has a non/null 
+                    ret = true;  // collection has a non-null element; if all elements OK, true will be returned 
                 }
-                if (!IsConvertibleTo<TargetType>(item))
+                if (!IsConvertibleTo<TargetType>(item, precise, formatProvider))
                 {
                     return false;
                 }
@@ -242,7 +240,42 @@ namespace IGLib.Types.Extensions
             return ret;
         }
 
-        //public static List<TargetTye> ConvertToCollectionOf<TergetType>(IEnmerable<TargetType?>?)
+        /// <summary>Converts elements of <paramref name="collection"/> to the specified type (<typeparamref name="TargetType"/>)
+        /// and returns a list of converted elements, or throws exception if any element conversion fails.
+        /// Returns null if the collection is null or empty.
+        /// <para>Elements are converted by <see cref="ConvertTo{TargetType}(object?, bool, IFormatProvider?)"/>.</para></summary>
+        /// <typeparam name="TargetType">Type to whch elements of the collection are converted. Must
+        /// implement the <see cref="IConvertible"/> interface.</typeparam>
+        /// <param name="collection">Collection whose elements are converted.</param>
+        /// <param name="precise">If true then conversions are only performed when precise conversions are
+        /// possible, otherwise exception is thrown. This is important for conversions form floating point
+        /// to integer types or to floating point types with smaller precision.</param>
+        /// <param name="formatProvider"></param>
+        /// <returns></returns>
+        public static List<TargetType?>? ConvertToListOf<TargetType>(IEnumerable? collection,
+                bool precise = false, IFormatProvider? formatProvider = null)
+            where TargetType : IConvertible
+        {
+            if (collection is null || !collection.GetEnumerator().MoveNext())
+            { return null; }
+            List<TargetType?>? returned = null;
+            foreach (object? item in collection)
+            {
+                if (item == null)
+                {
+                    return null;  // if null, we cannot reason about cnvertibility
+                }
+                TargetType? convertedElement = UtilTypes.ConvertTo<TargetType>(item, precise, formatProvider);
+                if (returned == null)
+                {
+                    // Create the list if not yet created - as late as possible, to avoid unnecessary creation
+                    returned = new List<TargetType?>();
+                }
+                returned.Add(convertedElement);
+            }
+            return returned;
+        }
+
 
 
 
@@ -266,13 +299,10 @@ namespace IGLib.Types.Extensions
         /// When <see langword="true"/>, ensures that numeric conversions are lossless (no fractional/truncation or other information loss).
         /// When <see langword="false"/>, lossy conversions are allowed. Default is <see langword="false"/>.
         /// </param>
-        /// <param name="provider">
-        /// Optional <see cref="IFormatProvider"/> (for example, <see cref="CultureInfo.InvariantCulture"/>).  
-        /// If <see langword="null"/>, <see cref="CultureInfo.InvariantCulture"/> is used.
-        /// </param>
-        /// <returns>
-        /// The converted value boxed as <see cref="object"/> (or <see langword="null"/> when the target is nullable and <paramref name="value"/> was <see langword="null"/> or an empty/whitespace string).
-        /// </returns>
+        /// <param name="provider">Optional <see cref="IFormatProvider"/>. If <see langword="null"/>, then 
+        /// <see cref="CultureInfo.InvariantCulture"/> is used.</param>
+        /// <returns>The converted value boxed as <see cref="object"/> (or <see langword="null"/> when the target is nullable
+        /// and <paramref name="value"/> was <see langword="null"/> or an empty/whitespace string).</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="targetType"/> is <see langword="null"/>.</exception>
         /// <exception cref="InvalidOperationException">Thrown if <paramref name="targetType"/> does not implement <see cref="IConvertible"/>, or conversion is not possible (or not precise when <paramref name="precise"/> is true).</exception>
         /// <exception cref="FormatException">Thrown when parsing a string fails for known types (int, double, etc.).</exception>
@@ -450,7 +480,7 @@ namespace IGLib.Types.Extensions
         /// <para>* IGLib.Types.Tests.UtilTypesTests.ConvertTo_Generic_WorksCorrectlyFor_Int(...)</para>
         /// <para>* etc. (tested for some other types)</para>
         /// <para>Tests of generic method also test correctness of this method because they rely on it.</para></remarks>
-        public static bool IsConvertibleToType(this object? value, Type targetType, bool precise = true, IFormatProvider? formatProvider = null)
+        public static bool IsConvertibleToType(this object? value, Type targetType, bool precise = false, IFormatProvider? formatProvider = null)
         {
             try
             {
@@ -485,7 +515,7 @@ namespace IGLib.Types.Extensions
         /// <remarks><para>Tests for this method (may not show up in CodeLens):</para>
         /// <para>* IGLib.Types.Tests.UtilTypesTests.ConvertTo_Generic_WorksCorrectlyFor_Int(...)</para>
         /// <para>* etc. (tested for some other types)</para></remarks>
-        public static bool IsConvertibleTo<TargetType>(this object? value, bool precise = true, IFormatProvider? formatProvider = null)
+        public static bool IsConvertibleTo<TargetType>(this object? value, bool precise = false, IFormatProvider? formatProvider = null)
             where TargetType : IConvertible
         {
             try
