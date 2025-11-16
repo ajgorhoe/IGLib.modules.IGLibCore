@@ -3,6 +3,7 @@
 
 using IG.Lib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -46,7 +47,7 @@ namespace IGLib.Types.Extensions
         {
             if (o == null) return false;
             Type type = o.GetType();
-            Type underlyingType = Nullable.GetUnderlyingType(type)??type;
+            Type underlyingType = Nullable.GetUnderlyingType(type) ?? type;
             return IsNumericType(underlyingType);
         }
 
@@ -60,6 +61,26 @@ namespace IGLib.Types.Extensions
             return (collection is not null && collection.Any() && collection.All(
                 (object? item) => IsOfNumericType(item)));
         }
+
+        public static bool IsCollectionOfNumericType(this IEnumerable? collection)
+        {
+            if (collection is null || !collection.GetEnumerator().MoveNext())
+            { return false; }
+            bool ret = false;
+            foreach (object? item in collection)
+            {
+                if (item == null)
+                { return false; }
+                if (!ret)
+                { ret = true; }  // collection has non-null items.
+                if (!IsNumericType(item.GetType()))
+                { return false; }
+            }
+            return ret;
+        }
+
+
+        // QUERY TYPE is GENERIC:
 
         /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
         /// are of the specified type (<typeparamref name="QueryType"/>), false otherwise. It alsso returns 
@@ -87,6 +108,35 @@ namespace IGLib.Types.Extensions
                 (object? item) => item is QueryType));
         }
 
+        /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
+        /// are of the specified type (<typeparamref name="QueryType"/>), false otherwise. It also returns
+        /// false if the collection is null or empty or any of its elements is null.</summary>
+        /// <typeparam name="QueryType">The type for which elements of the collection are checked.</typeparam>
+        /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
+        /// <returns>False if collection is null, if it is empty, or if any element is not of type <typeparamref name="QueryType"/>;
+        /// true otherwise (if all elements are of the specified type).</returns>
+        public static bool IsCollectionOfType<QueryType>(this IEnumerable? collection)
+        {
+            if (collection is null || !collection.GetEnumerator().MoveNext())
+            { return false; }
+            bool ret = false;
+            foreach (object? item in collection)
+            {
+                if (item == null)
+                { return false; }
+                if (!ret)
+                { ret = true; }  // collection has non-null items.
+                if (item is not QueryType)
+                { return false; }
+            }
+            return ret;
+
+            //return (collection is not null && collection.Any() && collection.All(
+            //    (object? item) => item is QueryType));
+        }
+
+        // QUERY TYPE is NOT GENERIC:
+
 
         /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
         /// are of the specified type (<paramref name="queryType"/>), false otherwise. It alsso returns 
@@ -101,15 +151,98 @@ namespace IGLib.Types.Extensions
                 (ElementType item) => item != null && queryType.IsAssignableFrom(item.GetType()));
         }
 
+        /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
+        /// are of the specified type (<paramref name="queryType"/>), false otherwise. It alsso returns 
+        /// false if the collection is null or empty or any of its elements are null.</summary>
+        /// <typeparam name="QueryType">The type for which elements of the collection are queried.</typeparam>
+        /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
+        /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
+        public static bool IsCollectionOfType(this IEnumerable? collection, Type queryType)
+        {
+            if (collection is null || !collection.GetEnumerator().MoveNext())
+            { return false; }
+            bool ret = false;
+            foreach(object? item in collection)
+            {
+                if (item == null)
+                { return false; }
+                if (!ret)
+                { ret = true; }  // collection has non-null items.
+                if (!queryType.IsAssignableFrom(item.GetType()))
+                { return false; }
+            }
+            return ret;
+        }
+
+        ///// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
+        ///// are of the specified type (<paramref name="queryType"/>), false otherwise. It alsso returns 
+        ///// false if the collection is null or empty or any of its elements are null.</summary>
+        ///// <typeparam name="QueryType">The type for which elements of the collection are queried.</typeparam>
+        ///// <typeparam name="ElementType">Declared type of collection elements.</typeparam>
+        ///// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
+        ///// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
+        //public static bool IsCollectionOfType(this IEnumerable<object?>? collection, Type queryType)
+        //{
+        //    return collection is not null && collection.Any() && collection.All(
+        //        (object? item) => item != null && queryType.IsAssignableFrom(item.GetType()));
+        //}
+
+
 
 
         #endregion BasicUtilities
+
 
 
         #region CollectionConversions
 
 
 
+
+        /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
+        /// can be converted to the specified basic type (<typeparamref name="TargetType"/>, which must
+        /// implement the <see cref="IConvertible"/> interface) by the 
+        /// <see cref="ConvertTo{TargetType}(object?, bool, IFormatProvider?)"/> method.
+        /// <para>False is returned if <paramref name="collection"/> is null or empty, if any of its elements
+        /// is null, or any of its elements are not convertible to <typeparamref name="TargetType"/> (i.e., the
+        /// <see cref="IsConvertibleTo{TargetType}(object?, bool, IFormatProvider?)"/> returns false on those
+        /// elements); otherwise, false is returned.</para></summary>
+        /// <typeparam name="TargetType">The type for which elements of the collection are queried. It must be a 
+        /// basic type implementing <see cref="IConvertible"/> interface, such as bool, int, char, byte, long,
+        /// float, double, string, etc.</typeparam>
+        /// <param name="collection">The collection whose elements are checked for whether they can be 
+        /// converted to the specified type.</param>
+        /// <returns>False if <paramref name="collection"/> is null or empty or any element is null or
+        /// any element cannot be converted to the specified type (<typeparamref name="TargetType"/>)
+        /// by the <see cref="ConvertTo{TargetType}(object?, bool, IFormatProvider?)"/> method.</returns>
+        public static bool IsConvertibleToCollectionOf<TargetType, CollectionElementType>(
+                IEnumerable<CollectionElementType>? collection)
+            where TargetType : IConvertible
+        {
+            if (collection == null)
+            {
+                return true;
+            }
+            bool ret = false;
+            foreach (CollectionElementType item in collection)
+            {
+                if (item == null)
+                {
+                    return false;  // if number types, they cannot be null
+                }
+                if (!ret)
+                {
+                    ret = true;  // collection has a non/null 
+                }
+                if (!IsConvertibleTo<TargetType>(item))
+                {
+                    return false;
+                }
+            }
+            return ret;
+        }
+
+        //public static List<TargetTye> ConvertToCollectionOf<TergetType>(IEnmerable<TargetType?>?)
 
 
 
@@ -370,40 +503,6 @@ namespace IGLib.Types.Extensions
 
         #endregion GenericConversionOfBaseTypes
 
-
-
-
-        /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
-        /// are of the specified primitive (unmanaged, most commonly numeric) type (<typeparamref name="ConvertedType"/>).
-        /// <para>For example, if the collection elements are of declared type object and the first type parameter
-        /// is <see cref="int"/> then true is returned if and only if all elements of the collection are actually
-        /// of type int and are NOT null.</para></summary>
-        /// <typeparam name="ConvertedType">The type for which elements of the collection are checked. It must
-        /// be an unmanaged type such as bool, int, char, byte, long, float, double, etc.</typeparam>
-        /// <typeparam name="CollectionElementType">Declared type of collection elements.</typeparam>
-        /// <param name="collection">The collection whose elements are checked for whether they are of a specified type.</param>
-        /// <returns>True if all elements are of the specified type and are not null, false otherwise.</returns>
-        public static bool IsConvertibleToCollectionOf<ConvertedType, CollectionElementType>(
-                IEnumerable<CollectionElementType>? collection)
-            where ConvertedType : IConvertible
-        {
-            if (collection == null)
-            {
-                return true;
-            }
-            foreach (CollectionElementType item in collection)
-            {
-                if (item == null)
-                {
-                    return false;  // if number types, they cannot be null
-                }
-                if (item is not ConvertedType)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
 
 
     }

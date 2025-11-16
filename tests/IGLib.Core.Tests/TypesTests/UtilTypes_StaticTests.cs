@@ -5,6 +5,7 @@ using FluentAssertions;
 using IGLib.Commands;
 using IGLib.Tests.Base;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
@@ -66,23 +67,6 @@ namespace IGLib.Types.Tests
 
         #region BasicUtilitiesTests
 
-        /*
-          
-                  public static bool IsNumericType(Type type)
-        {
-            return type == typeof(byte) || type == typeof(sbyte)
-                || type == typeof(short) || type == typeof(ushort)
-                || type == typeof(int) || type == typeof(uint)
-                || type == typeof(long) || type == typeof(ulong)
-                || type == typeof(float) || type == typeof(double)
-                || type == typeof(decimal);
-        }
-
-          
-          
-         */
-
-
 
         [Theory]
         // Numeric types:
@@ -110,8 +94,10 @@ namespace IGLib.Types.Tests
         {
             Console.WriteLine("Checking whether the specified type is numeric type.");
             Console.WriteLine($"Type checked: {type.Name}; should be numeric: {shouldBeNumeric}");
+            // Act:
             bool isNumeric = UtilTypes.IsNumericType(type);
             Console.WriteLine($"Returned from {nameof(UtilTypes.IsNumericType)}: {isNumeric}");
+            // Assert:
             isNumeric.Should().Be(shouldBeNumeric, because: $"this type is {(isNumeric ? "" : "NOT")} a numeric type");
         }
 
@@ -149,8 +135,10 @@ namespace IGLib.Types.Tests
         {
             Console.WriteLine("Checking whether the specified object is of numeric type.");
             Console.WriteLine($"Object checked: {o}, type: {o?.GetType().Name ?? "<null>"}, should be numeric: {shouldBeNumeric}");
+            // Act:
             bool isNumeric = UtilTypes.IsOfNumericType(o);
             Console.WriteLine($"Returned from {nameof(UtilTypes.IsNumericType)}: {isNumeric}");
+            // Assert:
             isNumeric.Should().Be(shouldBeNumeric, because: $"this object is {(isNumeric ? "" : "NOT")} of numeric type");
         }
 
@@ -200,8 +188,41 @@ namespace IGLib.Types.Tests
                 }
             }
             Console.WriteLine($"Collection should be numeric: {shouldBeNumeric}");
+            // Act:
             bool isNumeric = UtilTypes.IsCollectionOfNumericType(enumerable);
             Console.WriteLine($"Returned from {nameof(UtilTypes.IsCollectionOfNumericType)}: {isNumeric}");
+            // Assert:
+            isNumeric.Should().Be(shouldBeNumeric, because: $"this collection is {(isNumeric ? "" : "NOT")} of numeric types");
+        }
+
+        [Theory]
+        [MemberData(nameof(Dataset_IsCollectionOfNumericType))]
+        protected void IsCollectionOfNumericType_NongenericCollection_WorksCorrectly(IEnumerable? enumerable, bool shouldBeNumeric)
+        {
+            Console.WriteLine("Checking whether the specified collection contains only elements of numeric types.");
+            Console.WriteLine("Collection checked: ");
+            if (enumerable == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (!enumerable.GetEnumerator().MoveNext())
+            {
+                Console.WriteLine("  empty collection");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in enumerable)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}");
+                    ++i;
+                }
+            }
+            Console.WriteLine($"Collection should be numeric: {shouldBeNumeric}");
+            // Act:
+            bool isNumeric = UtilTypes.IsCollectionOfNumericType(enumerable);
+            Console.WriteLine($"Returned from {nameof(UtilTypes.IsCollectionOfNumericType)}: {isNumeric}");
+            // Assert:
             isNumeric.Should().Be(shouldBeNumeric, because: $"this collection is {(isNumeric ? "" : "NOT")} of numeric types");
         }
 
@@ -230,7 +251,7 @@ namespace IGLib.Types.Tests
 
         [Theory]
         [MemberData(nameof(Dataset_IsCollectionOfInt))]
-        protected void IsCollectionOfTypeGeneric_WorksCorrectlyForInt(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
+        protected void IsCollectionOfType_Generic2Param_WorksCorrectlyForInt(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
         {
             Console.WriteLine("Checking whether the specified collection contains only elements of the specific genric type (int).");
             Console.WriteLine("Collection checked: ");
@@ -252,10 +273,146 @@ namespace IGLib.Types.Tests
                 }
             }
             Console.WriteLine($"Collection should be of type int: {shouldBeOfSpecifiedType}");
+            // Act:
             bool isOfSpecifiedType = UtilTypes.IsCollectionOfType<int, object?>(enumerable);
             Console.WriteLine($"Returned from {nameof(UtilTypes.IsCollectionOfType)}: {isOfSpecifiedType}");
+            // Assert:
             isOfSpecifiedType.Should().Be(shouldBeOfSpecifiedType, because: $"this collection is {(isOfSpecifiedType ? "" : "NOT")} of the specified type");
         }
+
+
+        [Theory]
+        [MemberData(nameof(Dataset_IsCollectionOfInt))]
+        protected void IsCollectionOfType_Generic_WorksCorrectlyForInt(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
+        {
+            Console.WriteLine("Checking whether the specified collection contains only elements of the specific genric type (int).");
+            Console.WriteLine("Collection checked: ");
+            if (enumerable == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (!enumerable.Any())
+            {
+                Console.WriteLine("  empty collection");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in enumerable)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}");
+                    ++i;
+                }
+            }
+            Console.WriteLine($"Collection should be of type int: {shouldBeOfSpecifiedType}");
+            // Act:
+            bool isOfSpecifiedType = UtilTypes.IsCollectionOfType<int>(enumerable);
+            Console.WriteLine($"Returned from {nameof(UtilTypes.IsCollectionOfType)}: {isOfSpecifiedType}");
+            // Assert:
+            isOfSpecifiedType.Should().Be(shouldBeOfSpecifiedType, because: $"this collection is {(isOfSpecifiedType ? "" : "NOT")} of the specified type");
+        }
+
+
+
+        [Theory]
+        [MemberData(nameof(Dataset_IsCollectionOfInt))]
+        protected void IsCollectionOfType_Generic_NongenericCollection_WorksCorrectlyForInt(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
+        {
+            Console.WriteLine("Checking whether the specified collection contains only elements of the specific genric type (int).");
+            Console.WriteLine("Collection checked: ");
+            if (enumerable == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (!enumerable.Any())
+            {
+                Console.WriteLine("  empty collection");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in enumerable)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}");
+                    ++i;
+                }
+            }
+            Console.WriteLine($"Collection should be of type int: {shouldBeOfSpecifiedType}");
+            // Act:
+            bool isOfSpecifiedType = UtilTypes.IsCollectionOfType<int>(enumerable);
+            Console.WriteLine($"Returned from {nameof(UtilTypes.IsCollectionOfType)}: {isOfSpecifiedType}");
+            // Assert:
+            isOfSpecifiedType.Should().Be(shouldBeOfSpecifiedType, because: $"this collection is {(isOfSpecifiedType ? "" : "NOT")} of the specified type");
+        }
+
+
+
+
+        // Query type id NOT generic
+
+        [Theory]
+        [MemberData(nameof(Dataset_IsCollectionOfInt))]
+        protected void IsCollectionOfType_GenericElementType_WorksCorrectlyForInt(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
+        {
+            Console.WriteLine("Checking whether the specified collection contains only elements of the specific genric type (int).");
+            Console.WriteLine("Collection checked: ");
+            if (enumerable == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (!enumerable.Any())
+            {
+                Console.WriteLine("  empty collection");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in enumerable)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}");
+                    ++i;
+                }
+            }
+            Console.WriteLine($"Collection should be of type int: {shouldBeOfSpecifiedType}");
+            // Act:
+            bool isOfSpecifiedType = UtilTypes.IsCollectionOfType<object?>(enumerable, typeof(int));
+            Console.WriteLine($"Returned from {nameof(UtilTypes.IsCollectionOfType)}: {isOfSpecifiedType}");
+            // Assert:
+            isOfSpecifiedType.Should().Be(shouldBeOfSpecifiedType, because: $"this collection is {(isOfSpecifiedType ? "" : "NOT")} of the specified type");
+        }
+
+
+        [Theory]
+        [MemberData(nameof(Dataset_IsCollectionOfInt))]
+        protected void IsCollectionOfType_WorksCorrectly(IEnumerable? enumerable, bool shouldBeOfSpecifiedType)
+        {
+            Console.WriteLine("Checking whether the specified collection contains only elements of the specific genric type (int).");
+            Console.WriteLine("Collection checked: ");
+            if (enumerable == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (!enumerable.GetEnumerator().MoveNext())
+            {
+                Console.WriteLine("  empty collection");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in enumerable)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}");
+                    ++i;
+                }
+            }
+            Console.WriteLine($"Collection should be of type int: {shouldBeOfSpecifiedType}");
+            // Act:
+            bool isOfSpecifiedType = UtilTypes.IsCollectionOfType(enumerable, typeof(int));
+            Console.WriteLine($"Returned from {nameof(UtilTypes.IsCollectionOfType)}: {isOfSpecifiedType}");
+            // Assert:
+            isOfSpecifiedType.Should().Be(shouldBeOfSpecifiedType, because: $"this collection is {(isOfSpecifiedType ? "" : "NOT")} of the specified type");
+        }
+
 
 
 
