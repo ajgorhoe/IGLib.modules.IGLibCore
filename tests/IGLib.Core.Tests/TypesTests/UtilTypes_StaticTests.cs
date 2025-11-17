@@ -426,6 +426,12 @@ namespace IGLib.Types.Tests
         #endregion BasicUtilitiesTests
 
 
+
+        #region CollectionTypeConversions
+
+        // GENERIC definition of TARGET TYPE
+
+
         public static Type TypeInt { get; } = typeof(int);
         public static Type TypeString { get; } = typeof(string);
         public static Type TypeDouble { get; } = typeof(double);
@@ -563,11 +569,6 @@ namespace IGLib.Types.Tests
 
 
 
-        #region CollectionTypeConversions
-
-        // GENERIC definition of TARGET TYPE
-
-
 
 
 
@@ -580,6 +581,10 @@ namespace IGLib.Types.Tests
 
 
         // TARGET TYPE defined AS Type PARAMETER
+
+
+
+
 
 
 
