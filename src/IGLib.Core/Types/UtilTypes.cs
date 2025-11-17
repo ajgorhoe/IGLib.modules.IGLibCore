@@ -338,10 +338,16 @@ namespace IGLib.Types.Extensions
         /// use a specific local or the one set on the machine (<see cref="CultureInfo.CurrentCulture"/>).</param>
         /// <returns></returns>
         public static List<object?>? ConvertToListOfType(IEnumerable? collection, Type targetType,
-                bool precise = false, IFormatProvider? formatProvider = null)
+                bool precise = false, IFormatProvider? formatProvider = null, bool allowNullOrEmpty = false)
         {
             if (collection is null || !collection.GetEnumerator().MoveNext())
-            { return null; }
+            {
+                if (allowNullOrEmpty)
+                {
+                    return null;
+                }
+                throw new AggregateException($"{nameof(ConvertToListOf)}(...): collection is {(collection == null ? "null" : "empty")}, therefore it cannot be converted.");
+            }
             List<object?>? returned = null;
             foreach (object? item in collection)
             {
