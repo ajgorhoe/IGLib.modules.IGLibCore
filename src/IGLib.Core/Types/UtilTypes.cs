@@ -266,8 +266,8 @@ namespace IGLib.Types.Extensions
                 {
                     return null;
                 }
-                throw new AggregateException($"{nameof(ConvertToListOf)}(...): collection is {
-                    (collection == null? "null": "empty")}, therefore it cannot be converted.");
+                throw new ArgumentException($"{nameof(ConvertToListOf)}(...): collection is {
+                    (collection == null? "null": "empty")}, therefore it cannot be converted.", nameof(allowNullOrEmpty));
             }
             List<TargetType?>? returned = null;
             foreach (object? item in collection)
@@ -346,7 +346,8 @@ namespace IGLib.Types.Extensions
                 {
                     return null;
                 }
-                throw new AggregateException($"{nameof(ConvertToListOf)}(...): collection is {(collection == null ? "null" : "empty")}, therefore it cannot be converted.");
+                throw new ArgumentException($"{nameof(ConvertToListOf)}(...): collection is {
+                    (collection == null ? "null" : "empty")}, therefore it cannot be converted.", nameof(allowNullOrEmpty));
             }
             List<object?>? returned = null;
             foreach (object? item in collection)
