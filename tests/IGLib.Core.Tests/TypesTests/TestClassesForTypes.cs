@@ -57,7 +57,6 @@ namespace IGLib.Types.Tests
 
         public virtual string? Description { get; init; }
 
-
     }
 
 

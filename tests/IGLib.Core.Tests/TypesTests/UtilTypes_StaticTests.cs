@@ -101,6 +101,7 @@ namespace IGLib.Types.Tests
             isNumeric.Should().Be(shouldBeNumeric, because: $"this type is {(isNumeric ? "" : "NOT")} a numeric type");
         }
 
+        /// <summary>Additional test dataset for <see cref="UtilTypes.IsOfNumericType(object?)"/></summary>
         public static TheoryData<object?, bool> Dataset_IsOfNumericType => new()
         {
             { (ushort?) 143, true },
@@ -145,6 +146,7 @@ namespace IGLib.Types.Tests
 
         IEnumerable<object> x = new object[] { (int)1, (int)2, (int)3 };
 
+        /// <summary>Test datases for <see cref="UtilTypes.IsCollectionOfNumericType(IEnumerable?)"/> </summary>
         public static TheoryData<IEnumerable<object?>?, bool> Dataset_IsCollectionOfNumericType => 
             new TheoryData<IEnumerable<object?>?, bool>
             {
@@ -227,7 +229,7 @@ namespace IGLib.Types.Tests
         }
 
 
-        public static TheoryData<IEnumerable<object?>?, bool> Dataset_IsCollectionOfInt =>
+        public static TheoryData<IEnumerable<object?>?, bool> Dataset_IsCollectionOf_Int =>
             new TheoryData<IEnumerable<object?>?, bool>
             {
                 { [(int)1, (int)2, (int)3], true },
@@ -250,7 +252,7 @@ namespace IGLib.Types.Tests
 
 
         [Theory]
-        [MemberData(nameof(Dataset_IsCollectionOfInt))]
+        [MemberData(nameof(Dataset_IsCollectionOf_Int))]
         protected void IsCollectionOfType_Generic2Param_WorksCorrectlyForInt(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
         {
             Console.WriteLine("Checking whether the specified collection contains only elements of the specific genric type (int).");
@@ -282,7 +284,7 @@ namespace IGLib.Types.Tests
 
 
         [Theory]
-        [MemberData(nameof(Dataset_IsCollectionOfInt))]
+        [MemberData(nameof(Dataset_IsCollectionOf_Int))]
         protected void IsCollectionOfType_Generic_WorksCorrectlyForInt(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
         {
             Console.WriteLine("Checking whether the specified collection contains only elements of the specific genric type (int).");
@@ -315,7 +317,7 @@ namespace IGLib.Types.Tests
 
 
         [Theory]
-        [MemberData(nameof(Dataset_IsCollectionOfInt))]
+        [MemberData(nameof(Dataset_IsCollectionOf_Int))]
         protected void IsCollectionOfType_Generic_NongenericCollection_WorksCorrectlyForInt(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
         {
             Console.WriteLine("Checking whether the specified collection contains only elements of the specific genric type (int).");
@@ -351,7 +353,7 @@ namespace IGLib.Types.Tests
         // Query type id NOT generic
 
         [Theory]
-        [MemberData(nameof(Dataset_IsCollectionOfInt))]
+        [MemberData(nameof(Dataset_IsCollectionOf_Int))]
         protected void IsCollectionOfType_GenericElementType_WorksCorrectlyForInt(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
         {
             Console.WriteLine("Checking whether the specified collection contains only elements of the specific genric type (int).");
@@ -383,7 +385,7 @@ namespace IGLib.Types.Tests
 
 
         [Theory]
-        [MemberData(nameof(Dataset_IsCollectionOfInt))]
+        [MemberData(nameof(Dataset_IsCollectionOf_Int))]
         protected void IsCollectionOfType_WorksCorrectly(IEnumerable? enumerable, bool shouldBeOfSpecifiedType)
         {
             Console.WriteLine("Checking whether the specified collection contains only elements of the specific genric type (int).");
@@ -416,7 +418,165 @@ namespace IGLib.Types.Tests
 
 
 
+
+
+
+
+
         #endregion BasicUtilitiesTests
+
+
+        public static Type TypeInt { get; } = typeof(int);
+        public static Type TypeString { get; } = typeof(string);
+        public static Type TypeDouble { get; } = typeof(double);
+
+
+        public static TheoryData<IEnumerable?, Type, bool, int[]?> Dataset_CovertToListOf_Int =>
+            new ()
+            {
+                { (object?[])[(int)1, (int)2, (int)3], TypeInt, true, [1, 2, 3] },
+                { (object?[])[(double)1.23, (int)2 ], TypeInt, false, null },  // mixed numeric type elements
+                { (object?[])[(double)1, (int)2.45 ], TypeInt, false, null },  // mixed numeric type elements
+                { (object?[])[], TypeInt, false, null },  // empty enumerable
+                { null, TypeInt, false, null },  // null enumerable
+                { (object?[])["str", (int) 1, (int) 2], TypeInt, false, null },  // mixed non-numeric and numeric elements
+                { (object?[])[(int) 1, (int) 2, "str"], TypeInt, false, null },  // mixed non-numeric and numeric elements
+                { (object?[])[(int) 1, "str", (int) 2], TypeInt, false, null },  // mixed non-numeric and numeric elements
+                { (object?[])[null!, (int) 1, (int) 2], TypeInt, false, null },  // includes null elements
+                { (object?[])[(int) 1, (int) 2, null!], TypeInt, false, null },  // includes null elements
+                { (object?[])[(int) 1, null!, (int) 2], TypeInt, false, null },  // includes null elements
+                { new List<object?>() { -25, 433, 9238, -5 }, TypeInt, true, [-25, 433, 9238, -5] },
+                { new List<object?>() {  }, TypeInt, false, null },
+                { new List<object?>() { 1, 2, "xy" }, TypeInt, false, null },
+                { new List<object?>() { 1, 2, null! }, TypeInt, false, null },
+                { new List<object?>() { 1, 2, 3, 4.55 }, TypeInt, false, null },
+            };
+
+
+        //[Theory]
+        //[MemberData(nameof(Dataset_IsCollectionOfInt))]
+        //protected void IsCollectionOfType_Generic2Param_WorksCorrectlyForInt11(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
+        //{
+        //}
+
+
+
+        [Theory]
+        [MemberData(nameof(Dataset_CovertToListOf_Int))]
+        protected void ConvertToListOf_Int_WorksCorrectly(IEnumerable? enumerable, Type targetType, 
+            bool shouldBeConvertible, int[]? expectedResult)
+        {
+            Console.WriteLine("Testing conversion of an object collection to a list of elements of the specified type.");
+            Console.WriteLine("Collection converted: ");
+            if (enumerable == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (!enumerable.GetEnumerator().MoveNext())
+            {
+                Console.WriteLine("  empty collection");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in enumerable)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}, type: {item?.GetType().Name ?? "/"}");
+                    ++i;
+                }
+            }
+            Console.WriteLine($"Target element type after conversion: {targetType.Name}");
+            Console.WriteLine($"Conversion should be possible: {shouldBeConvertible}");
+            Console.WriteLine("Expected conversion result: ");
+            if (expectedResult == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (expectedResult.Length == 0)
+            {
+                Console.WriteLine("  empty array");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in expectedResult)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}, type: {item?.GetType().Name ?? "/"}");
+                    ++i;
+                }
+            }
+            // Act:
+            List<int>? result = null;
+            bool wasConverionSuccessful = true;
+            try
+            {
+                result = UtilTypes.ConvertToListOf<int>(enumerable);
+                Console.WriteLine($"Result of conversion via {nameof(UtilTypes.ConvertToListOf)}:");
+                if (result == null)
+                {
+                    Console.WriteLine("  null");
+                }
+                else if (result.Count == 0)
+                {
+                    Console.WriteLine("  empty array");
+                }
+                else
+                {
+                    int i = 0;
+                    foreach (object? item in result)
+                    {
+                        Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}, type: {item?.GetType().Name ?? "/"}");
+                        ++i;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"{ex.GetType().Name} thrown when trying to convert a collection of objects.\n  Message:{ex.Message}");
+                wasConverionSuccessful = false;
+            }
+            // Assert:
+            wasConverionSuccessful.Should().Be(shouldBeConvertible, because: $"collection elements should {
+                (shouldBeConvertible ? "" : "NOT")} be convertible to the specified type.");
+            if (wasConverionSuccessful && expectedResult != null && expectedResult.Length > 0)
+            {
+                result.Should().NotBeNull();
+                result.Count.Should().Be(expectedResult.Length, because: $"number of elements after conversion should be {
+                    expectedResult.Length}.");
+                if (expectedResult != null && expectedResult.Length >= 0)
+                {
+                    for (int i = 0; i < expectedResult!.Length; ++i)
+                    {
+                        result![i].Should().Be(expectedResult[i], because: $"element {i} should be {
+                            (expectedResult==null?"null":expectedResult)} but it is {(expectedResult == null ? "null":result)}.");
+                    }
+                }
+            }
+        }
+
+
+
+        #region CollectionTypeConversions
+
+        // GENERIC definition of TARGET TYPE
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // TARGET TYPE defined AS Type PARAMETER
+
+
+
+        #endregion CollectionTypeConversions
 
 
 
@@ -675,8 +835,6 @@ namespace IGLib.Types.Tests
 
 
         #endregion GeneralConversion_Generic_Tests
-
-
 
 
 
@@ -941,10 +1099,6 @@ namespace IGLib.Types.Tests
 
 
         #endregion GeneralConversion_Tests
-
-
-
-
 
 
 

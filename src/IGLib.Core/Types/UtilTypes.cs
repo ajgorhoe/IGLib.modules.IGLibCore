@@ -196,7 +196,7 @@ namespace IGLib.Types.Extensions
 
 
 
-        #region CollectionConversions
+        #region CollectionTypeConversions
 
 
         // GENERIC definition of TARGET TYPE
@@ -273,13 +273,8 @@ namespace IGLib.Types.Extensions
         }
 
 
-
         // TARGET TYPE defined AS Type PARAMETER
 
-
-
-
-        // GENERIC definition of TARGET TYPE
 
         /// <summary>Returns true if all members of the specified collection (<paramref name="collection"/>) 
         /// can be converted to the specified basic type (<typeparamref name="TargetType"/>, which must
@@ -358,7 +353,7 @@ namespace IGLib.Types.Extensions
 
 
 
-        #endregion CollectionConversions
+        #endregion CollectionTypeConversions
 
 
 
