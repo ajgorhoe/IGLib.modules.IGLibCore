@@ -251,13 +251,24 @@ namespace IGLib.Types.Extensions
         /// <param name="formatProvider">Locale. Optional, default is <see cref="CultureInfo.InvariantCulture"/>.
         /// This is important with conversion form string to numbers or dates, or vice versa, and one wants to
         /// use a specific local or the one set on the machine (<see cref="CultureInfo.CurrentCulture"/>).</param>
-        /// <returns></returns>
+        /// <param name="allowNullOrEmpty">Optional, default is false. If true then null or empty enumerables 
+        /// are allowed, and null is returned if this is the case. Null elements of the collection are not allowed, though.</param>
+        /// <returns>List that contains converted elements of <paramref name="collection"/> via the
+        /// <see cref="ConvertTo{TargetType}(object?, bool, IFormatProvider?)"/> method, contained in
+        /// the same order as the original elements of the specified collection.</returns>
         public static List<TargetType?>? ConvertToListOf<TargetType>(IEnumerable? collection,
-                bool precise = false, IFormatProvider? formatProvider = null)
+                bool precise = false, IFormatProvider? formatProvider = null, bool allowNullOrEmpty = false)
             where TargetType : IConvertible
         {
             if (collection is null || !collection.GetEnumerator().MoveNext())
-            { return null; }
+            {
+                if (allowNullOrEmpty)
+                {
+                    return null;
+                }
+                throw new AggregateException($"{nameof(ConvertToListOf)}(...): collection is {
+                    (collection == null? "null": "empty")}, therefore it cannot be converted.");
+            }
             List<TargetType?>? returned = null;
             foreach (object? item in collection)
             {

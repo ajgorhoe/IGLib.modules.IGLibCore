@@ -431,40 +431,45 @@ namespace IGLib.Types.Tests
         public static Type TypeDouble { get; } = typeof(double);
 
 
-        public static TheoryData<IEnumerable?, Type, bool, int[]?> Dataset_CovertToListOf_Int =>
+        /// <summary>Test parameters dataset for testing conversion of collection elements to
+        /// list of type int (can be used for other typees, too, because of redundant parameters).
+        /// <para>Dataset parameters:</para>
+        /// <para>1. Collection to be converted (IEnumerable?)</para>
+        /// <para>2. Target type (redundant when testing generic methods) (Type)</para>
+        /// <para>3. Whether PRECISE conversion is required (bool)</para>
+        /// <para>4. Whether conversion is expected to be be SUCCESFUL (bool)</para>
+        /// <para>5. Expected values of converted elemennts (object[])</para></summary>
+        public static TheoryData<IEnumerable?, Type, bool, bool, int[]?> Dataset_CovertToListOf_Precise_Int =>
             new ()
             {
-                { (object?[])[(int)1, (int)2, (int)3], TypeInt, true, [1, 2, 3] },
-                { (object?[])[(double)1.23, (int)2 ], TypeInt, false, null },  // mixed numeric type elements
-                { (object?[])[(double)1, (int)2.45 ], TypeInt, false, null },  // mixed numeric type elements
-                { (object?[])[], TypeInt, false, null },  // empty enumerable
-                { null, TypeInt, false, null },  // null enumerable
-                { (object?[])["str", (int) 1, (int) 2], TypeInt, false, null },  // mixed non-numeric and numeric elements
-                { (object?[])[(int) 1, (int) 2, "str"], TypeInt, false, null },  // mixed non-numeric and numeric elements
-                { (object?[])[(int) 1, "str", (int) 2], TypeInt, false, null },  // mixed non-numeric and numeric elements
-                { (object?[])[null!, (int) 1, (int) 2], TypeInt, false, null },  // includes null elements
-                { (object?[])[(int) 1, (int) 2, null!], TypeInt, false, null },  // includes null elements
-                { (object?[])[(int) 1, null!, (int) 2], TypeInt, false, null },  // includes null elements
-                { new List<object?>() { -25, 433, 9238, -5 }, TypeInt, true, [-25, 433, 9238, -5] },
-                { new List<object?>() {  }, TypeInt, false, null },
-                { new List<object?>() { 1, 2, "xy" }, TypeInt, false, null },
-                { new List<object?>() { 1, 2, null! }, TypeInt, false, null },
-                { new List<object?>() { 1, 2, 3, 4.55 }, TypeInt, false, null },
+                // PRECISE conversions are required:
+                { (object?[])[(int)1, (int)2, (int)3], TypeInt, true, true, [1, 2, 3] },
+                { (object?[])[(double)1.23, (int)2 ], TypeInt, true, false, null },  // mixed numeric type elements
+                { (object?[])[(double)1, (double)2.45 ], TypeInt, true, false, null },  // mixed numeric type elements
+                { (object?[])[], TypeInt, true, false, null },  // empty enumerable
+                { null, TypeInt, true, false, null },  // null enumerable
+                { (object?[])["str", (int) 1, (int) 2], TypeInt, true, false, null },  // mixed non-numeric and numeric elements
+                { (object?[])[(int) 1, (int) 2, "str"], TypeInt, true, false, null },  // mixed non-numeric and numeric elements
+                { (object?[])[(int) 1, "str", (int) 2], TypeInt, true, false, null },  // mixed non-numeric and numeric elements
+                { (object?[])[null!, (int) 1, (int) 2], TypeInt, true, false, null },  // includes null elements
+                { (object?[])[(int) 1, (int) 2, null!], TypeInt, true, false, null },  // includes null elements
+                { (object?[])[(int) 1, null!, (int) 2], TypeInt, true, false, null },  // includes null elements
+                { new List<object?>() { -25, 433, 9238, -5 }, TypeInt, true, true, [-25, 433, 9238, -5] },
+                { new List<object?>() {  }, TypeInt, true, false, null },
+                { new List<object?>() { 1, 2, "xy" }, TypeInt, true, false, null },
+                { new List<object?>() { 1, 2, null! }, TypeInt, true, false, null },
+                { new List<object?>() { 1, 2, 3, 4.55 }, TypeInt, true, false, null },
+                // APPROXIMATE conversions are ALLOWED:
             };
 
 
-        //[Theory]
-        //[MemberData(nameof(Dataset_IsCollectionOfInt))]
-        //protected void IsCollectionOfType_Generic2Param_WorksCorrectlyForInt11(IEnumerable<object?>? enumerable, bool shouldBeOfSpecifiedType)
-        //{
-        //}
 
 
 
         [Theory]
-        [MemberData(nameof(Dataset_CovertToListOf_Int))]
-        protected void ConvertToListOf_Int_WorksCorrectly(IEnumerable? enumerable, Type targetType, 
-            bool shouldBeConvertible, int[]? expectedResult)
+        [MemberData(nameof(Dataset_CovertToListOf_Precise_Int))]
+        protected void ConvertToListOf_Precise_Int_WorksCorrectly(IEnumerable? enumerable, Type targetType, 
+            bool precise, bool shouldBeConvertible, int[]? expectedResult)
         {
             Console.WriteLine("Testing conversion of an object collection to a list of elements of the specified type.");
             Console.WriteLine("Collection converted: ");
@@ -510,7 +515,7 @@ namespace IGLib.Types.Tests
             bool wasConverionSuccessful = true;
             try
             {
-                result = UtilTypes.ConvertToListOf<int>(enumerable);
+                result = UtilTypes.ConvertToListOf<int>(enumerable, precise: precise);
                 Console.WriteLine($"Result of conversion via {nameof(UtilTypes.ConvertToListOf)}:");
                 if (result == null)
                 {
@@ -547,8 +552,10 @@ namespace IGLib.Types.Tests
                 {
                     for (int i = 0; i < expectedResult!.Length; ++i)
                     {
+
                         result![i].Should().Be(expectedResult[i], because: $"element {i} should be {
-                            (expectedResult==null?"null":expectedResult)} but it is {(expectedResult == null ? "null":result)}.");
+                            (expectedResult[i] == null ? "null" : expectedResult[i])} but it is {
+                            (result[i] == null ? "null":result[i])}.");
                     }
                 }
             }
