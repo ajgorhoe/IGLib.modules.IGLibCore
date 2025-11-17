@@ -583,6 +583,99 @@ namespace IGLib.Types.Tests
         // TARGET TYPE defined AS Type PARAMETER
 
 
+        [Theory]
+        // Dataset for conversion to int:
+        [MemberData(nameof(Dataset_CovertToListOf_Precise_Int))]
+        protected void ConvertToListOfType_Precise_Int_WorksCorrectly(IEnumerable? enumerable, Type targetType,
+            bool precise, bool shouldBeConvertible, int[]? expectedResult)
+        {
+            Console.WriteLine("Testing conversion of an object collection to a list of elements of the specified type.");
+            Console.WriteLine("Collection converted: ");
+            if (enumerable == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (!enumerable.GetEnumerator().MoveNext())
+            {
+                Console.WriteLine("  empty collection");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in enumerable)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}, type: {item?.GetType().Name ?? "/"}");
+                    ++i;
+                }
+            }
+            Console.WriteLine($"Target element type after conversion: {targetType.Name}");
+            Console.WriteLine($"Conversion should be possible: {shouldBeConvertible}");
+            Console.WriteLine("Expected conversion result: ");
+            if (expectedResult == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (expectedResult.Length == 0)
+            {
+                Console.WriteLine("  empty array");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in expectedResult)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}, type: {item?.GetType().Name ?? "/"}");
+                    ++i;
+                }
+            }
+            // Act:
+            List<object?>? result = null;
+            bool wasConverionSuccessful = true;
+            try
+            {
+                result = UtilTypes.ConvertToListOfType(enumerable, targetType, precise: precise);
+                Console.WriteLine($"Result of conversion via {nameof(UtilTypes.ConvertToListOf)}:");
+                if (result == null)
+                {
+                    Console.WriteLine("  null");
+                }
+                else if (result.Count == 0)
+                {
+                    Console.WriteLine("  empty array");
+                }
+                else
+                {
+                    int i = 0;
+                    foreach (object? item in result)
+                    {
+                        Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}, type: {item?.GetType().Name ?? "/"}");
+                        ++i;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.GetType().Name} thrown when trying to convert a collection of objects.\n  Message:{ex.Message}");
+                wasConverionSuccessful = false;
+            }
+            // Assert:
+            wasConverionSuccessful.Should().Be(shouldBeConvertible, because: $"collection elements should {(shouldBeConvertible ? "" : "NOT")} be convertible to the specified type.");
+            if (wasConverionSuccessful && expectedResult != null && expectedResult.Length > 0)
+            {
+                result.Should().NotBeNull();
+                result.Count.Should().Be(expectedResult.Length, because: $"number of elements after conversion should be {expectedResult.Length}.");
+                if (expectedResult != null && expectedResult.Length >= 0)
+                {
+                    for (int i = 0; i < expectedResult!.Length; ++i)
+                    {
+
+                        result![i].Should().Be(expectedResult[i], because: $"element {i} should be {(expectedResult[i] == null ? "null" : expectedResult[i])} but it is {(result[i] == null ? "null" : result[i])}.");
+                    }
+                }
+            }
+        }
+
+
 
 
 
