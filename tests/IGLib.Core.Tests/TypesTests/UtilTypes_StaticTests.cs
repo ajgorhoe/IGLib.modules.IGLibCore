@@ -452,16 +452,16 @@ namespace IGLib.Types.Tests
                 { (object?[])[(int)1, (int)2, (int)3], TypeInt, true, true, [1, 2, 3] },
                 { (object?[])[(double)1.23, (int)2 ], TypeInt, true, false, null },  // mixed numeric type elements
                 { (object?[])[(double)1, (double)2.45 ], TypeInt, true, false, null },  // mixed numeric type elements
-                //{ (object?[])[], TypeInt, true, false, null },  // empty enumerable
+                { (object?[])[], TypeInt, true, false, null },  // empty enumerable
                 { null, TypeInt, true, false, null },  // null enumerable
                 { (object?[])["str", (int) 1, (int) 2], TypeInt, true, false, null },  // mixed non-numeric and numeric elements
                 { (object?[])[(int) 1, (int) 2, "str"], TypeInt, true, false, null },  // mixed non-numeric and numeric elements
                 { (object?[])[(int) 1, "str", (int) 2], TypeInt, true, false, null },  // mixed non-numeric and numeric elements
-                //{ (object?[])[null!, (int) 1, (int) 2], TypeInt, true, false, null },  // includes null elements
+                { (object?[])[null!, (int) 1, (int) 2], TypeInt, true, false, null },  // includes null elements
                 { (object?[])[(int) 1, (int) 2, null!], TypeInt, true, false, null },  // includes null elements
                 { (object?[])[(int) 1, null!, (int) 2], TypeInt, true, false, null },  // includes null elements
                 { new List<object?>() { -25, 433, 9238, -5 }, TypeInt, true, true, [-25, 433, 9238, -5] },
-                //{ new List<object?>() {  }, TypeInt, true, false, null },
+                { new List<object?>() {  }, TypeInt, true, false, null },
                 { new List<object?>() { 1, 2, "xy" }, TypeInt, true, false, null },
                 { new List<object?>() { 1, 2, null! }, TypeInt, true, false, null },
                 { new List<object?>() { 1, 2, 3, 4.55 }, TypeInt, true, false, null },
