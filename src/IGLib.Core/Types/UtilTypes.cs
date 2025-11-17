@@ -272,6 +272,11 @@ namespace IGLib.Types.Extensions
             List<TargetType?>? returned = null;
             foreach (object? item in collection)
             {
+                if (item == null)
+                {
+                    // If any element is null, we cannot reason about cnvertibility
+                    throw new InvalidCastException($"{nameof(ConvertToListOf)}(...): collection element is null, cannot convert the collection elements to the specified type.");
+                }
                 TargetType? convertedElement = UtilTypes.ConvertTo<TargetType>(item, precise, formatProvider);
                 if (returned == null)
                 {
@@ -354,7 +359,8 @@ namespace IGLib.Types.Extensions
             {
                 if (item == null)
                 {
-                    return null;  // if null, we cannot reason about cnvertibility
+                    // If any element is null, we cannot reason about cnvertibility
+                    throw new InvalidCastException($"{nameof(ConvertToListOf)}(...): collection element is null, cannot convert the collection elements to the specified type.");
                 }
                 object? convertedElement = UtilTypes.ConvertToType(item, targetType, precise, formatProvider);
                 if (returned == null)
@@ -401,7 +407,8 @@ namespace IGLib.Types.Extensions
         /// <para>* IGLib.Types.Tests.UtilTypesTests.ConvertTo_Generic_WorksCorrectlyFor_Int(...)</para>
         /// <para>* etc. (tested for some other types)</para>
         /// <para>Tests of generic method also test correctness of this method because they rely on it.</para></remarks>
-        public static object? ConvertToType(this object? value, Type targetType, bool precise = false, IFormatProvider? provider = null)
+        public static object? ConvertToType(this object? value, Type targetType, bool precise = false, 
+            IFormatProvider? provider = null)
         {
             if (targetType == null)
                 throw new ArgumentNullException(nameof(targetType));

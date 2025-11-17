@@ -458,13 +458,13 @@ namespace IGLib.Types.Tests
                 { (object?[])[(int) 1, (int) 2, "str"], TypeInt, true, false, null },  // mixed non-numeric and numeric elements
                 { (object?[])[(int) 1, "str", (int) 2], TypeInt, true, false, null },  // mixed non-numeric and numeric elements
                 //{ (object?[])[null!, (int) 1, (int) 2], TypeInt, true, false, null },  // includes null elements
-                //{ (object?[])[(int) 1, (int) 2, null!], TypeInt, true, false, null },  // includes null elements
-                //{ (object?[])[(int) 1, null!, (int) 2], TypeInt, true, false, null },  // includes null elements
-                //{ new List<object?>() { -25, 433, 9238, -5 }, TypeInt, true, true, [-25, 433, 9238, -5] },
+                { (object?[])[(int) 1, (int) 2, null!], TypeInt, true, false, null },  // includes null elements
+                { (object?[])[(int) 1, null!, (int) 2], TypeInt, true, false, null },  // includes null elements
+                { new List<object?>() { -25, 433, 9238, -5 }, TypeInt, true, true, [-25, 433, 9238, -5] },
                 //{ new List<object?>() {  }, TypeInt, true, false, null },
-                //{ new List<object?>() { 1, 2, "xy" }, TypeInt, true, false, null },
-                //{ new List<object?>() { 1, 2, null! }, TypeInt, true, false, null },
-                //{ new List<object?>() { 1, 2, 3, 4.55 }, TypeInt, true, false, null },
+                { new List<object?>() { 1, 2, "xy" }, TypeInt, true, false, null },
+                { new List<object?>() { 1, 2, null! }, TypeInt, true, false, null },
+                { new List<object?>() { 1, 2, 3, 4.55 }, TypeInt, true, false, null },
                 // APPROXIMATE conversions are ALLOWED:
             };
 
