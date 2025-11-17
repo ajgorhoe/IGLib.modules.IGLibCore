@@ -445,7 +445,7 @@ namespace IGLib.Types.Tests
         /// <para>3. Whether PRECISE conversion is required (bool)</para>
         /// <para>4. Whether conversion is expected to be be SUCCESFUL (bool)</para>
         /// <para>5. Expected values of converted elemennts (object[])</para></summary>
-        public static TheoryData<IEnumerable?, Type, bool, bool, int[]?> Dataset_CovertToListOf_Precise_Int =>
+        public static TheoryData<IEnumerable?, Type, bool, bool, int[]?> Dataset_CovertToListOf_Int =>
             new ()
             {
                 // PRECISE conversions are required:
@@ -466,6 +466,8 @@ namespace IGLib.Types.Tests
                 { new List<object?>() { 1, 2, null! }, TypeInt, true, false, null },
                 { new List<object?>() { 1, 2, 3, 4.55 }, TypeInt, true, false, null },
                 // APPROXIMATE conversions are ALLOWED:
+                { (object?[])[(int)1, (int)2, (int)3], TypeInt, false, true, [1, 2, 3] },  // same result as with precise
+                { (object?[])[(double)1.23, (int)2 ], TypeInt, false, true, null },   // conversion succeeds while it fails eith precise
             };
 
 
@@ -473,8 +475,8 @@ namespace IGLib.Types.Tests
 
 
         [Theory]
-        [MemberData(nameof(Dataset_CovertToListOf_Precise_Int))]
-        protected void ConvertToListOf_Precise_Int_WorksCorrectly(IEnumerable? enumerable, Type targetType, 
+        [MemberData(nameof(Dataset_CovertToListOf_Int))]
+        protected void ConvertToListOf_Int_WorksCorrectly(IEnumerable? enumerable, Type targetType, 
             bool precise, bool shouldBeConvertible, int[]? expectedResult)
         {
             Console.WriteLine("Testing conversion of an object collection to a list of elements of the specified type.");
@@ -560,8 +562,7 @@ namespace IGLib.Types.Tests
                     {
 
                         result![i].Should().Be(expectedResult[i], because: $"element {i} should be {
-                            (expectedResult[i] == null ? "null" : expectedResult[i])} but it is {
-                            (result[i] == null ? "null":result[i])}.");
+                            expectedResult[i]} but it is {result[i]}.");
                     }
                 }
             }
@@ -585,7 +586,7 @@ namespace IGLib.Types.Tests
 
         [Theory]
         // Dataset for conversion to int:
-        [MemberData(nameof(Dataset_CovertToListOf_Precise_Int))]
+        [MemberData(nameof(Dataset_CovertToListOf_Int))]
         protected void ConvertToListOfType_Precise_Int_WorksCorrectly(IEnumerable? enumerable, Type targetType,
             bool precise, bool shouldBeConvertible, int[]? expectedResult)
         {
@@ -668,8 +669,7 @@ namespace IGLib.Types.Tests
                 {
                     for (int i = 0; i < expectedResult!.Length; ++i)
                     {
-
-                        result![i].Should().Be(expectedResult[i], because: $"element {i} should be {(expectedResult[i] == null ? "null" : expectedResult[i])} but it is {(result[i] == null ? "null" : result[i])}.");
+                        result![i].Should().Be(expectedResult[i], because: $"element {i} should be {expectedResult[i]} but it is {(result[i] == null ? "null" : result[i])}.");
                     }
                 }
             }
