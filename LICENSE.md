@@ -55,7 +55,7 @@ END OF TERMS AND CONDITIONS
 
 ---
 
-Copyright © Igor Grešovnik.
+Copyright © 2008 Igor Grešovnik.
 
 This work is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) (the "License");
 you may not use this file except in compliance with the License.
