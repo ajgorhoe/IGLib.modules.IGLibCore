@@ -4,6 +4,7 @@
 using FluentAssertions;
 using IGLib.Commands;
 using IGLib.Tests.Base;
+using Microsoft.VisualBasic;
 using NUnit.Framework.Internal;
 using System;
 using System.Collections;
@@ -595,6 +596,17 @@ namespace IGLib.Types.Tests
         public static TheoryData<IEnumerable?, Type, bool, bool, object?[]?> Dataset_CovertToListOfType =>
             new()
             {
+                // NULL or EMPTY COLLECTION:
+                // Null collections cannot be converted:
+                { null, typeof(int), true, false, [] },
+                { null, typeof(int), false, false, [] },
+                // Empty collections cannot be converted:
+                { new List<object>(), typeof(int), true, false, [] },
+                { new List<object>(), typeof(int), false, false, [] },
+                // Collections with null elements cannot be converted:
+                { (object?[])[1, "23", (string?) null], typeof(string), false, false, ["1", "23", (string?)null] },
+                { (object?[])[1, "23", (double?)null], typeof(int), false, false, [23, (int?) null] },
+
                 // INTEGER type to INTEGER type:
                 // byte to int: should work for any value
                 { (object?[])[(byte)0, (byte)2, (byte)255], typeof(int), true, true, [0, 2, 255] },
@@ -631,23 +643,50 @@ namespace IGLib.Types.Tests
                 { (object?[])[(double)12.28], typeof(int), false, true, [(int)12] },  // conversion is not precise, succeeds when precise is not required
                 { (object?[])[(double)12.28], typeof(char), false, false, [(char)12] },  // conversion is not precise, succeeds when precise is not required
                 { (object?[])[(double)-5.9], typeof(int), false, true, [(int)-6] },  // conversion is not precise, succeeds when precise is not required
-                // BOOLEAN to type conversions:
+                // BOOLEAN TO other types conversions:
                 { (object?[])[true, false], typeof(int), true, true, [1, 0] },
                 { (object?[])[true, false], typeof(byte), true, true, [(byte)1, (byte)0] },
                 { (object?[])[true, false], typeof(long), true, true, [(long)1, (long)0] },
                 { (object?[])[true, false], typeof(ulong), true, true, [(ulong)1, (ulong)0] },
+                { (object?[])[false, true], typeof(double), true,  true, [0.0, 1.0] },
+                { (object?[])[false, true], typeof(float), true,  true, [0.0f, 1.0f] },
                 { (object?[])[true, false], typeof(char), true, false, [(char)1, (char)0] },  // boolean cannot be converted to char
                 { (object?[])[true, false], typeof(char), false, false, [(char)1, (char)0] },  // boolean cannot be converted to char
                 { (object?[])[true, false], typeof(string), true, true, ["True", "False"] },
-                // type to BOOLEAN conversions:
-                { (object?[])[0, 1, 10, -11], typeof(bool), false, true, [false, true, true, true] },  // approximate conversion int to bool works
-                { (object?[])[0, 1, 10, -11], typeof(bool), true, false, [false, true, true, true] },  // precise conversion int to bool not possible
-                { (object?[])[(int)0], typeof(bool), false, true, [false] },   // precise conversion int to bool not possible
-                
-                // TODO: Why this does not work, while similar example with more numbers converted to bool works?
-                // { (object?[])[(int)0], typeof(bool), true, false, [false] },   // precise conversion int to bool not possible
-
-
+                // type TO BOOLEAN conversions:
+                // int to boolean:
+                // Conversion of 0 and 1 to boolean works both as approximate and precise:
+                { (object?[])[0, 1], typeof(bool), true,  true, [false, true] }, 
+                { (object?[])[0, 1], typeof(bool), false,  true, [false, true] },  
+                // Conversion of int values other than 0 or 1 only works as not precise:
+                { (object?[])[10, -11], typeof(bool), true, false, [true, true] },
+                { (object?[])[10, -11], typeof(bool), false, true, [true, true] },  // not precise works, all non-0 converted to true
+                // byte to boolean:
+                // Conversion of 0 and 1 to boolean works both as approximate and precise:
+                { (object?[])[(byte)0, (byte)1], typeof(bool), true,  true, [false, true] }, 
+                { (object?[])[(byte)0, (byte)1], typeof(bool), false,  true, [false, true] },  
+                // Conversion of byte values other than 0 or 1 only works as not precise:
+                { (object?[])[(byte)10, (byte)150], typeof(bool), true, false, [true, true] },
+                { (object?[])[(byte)10, (byte)150], typeof(bool), false, true, [true, true] },  // not precise works, all non-0 converted to true
+                // double to boolean:
+                // Conversion of 0 and 1 to boolean works both as approximate and precise:
+                { (object?[])[(double)0.0, (double)1.0], typeof(bool), true,  true, [false, true] }, 
+                { (object?[])[(double)0.0, (double)1.0], typeof(bool), false,  true, [false, true] },  
+                // Conversion of double values other than 0.0 or 1.0 only works as not precise:
+                { (object?[])[(double)10.0, (double)-150.0], typeof(bool), true, false, [true, true] },
+                { (object?[])[(double)10.0, (double)-150.0], typeof(bool), false, true, [true, true] },  // not precise works, all non-0 converted to true
+                { (object?[])[(double)0.0034, (double)1.0e-6], typeof(bool), true, false, [true, true] },
+                { (object?[])[(double)10.034, (double)1.0e-6], typeof(bool), false, true, [true, true] },  // not precise works, all non-0 converted to true
+                // string to boolean:
+                // precise conversion of ANY CAPITALIZATION of "true" and "false" to boolean works:
+                { (object?[])["False", "True"], typeof(bool), true,  true, [false, true] }, 
+                { (object?[])["false", "true"], typeof(bool), true,  true, [false, true] }, 
+                { (object?[])["FALSE", "TRUE"], typeof(bool), true,  true, [false, true] }, 
+                { (object?[])["falSE", "truE"], typeof(bool), true,  true, [false, true] }, 
+                // conversion of strings "y"/"n", "yes"/"no" or "Yes"/"No" to boolean does not work:
+                { (object?[])["n", "y"], typeof(bool), false,  false, [false, true] }, 
+                { (object?[])["No", "Yes"], typeof(bool), false,  false, [false, true] }, 
+                { (object?[])["no", "yes"], typeof(bool), false,  false, [false, true] }, 
                 // STRING to INTEGER type conversions:
                 { (object?[])["-6", "0", "255"], typeof(int), true, true, [-6, 0, 255] },
                 { (object?[])["8.12"], typeof(int), false, false, [8] },  // floating point is not legal with conversion to integer types
@@ -668,14 +707,42 @@ namespace IGLib.Types.Tests
                 // FLOATING POINT type to STRING conversions:
                 { (object?[])[-6.2, 0.5, 255.44, -2.6e5], typeof(string), true, true, ["-6.2", "0.5", "255.44", "-260000"] },
                 { (object?[])[(float)-6.2, (float)0.5, (float)255.44, (float)-2.6e5], typeof(string), true, true, ["-6.2", "0.5", "255.44", "-260000"] },
-
                 // MIXED TYPE conversions (elements of collection are of mixed types):
-
-
-                // PRECISE vs. INPRECISE conversions:
-
-                // NULL or EMPTY COLLECTION:
-
+                // Conversion succeeds if all element conversions to specific type succeed.
+                // Conversion to int:
+                { (object?[])["-6", 0.49, (byte)87, -2.6e5], typeof(int), false, true, [-6, 0, 87, -260000] },  // imprecise conversion succeeds
+                { (object?[])["-6", 0.49, (byte)87, -2.6e5], typeof(int), true, false, [-6, 0, 87, -260000] },  // precise conversion fails
+                { (object?[])["-6", (double)0.0, (byte)87, -2.6e5], typeof(int), true, true, [-6, 0, 87, -260000] },  // precise conversion also succeeds on this data
+                { (object?[])[true, (char) 22, false], typeof(int), true, true, [1, 22, 0] },  // imprecise conversion succeeds
+                // Conversion to double:
+                { (object?[])["-6.21e15", (double)0.0, (byte)87, (int)-260000], typeof(double), true, true, [-6.21e15, 0.0, 87.0, -2.6e5] },
+                { (object?[])[(byte) 52, (uint)43, (long)1243], typeof(double), true, true, [52.0, 43.0, 1243.0] },
+                { (object?[])["-2.53", (float)18.5e14f, true, false], typeof(double), true, true, [-2.53, (double)18.5e14f, 1, 0] },
+                // Conversion to string:
+                { (object?[])[true, 28, 37.45, (short) -36], typeof(string), true, true, ["True", "28", "37.45", "-36"] },
+                { (object?[])[false, 'x', 'y', "xy", 58.6], typeof(string), true, true, ["False", "x", "y", "xy", "58.6"] },
+                // Conversion to boolean:
+                { (object?[])["true", "False", 28, (double)0.0, (short) -36, 1.5], typeof(bool), false, true, 
+                    [true, false, true, false, true, true] },  // works for imprecise conversion
+                { (object?[])["true", "False", 28, (double)0.0, (short) -36, 1.5], typeof(bool), true, false, 
+                    [true, false, true, false, true, true] },  // does not work for precise conversion
+                { (object?[])["true", "False", 1, (double)0.0, (short) 1, 1.0], typeof(bool), true, true, 
+                    [true, false, true, false, true, true] },  // this also works for precise conversion (numerical values are only 0 or 1)
+                // NULLABLE VALUE TYPES:
+                { (object?[])[(double?) 2.0, (byte?) 15], typeof(int), true, true, [(int)2, (int)15] },
+                { (object?[])[(double?) null, (byte?) 15], typeof(int), true, false, [(int)2, null] },  // collection should not contain null values
+                { (object?[])[(double?) 18.0, "15", (long?)((long)int.MaxValue + 1)], typeof(long), true, true, 
+                    [(long)18, (long)15, (long)int.MaxValue + 1] },  // collection should not contain null values
+                // PRECISE vs. IMPRECISE conversions:
+                // When precise parameter is true, conversions that lose precision are not allowed and will fail;
+                // precise conversion is specified by the 2nd boolean parameter:
+                { (object?[])[(double)5.2], typeof(int), true, false, [5] },  // precise conversion fails
+                { (object?[])[(double)8.0], typeof(bool), true, false, [true] },  // precise conversion fails
+                { (object?[])[(int)9], typeof(bool), true, false, [true] },  // precise conversion fails
+                // When precise parameter is false, legitimate conversions that lose precision are allowed and will succeed:
+                { (object?[])[(double)5.2], typeof(int), false, true, [5] },  // precise conversion fails
+                { (object?[])[(double)8.0], typeof(bool), false, true, [true] },  // precise conversion fails
+                { (object?[])[(int)9], typeof(bool), false, true, [true] },  // precise conversion fails
             };
 
 
@@ -994,7 +1061,7 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((double)2.0, false, 2)]
         [InlineData((double)-2.0, false, -2)]
-        // Conversion of double, inprecise - ROUNDED:
+        // Conversion of double, imprecise - ROUNDED:
         [InlineData((double)2.4999, false, 2, false, "should be rounded below (precise not requested)")]
         [InlineData((double)2.5001, false, 3, false, "should be rounded above (precise not requested)")]
         [InlineData((double)-2.4999, false, -2, false, "should be rounded above (precise not requested)")]
@@ -1069,7 +1136,7 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((double)2.0, false, 2)]
         [InlineData((double)-2.0, false, -2)]
-        // Conversion of double, inprecise - ROUNDED:
+        // Conversion of double, imprecise - ROUNDED:
         [InlineData((double)2.4999, false, 2, false, "should be rounded below (precise not requested)")]
         [InlineData((double)2.5001, false, 3, false, "should be rounded above (precise not requested)")]
         [InlineData((double)-2.4999, false, -2, false, "should be rounded above (precise not requested)")]
@@ -1258,7 +1325,7 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((double)2.0, false, 2)]
         [InlineData((double)-2.0, false, -2)]
-        // Conversion of double, inprecise - ROUNDED:
+        // Conversion of double, imprecise - ROUNDED:
         [InlineData((double)2.4999, false, 2, false, "should be rounded below (precise not requested)")]
         [InlineData((double)2.5001, false, 3, false, "should be rounded above (precise not requested)")]
         [InlineData((double)-2.4999, false, -2, false, "should be rounded above (precise not requested)")]
@@ -1333,7 +1400,7 @@ namespace IGLib.Types.Tests
         // ****
         [InlineData((double)2.0, false, 2)]
         [InlineData((double)-2.0, false, -2)]
-        // Conversion of double, inprecise - ROUNDED:
+        // Conversion of double, imprecise - ROUNDED:
         [InlineData((double)2.4999, false, 2, false, "should be rounded below (precise not requested)")]
         [InlineData((double)2.5001, false, 3, false, "should be rounded above (precise not requested)")]
         [InlineData((double)-2.4999, false, -2, false, "should be rounded above (precise not requested)")]
