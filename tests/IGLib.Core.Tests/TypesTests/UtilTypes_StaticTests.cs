@@ -445,7 +445,7 @@ namespace IGLib.Types.Tests
         /// <para>3. Whether PRECISE conversion is required (bool)</para>
         /// <para>4. Whether conversion is expected to be be SUCCESFUL (bool)</para>
         /// <para>5. Expected values of converted elemennts (object[])</para></summary>
-        public static TheoryData<IEnumerable?, Type, bool, bool, int[]?> Dataset_CovertToListOf_Int =>
+        public static TheoryData<IEnumerable?, Type, bool, bool, object?[]?> Dataset_CovertToListOf_Int =>
             new ()
             {
                 // PRECISE conversions are required:
@@ -467,7 +467,11 @@ namespace IGLib.Types.Tests
                 { new List<object?>() { 1, 2, 3, 4.55 }, TypeInt, true, false, null },
                 // APPROXIMATE conversions are ALLOWED:
                 { (object?[])[(int)1, (int)2, (int)3], TypeInt, false, true, [1, 2, 3] },  // same result as with precise
-                { (object?[])[(double)1.23, (int)2 ], TypeInt, false, true, null },   // conversion succeeds while it fails eith precise
+                { (object?[])[(double)1.23], TypeInt, false, true, null },   // conversion succeeds while it fails with precise
+                { (object?[])[(float)1.23], TypeInt, false, true, null },   // conversion succeeds while it fails with precise
+                { (object?[])[(string)"1.23"], TypeInt, false, false, null },   // string conversion must be precise with precise
+                { (object?[])[(string)"15"], TypeInt, false, true, null },   // precise string conversion succeeds
+                { (object?[])[int.MaxValue + (long) 1], TypeInt, false, false, null }  // owerflow
             };
 
 
@@ -477,7 +481,7 @@ namespace IGLib.Types.Tests
         [Theory]
         [MemberData(nameof(Dataset_CovertToListOf_Int))]
         protected void ConvertToListOf_Int_WorksCorrectly(IEnumerable? enumerable, Type targetType, 
-            bool precise, bool shouldBeConvertible, int[]? expectedResult)
+            bool precise, bool shouldBeConvertible, object?[]? expectedResult)
         {
             Console.WriteLine("Testing conversion of an object collection to a list of elements of the specified type.");
             Console.WriteLine("Collection converted: ");
@@ -560,8 +564,7 @@ namespace IGLib.Types.Tests
                 {
                     for (int i = 0; i < expectedResult!.Length; ++i)
                     {
-
-                        result![i].Should().Be(expectedResult[i], because: $"element {i} should be {
+                        expectedResult[i].Should().Be(result[i], because: $"element {i} should be {
                             expectedResult[i]} but it is {result[i]}.");
                     }
                 }
@@ -584,11 +587,64 @@ namespace IGLib.Types.Tests
         // TARGET TYPE defined AS Type PARAMETER
 
 
+        /// <summary>Test parameters dataset for testing conversion of collection elements to
+        /// list of type specified via parameter. Pretty comprehensive.
+        /// <para>Dataset parameters:</para>
+        /// <para>1. Collection to be converted (IEnumerable?)</para>
+        /// <para>2. Target type (Type)</para>
+        /// <para>3. Whether PRECISE conversion is required (bool)</para>
+        /// <para>4. Whether conversion is expected to be be SUCCESFUL (bool)</para>
+        /// <para>5. Expected values of converted elemennts (object[])</para></summary>
+        public static TheoryData<IEnumerable?, Type, bool, bool, object?[]?> Dataset_CovertToListOfType =>
+            new()
+            {
+                // INTEGER type to INTEGER type:
+                // byte to int: should work for any value
+                { (object?[])[(byte)0, (byte)2, (byte)255], typeof(int), true, true, [0, 2, 255] },
+                // char to int: should work for any value
+                { (object?[])[(char)0, (char)2, (char)char.MaxValue], typeof(int), true, true, [0, 2, (int)char.MaxValue] },
+                // uint to int:
+                { (object?[])[(uint)0, (uint)2, (uint)int.MaxValue], typeof(int), true, true, [0, 2, (int)int.MaxValue] },
+                { (object?[])[uint.MaxValue], typeof(int), true, false, [uint.MaxValue] },  // overflow!
+                // long to int: 
+                { (object?[])[(long)int.MinValue, (long)-10, (long)0, (long)15, (long)int.MaxValue], 
+                    typeof(int), true, true, [int.MinValue, -10, 0, 15, int.MaxValue] },
+                { (object?[])[(long)int.MinValue -1], typeof(int), true, false, [(long)int.MinValue - 1] },  // umderflow!
+                { (object?[])[(long)int.MaxValue +1], typeof(int), true, false, [(long)int.MaxValue + 1] },  // owerflow!
+                // ulong to int:
+                { (object?[])[(ulong)0, (ulong)2, (ulong)int.MaxValue], typeof(int), true, true, [0, 2, int.MaxValue] },
+                // long to char:
+                { (object?[])[(long)0, (long)26, (long)char.MaxValue], typeof(char), true, true, [(char)0, (char)26, char.MaxValue] },
+                { (object?[])[(long)-1], typeof(char), true, false, [(int)-1] },  // char cannot be negative
+                { (object?[])[(long)char.MaxValue + (long)1], typeof(char), true, false, [(int)char.MaxValue + (int)1] },  // owerflow
+                // INTEGER type to FLOATING POINT type:
+                { (object?[])[-132, 0, 815], typeof(double), true, true, [-132.0, 0.0, 815.0] },
+                { (object?[])[-132, 0, 815], typeof(float), true, true, [-132.0f, 0.0f, 815.0f] },
+                { (object?[])[ulong.MaxValue], typeof(float), true, false, [ulong.MaxValue] },  // overflow
+                // FLOATING POINT type to INTEGER type:
+                { (object?[])[(double)int.MinValue - 1.0], typeof(int), true, false, [(long)int.MinValue - 1.0] },  // underflow
+                { (object?[])[(double)int.MaxValue + 1.0], typeof(int), true, false, [(long)int.MinValue - 1.0] },  // overflow
+                { (object?[])[(double)-132, (double)0, (double)815], typeof(int), true, true, [-132, 0, 815] },
+                { (object?[])[(float)-132, (float)0, (float)815], typeof(int), true, true, [-132, 0, 815] },
+                // precise conversion fails when the floating point value has non-integer part:
+                { (object?[])[(double)1253.28], typeof(int), true, false, [(int)1253] },  // conversion is not precise, fails
+                { (object?[])[(double)1253.28], typeof(char), true, false, [(char)1253] },  // conversion is not precise, fails
+                { (object?[])[(double)-5.9], typeof(int), true, false, [-6] },  // conversion is not precise, fails
+                // approximate conversions with the same data should succeed when precise is not required:
+                { (object?[])[(double)1253.28], typeof(int), false, true, [(int)1253] },  // conversion is not precise, succeeds when precise is not required
+                { (object?[])[(double)12.28], typeof(char), false, true, [(char)12] },  // conversion is not precise, succeeds when precise is not required
+                { (object?[])[(double)-5.9], typeof(int), false, true, [(int)-6] },  // conversion is not precise, succeeds when precise is not required
+
+            };
+
+
+
         [Theory]
         // Dataset for conversion to int:
-        [MemberData(nameof(Dataset_CovertToListOf_Int))]
-        protected void ConvertToListOfType_Precise_Int_WorksCorrectly(IEnumerable? enumerable, Type targetType,
-            bool precise, bool shouldBeConvertible, int[]? expectedResult)
+        [MemberData(nameof(Dataset_CovertToListOf_Int))]  // Conversion to int from various types
+        [MemberData(nameof(Dataset_CovertToListOfType))]  // Conversions between different types, comprehensive
+        protected void ConvertToListOfType_WorksCorrectly(IEnumerable? enumerable, Type targetType,
+            bool precise, bool shouldBeConvertible, object?[]? expectedResult)
         {
             Console.WriteLine("Testing conversion of an object collection to a list of elements of the specified type.");
             Console.WriteLine("Collection converted: ");
@@ -669,6 +725,10 @@ namespace IGLib.Types.Tests
                 {
                     for (int i = 0; i < expectedResult!.Length; ++i)
                     {
+                        if (result!= null)
+                        {
+                            result[i]!.GetType().Should().Be(targetType, because: $"resulting elements should be of type {targetType.Name}"); 
+                        }
                         result![i].Should().Be(expectedResult[i], because: $"element {i} should be {expectedResult[i]} but it is {(result[i] == null ? "null" : result[i])}.");
                     }
                 }
