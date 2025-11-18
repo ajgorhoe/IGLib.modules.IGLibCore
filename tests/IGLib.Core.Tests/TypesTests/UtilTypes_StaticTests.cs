@@ -4,6 +4,7 @@
 using FluentAssertions;
 using IGLib.Commands;
 using IGLib.Tests.Base;
+using NUnit.Framework.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -598,7 +599,7 @@ namespace IGLib.Types.Tests
                 // byte to int: should work for any value
                 { (object?[])[(byte)0, (byte)2, (byte)255], typeof(int), true, true, [0, 2, 255] },
                 // char to int: should work for any value
-                { (object?[])[(char)0, (char)2, (char)char.MaxValue], typeof(int), true, true, [0, 2, (int)char.MaxValue] },
+                { (object?[])[(char)0, (char)2, char.MaxValue], typeof(int), true, true, [0, 2, (int)char.MaxValue] },
                 // uint to int:
                 { (object?[])[(uint)0, (uint)2, (uint)int.MaxValue], typeof(int), true, true, [0, 2, (int)int.MaxValue] },
                 { (object?[])[uint.MaxValue], typeof(int), true, false, [uint.MaxValue] },  // overflow!
@@ -631,8 +632,21 @@ namespace IGLib.Types.Tests
                 { (object?[])[(double)12.28], typeof(char), false, false, [(char)12] },  // conversion is not precise, succeeds when precise is not required
                 { (object?[])[(double)-5.9], typeof(int), false, true, [(int)-6] },  // conversion is not precise, succeeds when precise is not required
                 // BOOLEAN to type conversions:
-                
+                { (object?[])[true, false], typeof(int), true, true, [1, 0] },
+                { (object?[])[true, false], typeof(byte), true, true, [(byte)1, (byte)0] },
+                { (object?[])[true, false], typeof(long), true, true, [(long)1, (long)0] },
+                { (object?[])[true, false], typeof(ulong), true, true, [(ulong)1, (ulong)0] },
+                { (object?[])[true, false], typeof(char), true, false, [(char)1, (char)0] },  // boolean cannot be converted to char
+                { (object?[])[true, false], typeof(char), false, false, [(char)1, (char)0] },  // boolean cannot be converted to char
+                { (object?[])[true, false], typeof(string), true, true, ["True", "False"] },
                 // type to BOOLEAN conversions:
+                { (object?[])[0, 1, 10, -11], typeof(bool), false, true, [false, true, true, true] },  // approximate conversion int to bool works
+                { (object?[])[0, 1, 10, -11], typeof(bool), true, false, [false, true, true, true] },  // precise conversion int to bool not possible
+                { (object?[])[(int)0], typeof(bool), false, true, [false] },   // precise conversion int to bool not possible
+                
+                // TODO: Why this does not work, while similar example with more numbers converted to bool works?
+                // { (object?[])[(int)0], typeof(bool), true, false, [false] },   // precise conversion int to bool not possible
+
 
                 // STRING to INTEGER type conversions:
                 { (object?[])["-6", "0", "255"], typeof(int), true, true, [-6, 0, 255] },
