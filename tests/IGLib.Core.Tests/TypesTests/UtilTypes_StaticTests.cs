@@ -634,6 +634,23 @@ namespace IGLib.Types.Tests
                 { (object?[])[(double)1253.28], typeof(int), false, true, [(int)1253] },  // conversion is not precise, succeeds when precise is not required
                 { (object?[])[(double)12.28], typeof(char), false, true, [(char)12] },  // conversion is not precise, succeeds when precise is not required
                 { (object?[])[(double)-5.9], typeof(int), false, true, [(int)-6] },  // conversion is not precise, succeeds when precise is not required
+                // STRING to INTEGER type conversions:
+                { (object?[])["-6", "0", "255"], typeof(int), true, true, [-6, 0, 255] },
+                { (object?[])["8.12"], typeof(int), false, false, [8] },  // floating point is not legal with conversion to integer types
+                { (object?[])["0", "25", "255"], typeof(byte), true, true, [(byte) 0, (byte) 25, (byte)255] },
+                { (object?[])["260"], typeof(byte), true, false, [260] },  // overflow
+                { (object?[])["-5"], typeof(byte), true, false, [-5] },  // byte cannot be negative
+                // INTEGER type to STRING type conversions:
+                { (object?[])[-6, 0, 255], typeof(string), true, true, ["-6", "0", "255"] },
+                { (object?[])[(byte)0, (byte)25, (byte)255], typeof(byte), true, true, ["0", "25", "255"] },
+                { (object?[])[long.MinValue], typeof(string), true, true, [(long.MinValue).ToString()] },
+                // STRING to FLOATING POINT type conversions:
+                { (object?[])["-6.2", "0.5", "255.44", "-2.6e5"], typeof(double), true, true, [-6.2, 0.5, 255.44, -2.6e5] },
+                { (object?[])["-6.2", "0.5", "255.44", "-2.6e5"], typeof(float), true, true, [-6.2, 0.5, 255.44, -2.6e5] },
+                { (object?[])["1.0e35"], typeof(float), true, false, [(double)1.0e35] },  // overflow
+                // FLOATING POINT type to STRING conversions:
+                { (object?[])[-6.2, 0.5, 255.44, -2.6e5], typeof(string), true, true, ["-6.2", "0.5", "255.44", "-2.6e5"] },
+                { (object?[])[(float)-6.2, (float)0.5, (float)255.44, (float)-2.6e5], typeof(string), true, true, ["-6.2", "0.5", "255.44", "-2.6e5"] },
 
             };
 
