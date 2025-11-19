@@ -437,7 +437,7 @@ namespace IGLib.Types.Tests
         /// list of type int (can be used for other typees, too, because of redundant parameters).
         /// <para>Dataset parameters:</para>
         /// <para>1. Collection to be converted (IEnumerable?)</para>
-        /// <para>2. Target type (redundant when testing generic methods) (Type)</para>
+        /// <para>2. Target type (redundant when testing generic methods - MUST BE int here) (Type)</para>
         /// <para>3. Whether PRECISE conversion is required (bool)</para>
         /// <para>4. Whether conversion is expected to be be SUCCESFUL (bool)</para>
         /// <para>5. Expected values of converted elemennts (object[])</para></summary>
@@ -469,8 +469,6 @@ namespace IGLib.Types.Tests
                 { (object?[])[(string)"15"], TypeInt, false, true, null },   // precise string conversion succeeds
                 { (object?[])[int.MaxValue + (long) 1], TypeInt, false, false, null }  // owerflow
             };
-
-
 
 
 
@@ -558,7 +556,7 @@ namespace IGLib.Types.Tests
                 result.Should().NotBeNull();
                 result.Count.Should().Be(expectedResult.Length, because: $"number of elements after conversion should be {
                     expectedResult.Length}.");
-                if (expectedResult != null && expectedResult.Length >= 0)
+                if (expectedResult != null && expectedResult.Length >= 0 && shouldBeConvertible)
                 {
                     for (int i = 0; i < expectedResult!.Length; ++i)
                     {
@@ -570,15 +568,81 @@ namespace IGLib.Types.Tests
         }
 
 
-
-
-
-
-
-
-
-
-
+        [Theory]
+        // Dataset for conversion to int:
+        [MemberData(nameof(Dataset_CovertToListOf_Int))]  // Conversion to int from various types
+        protected void IsConvertibleToCollectionOf_Int_WorksCorrectly(IEnumerable? enumerable, Type targetType,
+            bool precise, bool shouldBeConvertible, object?[]? expectedResult)
+        {
+            Type internalType = typeof(int);
+            Console.WriteLine($"Testing conversion of an object collection to a list of elements of type {internalType.Name}.");
+            Console.WriteLine("Collection converted: ");
+            if (enumerable == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (!enumerable.GetEnumerator().MoveNext())
+            {
+                Console.WriteLine("  empty collection");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in enumerable)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}, type: {item?.GetType().Name ?? "/"}");
+                    ++i;
+                }
+            }
+            Console.WriteLine($"Target element type after conversion: {internalType.Name}");
+            Console.WriteLine($"Is precise conversioin required:      {precise}");
+            Console.WriteLine($"Conversion should be possible:        {shouldBeConvertible}");
+            Console.WriteLine("Expected conversion result: ");
+            if (expectedResult == null)
+            {
+                Console.WriteLine("  null");
+            }
+            else if (expectedResult.Length == 0)
+            {
+                Console.WriteLine("  empty array");
+            }
+            else
+            {
+                int i = 0;
+                foreach (object? item in expectedResult)
+                {
+                    Console.WriteLine($"  [{i}] : {item?.ToString() ?? "null"}, type: {item?.GetType().Name ?? "/"}");
+                    ++i;
+                }
+            }
+            Console.WriteLine($"\nThe collection should be convertible to collection of type {targetType.Name}: {shouldBeConvertible}\n");
+            if (targetType!=internalType)
+            {
+                Console.WriteLine($"Warning:\n  Target type from dataset ({targetType.Name}) does not match the internal target type ({
+                    internalType.Name}) of this method.\n  Possibly a wrong dataset is used.");
+            }
+            targetType.Should().Be(internalType, because: $"PRECOND: the target typee for this test method should be {internalType.Name}");
+            // Act:
+            bool result = false;
+            bool wasExceptionThrown = false;
+            try
+            {
+                result = UtilTypes.IsConvertibleToCollectionOf<int>(enumerable, precise: precise);
+                Console.WriteLine($"Result of {nameof(UtilTypes.IsConvertibleToCollectionOfType)}: {result}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n{ex.GetType().Name} was thrown when trying to establish convertibility.\n  Message:{ex.Message}\n");
+                wasExceptionThrown = true;
+            }
+            // Assert:
+            wasExceptionThrown.Should().BeFalse(because: $"{nameof(UtilTypes.IsConvertibleToCollectionOfType)} should not throw exceptions");
+            result.Should().Be(shouldBeConvertible);
+            if (wasExceptionThrown && expectedResult != null && expectedResult.Length > 0)
+            {
+                result.Should().Be(shouldBeConvertible, because: $"the collection should {(shouldBeConvertible ? "" : "NOT")} be convertible to collection of objects of type {targetType.Name}");
+            }
+        }
 
 
 
@@ -917,11 +981,6 @@ namespace IGLib.Types.Tests
                     (shouldBeConvertible? "": "NOT")} be convertible to collection of objects of type {targetType.Name}");
             }
         }
-
-
-
-
-
 
 
         #endregion CollectionTypeConversions
