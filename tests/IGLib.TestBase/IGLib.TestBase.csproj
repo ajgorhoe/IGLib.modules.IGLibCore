@@ -39,25 +39,25 @@
 	<ItemGroup>
 		<!-- For automatic versioning with GitVersion tool (https://gitversion.net/docs/usage/cli/) 
 			- versions specified from Git tags (like v.1.4.2 on min branch) & history : -->
-		<PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
+		<PackageReference Include="GitVersion.MsBuild" Version="6.5.0" PrivateAssets="All" />
 	</ItemGroup>
 
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48' OR '$(TargetFramework)' == 'netstandard2.0'">
-		<PackageReference Include="System.Text.Json" Version="*" />
+		<PackageReference Include="System.Text.Json" Version="10.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="xunit" Version="*" />
+		<PackageReference Include="xunit" Version="2.9.3" />
 		<!--
 		-->
-		<PackageReference Include="xunit.runner.visualstudio" Version="*">
+		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="FluentAssertions" Version="*" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="*" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="*" />
+		<PackageReference Include="FluentAssertions" Version="8.8.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
