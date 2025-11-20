@@ -54,7 +54,7 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0" />
 		<!--
 		-->
-		<PackageReference Include="System.Text.Json" Version="*" />
+		<PackageReference Include="System.Text.Json" Version="10.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
