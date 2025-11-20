@@ -39,12 +39,12 @@
 	<ItemGroup>
 		<!-- For automatic versioning with GitVersion tool (https://gitversion.net/docs/usage/cli/) 
 			- versions specified from Git tags (like v.1.4.2 on min branch) & history : -->
-		<PackageReference Include="GitVersion.MsBuild" Version="*" PrivateAssets="All" />
+		<PackageReference Include="GitVersion.MsBuild" Version="6.5.0" PrivateAssets="All" />
 	</ItemGroup>
 
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48' OR '$(TargetFramework)' == 'netstandard2.0'">
-		<PackageReference Include="System.Text.Json" Version="*" />
+		<PackageReference Include="System.Text.Json" Version="10.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
