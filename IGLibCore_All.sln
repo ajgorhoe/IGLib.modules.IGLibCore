@@ -312,6 +312,37 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitIGLibModulesBasic", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.ScriptingExtended", "..\IGLibScripting\src\IGLib.ScriptingExtended\IGLib.ScriptingExtended.csproj", "{308F85D3-71AC-69E1-B966-683968354BDE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGLibApps", "IGLibApps", "{684DB193-65D1-4E74-8275-77E2D72E2204}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_Apps", "0_SolutionItems_Apps", "{C6A55A13-CDB4-4277-9157-C0132B4101B2}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibApps\LICENSE.md = ..\IGLibApps\LICENSE.md
+		..\IGLibApps\README.md = ..\IGLibApps\README.md
+		..\IGLibApps\repository_ajgorhoe_IGLib.modules.IGLibApps.url = ..\IGLibApps\repository_ajgorhoe_IGLib.modules.IGLibApps.url
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_InitModules_Apps", "1_InitModules_Apps", "{107E9083-4DCE-4A91-B055-365DF37127E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesApps", "..\IGLibApps\src\0InitModules\InitModulesApps\InitModulesApps.csproj", "{C7409DE7-28AD-6628-1E80-D05B29A2B689}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesAppstended", "..\IGLibApps\src\0InitModules\InitModulesAppsExtended\InitModulesAppstended.csproj", "{41B36549-B77B-A7A7-96E3-33DB36C83D7A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github_workflows", ".github_workflows", "{1ED4DFA9-0741-4055-85C2-91F3E4EBBFCC}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{7EBCDD90-937A-4169-B19E-C03C5835D2C4}"
+	ProjectSection(SolutionItems) = preProject
+		..\IGLibApps\scripts\PrintEnv.ps1 = ..\IGLibApps\scripts\PrintEnv.ps1
+		..\IGLibApps\scripts\README_scripts.md = ..\IGLibApps\scripts\README_scripts.md
+		..\IGLibApps\scripts\ShowDirectoryTree.ps1 = ..\IGLibApps\scripts\ShowDirectoryTree.ps1
+		..\IGLibApps\scripts\UpdateDependencyRepos.ps1 = ..\IGLibApps\scripts\UpdateDependencyRepos.ps1
+		..\IGLibApps\scripts\UpdateDependencyReposExtended.ps1 = ..\IGLibApps\scripts\UpdateDependencyReposExtended.ps1
+		..\IGLibApps\scripts\UpdateOrCloneRepository.ps1 = ..\IGLibApps\scripts\UpdateOrCloneRepository.ps1
+		..\IGLibApps\scripts\UpdateRepo_IGLibScripts.ps1 = ..\IGLibApps\scripts\UpdateRepo_IGLibScripts.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -510,6 +541,14 @@ Global
 		{308F85D3-71AC-69E1-B966-683968354BDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{308F85D3-71AC-69E1-B966-683968354BDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{308F85D3-71AC-69E1-B966-683968354BDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7409DE7-28AD-6628-1E80-D05B29A2B689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7409DE7-28AD-6628-1E80-D05B29A2B689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7409DE7-28AD-6628-1E80-D05B29A2B689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7409DE7-28AD-6628-1E80-D05B29A2B689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41B36549-B77B-A7A7-96E3-33DB36C83D7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41B36549-B77B-A7A7-96E3-33DB36C83D7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41B36549-B77B-A7A7-96E3-33DB36C83D7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41B36549-B77B-A7A7-96E3-33DB36C83D7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -606,6 +645,13 @@ Global
 		{2E8146BF-8058-4E26-956B-8531E6EB5764} = {A2B0D15D-28C9-48EC-B165-3FEADEE4FC76}
 		{18842D07-F845-0112-D907-0FFA8706ACD5} = {AD2BFCCA-B736-49EB-80FA-FC7C742C6788}
 		{308F85D3-71AC-69E1-B966-683968354BDE} = {A2B0D15D-28C9-48EC-B165-3FEADEE4FC76}
+		{684DB193-65D1-4E74-8275-77E2D72E2204} = {9DEA103F-151B-4DCE-AE7D-BD035058CE74}
+		{C6A55A13-CDB4-4277-9157-C0132B4101B2} = {684DB193-65D1-4E74-8275-77E2D72E2204}
+		{107E9083-4DCE-4A91-B055-365DF37127E5} = {684DB193-65D1-4E74-8275-77E2D72E2204}
+		{C7409DE7-28AD-6628-1E80-D05B29A2B689} = {107E9083-4DCE-4A91-B055-365DF37127E5}
+		{41B36549-B77B-A7A7-96E3-33DB36C83D7A} = {107E9083-4DCE-4A91-B055-365DF37127E5}
+		{1ED4DFA9-0741-4055-85C2-91F3E4EBBFCC} = {C6A55A13-CDB4-4277-9157-C0132B4101B2}
+		{7EBCDD90-937A-4169-B19E-C03C5835D2C4} = {C6A55A13-CDB4-4277-9157-C0132B4101B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
