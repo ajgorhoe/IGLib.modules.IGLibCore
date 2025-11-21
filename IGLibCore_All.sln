@@ -316,6 +316,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGLibApps", "IGLibApps", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems_Apps", "0_SolutionItems_Apps", "{C6A55A13-CDB4-4277-9157-C0132B4101B2}"
 	ProjectSection(SolutionItems) = preProject
+		..\IGLibApps\GitVersion.yml = ..\IGLibApps\GitVersion.yml
 		..\IGLibApps\LICENSE.md = ..\IGLibApps\LICENSE.md
 		..\IGLibApps\README.md = ..\IGLibApps\README.md
 		..\IGLibApps\repository_ajgorhoe_IGLib.modules.IGLibApps.url = ..\IGLibApps\repository_ajgorhoe_IGLib.modules.IGLibApps.url
