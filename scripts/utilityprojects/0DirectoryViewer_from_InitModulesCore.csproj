@@ -1,5 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<!-- This projet enables viewing various kinds of contents of a repository in which
+	<!-- This project file was initially copied from InitModulesCore.csproj. We wand to check how
+	efficient this project is compered to the 0DirectoryViewer.csproj that was being developed 
+	specifically for this purpose, with a possibility for this file to replace the latter, or at
+	least some well working settings may be transferred.
+	
+	This projet enables viewing various kinds of contents of a repository in which
 	Visual Studio solutions are contained. By icluding the project in a VS solution, one
 	can browse contents that is displayed by the project, serch within files included, and
 	open files in rich Visual Studio editors.
@@ -7,31 +12,45 @@
 	when buildig the solution, but we haven't found the way to do this due to limitations of
 	MS Build projects. Therefore, about a second is spent on "building" the project, which
 	generate some useless mainifests etc. but no DLLs. Eventual warnings are suppressed by
-	NoWarn tags, such that the project does not affect the CI/CD. -->
+	NoWarn tags, such that the project does not affect the CI/CD.
+	-->
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<OutputType>Library</OutputType>
-		<IncludeBuildOutput>false</IncludeBuildOutput>
-		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
 		<!-- Prevent generation of assembly info, build output and packing: -->
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<IsPackable>false</IsPackable>
 
-		<!-- Suppress "No source files specified": -->
-		<NoWarn>$(NoWarn);CS2008</NoWarn>
-
+		<!-- Ensure that the post-build event is run even if the project is up-to-date and does not need building: 
+		<RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+		-->
 	</PropertyGroup>
+
+	<!-- Remove all C# compilation to avoid invoking the compiler (csc) at all; 
+	<ItemGroup>
+		<Compile Remove="**\*.cs" />
+		<InitScripts Include="Scripts\*.ps1" />
+	</ItemGroup>
+	-->
+
+	<!-- Copy a file to the output directory, in order to have timestamped output: 
+	<ItemGroup>
+		<None Update="0readme_InitModulesEventAggregator.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	-->
 
 
 	<!-- Remove all real Compile items -->
 	<ItemGroup>
 		<Compile Remove="**\*.cs" />
 	</ItemGroup>
-	
-	
+
+
 	<!-- Do not display directories and files form project root directory:  -->
 	<ItemGroup>
 		<None Remove="**\*.*" >
@@ -39,35 +58,18 @@
 	</ItemGroup>
 
 	<!-- Mirror real direectories: -->
-	
+
 	<!-- /scripts, mapped to scripts/, which is also the project's root directory: -->
 	<ItemGroup>
-		<None Include="..\scripts\**\*.*">
+		<None Include="..\..\scripts\**\*.*">
 			<Link>scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</None>
 		<!--
-		<None Remove="..\scripts\bin\**\*.*" />
-		<None Remove="..\scripts\obj\**\*.*" />
+		<None Remove="..\..\scripts\bin\**\*.*" />
+		<None Remove="..\..\scripts\obj\**\*.*" />
 		-->
-		<None Remove="..\scripts\.vs\**\*.*" />
+		<None Remove="..\..\scripts\.vs\**\*.*" />
 	</ItemGroup>
 
 
-	<!-- Override all build-related targets so they do nothing: 
-	<Target Name="CoreCompile" />
-	<Target Name="PrepareForBuild" />
-	<Target Name="Compile" />
-	<Target Name="Build" />
-	<Target Name="Restore" />
-	<Target Name="ResolveReferences" />
-	<Target Name="GenerateTargetFrameworkMonikerAttribute" />
-	<Target Name="GenerateAssemblyInfo" />
-	
-	 Nullify additional (restore-related) targets: 
-	<Target Name="Restore" />
-	<Target Name="CheckForUnsupportedNETCoreVersion" />
-	<Target Name="CheckForProjectVersionCompatibility" />
-	-->
-	
-	
 </Project>
