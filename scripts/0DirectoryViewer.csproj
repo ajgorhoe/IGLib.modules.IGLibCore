@@ -1,42 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<!-- Required by SDK-style projects -->
-		<TargetFramework>net8.0</TargetFramework>
+  <PropertyGroup>
+    <!-- Must be a real TFM for SDK project -->
+    <TargetFramework>net8.0</TargetFramework>
 
-		<!-- Make the project never produce anything -->
-		<OutputType>None</OutputType>
-		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <!-- Prevent outputs -->
+    <OutputType>Library</OutputType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 
-		<!-- Prevent real builds 
-		<NoBuild>true</NoBuild>
-		-->
-		<OutputType>Library</OutputType>
+    <!-- Keep build fast -->
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
 
-		
-		<NoRestore>true</NoRestore>
+    <!-- No restore work -->
+    <RestoreProjectStyle>None</RestoreProjectStyle>
+  </PropertyGroup>
 
-		<!-- This avoids NETSDK1085 -->
-		<TargetsForTfmSpecificContentInPackage />
-	</PropertyGroup>
+  <!-- Remove all real Compile items -->
+  <ItemGroup>
+    <Compile Remove="**\*.cs" />
+  </ItemGroup>
 
-	<!-- Prevent all compile items -->
-	<ItemGroup>
-		<Compile Remove="**\*.cs" />
-		<EmbeddedResource Remove="**\*" />
-		<None Remove="**\*" />
-	</ItemGroup>
+  <!-- Mirror real folders -->
+  <ItemGroup>
+    <None Include="..\RealFolderToMirror\**\*.*" />
+  </ItemGroup>
 
-	<!-- Add your mirrored files -->
-	<ItemGroup>
-		<None Include="..\RealFolderToMirror\**\*.*" />
-		<None Include="**\*.*" />
-	</ItemGroup>
-
-	<!-- Override build targets so they do NOTHING -->
-	<Target Name="Build" />
-	<Target Name="Compile" />
-	<Target Name="CoreCompile" />
-	<Target Name="ResolveReferences" />
-	<Target Name="Restore" />
-	<Target Name="Clean" />
+  <!-- Override all build-related targets so they do nothing -->
+  <Target Name="CoreCompile" />
+  <Target Name="PrepareForBuild" />
+  <Target Name="Compile" />
+  <Target Name="Build" />
+  <Target Name="Restore" />
+  <Target Name="ResolveReferences" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
+  <Target Name="GenerateAssemblyInfo" />
 </Project>
