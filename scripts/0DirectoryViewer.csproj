@@ -12,6 +12,8 @@
 		<CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
 		<IsPackable>false</IsPackable>
 
+		<!-- Suppress “No source files specified” -->
+		<NoWarn>$(NoWarn);CS2008</NoWarn>
 
 	</PropertyGroup>
 
@@ -22,25 +24,40 @@
 	</ItemGroup>
 	
 	
-	<!-- Do not display directories and files form project root directory: 
-	-->
+	<!-- Do not display directories and files form project root directory:  -->
 	<ItemGroup>
 		<None Remove="**\*.*" >
 		</None>
 	</ItemGroup>
 
 	<!-- Mirror real direectories: -->
+	
 	<!-- /scripts, mapped to scripts/, which is also the project's root directory: -->
 	<ItemGroup>
 		<None Include="..\scripts\**\*.*">
 			<Link>scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</None>
 		<!--
-		-->
 		<None Remove="..\scripts\bin\**\*.*" />
 		<None Remove="..\scripts\obj\**\*.*" />
+		-->
 		<None Remove="..\scripts\.vs\**\*.*" />
 	</ItemGroup>
+
+
+	<!-- Override all build-related targets so they do nothing -->
+	<Target Name="CoreCompile" />
+	<Target Name="PrepareForBuild" />
+	<Target Name="Compile" />
+	<Target Name="Build" />
+	<Target Name="Restore" />
+	<Target Name="ResolveReferences" />
+	<Target Name="GenerateTargetFrameworkMonikerAttribute" />
+	<Target Name="GenerateAssemblyInfo" />
+	<!-- Nullify additional (restore-related) targets -->
+	<Target Name="Restore" />
+	<Target Name="CheckForUnsupportedNETCoreVersion" />
+	<Target Name="CheckForProjectVersionCompatibility" />
 	
 	
 </Project>
