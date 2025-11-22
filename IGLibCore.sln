@@ -14,7 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems", "0_Soluti
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{21254F1A-A508-46CA-B3F9-D8CF2218C042}"
 	ProjectSection(SolutionItems) = preProject
-		readme.GitLab_CI_CD_old.md = readme.GitLab_CI_CD_old.md
 		README_Development.md = README_Development.md
 	EndProjectSection
 EndProject

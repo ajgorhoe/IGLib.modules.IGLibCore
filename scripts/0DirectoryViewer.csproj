@@ -1,11 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<OutputType>Library</OutputType>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+		<!-- Prevent generation of assembly info, build output and packing: -->
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+		<IsPackable>false</IsPackable>
+
+
 	</PropertyGroup>
 
 

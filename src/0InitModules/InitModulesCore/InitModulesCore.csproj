@@ -6,8 +6,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<OutputType>Library</OutputType>
 
-		<!-- Prevent generation of assembly info, build output and packing:
-		-->
+		<!-- Prevent generation of assembly info, build output and packing: -->
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
