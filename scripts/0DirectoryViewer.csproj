@@ -23,11 +23,11 @@
 	
 	
 	<!-- Do not display directories and files form project root directory: 
+	-->
 	<ItemGroup>
 		<None Remove="**\*.*" >
 		</None>
 	</ItemGroup>
-	-->
 
 	<!-- Mirror real direectories: -->
 	<!-- /scripts, mapped to scripts/, which is also the project's root directory: -->
@@ -36,9 +36,9 @@
 			<Link>scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</None>
 		<!--
+		-->
 		<None Remove="..\scripts\bin\**\*.*" />
 		<None Remove="..\scripts\obj\**\*.*" />
-		-->
 		<None Remove="..\scripts\.vs\**\*.*" />
 	</ItemGroup>
 	
