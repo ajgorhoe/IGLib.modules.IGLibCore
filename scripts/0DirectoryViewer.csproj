@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<!-- Must be a real TFM for SDK project -->
-		<TargetFramework>net10.0</TargetFramework>
-		<!-- Prevent outputs -->
-		<OutputType>Library</OutputType>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
-		<!--
-		<CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
-		<IncludeBuildOutput>false</IncludeBuildOutput>
-		<IsPackable>false</IsPackable>
-		-->
-		<!-- Keep build fast -->
+		<!-- Prevent the project from attempting any compilation -->
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-		<!-- No restore work -->
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+
+		<!-- Prevent build from running -->
+		<SkipCompilerExecution>true</SkipCompilerExecution>
+		<NoBuild>true</NoBuild>
+
+		<!-- NEW: prevent NuGet restore to avoid NETSDK1005 -->
 		<RestoreProjectStyle>None</RestoreProjectStyle>
+
+		<!-- Visual Studio friendliness -->
+		<IncludeBuildOutput>false</IncludeBuildOutput>
 	</PropertyGroup>
 
 	<!-- Remove all real Compile items -->
