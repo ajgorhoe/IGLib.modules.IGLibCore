@@ -1,20 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-
-		<!-- Build suppression 
-		<NoBuild>true</NoBuild>
-		-->
-		<SkipCompilerExecution>true</SkipCompilerExecution>
+		<TargetFramework>net8.0</TargetFramework>
+		<OutputType>Library</OutputType>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
-
-		<!-- Disable all forms of restore -->
-		<RestoreProjectStyle>None</RestoreProjectStyle>
-		<RestorePackages>false</RestorePackages>
-		<DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
-		<DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-		<RestoreTargets></RestoreTargets>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 
 
@@ -44,18 +35,5 @@
 		<None Remove="..\scripts\.vs\**\*.*" />
 	</ItemGroup>
 	
-	<!-- Nullify restore-related targets -->
-	<Target Name="Restore" />
-	<Target Name="CheckForUnsupportedNETCoreVersion" />
-	<Target Name="CheckForProjectVersionCompatibility" />
 	
-	<!-- Override all build-related targets so they do nothing -->
-	<Target Name="CoreCompile" />
-	<Target Name="PrepareForBuild" />
-	<Target Name="Compile" />
-	<Target Name="Build" />
-	<Target Name="Restore" />
-	<Target Name="ResolveReferences" />
-	<Target Name="GenerateTargetFrameworkMonikerAttribute" />
-	<Target Name="GenerateAssemblyInfo" />
 </Project>
