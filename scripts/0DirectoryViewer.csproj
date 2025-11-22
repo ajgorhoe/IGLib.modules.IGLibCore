@@ -1,25 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <!-- Must be a real TFM for SDK project -->
-    <TargetFramework>net8.0</TargetFramework>
-
+    <TargetFramework>net10.0</TargetFramework>
     <!-- Prevent outputs -->
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
-
     <!-- Keep build fast -->
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-
     <!-- No restore work -->
     <RestoreProjectStyle>None</RestoreProjectStyle>
   </PropertyGroup>
-
+	
   <!-- Remove all real Compile items -->
   <ItemGroup>
     <Compile Remove="**\*.cs" />
   </ItemGroup>
 
+	
   <!-- Mirror real folders -->
   <ItemGroup>
     <None Include="..\RealFolderToMirror\**\*.*" />
