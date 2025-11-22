@@ -1,5 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<!-- This projet enables viewing various kinds of contents of a repository in which
+	Visual Studio solutions are contained. By icluding the project in a VS solution, one
+	can browse contents that is displayed by the project, serch within files included, and
+	open files in rich Visual Studio editors.
+	The project does not contain actual code. It wa attempted to avoid building the project
+	when buildig the solution, but we haven't found the way to do this due to limitations of
+	MS Build projects. Therefore, about a second is spent on "building" the project, which
+	generate some useless mainifests etc. but no DLLs. Eventual warnings are suppressed by
+	NoWarn tags, such that the project does not affect the CI/CD. -->
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<OutputType>Library</OutputType>
