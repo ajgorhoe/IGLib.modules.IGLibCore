@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<!-- Required by SDK-style projects -->
+		<TargetFramework>net8.0</TargetFramework>
+
+		<!-- Make the project never produce anything -->
+		<OutputType>None</OutputType>
+		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+
+		<!-- Prevent real builds 
+		<NoBuild>true</NoBuild>
+		-->
+		<OutputType>Library</OutputType>
+
+		
+		<NoRestore>true</NoRestore>
+
+		<!-- This avoids NETSDK1085 -->
+		<TargetsForTfmSpecificContentInPackage />
+	</PropertyGroup>
+
+	<!-- Prevent all compile items -->
+	<ItemGroup>
+		<Compile Remove="**\*.cs" />
+		<EmbeddedResource Remove="**\*" />
+		<None Remove="**\*" />
+	</ItemGroup>
+
+	<!-- Add your mirrored files -->
+	<ItemGroup>
+		<None Include="..\RealFolderToMirror\**\*.*" />
+		<None Include="**\*.*" />
+	</ItemGroup>
+
+	<!-- Override build targets so they do NOTHING -->
+	<Target Name="Build" />
+	<Target Name="Compile" />
+	<Target Name="CoreCompile" />
+	<Target Name="ResolveReferences" />
+	<Target Name="Restore" />
+	<Target Name="Clean" />
+</Project>
