@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<!-- This projet enables viewing various kinds of contents of a repository in which
 	Visual Studio solutions are contained. By icluding the project in a VS solution, one
-	can browse contents that is displayed by the project, serch within files included, and
-	open files in rich Visual Studio editors.
-	The project does not contain actual code. It wa attempted to avoid building the project
-	when buildig the solution, but we haven't found the way to do this due to limitations of
+	can browse contents (directories and files) that are displayed by the project, serch 
+	within files included, and open files in rich Visual Studio editors.
+	The project does not contain actual code. It was attempted to avoid building the project
+	when buildig the solution, but the way to do this was not fount due to limitations of
 	MS Build projects. Therefore, about a second is spent on "building" the project, which
-	generate some useless mainifests etc. but no DLLs. Eventual warnings are suppressed by
+	generate some small redundant file, but no DLLs. Eventual warnings are suppressed by
 	NoWarn tags, such that the project does not affect the CI/CD. -->
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
@@ -39,19 +39,40 @@
 	</ItemGroup>
 
 	<!-- Mirror real direectories: -->
+
+	<!-- Files in root directory of the repository, mapped to root/ , 1 level of depth : -->
+	<ItemGroup>
+		<None Include="..\..\*.*">
+			<Link>repo_root\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		<None Remove="..\..\*.bak" />
+	</ItemGroup>
 	
-	<!-- /scripts, mapped to scripts/, which is also the project's root directory: -->
+	<!-- /scripts, mapped to scripts/ , recursive : -->
 	<ItemGroup>
 		<None Include="..\..\scripts\**\*.*">
 			<Link>scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</None>
 		<!--
-		<None Remove="..\..\scripts\bin\**\*.*" />
-		<None Remove="..\..\scripts\obj\**\*.*" />
 		-->
-		<None Remove="..\..\scripts\.vs\**\*.*" />
+		<None Remove="..\..\scripts\utilityprojects\bin\**\*.*" />
+		<None Remove="..\..\scripts\utilityprojects\obj\**\*.*" />
+		<None Remove="..\..\scripts\utilityprojects\.vs\**\*.*" />
 	</ItemGroup>
 
+	<!-- Files in parent directory of the repository, mapped to root/ , 3 levels of depth : -->
+	<ItemGroup>
+		<None Include="..\..\..\*.*">
+			<Link>repo_parent_directory\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		<None Remove="..\..\..\*.bak" />
+		<None Include="..\..\..\*\*.*">
+			<Link>repo_parent_directory\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		<None Include="..\..\..\*\*\*.*">
+			<Link>repo_parent_directory\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+	</ItemGroup>
 
 	<!-- Override all build-related targets so they do nothing: 
 	<Target Name="CoreCompile" />
