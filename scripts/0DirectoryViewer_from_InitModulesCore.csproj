@@ -1,29 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	<!-- Utility project; Initializes dependencies for the EventAggregator and EventAggregatorTests projects:
+	  * Clones / updates source repositories of dependencies side by side
+	See: https://github.com/ajgorhoe/IGLib.modules.IGLibEventAggregator/blob/main/src/0InitModules/InitializationProjects.md -->
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<OutputType>Library</OutputType>
-		<IncludeBuildOutput>false</IncludeBuildOutput>
-		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
 		<!-- Prevent generation of assembly info, build output and packing: -->
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<IsPackable>false</IsPackable>
 
-		<!-- Suppress "No source files specified": -->
-		<NoWarn>$(NoWarn);CS2008</NoWarn>
-
+		<!-- Ensure that the post-build event is run even if the project is up-to-date and does not need building: 
+		<RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+		-->
 	</PropertyGroup>
+
+	<!-- Remove all C# compilation to avoid invoking the compiler (csc) at all; 
+	<ItemGroup>
+		<Compile Remove="**\*.cs" />
+		<InitScripts Include="Scripts\*.ps1" />
+	</ItemGroup>
+	-->
+
+	<!-- Copy a file to the output directory, in order to have timestamped output: 
+	<ItemGroup>
+		<None Update="0readme_InitModulesEventAggregator.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	-->
 
 
 	<!-- Remove all real Compile items -->
 	<ItemGroup>
 		<Compile Remove="**\*.cs" />
 	</ItemGroup>
-	
-	
+
+
 	<!-- Do not display directories and files form project root directory:  -->
 	<ItemGroup>
 		<None Remove="**\*.*" >
@@ -31,7 +46,7 @@
 	</ItemGroup>
 
 	<!-- Mirror real direectories: -->
-	
+
 	<!-- /scripts, mapped to scripts/, which is also the project's root directory: -->
 	<ItemGroup>
 		<None Include="..\scripts\**\*.*">
@@ -45,21 +60,5 @@
 	</ItemGroup>
 
 
-	<!-- Override all build-related targets so they do nothing: 
-	<Target Name="CoreCompile" />
-	<Target Name="PrepareForBuild" />
-	<Target Name="Compile" />
-	<Target Name="Build" />
-	<Target Name="Restore" />
-	<Target Name="ResolveReferences" />
-	<Target Name="GenerateTargetFrameworkMonikerAttribute" />
-	<Target Name="GenerateAssemblyInfo" />
-	
-	 Nullify additional (restore-related) targets: 
-	<Target Name="Restore" />
-	<Target Name="CheckForUnsupportedNETCoreVersion" />
-	<Target Name="CheckForProjectVersionCompatibility" />
-	-->
-	
-	
+
 </Project>
