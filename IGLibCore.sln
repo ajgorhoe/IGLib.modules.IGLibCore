@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.CoreExtended", "src\I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryViewer", "scripts\utilityprojects\DirectoryViewer.csproj", "{36F0F178-43B9-14D7-399B-1D829D09A5F3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github_workflows", "github_workflows", "{06FEF5EE-0D37-4B0F-AC7F-3C4A0A3F7CEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6} = {D2443D8D-9545-4700-8621-445849491F39}
 		{36F0F178-43B9-14D7-399B-1D829D09A5F3} = {633BD4B2-3198-47BE-A26F-0E48453D428E}
+		{06FEF5EE-0D37-4B0F-AC7F-3C4A0A3F7CEE} = {633BD4B2-3198-47BE-A26F-0E48453D428E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
