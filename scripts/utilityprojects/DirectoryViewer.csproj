@@ -70,40 +70,52 @@
 		<None Remove="..\..\.github\workflows\**\*.bak" />
 	</ItemGroup>
 	
-	
-	
-	<!-- /doc/codedoc, mapped to codedoc/ , recursive : -->
+	<!-- /doc , mapped to doc/, 1 level -->
 	<ItemGroup>
-		<None Include="..\..\doc\codedoc\CodeDocumentation.html">
+		<None Include="..\..\doc\*.*">
+			<Link>doc\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		<None Remove="..\..\doc\.gitignore" />
+	</ItemGroup>
+
+	<!-- /doc/codedoc, mapped to codedoc/ , individual - case by case : -->
+	<ItemGroup>
+		<None Include="..\..\doc\codedoc\*.html">
+			<Link>codedoc\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		<None Include="..\..\doc\codedoc\*.md">
+			<Link>codedoc\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		<None Include="..\..\doc\codedoc\*.url">
 			<Link>codedoc\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</None>
 		
-		<None Include="..\..\doc\codedoc\*">
-			<Link>codedoc\config_and_scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		<None Include="..\..\doc\codedoc\*.dox">
+			<Link>codedoc\root_config\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</None>
-		<None Remove="..\..\doc\codedoc\*.bak" />
-		<None Remove="..\..\doc\codedoc\__trash" />
+		<None Include="..\..\doc\codedoc\*.ps1">
+			<Link>codedoc\root_scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		<None Include="..\..\doc\codedoc\*.log">
+			<Link>codedoc\root_logs\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		
+		<None Include="..\..\doc\codedoc\css\**\*.*">
+			<Link>codedoc\css\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		<None Remove="..\..\doc\codedoc\generated\**\__trash\**\*.*" />
 		
 		<None Include="..\..\doc\codedoc\generated\**\*.*">
 			<Link>codedoc\generated\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</None>
-		<None Remove="..\..\doc\codedoc\generated\**\__trash\**\*.*" />
 		
 		<None Include="..\..\doc\codedoc\generated_with_sources\**\*.*">
 			<Link>codedoc\generated_with_sources\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</None>
-		<None Remove="..\..\doc\codedoc\generated_with_sources\**\__trash\**\*.*" />
 		
-		
-		
-		<!--
-		-->
-		<None Remove="..\..\scripts\utilityprojects\bin\**\*.*" />
-		<None Remove="..\..\scripts\utilityprojects\obj\**\*.*" />
-		<None Remove="..\..\scripts\utilityprojects\.vs\**\*.*" />
+		<None Remove="..\..\doc\codedoc\**\*.bak" />
+		<None Remove="..\..\doc\codedoc\**\__trash\**\*.*" />
 	</ItemGroup>
-	
-	
 	
 	<!-- Files in parent directory of the repository, mapped to root/ , 3 levels of depth : -->
 	<ItemGroup>
