@@ -53,6 +53,15 @@
 		<None Include="..\..\scripts\**\*.*">
 			<Link>scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</None>
+		<None Include="..\..\scripts\*.ps1">
+			<Link>scripts\root_scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		<None Include="..\..\scripts\*.md">
+			<Link>scripts\root_doc\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
+		<None Include="..\..\scripts\*.txt">
+			<Link>scripts\root_other\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</None>
 		<!--
 		-->
 		<None Remove="..\..\scripts\utilityprojects\bin\**\*.*" />

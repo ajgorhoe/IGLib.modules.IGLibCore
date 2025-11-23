@@ -32,6 +32,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryViewer", "scripts\utilityprojects\DirectoryViewer.csproj", "{36F0F178-43B9-14D7-399B-1D829D09A5F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github_workflows", "github_workflows", "{06FEF5EE-0D37-4B0F-AC7F-3C4A0A3F7CEE}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
