@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github_workflows", "github_
 		.github\workflows\build.yml = .github\workflows\build.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Numeric", "src\IGLib.Numeric\IGLib.Numeric.csproj", "{1B17B4A9-8FAB-CFFB-1421-31F43DA21FFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,10 @@ Global
 		{36F0F178-43B9-14D7-399B-1D829D09A5F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36F0F178-43B9-14D7-399B-1D829D09A5F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36F0F178-43B9-14D7-399B-1D829D09A5F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B17B4A9-8FAB-CFFB-1421-31F43DA21FFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B17B4A9-8FAB-CFFB-1421-31F43DA21FFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B17B4A9-8FAB-CFFB-1421-31F43DA21FFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B17B4A9-8FAB-CFFB-1421-31F43DA21FFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
