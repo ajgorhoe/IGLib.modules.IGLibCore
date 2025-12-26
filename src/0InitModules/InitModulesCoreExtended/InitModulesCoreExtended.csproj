@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk"> 
+	<!-- Utility project; Initializes dependencies for the EventAggregator and EventAggregatorTests projects:
+	  * Clones / updates source repositories of dependencies side by side
+	See: https://github.com/ajgorhoe/IGLib.modules.IGLibEventAggregator/blob/main/src/0InitModules/InitializationProjects.md -->
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<OutputType>Library</OutputType>
+
+		<!-- Prevent generation of assembly info, build output and packing: -->
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<IsPackable>false</IsPackable>
+
+		<!-- Ensure that the post-build event is run even if the project is up-to-date and does not need building: 
+		<RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+		-->
+	</PropertyGroup>
+
+	<!-- Remove all C# compilation to avoid invoking the compiler (csc) at all; 
+	<ItemGroup>
+		<Compile Remove="**\*.cs" />
+		<InitScripts Include="Scripts\*.ps1" />
+	</ItemGroup>
+	-->
+
+	<!-- Copy a file to the output directory, in order to have timestamped output: 
+	<ItemGroup>
+		<None Update="0readme_InitModulesEventAggregator.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	-->
+
+	<PropertyGroup>
+		<!-- Select either Windows powershell or cross-platform pwsh to execute scripts: -->
+		<_PSExe Condition="'$(OS)' == 'Windows_NT'">powershell</_PSExe>
+		<_PSExe Condition="'$(OS)' != 'Windows_NT'">pwsh</_PSExe>
+		<_ExecPolicy Condition="'$(OS)' == 'Windows_NT'">-ExecutionPolicy Bypass</_ExecPolicy>
+		<!-- Define the command to be executed (use a SINGLE LINE for command!): -->
+		<InitCommand>
+			$(_PSExe) -NoProfile $(_ExecPolicy) -File "$(MSBuildProjectDirectory)/../../../scripts/UpdateDependencyRepos.ps1"
+			<!-- Add eventual script arguments here, e.g.:
+				-Arg1 "$(SomeArg)" -Arg2 "$(AnotherArg)"  
+				-->
+		</InitCommand>
+		<InitCommand1  Condition="'$(GITHUB_ACTIONS)' == 'true'">
+			$(_PSExe) -NoProfile $(_ExecPolicy) -Command "Write-Host \"`n`nSKIPPING INITIALIZATION of dependency repositories in GitHub Actions environment.`n`n\""
+		</InitCommand1>
+	</PropertyGroup>
+
+	<!-- Execution of the script that clones or updates all the dependency repositories: -->
+	<Target Name="RunInitializationScripts" AfterTargets="PostBuildEvent">
+
+		<Message Text="
+========== Initialization Project ==========" Importance="high" />
+		<Message Text="From InitModulesCore:" Importance="high" />
+		<Message Text="Initialization command:" Importance="high" />
+		<Message Text="  $(InitCommand1)" Importance="high" />
+		<Message Text="----------
+" Importance="high" />
+
+		<!--
+		This target runs the script that clones or updates all the dependency repositories.
+		The script is run in a post-build step. Therefore, if the project is up-to-date and does not need
+		to be built, the script is not run. You can force re-running the scritp simply by rebuilding the
+		project in Visual Studio, via command-line, or by any other means.
+		-->
+		<Exec Command="$(InitCommand)" ContinueOnError="true" />
+	</Target>
+
+</Project>
