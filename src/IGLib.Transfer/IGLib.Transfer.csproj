@@ -62,6 +62,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\IGLib.Core\IGLib.Core.csproj" />
+	  <ProjectReference Include="..\IGLib.Numeric\IGLib.Numeric.csproj" />
 	</ItemGroup>
 
 </Project>
