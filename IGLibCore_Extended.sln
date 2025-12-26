@@ -1,0 +1,97 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11111.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SolutionItems", "0_SolutionItems", "{633BD4B2-3198-47BE-A26F-0E48453D428E}"
+	ProjectSection(SolutionItems) = preProject
+		ajgorhoe_IGLib.modules.IGLibCore.url = ajgorhoe_IGLib.modules.IGLibCore.url
+		ajgorhoe_IGLib.workspace.base.iglib.url = ajgorhoe_IGLib.workspace.base.iglib.url
+		ajgorhoe_iglibmodules.url = ajgorhoe_iglibmodules.url
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+		README_Development.md = README_Development.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core", "src\IGLib.Core\IGLib.Core.csproj", "{F7D04FC0-4ED9-461D-8CD7-6FF2190C3A47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core.Tests", "tests\IGLib.Core.Tests\IGLib.Core.Tests.csproj", "{37844841-CD4C-42CA-A844-1A530336C28B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.TestBase", "tests\IGLib.TestBase\IGLib.TestBase.csproj", "{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{A7F22E90-40C0-4D41-A2B0-F790D9C89847}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InitModules", "InitModules", "{D2443D8D-9545-4700-8621-445849491F39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesCore", "src\0InitModules\InitModulesCore\InitModulesCore.csproj", "{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.TestBase.ExampleTests", "tests\IGLib.TestBase.ExampleTests\IGLib.TestBase.ExampleTests.csproj", "{3EA7D1E1-6531-66AB-3373-E019B89FD5C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.CoreExtended", "src\IGLib.CoreExtended\IGLib.CoreExtended.csproj", "{BF264449-127A-BDDE-05D7-72E941A4F558}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryViewer", "scripts\utilityprojects\DirectoryViewer.csproj", "{36F0F178-43B9-14D7-399B-1D829D09A5F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github_workflows", "github_workflows", "{06FEF5EE-0D37-4B0F-AC7F-3C4A0A3F7CEE}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.CoreNumeric", "src\IGLib.CoreNumeric\IGLib.CoreNumeric.csproj", "{22B3B856-3B80-6704-0214-9689FF97889F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Transfer", "src\IGLib.Transfer\IGLib.Transfer.csproj", "{716F7908-E545-79E6-19AB-D3562D50E653}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7D04FC0-4ED9-461D-8CD7-6FF2190C3A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D04FC0-4ED9-461D-8CD7-6FF2190C3A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7D04FC0-4ED9-461D-8CD7-6FF2190C3A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7D04FC0-4ED9-461D-8CD7-6FF2190C3A47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37844841-CD4C-42CA-A844-1A530336C28B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37844841-CD4C-42CA-A844-1A530336C28B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37844841-CD4C-42CA-A844-1A530336C28B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37844841-CD4C-42CA-A844-1A530336C28B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E8C546D-5FB2-7993-3391-3AB3F4DC19BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA7D1E1-6531-66AB-3373-E019B89FD5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA7D1E1-6531-66AB-3373-E019B89FD5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA7D1E1-6531-66AB-3373-E019B89FD5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA7D1E1-6531-66AB-3373-E019B89FD5C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF264449-127A-BDDE-05D7-72E941A4F558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF264449-127A-BDDE-05D7-72E941A4F558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF264449-127A-BDDE-05D7-72E941A4F558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF264449-127A-BDDE-05D7-72E941A4F558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36F0F178-43B9-14D7-399B-1D829D09A5F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36F0F178-43B9-14D7-399B-1D829D09A5F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36F0F178-43B9-14D7-399B-1D829D09A5F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36F0F178-43B9-14D7-399B-1D829D09A5F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22B3B856-3B80-6704-0214-9689FF97889F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22B3B856-3B80-6704-0214-9689FF97889F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22B3B856-3B80-6704-0214-9689FF97889F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22B3B856-3B80-6704-0214-9689FF97889F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{716F7908-E545-79E6-19AB-D3562D50E653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{716F7908-E545-79E6-19AB-D3562D50E653}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{716F7908-E545-79E6-19AB-D3562D50E653}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{716F7908-E545-79E6-19AB-D3562D50E653}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9BB423CB-766E-8D1B-EDF5-1909A94ED9E6} = {D2443D8D-9545-4700-8621-445849491F39}
+		{36F0F178-43B9-14D7-399B-1D829D09A5F3} = {633BD4B2-3198-47BE-A26F-0E48453D428E}
+		{06FEF5EE-0D37-4B0F-AC7F-3C4A0A3F7CEE} = {633BD4B2-3198-47BE-A26F-0E48453D428E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
+	EndGlobalSection
+EndGlobal
