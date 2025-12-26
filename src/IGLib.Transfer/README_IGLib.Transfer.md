@@ -10,7 +10,7 @@
 
 This project contains **utilities transferred from the legacy IGLib Framework** *for use with the IGLib Core*. This projects **temporarily hosts these utilities** such that namespaces, dependencies and replacements can be sorted out, before moving the utilities to their final destination projects.
 
-Thi project is **not contained** in the basic solution `IGLibCore.sln` or the complete solution for the new IGLib libraries 'IGLibCore_All.sln'. Use the `IGLibCore_Extended.sln` from the current repository in order to work with this project.
+Thi project is **not contained** in the basic solution `IGLibCore.sln` or the complete solution for the new IGLib libraries 'IGLibCore_All.sln'. Use the `IGLibCore_Extended.sln` from the current repository in order to work with this project. It is **permitted that the project cannot be built**, even on the main branch. Therefore, the solution `IGLibCore_Extended.sln` cannot be included in CI/CD pipelines.
 
 ## Basic Information
 
