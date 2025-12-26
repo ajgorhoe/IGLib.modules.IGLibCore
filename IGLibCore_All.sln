@@ -346,6 +346,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{7EBC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryViewer", "scripts\utilityprojects\DirectoryViewer.csproj", "{36F0F178-43B9-14D7-399B-1D829D09A5F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.CoreNumeric", "src\IGLib.CoreNumeric\IGLib.CoreNumeric.csproj", "{22B3B856-3B80-6704-0214-9689FF97889F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -556,6 +558,10 @@ Global
 		{36F0F178-43B9-14D7-399B-1D829D09A5F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36F0F178-43B9-14D7-399B-1D829D09A5F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36F0F178-43B9-14D7-399B-1D829D09A5F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22B3B856-3B80-6704-0214-9689FF97889F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22B3B856-3B80-6704-0214-9689FF97889F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22B3B856-3B80-6704-0214-9689FF97889F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22B3B856-3B80-6704-0214-9689FF97889F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -660,6 +666,7 @@ Global
 		{1ED4DFA9-0741-4055-85C2-91F3E4EBBFCC} = {C6A55A13-CDB4-4277-9157-C0132B4101B2}
 		{7EBCDD90-937A-4169-B19E-C03C5835D2C4} = {C6A55A13-CDB4-4277-9157-C0132B4101B2}
 		{36F0F178-43B9-14D7-399B-1D829D09A5F3} = {6A6A4F7E-E005-4C88-A167-C213C8AB0933}
+		{22B3B856-3B80-6704-0214-9689FF97889F} = {49FA5358-3660-4DDD-919F-5BC0D39DF5E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
