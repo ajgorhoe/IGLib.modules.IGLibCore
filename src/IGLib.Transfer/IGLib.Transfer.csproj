@@ -60,4 +60,8 @@
 		<PackageReference Include="System.Text.Json" Version="10.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\IGLib.Core\IGLib.Core.csproj" />
+	</ItemGroup>
+
 </Project>
