@@ -217,7 +217,7 @@ namespace IG.Num
 
         /// <summary>Returns a string representation of a scalar in the specified way.</summary>
         /// <param name="format">the format string.</param>
-        /// <param name="formatProvider">The bormat provider used.</param>
+        /// <param name="formatProvider">The format provider used.</param>
         /// <returns>String representation of the scalar.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
@@ -581,7 +581,7 @@ namespace IG.Num
 
         /// <summary>Returns a string representation of a counter in the specified way.</summary>
         /// <param name="format">the format string.</param>
-        /// <param name="formatProvider">The bormat provider used.</param>
+        /// <param name="formatProvider">The format provider used.</param>
         /// <returns>String representation of the counter.</returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
