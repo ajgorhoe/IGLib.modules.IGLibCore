@@ -354,6 +354,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Numeric", "src\IGLib.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Numerics", "..\_external\mathnet-numerics\src\Numerics\Numerics.csproj", "{F293FA43-D605-9037-1E2F-55CEF290066D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitModulesCoreExtended", "src\0InitModules\InitModulesCoreExtended\InitModulesCoreExtended.csproj", "{71F8E395-FE53-A717-6F04-54010E22DAAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -576,6 +578,10 @@ Global
 		{F293FA43-D605-9037-1E2F-55CEF290066D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F293FA43-D605-9037-1E2F-55CEF290066D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F293FA43-D605-9037-1E2F-55CEF290066D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71F8E395-FE53-A717-6F04-54010E22DAAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71F8E395-FE53-A717-6F04-54010E22DAAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71F8E395-FE53-A717-6F04-54010E22DAAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71F8E395-FE53-A717-6F04-54010E22DAAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -683,6 +689,7 @@ Global
 		{716F7908-E545-79E6-19AB-D3562D50E653} = {F49A124D-A386-4FE3-9E56-BA4EF239A5C1}
 		{1B17B4A9-8FAB-CFFB-1421-31F43DA21FFF} = {49FA5358-3660-4DDD-919F-5BC0D39DF5E4}
 		{F293FA43-D605-9037-1E2F-55CEF290066D} = {4B37EC0E-20A9-4E3B-8AD3-0EC68CC65939}
+		{71F8E395-FE53-A717-6F04-54010E22DAAE} = {7902DBD7-327F-4979-81AA-DD0F78909972}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
