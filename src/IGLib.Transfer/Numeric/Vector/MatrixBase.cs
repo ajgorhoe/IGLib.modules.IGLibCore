@@ -5265,17 +5265,17 @@ namespace IG.Num
 
 
 
-        /// <summary>Simpler but slower (compared to <see cref="Determinant"/>) implementation of determinant
+        /// <summary>Simpler but slower (compared to <see cref="CalculateDeterminant"/>) implementation of determinant
         /// calculation of an arbitrary square real matrix.
         /// <para>Auxiliary variable are allocated internally by the function, which makes it slower with respect to
-        /// <see cref="Determinant"/> where auxiliary parameters can be provided by the caller.</para></summary>
+        /// <see cref="CalculateDeterminant"/> where auxiliary parameters can be provided by the caller.</para></summary>
         /// <param name="A">Matrix whose determinant is calculated.</param>
         /// <returns>The calculated determinant of the specified matrix.</returns>
-        public static double DeterminantSlow(IMatrix A)
+        public static double CalculateDeterminantSlow(IMatrix A)
         {
             int[] permutations = null;
             IMatrix LU = null;
-            return Determinant(A, ref permutations, ref LU);
+            return CalculateDeterminant(A, ref permutations, ref LU);
         }
 
         /// <summary>Calculates and returns determinant of a real-valued square matrix.
@@ -5287,7 +5287,7 @@ namespace IG.Num
         /// <param name="auxLU">Auxiliary matrix where LU decomposition of <paramref name="A"/> will be stored. For best performance,
         /// caller should pass a matrix that is alredy initialized with the same dimensions.</param>
         /// <returns>The calculated determinant of the specified matrix.</returns>
-        public static double Determinant(IMatrix A, ref int[] auxPermutations, ref IMatrix auxLU)
+        public static double CalculateDeterminant(IMatrix A, ref int[] auxPermutations, ref IMatrix auxLU)
         {
             if (A == null)
                 throw new ArgumentException("Matrix whose determinant is calculateed is not specified (nulll reference).");
@@ -5765,7 +5765,7 @@ namespace IG.Num
                 if (A != null)
                 {
                     dim = A.RowCount;
-                    determinant = DeterminantSlow(A);  // reference calculation of determinant (since it is not provided in this case)
+                    determinant = CalculateDeterminantSlow(A);  // reference calculation of determinant (since it is not provided in this case)
                 }
                 else if (b != null)
                     dim = b.Length;
@@ -6397,7 +6397,7 @@ namespace IG.Num
                     dim = A.RowCount;
                     if (!MatrixBase.IsSymmetric(A, tol))
                         throw new ArgumentException("The specified matrix for testing LDLT decomposition is not symmetric.");
-                    determinant = DeterminantSlow(A);
+                    determinant = CalculateDeterminantSlow(A);
                 }
                 else if (b != null)
                     dim = b.Length;
@@ -6904,7 +6904,7 @@ namespace IG.Num
                     dim = A.RowCount;
                     if (!MatrixBase.IsSymmetric(A, tol))
                         throw new ArgumentException("The specified matrix for testing Cholesky decomposition is not symmetric.");
-                    determinant = DeterminantSlow(A);
+                    determinant = CalculateDeterminantSlow(A);
                 }
                 else if (b != null)
                     dim = b.Length;

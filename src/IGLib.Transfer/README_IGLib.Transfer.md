@@ -24,6 +24,19 @@ The intention is to move these utilities to IGLib.Numeric. Before moving:
 * **Most of the utilities** from the IG.Num namespace should be **transferred** (copied).
 * Namespaces should be changed, such that the **legacy IGLib and** the **IGLib.Numeric** library **can be referenced simultaneously**.
 
+#### Details of Transferring Numeric Utilities
+
+Utilities from **Geomettry/PointClouds** were **not transferred**. Point clouds will be reimplemented if they are needed.
+
+The 
+
+In the **MatrixBase class**, two **renames** were performed: 
+
+* `double DeterminantSlow(IMatrix A)` => `double CalculateDeterminantSlow(IMatrix A)` and 
+* `double Determinant(IMatrix A, ref int[] auxPermutations, ref IMatrix auxLU)` => `double CalculateDeterminant(IMatrix A, ref int[] auxPermutations, ref IMatrix auxLU)`. 
+* 
+* The `Determinant(...)` had to be renamed because it was otherwise in **name conflict with the `Determinant` property** in the derived classes `Matrix2D` and `Matrix3D`.
+
 #### To Be Done
 
 In IGLib.Numeric, **Remove all depenndencies on Console**. These dependencies can be kept in a higher level libraries, for example via static utility methods or extension methods.
