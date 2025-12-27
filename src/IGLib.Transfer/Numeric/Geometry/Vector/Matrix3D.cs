@@ -15,7 +15,7 @@ using System.Text;
 
 using IG.Lib;
 
-using F = IG.Num.M;
+// using F = IG.Num.M;
 
 namespace IG.Num
 {
