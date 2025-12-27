@@ -15,7 +15,6 @@ namespace IG.Num
     {
 
 
-
         /// <summary>Example - 2 component vector function of 2 variables.
         /// The first component is the Rosenbrock function and the second 
         /// component is a radially symmetric paraboloid with radius 2 of the

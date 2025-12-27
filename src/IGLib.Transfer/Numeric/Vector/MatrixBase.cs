@@ -5056,14 +5056,18 @@ namespace IG.Num
         }
 
 
+#if false
+
         /// <summary>Saves (serializes) the specified matrix to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="mat">Object that is saved to a file.</param>
         /// <param name="filePath">Path to the file in which object is is saved.</param>
         public static void SaveJson(IMatrix mat, string filePath)
         {
-            SaveJson(mat, filePath, false /* append */ );
+            throw new NotImplementedException();
+            //SaveJson(mat, filePath, false /* append */ );
         }
+
 
         /// <summary>Saves (serializes) the specified matrix to the specified JSON file.</summary>
         /// <param name="mat">Object that is saved to a file.</param>
@@ -5072,10 +5076,11 @@ namespace IG.Num
         /// in the case that the file already exists.</param>
         public static void SaveJson(IMatrix mat, string filePath, bool append)
         {
-            MatrixDtoBase dtoOriginal = new MatrixDtoBase();
-            dtoOriginal.CopyFrom(mat);
-            ISerializer serializer = new SerializerJson();
-            serializer.Serialize<MatrixDtoBase>(dtoOriginal, filePath, append);
+            throw new NotImplementedException();
+            //MatrixDtoBase dtoOriginal = new MatrixDtoBase();
+            //dtoOriginal.CopyFrom(mat);
+            //ISerializer serializer = new SerializerJson();
+            //serializer.Serialize<MatrixDtoBase>(dtoOriginal, filePath, append);
         }
 
         /// <summary>Restores (deserializes) a matrix object from the specified file in JSON format.</summary>
@@ -5083,11 +5088,13 @@ namespace IG.Num
         /// <param name="matRestored">Object that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref IMatrix matRestored)
         {
-            ISerializer serializer = new SerializerJson();
-            MatrixDtoBase dtoRestored = serializer.DeserializeFile<MatrixDtoBase>(filePath);
-            dtoRestored.CopyTo(ref matRestored);
+            throw new NotImplementedException();
+            //ISerializer serializer = new SerializerJson();
+            //MatrixDtoBase dtoRestored = serializer.DeserializeFile<MatrixDtoBase>(filePath);
+            //dtoRestored.CopyTo(ref matRestored);
         }
 
+#endif
 
         #endregion StaticInputOutput
 

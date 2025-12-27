@@ -2971,12 +2971,15 @@ namespace IG.Num
         }
 
 
+#if false
+
         /// <summary>Saves (serializes) the specified vector to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="vec">Object that is saved to a file.</param>
         /// <param name="filePath">Path to the file in which object is is saved.</param>
         public static void SaveJson(IVector vec, string filePath)
         {
+            throw new NotImplementedException();
             SaveJson(vec, filePath, false /* append */ );
         }
 
@@ -2989,10 +2992,11 @@ namespace IG.Num
         /// in the case that the file already exists.</param>
         public static void SaveJson(IVector vec, string filePath, bool append)
         {
-            VectorDtoBase dtoOriginal = new VectorDtoBase();
-            dtoOriginal.CopyFrom(vec);
-            ISerializer serializer = new SerializerJson();
-            serializer.Serialize<VectorDtoBase>(dtoOriginal, filePath, append);
+            throw new NotImplementedException();
+            //VectorDtoBase dtoOriginal = new VectorDtoBase();
+            //dtoOriginal.CopyFrom(vec);
+            //ISerializer serializer = new SerializerJson();
+            //serializer.Serialize<VectorDtoBase>(dtoOriginal, filePath, append);
         }
 
         /// <summary>Restores (deserializes) a vector from the specified file in JSON format.</summary>
@@ -3000,10 +3004,13 @@ namespace IG.Num
         /// <param name="vecRestored">Object that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref IVector vecRestored)
         {
-            ISerializer serializer = new SerializerJson();
-            VectorDtoBase dtoRestored = serializer.DeserializeFile<VectorDtoBase>(filePath);
-            dtoRestored.CopyTo(ref vecRestored);
+            throw new NotImplementedException();
+            //ISerializer serializer = new SerializerJson();
+            //VectorDtoBase dtoRestored = serializer.DeserializeFile<VectorDtoBase>(filePath);
+            //dtoRestored.CopyTo(ref vecRestored);
         }
+
+#endif
 
 
         /// <summary>Saves the specified vector to a CSV file.
@@ -3148,7 +3155,7 @@ namespace IG.Num
         }
 
 
-        #endregion StaticInputOutput
+#endregion StaticInputOutput
 
 
 
@@ -3184,7 +3191,7 @@ namespace IG.Num
         }
 
 
-        #endregion InputOutput
+#endregion InputOutput
 
 
     }  // class VectorBase
