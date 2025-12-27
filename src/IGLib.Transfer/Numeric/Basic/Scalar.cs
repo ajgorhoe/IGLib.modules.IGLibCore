@@ -397,7 +397,7 @@ namespace IG.Num
 
 
 
-    /// <summary>Represents a real number.</summary>
+    /// <summary>Represents an integer number.</summary>
     public struct Counter : IFormattable, IComparable<Counter>, IComparer<Counter>
     {
 
