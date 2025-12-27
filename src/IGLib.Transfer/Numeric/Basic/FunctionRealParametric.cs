@@ -1,9 +1,8 @@
-﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
-
-
+﻿
 // PARAMETERIZED FUNCTONS (parametric families of functions).
-
 // REMARK: Class structure of this file follows equivalent concepts to those related to ScalarFunctionParametric and related classes/interfaces
+
+#nullable disable
 
 using System;
 using System.Collections.Generic;

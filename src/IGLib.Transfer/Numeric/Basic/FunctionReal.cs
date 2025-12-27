@@ -1,6 +1,6 @@
-﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+﻿// GENERIC FUNCTIONS
 
-    // GENERIC FUNCTIONS
+#nullable disable
 
 using System;
 using System.Collections.Generic;
