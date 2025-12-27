@@ -25,7 +25,7 @@
 		<Company>none</Company>
 		<ProductName>IGLib - Core</ProductName>
 		<Product>Investigative Generic Library (IGLib) - Core Library</Product>
-		<Description>Library for some core utilities, with only baisc dependencies.</Description>
+		<Description>Contains some basic numeric utilities needed in IGLib, such as basic matrix operations.</Description>
 		<RepositoryUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>

@@ -18,14 +18,14 @@
 
 	<PropertyGroup>
 		<!-- This group contains attributes previously in AsemblyInfo.cs. -->
-		<AssemblyName>IGLib.Core</AssemblyName>
-		<PackageId>IGLib.Core</PackageId>
+		<AssemblyName>IGLib.Transfer</AssemblyName>
+		<PackageId>IGLib.Transfer</PackageId>
 		<!-- Versioning is handled with GitVersion (attributes: Version, AssemblyVersion, FileVersion). -->
 		<Authors>Igor Grešovnik</Authors>
 		<Company>none</Company>
-		<ProductName>IGLib - Core</ProductName>
-		<Product>Investigative Generic Library (IGLib) - Core Library</Product>
-		<Description>Library for some core utilities, with only baisc dependencies.</Description>
+		<ProductName>IGLib - Transfer</ProductName>
+		<Product>Investigative Generic Library (IGLib) - Transfer Project</Product>
+		<Description>Project to facilitate transfer of utilities from legacy IGLib Framework to IGLib Core, either by moving or by copying.</Description>
 		<RepositoryUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
