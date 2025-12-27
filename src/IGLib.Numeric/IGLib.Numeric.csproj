@@ -18,8 +18,8 @@
 
 	<PropertyGroup>
 		<!-- This group contains attributes previously in AsemblyInfo.cs. -->
-		<AssemblyName>IGLib.Core</AssemblyName>
-		<PackageId>IGLib.Core</PackageId>
+		<AssemblyName>IGLib.Numeric</AssemblyName>
+		<PackageId>IGLib.Numeric</PackageId>
 		<!-- Versioning is handled with GitVersion (attributes: Version, AssemblyVersion, FileVersion). -->
 		<Authors>Igor Grešovnik</Authors>
 		<Company>none</Company>
