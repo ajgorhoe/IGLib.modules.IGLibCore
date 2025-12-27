@@ -24,6 +24,11 @@ The intention is to move these utilities to IGLib.Numeric. Before moving:
 * **Most of the utilities** from the IG.Num namespace should be **transferred** (copied).
 * Namespaces should be changed, such that the **legacy IGLib and** the **IGLib.Numeric** library **can be referenced simultaneously**.
 
+#### To Be Done
+
+In IGLib.Numeric, **Remove all depenndencies on Console**. These dependencies can be kept in a higher level libraries, for example via static utility methods or extension methods.
+
+
 ### Testing
 
 **This is to be changed**.
