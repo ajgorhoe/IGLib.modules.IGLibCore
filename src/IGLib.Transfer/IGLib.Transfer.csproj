@@ -75,7 +75,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\_external\mathnet-numerics\src\Numerics\Numerics.csproj" />
 	  <ProjectReference Include="..\IGLib.Core\IGLib.Core.csproj" />
-	  <ProjectReference Include="..\IGLib.Numeric\IGLib.Numeric.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
