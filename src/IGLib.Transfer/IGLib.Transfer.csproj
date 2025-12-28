@@ -78,4 +78,8 @@
 	  <ProjectReference Include="..\IGLib.Numeric\IGLib.Numeric.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="00_Fixes\" />
+	</ItemGroup>
+
 </Project>
