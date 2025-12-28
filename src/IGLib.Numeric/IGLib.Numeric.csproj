@@ -52,6 +52,7 @@
 		To prevent this reference to appear in NuGet package of this project:
 		  PrivateAssets="All"
 		ReferenceOutputAssembly="false" PrivateAssets="All"   -->
+		<ProjectReference Include="..\..\..\_external\mathnet-numerics\src\Numerics\Numerics.csproj" />
 		<ProjectReference Include="..\0InitModules\InitModulesCoreExtended\InitModulesCoreExtended.csproj" ReferenceOutputAssembly="false" PrivateAssets="All" />
 	</ItemGroup>
 
