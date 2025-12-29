@@ -18,14 +18,14 @@
 
 	<PropertyGroup>
 		<!-- This group contains attributes previously in AsemblyInfo.cs. -->
-		<AssemblyName>IGLib.Numeric</AssemblyName>
-		<PackageId>IGLib.Numeric</PackageId>
+		<AssemblyName>IGLib.Numerics</AssemblyName>
+		<PackageId>IGLib.Numerics</PackageId>
 		<!-- Versioning is handled with GitVersion (attributes: Version, AssemblyVersion, FileVersion). -->
 		<Authors>Igor Grešovnik</Authors>
 		<Company>none</Company>
 		<ProductName>IGLib - Core</ProductName>
 		<Product>Investigative Generic Library (IGLib) - Core Library</Product>
-		<Description>Contains some basic numeric utilities needed in IGLib, such as basic matrix operations.</Description>
+		<Description>Contains some basic numerical utilities needed in IGLib, such as basic matrix operations.</Description>
 		<RepositoryUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>

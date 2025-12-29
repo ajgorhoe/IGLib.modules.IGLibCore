@@ -6,9 +6,10 @@
 		.NET 8 or later; legacy .NET Framework 4.8; .NET Standard 2.0 for really wide compatibility.
 		<TargetFrameworks>net10.0;net8.0;net48;netstandard2.0</TargetFrameworks>
 		-->
-		<TargetFrameworks>net10.0;net8.0;net48;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net10.0-windows;net8.0-windows;net48;netstandard2.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<OutputType>Library</OutputType>
+		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
 		<IsPackable>true</IsPackable>
@@ -18,14 +19,14 @@
 
 	<PropertyGroup>
 		<!-- This group contains attributes previously in AsemblyInfo.cs. -->
-		<AssemblyName>IGLib.Numeric</AssemblyName>
-		<PackageId>IGLib.Numeric</PackageId>
+		<AssemblyName>IGLib.WinForms</AssemblyName>
+		<PackageId>IGLib.WinForms</PackageId>
 		<!-- Versioning is handled with GitVersion (attributes: Version, AssemblyVersion, FileVersion). -->
 		<Authors>Igor Grešovnik</Authors>
 		<Company>none</Company>
-		<ProductName>IGLib - Core</ProductName>
-		<Product>Investigative Generic Library (IGLib) - Core Library</Product>
-		<Description>Contains some basic numeric utilities needed in IGLib, such as basic matrix operations.</Description>
+		<ProductName>IGLib - WinForms</ProductName>
+		<Product>Investigative Generic Library (IGLib) - WinForms Utilities</Product>
+		<Description>Contains some Windows Forms utilities that are used in other libraries (e.g. 3D plotting lib).</Description>
 		<RepositoryUrl>https://github.com/ajgorhoe/IGLib.modules.IGLibCore/</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
@@ -53,7 +54,6 @@
 		  PrivateAssets="All"
 		ReferenceOutputAssembly="false" PrivateAssets="All"   -->
 		<ProjectReference Include="..\..\..\_external\mathnet-numerics\src\Numerics\Numerics.csproj" />
-		<ProjectReference Include="..\0InitModules\InitModulesCoreExtended\InitModulesCoreExtended.csproj" ReferenceOutputAssembly="false" PrivateAssets="All" />
 	</ItemGroup>
 
 	<!--
@@ -74,6 +74,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\IGLib.Core\IGLib.Core.csproj" />
+	  <ProjectReference Include="..\IGLib.Numerics\IGLib.Numerics.csproj" />
 	</ItemGroup>
 
 </Project>
