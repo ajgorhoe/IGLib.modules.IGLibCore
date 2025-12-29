@@ -66,10 +66,6 @@
 	  <ProjectReference Include="..\IGLib.Numerics\IGLib.Numerics.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Compile Update="00_ToRemove\AlignmentTestForm.cs">
-	    <SubType>Form</SubType>
-	  </Compile>
-	</ItemGroup>
+
 
 </Project>
