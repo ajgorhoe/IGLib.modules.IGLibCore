@@ -163,11 +163,11 @@ namespace IG.Forms
         protected void ReportError(string errorMessage)
         {
             Console.WriteLine(Environment.NewLine + "ERROR: " + errorMessage + Environment.NewLine);
-            //Creating a fading message, which can be canceled explicitly (e.g. by pressing mouse button 3:)
-            string msgtitle = "Error!";
-            string msgtext = "The following error occurred: " + errorMessage + Environment.NewLine;
-            int showTime = 4000;
-            FadingMessage fm = new FadingMessage(msgtitle, msgtext, showTime);
+            ////Creating a fading message, which can be canceled explicitly (e.g. by pressing mouse button 3:)
+            //string msgtitle = "Error!";
+            //string msgtext = "The following error occurred: " + errorMessage + Environment.NewLine;
+            //int showTime = 4000;
+            //FadingMessage fm = new FadingMessage(msgtitle, msgtext, showTime);
         }
 
         /// <summary>Sets browser URL to the text from the address bar.</summary>
