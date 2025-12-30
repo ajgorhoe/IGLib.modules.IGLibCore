@@ -888,7 +888,15 @@ namespace IG.Lib
         #endregion CollectionToString
 
 
+        #region IGLib
 
+        public const string IGLibUrl = "http://www2.arnes.si/~ljc3m2/igor/iglib/";
+
+        public const string IGLibCodeDocumentationUrl = "http://www2.arnes.si/~fgreso/code_documentation/generated/iglib/html/index.html";
+
+        public const string IGLibAuthor = "Igor Grešovnik";
+
+        #endregion IGLib
 
     }
 }
