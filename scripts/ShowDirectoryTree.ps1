@@ -1,4 +1,4 @@
-<#
+<# 
 .SYNOPSIS
     Displays a directory tree with indentation and optional depth control.
 
