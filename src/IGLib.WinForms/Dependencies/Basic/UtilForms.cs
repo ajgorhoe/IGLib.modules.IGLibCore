@@ -95,6 +95,28 @@ namespace IG.Forms
         #endregion Data.Auxiliary
 
 
+        #region EVENTS
+
+
+        /// <summary>Sends the specified keystorkes to the specified control.
+        /// <para>Examples: "A", "B", "F1", "{ENTER}", "{DELETE}", "{END}", </para>
+        /// <para>"^AB" - hold Ctrl while A is pressed, then press B </para>
+        /// <para>"+(AB)" (hold Shift while A and B are pressed),</para>
+        /// <para>"%{ENTER}" (hold Alt while Enter is pressed).</para>
+        /// </summary>
+        /// <param name="targetControl">Target control to which the keystrokes are sent.</param>
+        /// <param name="keyCode">A string specifying keys or sequence thereof to be sent to the control.</param>
+        /// <remarks><para>List of codes accepted:</para>
+        /// <para> http://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.aspx </para></remarks>
+        public static void GenerateKeyPress(Control targetControl, string keyCode)
+        {
+            targetControl.Focus();
+            SendKeys.SendWait(keyCode);
+        }
+
+        #endregion EVENTS
+
+
         #region GENERAL_UTILITIES
 
         /// <summary>Blinks the specified control with default number of blinks and blink interval.</summary>

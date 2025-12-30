@@ -887,6 +887,319 @@ namespace IG.Lib
 
         #endregion CollectionToString
 
+        #region ToString
+
+        // Globalization:
+
+        /// <summary>Converts obect of the specified type to its string representation, where
+        /// numbers are converted in ivariant culture (ignoring any localization settings).
+        /// <para>This method can be used to avoid problems with differen local settinggs when
+        /// transfering numerical values through text files.</para></summary>
+        /// <typeparam name="ObjectType">Type of the object to be converted to string.</typeparam>
+        /// <param name="obj">Object to be converted.</param>
+        public static string ObjectToString<ObjectType>(ObjectType obj)
+        {
+            return ObjectToString<ObjectType>(obj, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>Converts obect of the specified type to its string representation, where
+        /// numbers are converted in ivariant culture (ignoring any localization settings).
+        /// <para>This method can be used to avoid problems with differen local settinggs when
+        /// transfering numerical values through text files.</para></summary>
+        /// <typeparam name="ObjectType">Type of the object to be converted to string.</typeparam>
+        /// <param name="obj">Object to be converted.</param>
+        /// <param name="cultureInfo">Culture info used in conversion.</param>
+        public static string ObjectToString<ObjectType>(ObjectType obj, System.Globalization.CultureInfo cultureInfo)
+        {
+            if (IsNumeric(obj))
+            {
+                object expression = obj;
+                return Convert.ToString(expression, cultureInfo);
+            }
+            else
+            {
+                return obj.ToString();
+            }
+        }
+
+
+        /// <summary>Returns a flag indicating whether the specified object is of numeric type (such as int, float, double, etc.).
+        /// <para>When called on an arbitrary object, the correct type parameter will be inferred, and
+        /// we can get the desired information if </para></summary>
+        /// <typeparam name="ObjectType">Type of the object that is queried.</typeparam>
+        /// <param name="obj">Object for which we query whether it represents a numerical value.</param>
+        public static bool IsNumeric<ObjectType>(ObjectType obj)
+        {
+            if (Equals(obj, null))
+            {
+                return false;
+            }
+            Type objType = typeof(ObjectType);
+            if (objType.IsPrimitive)
+            {
+                return (objType != typeof(bool) &&
+                    objType != typeof(char) &&
+                    objType != typeof(IntPtr) &&
+                    objType != typeof(UIntPtr)) ||
+                    objType == typeof(decimal);
+            }
+            return false;
+        }
+
+        /// <summary>Test conversion to strings with invariant culture info.</summary>
+        public static void TestToString()
+        {
+            Console.WriteLine(Environment.NewLine + "Test of conversion of numbers to string with invariant culture:" + Environment.NewLine);
+            Console.WriteLine("Default (straightfrward) conversion: ");
+            double d = 1.234e-6;
+            Console.WriteLine("Through Console.WriteLine: " + d);
+            Console.WriteLine("Through ToString(): " + d.ToString());
+            Console.WriteLine("Through generic Util.ToString(): " +
+                Util.ObjectToString<double>(d));
+            Console.WriteLine("Through ToString() with NonGeneric Util.ToString(): " +
+                Util.ObjectToString(d));
+            object o = d;
+            Console.WriteLine("Through NonGeneric Util.ToString(), cast to object: " +
+                Util.ObjectToString(o));
+            Console.WriteLine("Through NonGeneric Util.ToString(), cast to object and back to double: " +
+                Util.ObjectToString((double)o));
+            Console.WriteLine("Test of number to string conversion finished.");
+        }
+
+
+        #endregion ToString
+
+
+        #region StringParse
+
+
+        /// <summary>Tries to parse a string representation of an object of the specified type and return 
+        /// it through output argument. Invariant culture is used in parsing.</summary>
+        /// <typeparam name="ReturnType">Type of the object whose value is tried to be parsed from the string.</typeparam>
+        /// <param name="strValue">String that is converted to obect of the specified type.</param>
+        /// <param name="parsedValue">Value (of the specified type)vthat is obtained from the parsed string.</param>
+        /// <returns>true if string was successfully converted to the object of the specified type, false if not 
+        /// (in this case <paramref name="parsedValue"/> retains its previous value).</returns>
+        public static bool TryParse<ReturnType>(string strValue, ref ReturnType parsedValue)
+        {
+            return TryParse<ReturnType>(strValue, ref parsedValue, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+
+        /// <summary>Converts a string to the object of the specified type and returns the entity, by using the 
+        /// invariant culture.
+        /// <para>This works for simple types, for complex types deserialization must be used.</para></summary>
+        /// <typeparam name="ReturnType">Type of the entity to be returned, can be int.</typeparam>
+        /// <param name="strValue">String to be converted to other type.</param>
+        /// <returns>Object of the specified type converted form a string.</returns>
+        public static ReturnType Parse<ReturnType>(string strValue)
+        {
+            return Parse<ReturnType>(strValue, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+
+        /// <summary>Converts a string to the entity of the specified type and returns that entity, by using invariant culture.
+        /// <para>This works for simple types, for complex types deserialization must be used.</para></summary>
+        /// <param name="strValue">String to be converted to other type.</param>
+        /// <param name="propertyType">Type of the entity to be parsed from a string.</param>
+        /// <returns>Object of the specified type converted form a string.</returns>
+        public static object Parse(string strValue, Type propertyType)
+        {
+            return Parse(strValue, propertyType, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+
+        /// <summary>Tries to parse a string representation of an object of the specified type and return it through output argument.</summary>
+        /// <typeparam name="ReturnType">Type of the object whose value is tried to be parsed from the string.</typeparam>
+        /// <param name="strValue">String that is converted to obect of the specified type.</param>
+        /// <param name="parsedValue">Value (of the specified type)vthat is obtained from the parsed string.</param>
+        /// <param name="cultureInfo">Culture info used in conversion.</param>
+        /// <returns>true if string was successfully converted to the object of the specified type, false if not 
+        /// (in this case <paramref name="parsedValue"/> retains its previous value).</returns>
+        public static bool TryParse<ReturnType>(string strValue, ref ReturnType parsedValue, System.Globalization.CultureInfo cultureInfo)
+        {
+            bool parsed = false;
+            try
+            {
+                parsedValue = (ReturnType)Parse<ReturnType>(strValue, cultureInfo);
+                parsed = true;
+            }
+            catch (Exception)
+            { }
+            return parsed;
+        }
+
+
+        /// <summary>Converts a string to the object of the specified type and returns the entity, by using the 
+        /// specified culture info.
+        /// <para>This works for simple types, for complex types deserialization must be used.</para></summary>
+        /// <typeparam name="ReturnType">Type of the entity to be returned, can be int.</typeparam>
+        /// <param name="strValue">String to be converted to other type.</param>
+        /// <param name="cultureInfo">Culture info used in conversion.</param>
+        /// <returns>Object of the specified type converted form a string.</returns>
+        public static ReturnType Parse<ReturnType>(string strValue, System.Globalization.CultureInfo cultureInfo)
+        {
+            return (ReturnType)Parse(strValue, typeof(ReturnType), cultureInfo);
+        }
+
+
+        /// <summary>Converts a string to the entity of the specified type and returns that entity.
+        /// <para>This works for simple types, for complex types deserialization must be used.</para></summary>
+        /// <param name="strValue">String to be converted to other type.</param>
+        /// <param name="propertyType">Type of the entity to be parsed from a string.</param>
+        /// <param name="cultureInfo">Culture info used in conversion.</param>
+        /// <returns>Object of the specified type converted form a string.</returns>
+        public static object Parse(string strValue, Type propertyType, System.Globalization.CultureInfo cultureInfo)
+        {
+            var underlyingType = Nullable.GetUnderlyingType(propertyType);
+            if (underlyingType == null)
+                return Convert.ChangeType(strValue, propertyType, cultureInfo);
+            return String.IsNullOrEmpty(strValue)
+              ? null
+              : Convert.ChangeType(strValue, underlyingType, cultureInfo);
+        }
+
+
+
+        /// <summary>Tries to parse a string representation of a boolean.</summary>
+        /// <param name="str">String that is converted to boolean.</param>
+        /// <param name="parsedValue">Boolean value parsed from the specified string.</param>
+        /// <returns>true if string was successfully converted to boolean, false if not 
+        /// (in this case <paramref name="parsedValue"/> retains its previous value).</returns>
+        public static bool TryParseBoolean(string str, ref bool parsedValue)
+        {
+            bool parsed = false;
+            try
+            {
+                parsedValue = ParseBoolean(str);
+                parsed = true;
+            }
+            catch (Exception)
+            { }
+            return parsed;
+        }
+
+
+        /// <summary>Converts the specified string to a boolean value, if possible, and returns it.
+        /// If conversion is not possible then exception is thrown.
+        /// Recognized representations of true: "true", "1", "yes", "y" (case insensitive).
+        /// Recognized representations of false: "false", "0", "no", "n" (case insensitive).</summary>
+        /// <param name="str">String representation of boolean to beparsed.</param>
+        /// <returns>Boolean value represented by the specified string.</returns>
+        /// <exception cref="System.ArgumentNullException">When the string is null.</exception>
+        /// <exception cref="System.FormatException">When the string can not represent a boolean value.</exception>
+        public static bool ParseBoolean(string str)
+        {
+            bool value;
+            try
+            {
+                value = bool.Parse(str);
+            }
+            catch (Exception)
+            {
+                if (string.IsNullOrEmpty(str))
+                    throw;
+                str = str.ToLower();
+                if (str == "0")
+                    value = false;
+                else if (str == "1")
+                    value = true;
+                else if (str == "false")
+                    value = false;
+                else if (str == "true")
+                    value = true;
+                else if (str == "no")
+                    value = false;
+                else if (str == "yes")
+                    value = true;
+                else if (str == "n")
+                    value = false;
+                else if (str == "y")
+                    value = true;
+                else throw;
+
+            }
+            return value;
+        }
+
+
+        /// <summary>Tries to parse a string representation of a <see cref="ThreadPriority"/> enum.</summary>
+        /// <param name="str">String that is converted to  a <see cref="ThreadPriority"/> value.</param>
+        /// <param name="parsedValue">Boolean value parsed from the specified string.</param>
+        /// <returns>true if string was successfully converted to <see cref="ThreadPriority"/>, false if not 
+        /// (in this case <paramref name="parsedValue"/> retains its previous value).</returns>
+        /// <seealso cref="Util.ParseThreadPriority"/>
+        public static bool TryParseThreadPriority(string str, ref ThreadPriority parsedValue)
+        {
+            bool parsed = false;
+            try
+            {
+                parsedValue = ParseThreadPriority(str);
+                parsed = true;
+            }
+            catch (Exception)
+            { }
+            return parsed;
+        }
+
+
+        /// <summary>Converts the specified string to a <see cref="ThreadPriority"/> enum value, 
+        /// if possible, and returns it. If conversion is not possible then exception is thrown.
+        /// <para>Recognized representations (not case sensitive):</para>
+        /// <para><see cref="ThreadPriority.Lowest"/>: "0", "lowest", "idle"</para>
+        /// <para><see cref="ThreadPriority.BelowNormal"/>: "1", "belownormal", "low"</para>
+        /// <para><see cref="ThreadPriority.Normal"/>: "2", "normal"</para>
+        /// <para><see cref="ThreadPriority.AboveNormal"/>: "3", "abovenormal", "high"</para>
+        /// <para><see cref="ThreadPriority.Highest"/>: "4", "Highest", "realtime"</para>
+        /// </summary>
+        /// <param name="str">String representation of a <see cref="ThreadPriority"/> value to be parsed.</param>
+        /// <returns>The <see cref="ThreadPriority"/> value represented by the specified string.</returns>
+        /// <exception cref="System.ArgumentNullException">When the string is null.</exception>
+        /// <exception cref="System.FormatException">When the string can not represent a boolean value.</exception>
+        public static ThreadPriority ParseThreadPriority(string str)
+        {
+            ThreadPriority value;
+            try
+            {
+                value = (ThreadPriority)Enum.Parse(typeof(ThreadPriority), str, true /* ignoreCase */);
+            }
+            catch (Exception)
+            {
+                if (string.IsNullOrEmpty(str))
+                    throw;
+                int intVal = 0;
+                bool parsed = false;
+                parsed = int.TryParse(str, out intVal);
+                if (parsed)
+                {
+                    // Strig represents an integer, convert it to the returned type:
+                    if (intVal <= (int)ThreadPriority.Lowest)
+                        value = ThreadPriority.Lowest;
+                    else if (intVal >= (int)ThreadPriority.Highest)
+                        value = ThreadPriority.Highest;
+                    else
+                        value = (ThreadPriority)intVal;
+                    return value;
+                }
+                str = str.ToLower();
+                if (str == "lowest" || str == "idle")
+                    value = ThreadPriority.Lowest;
+                else if (str == "belownormal" || str == "low")
+                    value = ThreadPriority.BelowNormal;
+                else if (str == "normal")
+                    value = ThreadPriority.Normal;
+                else if (str == "abovenormal" || str == "high")
+                    value = ThreadPriority.AboveNormal;
+                else if (str == "highest" || str == "realtime")
+                    value = ThreadPriority.Highest;
+                else throw;
+            }
+            return value;
+        }
+
+
+        #endregion StringParse
+
 
         #region IGLib
 
