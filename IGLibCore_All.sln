@@ -352,6 +352,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Numerics", "src\IGLib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLibShellWin", "..\IGLibApps\apps\IGLibShellWin\IGLibShellWin.csproj", "{CD4B9931-6776-EA7B-C189-79C14FE26721}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.App", "..\IGLibApps\src\IGLib.App\IGLib.App.csproj", "{C4F165E3-732F-CA4F-5755-A76D7AAE2A95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -574,6 +576,10 @@ Global
 		{CD4B9931-6776-EA7B-C189-79C14FE26721}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD4B9931-6776-EA7B-C189-79C14FE26721}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD4B9931-6776-EA7B-C189-79C14FE26721}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4F165E3-732F-CA4F-5755-A76D7AAE2A95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4F165E3-732F-CA4F-5755-A76D7AAE2A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4F165E3-732F-CA4F-5755-A76D7AAE2A95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4F165E3-732F-CA4F-5755-A76D7AAE2A95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -681,6 +687,7 @@ Global
 		{F293FA43-D605-9037-1E2F-55CEF290066D} = {4B37EC0E-20A9-4E3B-8AD3-0EC68CC65939}
 		{A06B330B-1FCB-E050-346A-DAEE76193B53} = {9DEA103F-151B-4DCE-AE7D-BD035058CE74}
 		{CD4B9931-6776-EA7B-C189-79C14FE26721} = {684DB193-65D1-4E74-8275-77E2D72E2204}
+		{C4F165E3-732F-CA4F-5755-A76D7AAE2A95} = {684DB193-65D1-4E74-8275-77E2D72E2204}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
