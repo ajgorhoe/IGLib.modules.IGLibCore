@@ -17,6 +17,15 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<!--
+		Solution to DPI awareness issues with WinForms designer in Visual Studio - see the following links:
+		https://github.com/dotnet/winforms/blob/main/docs/designer/designer-high-dpi-mode.md
+		-->
+		<ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+		<ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
+	</PropertyGroup>
+	
+	<PropertyGroup>
 		<!-- This group contains attributes previously in AsemblyInfo.cs. -->
 		<AssemblyName>IGLib.Numerics</AssemblyName>
 		<PackageId>IGLib.Numerics</PackageId>
