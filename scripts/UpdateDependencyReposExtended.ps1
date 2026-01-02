@@ -15,7 +15,7 @@ Write-Host "Script directory: $scriptDir"
 Write-Host "`nUpdating extended dependencies of IGLibCore:`n"
 
 Write-Host "`nUpdating MathNetNumerics:"
-& $(Join-Path $scriptDir "UpdateRepo_MathNetNumerics.ps1")
+& $(Join-Path $scriptDir "UpdateRepoExternal_MathNetNumerics.ps1")
 
 
 Write-Host "  ... updating IGLibCore EXTENDED dependencies complete.`n`n"
