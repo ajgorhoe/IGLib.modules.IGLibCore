@@ -362,6 +362,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SpecialProjects", "SpecialP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.WinForms", "src\IGLib.WinForms\IGLib.WinForms.csproj", "{57E2A20C-978B-E913-1ADA-41F6B2CAEB27}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLibShellWin", "..\IGLibApps\apps\IGLibShellWin\IGLibShellWin.csproj", "{CD4B9931-6776-EA7B-C189-79C14FE26721}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -596,6 +598,10 @@ Global
 		{57E2A20C-978B-E913-1ADA-41F6B2CAEB27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57E2A20C-978B-E913-1ADA-41F6B2CAEB27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57E2A20C-978B-E913-1ADA-41F6B2CAEB27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD4B9931-6776-EA7B-C189-79C14FE26721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD4B9931-6776-EA7B-C189-79C14FE26721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD4B9931-6776-EA7B-C189-79C14FE26721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD4B9931-6776-EA7B-C189-79C14FE26721}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -707,6 +713,7 @@ Global
 		{6CDC60EC-6BB3-E3DA-61E3-D1DE721F6BF9} = {1267BB76-540C-4A97-92A7-CED3213F907C}
 		{ADBA6BFA-5CF0-4342-B3F7-8531B1E7D6D9} = {49FA5358-3660-4DDD-919F-5BC0D39DF5E4}
 		{57E2A20C-978B-E913-1ADA-41F6B2CAEB27} = {49FA5358-3660-4DDD-919F-5BC0D39DF5E4}
+		{CD4B9931-6776-EA7B-C189-79C14FE26721} = {684DB193-65D1-4E74-8275-77E2D72E2204}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
