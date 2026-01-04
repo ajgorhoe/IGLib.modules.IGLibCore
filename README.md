@@ -10,6 +10,7 @@ This repository contains basic portions of the restructured ***Investigative Gen
 
 * [Links](#links)
 * [About the Repository](#about-this-repository---iglibcore) - information about the current repository and contained projects
+  * [Projects within the IGLibCore Repository](#projects-within-the-iglibcore-repository)
   * [Building and Running](#building-and-running)
   * [IGLib Restructuring](#iglib-restructuring)
 * [The Investigative Generic Library (IGLib)](#the-investigative-generic-library-iglib) - information about IGLib as a whole; see also *[README-scripts](./scripts/README_scripts.md)* for a quick list of repositories with links
@@ -28,6 +29,13 @@ This repository contains basic portions of the restructured ***Investigative Gen
 ## About this Repository - 'IGLibCore'
 
 [This repository](https://github.com/ajgorhoe/IGLib.modules.IGLibCore) contains the [IGLibCore library](./src/IGLib.Core/), which includes common lower-level utilities, and other libraries commonly used by more specialized libraries and by applications of both the new and the legacy IGLib, as well as some other libraries and applications. *IGLib* consists of several other libraries and demo applications. You can find more details [below](#the-investigative-generic-library-iglib) and in the [Links Section](#links).
+
+## Projects within the `IGLibCore` Repository
+
+* [src/IGLib.Core](./src/IGLib.Core/README_IGLib.Core.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.App/README_IGLib.Core.md))
+* ...
+* [src/0InitModules/InitModulesCore](./src/0InitModules/InitModulesCore/README_InitModulesCore.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/0InitModules/InitModulesCore/README_InitModulesCore.md))
+* [src/0InitModules/InitModulesCore](./src/0InitModules/InitModulesCore/README_InitModulesCore.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/0InitModules/InitModulesCore/README_InitModulesCore.md))
 
 ### Building and Running
 
