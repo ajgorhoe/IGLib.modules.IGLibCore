@@ -1,5 +1,5 @@
 
-# The IGLib.CoreExtended Project
+# The `IGLib.CoreExtended` Project
 
 <a href="https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md"><img src="https://ajgorhoe.github.io/icons/IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" /></a>

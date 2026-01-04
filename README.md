@@ -32,10 +32,11 @@ This repository contains basic portions of the restructured ***Investigative Gen
 
 ## Projects within the `IGLibCore` Repository
 
-* [src/IGLib.Core](./src/IGLib.Core/README_IGLib.Core.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.App/README_IGLib.Core.md))
+* [src/IGLib.Core](./src/IGLib.Core/README_IGLib.Core.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core/README_IGLib.Core.md))
+[src/IGLib.CoreExtended](./src/IGLib.CoreExtended/README_IGLib.CoreExtended.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.CoreExtended/README_IGLib.CoreExtended.md))
 * ...
 * [src/0InitModules/InitModulesCore](./src/0InitModules/InitModulesCore/README_InitModulesCore.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/0InitModules/InitModulesCore/README_InitModulesCore.md))
-* [src/0InitModules/InitModulesCore](./src/0InitModules/InitModulesCore/README_InitModulesCore.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/0InitModules/InitModulesCore/README_InitModulesCore.md))
+* [src/0InitModules/InitModulesCoreExtended](./src/0InitModules/InitModulesCoreExtended/README_InitModulesCoreExtended.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/0InitModules/InitModulesCoreExtended/README_InitModulesCoreExtended.md))
 
 ### Building and Running
 
