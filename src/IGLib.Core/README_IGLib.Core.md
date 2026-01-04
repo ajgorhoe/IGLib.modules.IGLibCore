@@ -8,12 +8,12 @@ Code in this project should not use reflection and should not have significant d
 <a href="https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md"><img src="https://ajgorhoe.github.io/icons/IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" /></a>
 
-* [Additional Information](#basic-information-on-the-project)
+* [Additional Information](#additional-information-on-the-project)
 * Other:
 * [Repository's README](../../README.md) ([on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md))
   * [About the Repository](../../README.md#about-this-repository---iglibcore)
-    * [Projects within IGLib.Core](../../README.md#projects-within-the-iglibcore-repository)
-  * [The Investigative Generic Library (IGLib)](../../README.md##the-investigative-generic-library-iglib) - information about IGLib as a whole
+    * [Projects within IGLib.Core repository](../../README.md#projects-within-the-iglibcore-repository)
+  * [The Investigative Generic Library (IGLib)](../../README.md#the-investigative-generic-library-iglib) - information about IGLib as a whole
 * [this document on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core/README_IGLib.Core.md); [project directory on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core)
 
 ## Additional Information on the Project
