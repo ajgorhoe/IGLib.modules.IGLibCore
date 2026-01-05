@@ -11,8 +11,8 @@ Thi project is **not contained** in the basic solution `IGLibCore.sln` or the co
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" /></a>
 
 * [Additional Information](#additional-information)
-  * [Transfering Utilities from IG.Num](#transferring-utilities-from-ignum)
-    *[Details of Transferring Numerical Utilities](#details-of-transferring-numerical-utilities)
+  * [Transferring Utilities from IG.Num](#transferring-utilities-from-ignum)
+    * [Details of Transferring Numerical Utilities](#details-of-transferring-numerical-utilities)
     * **[To Be Done](#to-be-done)**
   * **[Testing](#testing)**
 * Other:
