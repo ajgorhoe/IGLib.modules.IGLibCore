@@ -5,21 +5,22 @@ This project contains **utilities transferred from the legacy IGLib Framework** 
 
 Thi project is **not contained** in the basic solution `IGLibCore.sln` or the complete solution for the new IGLib libraries 'IGLibCore_All.sln'. Use the `IGLibCore_Extended.sln` from the current repository in order to work with this project. It is **permitted that the project cannot be built**, even on the main branch. Therefore, the solution `IGLibCore_Extended.sln` cannot be included in CI/CD pipelines.
 
+**Table of Contents**:
 
 <a href="https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md"><img src="https://ajgorhoe.github.io/icons/IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" /></a>
-
-* [Project repository](https://github.com/ajgorhoe/IGLib.modules.IGLibCore)
-* [IGLib.Core project within the repository](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/tree/main/src/IGLib.Transfer)
-  * [This readme within repository](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Transfer/README_IGLib.Transfer.md)
-
-**Table of Contents**:
 
 * [Additional Information](#additional-information)
   * [Transfering Utilities from IG.Num](#transfering-utilities-from-ignum)
     *[Details of Transferring Numerical Utilities](#details-of-transferring-numerical-utilities)
     * **[To Be Done](#to-be-done)**
   * **[Testing](#testing)**
+* Other:
+* [Repository's README](../../README.md) ([on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md))
+  * [About the Repository](../../README.md#about-this-repository---iglibcore)
+    * [Projects within IGLib.Core repository](../../README.md#projects-within-the-iglibcore-repository)
+  * [The Investigative Generic Library (IGLib)](../../README.md#the-investigative-generic-library-iglib) - information about IGLib as a whole
+* [this document on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core/README_IGLib.Core.md); [project directory on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core)
 
 ## Additional Information
 
