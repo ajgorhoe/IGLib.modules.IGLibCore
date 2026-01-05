@@ -11,7 +11,7 @@ Thi project is **not contained** in the basic solution `IGLibCore.sln` or the co
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" /></a>
 
 * [Additional Information](#additional-information)
-  * [Transfering Utilities from IG.Num](#transfering-utilities-from-ignum)
+  * [Transfering Utilities from IG.Num](#transferring-utilities-from-ignum)
     *[Details of Transferring Numerical Utilities](#details-of-transferring-numerical-utilities)
     * **[To Be Done](#to-be-done)**
   * **[Testing](#testing)**
@@ -24,9 +24,9 @@ Thi project is **not contained** in the basic solution `IGLibCore.sln` or the co
 
 ## Additional Information
 
-### Transfering Utilities from IG.Num
+### Transferring Utilities from IG.Num
 
-Started on **December 2025**. This is to transfer utilities from the numerical usilities from the legacy IGLib Framework (mainly the namespace IG.Num). The utilities will be copied ratherr than moved. These utilities would need to be improved, updated and covered more with tests. However, IGLib Core needs these utiliities for development in 3D graphics and other areas. Therefore these utilities are transferred before they are refactored to a higher standard, and refactoring to deal withthe technical dept will be done later, as these libraries are used.
+Started on **December 2025**. This is to transfer utilities from the numerical utilities from the legacy IGLib Framework (mainly the namespace IG.Num). The utilities will be copied rather than moved. These utilities would need to be improved, updated and covered more with tests. However, IGLib Core needs these utilities for development in 3D graphics and other areas. Therefore these utilities are transferred before they are refactored to a higher standard, and refactoring to deal with the technical dept will be done later, as these libraries are used.
 
 The intention is to move these utilities to IGLib.Numeric. Before moving:
 
@@ -36,12 +36,12 @@ The intention is to move these utilities to IGLib.Numeric. Before moving:
 
 #### Details of Transferring Numerical Utilities
 
-Utilities from **Geomettry/PointClouds** were **not transferred**. Point clouds will be reimplemented if they are needed.
+Utilities from **Geometry/PointClouds** were **not transferred**. Point clouds will be reimplemented if they are needed.
 
-In the **MatrixBase class**, two **renames** were performed: 
+In the **MatrixBase class**, two **renames** were performed:
 
 * `double DeterminantSlow(IMatrix A)` => `double CalculateDeterminantSlow(IMatrix A)` and 
-* `double Determinant(IMatrix A, ref int[] auxPermutations, ref IMatrix auxLU)` => `double CalculateDeterminant(IMatrix A, ref int[] auxPermutations, ref IMatrix auxLU)`. 
+* `double Determinant(IMatrix A, ref int[] auxPermutations, ref IMatrix auxLU)` => `double CalculateDeterminant(IMatrix A, ref int[] auxPermutations, ref IMatrix auxLU)`.
 * 
 * The `Determinant(...)` had to be renamed because it was otherwise in **name conflict with the `Determinant` property** in the derived classes `Matrix2D` and `Matrix3D`.
 
