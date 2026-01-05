@@ -1,13 +1,18 @@
 
 # The `IGLib.CoreExtended` Project
 
+This project contains **Core Utilities** of the **IGLib** (the **Investigative Generic Library**) that **do not satisfy strict constraints for inclusion in `IGLib.Core`** (see the [IGLib.Core readme file](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md)). These are common utilities that may be used in other more specialized libraries of the *IGLib*, but are of more general usability and can be used in other projects, too.
+
 <a href="https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md"><img src="https://ajgorhoe.github.io/icons/IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" /></a>
 
-* [Project repository](https://github.com/ajgorhoe/IGLib.modules.IGLibCoreExtended)
-* [IGLib.CoreExtended project within the repository](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/tree/main/src/IGLib.CoreExtended)
-
-This project contains **Core Utilities** of the **IGLib** (the **Investigative Generic Library**) that **do not satisfy strict constraints for inclusion in `IGLib.Core`** (see the [IGLib.Core readme file](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md)). These are common utilities that may be used in other more specialized libraries of the *IGLib*, but are of more general usability and can be used in other projects, too.
+* [Additional Information about the Project](#additional-information-about-the-project)
+* Other:
+* [Repository's README](../../README.md) ([on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md))
+  * [About the Repository](../../README.md#about-this-repository---iglibcore)
+    * [Projects within IGLib.Core repository](../../README.md#projects-within-the-iglibcore-repository)
+  * [The Investigative Generic Library (IGLib)](../../README.md#the-investigative-generic-library-iglib) - information about IGLib as a whole
+* [this document on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core/README_IGLib.Core.md); [project directory on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core)
 
 ## Basic Information
 

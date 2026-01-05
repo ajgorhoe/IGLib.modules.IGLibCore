@@ -8,7 +8,8 @@ Code in this project should not use reflection and should not have significant d
 <a href="https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md"><img src="https://ajgorhoe.github.io/icons/IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" /></a>
 
-* [Additional Information](#additional-information-on-the-project)
+* [Additional Information about the Project](#additional-information-about-the-project)
+  * [Testing](#testing)
 * Other:
 * [Repository's README](../../README.md) ([on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md))
   * [About the Repository](../../README.md#about-this-repository---iglibcore)
@@ -16,7 +17,7 @@ Code in this project should not use reflection and should not have significant d
   * [The Investigative Generic Library (IGLib)](../../README.md#the-investigative-generic-library-iglib) - information about IGLib as a whole
 * [this document on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core/README_IGLib.Core.md); [project directory on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core)
 
-## Additional Information on the Project
+## Additional Information about the Project
 
 This project is also used in the **[legacy IGLib](https://github.com/ajgorhoe/IGLib.workspace.base.iglib)** (see the [README file](https://github.com/ajgorhoe/IGLib.workspace.base.iglib/blob/master/README.md)), which is still  used in several applications. the project is **required to target both .NET Framework 4.8 and newer Frameworks** such as *.NET 8 and higher* (the latter versions will change as new stable or long term support frameworks arrive), and also supports **.NET Standard** 2.0. Please note that **new C# language features are enabled** via `<LangVersion>latest</LangVersion>` in the project file.
 
