@@ -17,7 +17,7 @@ New utilities added to this project (not transferred from the legacy IGLib Frame
   * [About the Repository](../../README.md#about-this-repository---iglibcore)
     * [Projects within IGLib.Core repository](../../README.md#projects-within-the-iglibcore-repository)
   * [The Investigative Generic Library (IGLib)](../../README.md#the-investigative-generic-library-iglib) - information about IGLib as a whole
-* [this document on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core/README_IGLib.Core.md); [project directory on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core)
+* [this document on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Numerics/README_IGLib.Numerics.md); [project directory on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Numerics)
 
 ## Additional Information about the Project
 

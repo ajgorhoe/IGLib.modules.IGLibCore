@@ -20,7 +20,7 @@ Thi project is **not contained** in the basic solution `IGLibCore.sln` or the co
   * [About the Repository](../../README.md#about-this-repository---iglibcore)
     * [Projects within IGLib.Core repository](../../README.md#projects-within-the-iglibcore-repository)
   * [The Investigative Generic Library (IGLib)](../../README.md#the-investigative-generic-library-iglib) - information about IGLib as a whole
-* [this document on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core/README_IGLib.Core.md); [project directory on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Core)
+* [this document on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Transfer/README_IGLib.Transfer.md); [project directory on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Transfer)
 
 ## Additional Information
 
