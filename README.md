@@ -38,6 +38,10 @@ This repository contains basic portions of the restructured ***Investigative Gen
 * [src/IGLib.WinForms](./src/IGLib.WinForms/README_IGLib.WinForms.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.WinForms/README_IGLib.WinForms.md))
 * [src/IGLib.Transfer](./src/IGLib.Transfer/README_IGLib.Transfer.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/IGLib.Transfer/README_IGLib.Transfer.md))
 * ...
+* [src/IGLib.Core.Tests](./tests/IGLib.Core.Tests/README_IGLib.Core.Tests.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/tests/IGLib.Core.Tests/README_IGLib.Core.Tests.md))
+* [src/IGLib.TestBase](./tests/IGLib.TestBase/README_IGLib.TestBase.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/tests/IGLib.TestBase/README_IGLib.TestBase.md))
+* [src/IGLib.TestBase.ExampleTests](./tests/IGLib.TestBase.ExampleTests/README_IGLib.TestBase.ExampleTests.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/tests/IGLib.TestBase.ExampleTests/README_IGLib.TestBase.ExampleTests.md))
+* ...
 * [src/0InitModules/InitModulesCore](./src/0InitModules/InitModulesCore/README_InitModulesCore.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/0InitModules/InitModulesCore/README_InitModulesCore.md))
 * [src/0InitModules/InitModulesCoreExtended](./src/0InitModules/InitModulesCoreExtended/README_InitModulesCoreExtended.md) ([readme on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/src/0InitModules/InitModulesCoreExtended/README_InitModulesCoreExtended.md))
 
