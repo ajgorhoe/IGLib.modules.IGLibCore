@@ -1,4 +1,4 @@
-﻿// Copyright (c) Igor Grešovnik, IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+﻿#nullable disable
 
 using System;
 using System.Collections.Generic;

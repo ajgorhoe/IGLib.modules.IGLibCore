@@ -1,4 +1,4 @@
-﻿// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+﻿#nullable disable
 
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,9 @@ namespace IG.Lib
     /// Implicit conversions to and from <see cref="System.Drawing.Color"/> and form <see cref="System.Drawing.KnownColor"/>
     /// are provided.</summary>
     /// $A Igor xx;
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     public struct color
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
 
         #region Constructors

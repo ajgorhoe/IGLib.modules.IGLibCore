@@ -1,6 +1,7 @@
-﻿// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
-
+﻿
     // GENERAL MESH REPRESENTATIONS
+
+#nullable disable
 
 using System;
 using System.Collections.Generic;

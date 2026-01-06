@@ -1,4 +1,4 @@
-﻿// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
+﻿#nullable disable
 
 // GRAPHICAL OBJECTS
 
