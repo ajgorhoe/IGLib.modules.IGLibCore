@@ -61,13 +61,13 @@ namespace IGLib.Commands.Tests
 	public class TestCmd2 : TestCommandBase, IGenericCommand
 	{ }
 
-	public class Command3 : TestCommandBase, IGenericCommand
+	public class TestCmd3 : TestCommandBase, IGenericCommand
 	{ }
 
-	public class Command4 : TestCommandBase, IGenericCommand
+	public class TestCmd4 : TestCommandBase, IGenericCommand
 	{ }
 
-	public class Command5 : TestCommandBase, IGenericCommand
+	public class TestCmd5 : TestCommandBase, IGenericCommand
 	{ }
 
 	/// <summary>Command that returns product of its arguments.</summary>
@@ -110,8 +110,8 @@ namespace IGLib.Commands.Tests
 			// at different levels of dependency hierarchy):
 			base.UpdateCommands(commandInvoker);
 			// Do not change this because it is essential for test setup!
-			commandInvoker.AddOrReplaceCommand(TestConst.Cmd3, new Command3());
-			commandInvoker.AddOrReplaceCommand(TestConst.Cmd4, new Command4());
+			commandInvoker.AddOrReplaceCommand(TestConst.Cmd3, new TestCmd3());
+			commandInvoker.AddOrReplaceCommand(TestConst.Cmd4, new TestCmd4());
 		}
 	}
 

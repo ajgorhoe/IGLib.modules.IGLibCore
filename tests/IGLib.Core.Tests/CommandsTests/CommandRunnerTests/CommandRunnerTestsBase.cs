@@ -94,7 +94,7 @@ namespace IGLib.Commands.Tests
             runner.GetCommand(cmdName2).Should().Be(cmdObj2, because: $"PRECOND: Command object registered under {cmdName2} should be correct.");
             // Act:
             // Replace the first command by another cmdObj3:
-            Command3 cmdObj3 = new Command3();
+            TestCmd3 cmdObj3 = new TestCmd3();
             runner.AddOrReplaceCommand(cmdName1, cmdObj3);
             // Assert:
             // Number of registered commands must remain the same:
@@ -108,7 +108,7 @@ namespace IGLib.Commands.Tests
             runner.GetCommand(cmdName2).Should().Be(cmdObj2, because: $"Replacement of one command must not affect other commands; command object under {cmdName2} must remain unchanged.");
             // Act - second replacement:
             // Replace the second command by command object cmdObj4:
-            Command4 cmdObj4 = new Command4();
+            TestCmd4 cmdObj4 = new TestCmd4();
             runner.AddOrReplaceCommand(cmdName2, cmdObj4);
             // Assert:
             // Number of registered commands must remain the same:
@@ -259,8 +259,8 @@ namespace IGLib.Commands.Tests
             runner.ContainsCommand(TestConst.Cmd4).Should().BeTrue(because: "After applying CommandUpdaterHigherLevel, command named Cmd4 must also be registered.");
             runner.GetCommand(TestConst.Cmd1).GetType().Should().Be<TestCmd1>(because: $"Command registered under name {TestConst.Cmd1} must be of type TestCmd1.");
             runner.GetCommand(TestConst.Cmd2).GetType().Should().Be<TestCmd2>(because: $"Command registered under name {TestConst.Cmd2} must be of type TestCmd2.");
-            runner.GetCommand(TestConst.Cmd3).GetType().Should().Be<Command3>(because: $"Command registered under name {TestConst.Cmd3} must be of type Command3.");
-            runner.GetCommand(TestConst.Cmd4).GetType().Should().Be<Command4>(because: $"Command registered under name {TestConst.Cmd4} must be of type Command4.");
+            runner.GetCommand(TestConst.Cmd3).GetType().Should().Be<TestCmd3>(because: $"Command registered under name {TestConst.Cmd3} must be of type Command3.");
+            runner.GetCommand(TestConst.Cmd4).GetType().Should().Be<TestCmd4>(because: $"Command registered under name {TestConst.Cmd4} must be of type Command4.");
             // Arrange & act - reset and use only second updater:
             //// If the command runner is reset to the initial state (all commands removed) and only
             //// the second updater is applied for batch registration, the result will be the same because
@@ -281,8 +281,8 @@ namespace IGLib.Commands.Tests
             // Verify types of all 4 registered commands:
             runner.GetCommand(TestConst.Cmd1).GetType().Should().Be<TestCmd1>(because: $"Command registered under name {TestConst.Cmd1} must be of type TestCmd1.");
             runner.GetCommand(TestConst.Cmd2).GetType().Should().Be<TestCmd2>(because: $"Command registered under name {TestConst.Cmd2} must be of type TestCmd2.");
-            runner.GetCommand(TestConst.Cmd3).GetType().Should().Be<Command3>(because: $"Command registered under name {TestConst.Cmd3} must be of type Command3.");
-            runner.GetCommand(TestConst.Cmd4).GetType().Should().Be<Command4>(because: $"Command registered under name {TestConst.Cmd4} must be of type Command4.");
+            runner.GetCommand(TestConst.Cmd3).GetType().Should().Be<TestCmd3>(because: $"Command registered under name {TestConst.Cmd3} must be of type Command3.");
+            runner.GetCommand(TestConst.Cmd4).GetType().Should().Be<TestCmd4>(because: $"Command registered under name {TestConst.Cmd4} must be of type Command4.");
         }
 
         [Fact]
