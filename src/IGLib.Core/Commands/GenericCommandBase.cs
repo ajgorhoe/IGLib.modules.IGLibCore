@@ -82,42 +82,49 @@ namespace IGLib.Commands
 
         private string _description = null;
 
-        /// <summary>Basic implementation of description.</summary>
-        public virtual string Description 
-        { 
+        /// <summary>Basic implementation of <see cref="IGenericCommand.Description"/></summary>
+        public virtual string Description
+        {
             get
             {
-                if (_description == null)
+                lock(Lock)
                 {
-                    lock(Lock)
+                    if (_description == null)
                     {
-                        if (_description == null)
-                        {
-                            _description = $"A command of type {GetType().Name}, ID = {Id}.";
-                        }
+                        _description = $"A command of type {GetType().Name}, ID = {Id}.";
                     }
+                    return _description;
                 }
-                return _description;
             }
-            protected set
+            protected init
             {
-                lock ((Lock))
+                if (value != _description)
                 {
-                    if (value != _description)
+                    if (value == "")
+                    { _description = null; }
+                    else
                     {
-                        if (value == "")
-                        { _description = null; }
-                        else
-                        {
-                            _description = value;
-                        }
+                        _description = value;
                     }
                 }
             }
         }
 
+        /// <summary>Basic implementation of <see cref="IGenericCommand.Description"/></summary>
+        public virtual string DescriptionUrl { get; protected init; }
+
+        /// <summary>When <see cref="Execute(object[])"/> is not overridden in a derived class,
+        /// this delegate is used to  execute the command synchronously, when defined. When not
+        /// defined and the method is not overridden, synchronous execution is performed by
+        /// <see cref="ExecuteByCallingAsync(object[])"/>, which adapts the asynchronous execution
+        /// method.</summary>
         protected virtual Func<object[], object> ExecuteDelegate { get; init; } = null;
 
+        /// <summary>When <see cref="ExecuteAsync(object[])"/> is not overridden in a derived class,
+        /// this delegate is used to  execute the command asynchronously, when defined. When not
+        /// defined and the method is not overridden, asynchronous execution is performed by
+        /// <see cref="ExecuteAsyncByCallingSync(object[])(object[])"/>, which adapts the synchronous 
+        /// execution method.</summary>
         protected virtual Func<object[], Task<object>> ExecuteAsyncDelegate { get; set; } = null;
 
         private int _callCountSyncToAsync = 0;
