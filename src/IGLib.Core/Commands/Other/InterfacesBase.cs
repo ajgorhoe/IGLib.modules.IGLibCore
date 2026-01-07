@@ -77,7 +77,7 @@ namespace IGLib.Core
 
         protected virtual string GetDefaultStringId()
         {
-            return GetType().Name + "+" + Id.ToString("D" + 5);
+            return GetType().Name + "_" + Id.ToString("D" + 5);
         }
 
         private string _stringId;

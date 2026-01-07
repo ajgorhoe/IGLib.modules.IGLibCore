@@ -30,7 +30,7 @@ namespace IGLib.Commands
         /// delegate is passed (either for synchronous oe asynchronous execution), the other method
         /// is implemented by adapting its counterpart (sync to async or vice versa), which is not an
         /// ideal scenario but may work sufficiently well in many cases when there is no other option
-        /// (such as using a library where only synchronous or asynchronous version is abailable).
+        /// (such as using a library where only synchronous or asynchronous version is available).
         /// <para>By default, both arguments are null. In this case, at least one of the execution
         /// functions must be overridden in a derived class.</para></summary>
         /// <param name="executeDelegate">Optional delegate that will implement the synchronous 
@@ -80,6 +80,41 @@ namespace IGLib.Commands
                 $"{this.GetType().Name} The delegate passed to implement the command's {nameof(ExecuteAsync)} method is null.");
         }
 
+        private string _description = null;
+
+        /// <summary>Basic implementation of description.</summary>
+        public virtual string Description 
+        { 
+            get
+            {
+                if (_description == null)
+                {
+                    lock(Lock)
+                    {
+                        if (_description == null)
+                        {
+                            _description = $"A command of type {GetType().Name}, ID = {Id}.";
+                        }
+                    }
+                }
+                return _description;
+            }
+            protected set
+            {
+                lock ((Lock))
+                {
+                    if (value != _description)
+                    {
+                        if (value == "")
+                        { _description = null; }
+                        else
+                        {
+                            _description = value;
+                        }
+                    }
+                }
+            }
+        }
 
         protected virtual Func<object[], object> ExecuteDelegate { get; init; } = null;
 

@@ -118,30 +118,64 @@ namespace IGLib.Commands.Tests
 
 
         [Fact]
-        public void CommandCreation_CommandsDerivedFrom_CommandBase_HaveConsistentProperties()
+        public void CommandCreation_CommandsOfDifferentTypesDerivedFromCommandBaseHaveConsistentProperties()
         {
             // Arrange:
             Console.WriteLine("Testing that created commands have distinct IDs and that IDs grow with time of creation:\n");
             // Act:
             IGenericCommand cmd1 = new TestCmd1();
             Console.WriteLine($"Created command {nameof(cmd1)} of type {cmd1?.GetType()?.Name}, ID = {cmd1?.Id}");
-            Console.WriteLine($"  StringId: {cmd1.StringId}");
+            Console.WriteLine($"  StringId: {cmd1?.StringId}, Description: {cmd1?.Description}");
             IGenericCommand cmd2 = new TestCmd2();
             Console.WriteLine($"Created command {nameof(cmd2)} of type {cmd2?.GetType()?.Name}, ID = {cmd2?.Id}");
-            Console.WriteLine($"  StringId: {cmd2.StringId}");
+            Console.WriteLine($"  StringId: {cmd2?.StringId}, Description: {cmd2?.Description}");
             IGenericCommand cmd3 = new TestCmd3();
             Console.WriteLine($"Created command {nameof(cmd3)} of type {cmd3?.GetType()?.Name}, ID = {cmd3?.Id}");
-            Console.WriteLine($"  StringId: {cmd3.StringId}");
+            Console.WriteLine($"  StringId: {cmd3?.StringId}, Description: {cmd3?.Description}");
             cmd1.Should().NotBeNull(because: $"PRECOND: It must be able to create a command of type {nameof(TestCmd1)}");
             cmd2.Should().NotBeNull(because: $"PRECOND: It must be able to create a command of type {nameof(TestCmd2)}");
             cmd3.Should().NotBeNull(because: $"PRECOND: It must be able to create a command of type {nameof(TestCmd3)}");
             // Assert:
+            cmd1.StringId.Should().NotBeNull(because: $"Commands based on {nameof(GenericCommandBase)} must have StringId defined by default.");
+            cmd2.StringId.Should().NotBeNull(because: $"Commands based on {nameof(GenericCommandBase)} must have StringId defined by default.");
+            cmd3.StringId.Should().NotBeNull(because: $"Commands based on {nameof(GenericCommandBase)} must have StringId defined by default.");
+            
+            cmd1.Description.Should().NotBeNull(because: $"Commands based on {nameof(GenericCommandBase)} must have Description defined by default.");
+            cmd2.Description.Should().NotBeNull(because: $"Commands based on {nameof(GenericCommandBase)} must have Description defined by default.");
+            cmd3.Description.Should().NotBeNull(because: $"Commands based on {nameof(GenericCommandBase)} must have Description defined by default.");
+            
             cmd1.StringId.Should().NotBe(cmd2.StringId, because: "cmd1 and cmd2 are different instances and must have different StringId-s");
             cmd1.StringId.Should().NotBe(cmd3.StringId, because: "cmd1 and cmd3 are different instances and must have different StringId-s");
             cmd2.StringId.Should().NotBe(cmd3.StringId, because: "cmd2 and cmd3 are different instances and must have different StringId-s");
+
+            cmd1.StringId.Should().Contain(cmd1.GetType().Name, because: $"Commands based on {nameof(GenericCommandBase)} must contain type name in default {nameof(GenericCommandBase.StringId)}.");
+            cmd2.StringId.Should().Contain(cmd2.GetType().Name, because: $"Commands based on {nameof(GenericCommandBase)} must contain type name in default {nameof(GenericCommandBase.StringId)}.");
+            cmd3.StringId.Should().Contain(cmd3.GetType().Name, because: $"Commands based on {nameof(GenericCommandBase)} must contain type name in default {nameof(GenericCommandBase.StringId)}.");
+
+            cmd1.StringId.Should().Contain(cmd1.Id.ToString(), because: $"Commands based on {nameof(GenericCommandBase)} must contain {nameof(GenericCommandBase.Id)} in {nameof(GenericCommandBase.StringId)}.");
+            cmd2.StringId.Should().Contain(cmd2.Id.ToString(), because: $"Commands based on {nameof(GenericCommandBase)} must contain {nameof(GenericCommandBase.Id)} in {nameof(GenericCommandBase.StringId)}.");
+            cmd3.StringId.Should().Contain(cmd3.Id.ToString(), because: $"Commands based on {nameof(GenericCommandBase)} must contain {nameof(GenericCommandBase.Id)} in {nameof(GenericCommandBase.StringId)}.");
+
+
+
+
+            cmd1.Description.Should().NotBe(cmd2.Description, because: "cmd1 and cmd2 are different instances and must have different descriptions");
+            cmd1.Description.Should().NotBe(cmd3.Description, because: "cmd1 and cmd3 are different instances and must have different descriptions");
+            cmd2.Description.Should().NotBe(cmd3.Description, because: "cmd2 and cmd3 are different instances and must have different descriptions");
+
+
+
+
+            cmd1.Description.Should().Contain(cmd1.GetType().Name, because: $"Commands based on {nameof(GenericCommandBase)} must contain type name in default {nameof(GenericCommandBase.Description)}.");
+            cmd2.Description.Should().Contain(cmd2.GetType().Name, because: $"Commands based on {nameof(GenericCommandBase)} must contain type name in default {nameof(GenericCommandBase.Description)}.");
+            cmd3.Description.Should().Contain(cmd3.GetType().Name, because: $"Commands based on {nameof(GenericCommandBase)} must contain type name in default {nameof(GenericCommandBase.Description)}.");
+
+            cmd1.Description.Should().Contain(cmd1.Id.ToString(), because: $"Commands based on {nameof(GenericCommandBase)} must contain {nameof(GenericCommandBase.Id)} in {nameof(GenericCommandBase.Description)}.");
+            cmd2.Description.Should().Contain(cmd2.Id.ToString(), because: $"Commands based on {nameof(GenericCommandBase)} must contain {nameof(GenericCommandBase.Id)} in {nameof(GenericCommandBase.Description)}.");
+            cmd3.Description.Should().Contain(cmd3.Id.ToString(), because: $"Commands based on {nameof(GenericCommandBase)} must contain {nameof(GenericCommandBase.Id)} in {nameof(GenericCommandBase.Description)}.");
+
+
         }
-
-
     }
 
 }
