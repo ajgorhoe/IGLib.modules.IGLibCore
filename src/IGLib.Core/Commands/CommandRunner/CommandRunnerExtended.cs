@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,7 +12,10 @@ using System.Threading.Tasks;
 namespace IGLib.Commands
 {
 
-    public class CommandRunnerExtended : CommandRunner<IGenericCommand, ExecutionInfoExtended>
+    /// <summary>Command runner with extended execution info of type <see cref="ExecutionInfoExtended"/>.
+    /// <para></para></summary>
+    public class CommandRunnerExtended : CommandRunner<IGenericCommand, ExecutionInfoExtended>,
+        ICommandRunner<IGenericCommand, ExecutionInfoExtended>
     {
 
         /// <summary>Constructor. Only parameterless constructors will normally exist for this and derived classes.</summary>
