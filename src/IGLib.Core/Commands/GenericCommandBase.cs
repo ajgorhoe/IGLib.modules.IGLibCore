@@ -42,10 +42,19 @@ namespace IGLib.Commands
         /// either the method must be overridden, or it will adapt the synchronous method to do the
         /// job (usually not ideal but should work sufficiently well for many use cases).</param>
         public GenericCommandBase(Func<object[], object> executeDelegate = null,
-            Func<object[], Task<object>> executeAsyncDelegate = null)
+            Func<object[], Task<object>> executeAsyncDelegate = null, string description = null,
+            string descriptionUrl = null)
         {
             ExecuteDelegate = executeDelegate;
             ExecuteAsyncDelegate = executeAsyncDelegate;
+            if (description != null)
+            {
+                Description = description;
+            }
+            if (descriptionUrl != null)
+            {
+                DescriptionUrl = descriptionUrl;
+            }
         }
 
         /// <summary>Constructor, defines the synchronous execution method <see cref="Execute(object[])"/>
@@ -57,8 +66,10 @@ namespace IGLib.Commands
         /// <param name="executeDelegate">The delegate that is used to implement <see cref="Execute(object[])"/>.
         /// If null then exception is thrown.</param>
         /// <exception cref="ArgumentNullException">Thrown when the delegate parameter passed is null.</exception>
-        public GenericCommandBase(Func<object[], object> executeDelegate) :
-            this(executeDelegate: executeDelegate, executeAsyncDelegate: null)
+        public GenericCommandBase(Func<object[], object> executeDelegate, string description = null,
+            string descriptionUrl = null) :
+            this(executeDelegate: executeDelegate, executeAsyncDelegate: null, 
+                description: description, descriptionUrl: descriptionUrl)
         {
             if (executeDelegate == null) throw new ArgumentNullException(nameof(executeDelegate),
                 $"{this.GetType().Name} The delegate passed to implement the command's {nameof(Execute)} method is null.");
@@ -73,8 +84,10 @@ namespace IGLib.Commands
         /// <param name="executeAsyncDelegate">The delegate that is used to implement <see cref="ExecuteAsync(object[])"/>.
         /// If null then exception is thrown.</param>
         /// <exception cref="ArgumentNullException">Thrown when the delegate parameter passed is null.</exception>
-        public GenericCommandBase(Func<object[], Task<object>> executeAsyncDelegate) :
-            this(executeDelegate: null, executeAsyncDelegate: executeAsyncDelegate)
+        public GenericCommandBase(Func<object[], Task<object>> executeAsyncDelegate, string description = null,
+            string descriptionUrl = null) :
+            this(executeDelegate: null, executeAsyncDelegate: executeAsyncDelegate, 
+                description: description, descriptionUrl: descriptionUrl)
         {
             if (executeAsyncDelegate == null) throw new ArgumentNullException(nameof(executeAsyncDelegate),
                 $"{this.GetType().Name} The delegate passed to implement the command's {nameof(ExecuteAsync)} method is null.");
@@ -82,7 +95,7 @@ namespace IGLib.Commands
 
         private string _description = null;
 
-        /// <summary>Basic implementation of <see cref="IGenericCommand.Description"/></summary>
+        /// <inheritdoc />
         public virtual string Description
         {
             get
@@ -110,7 +123,11 @@ namespace IGLib.Commands
             }
         }
 
-        /// <summary>Basic implementation of <see cref="IGenericCommand.Description"/></summary>
+        /// <summary>Provides m URL to external description of what the current command does and what 
+        /// is its behavior. This may be used instead of <see cref="Description"/> in some scenarios.</summary>
+        /// <remarks>For now, this property will not be defined in the <see cref="IGenericCommand"/> interface. 
+        /// System that make use of this property therefore need to cast the interface (with as operator)
+        /// to the <see cref="GenericCommandBase"/> class.</remarks>
         public virtual string DescriptionUrl { get; protected init; }
 
         /// <summary>When <see cref="Execute(object[])"/> is not overridden in a derived class,
