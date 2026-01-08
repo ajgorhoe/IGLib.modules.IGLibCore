@@ -102,6 +102,7 @@ jobs:
           Write-Host "Current directory: $(Get-Location)`n"
           Write-Host "Directory Contents:`n"
           ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path . -MaxDepth 2 -IncludeHidden
+          ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path ./_external -MaxDepth 2 -IncludeHidden
 
       - name: SET UP .NET SDK
         uses: actions/setup-dotnet@v4
