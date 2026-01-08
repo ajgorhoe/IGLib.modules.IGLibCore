@@ -35,7 +35,8 @@ namespace IGLib.Commands
                     }
                 }
                 return (object?)sum;
-            }, description, descriptionUrl)
+            },
+            description: description, descriptionUrl: descriptionUrl)
         {
             if (description == null)
             {
@@ -70,7 +71,8 @@ namespace IGLib.Commands
                     }
                 }
                 return (object?)product;
-            }, description, descriptionUrl)
+            },
+            description: description, descriptionUrl: descriptionUrl)
         {
             if (description == null)
             {
@@ -110,11 +112,12 @@ namespace IGLib.Commands
                     }
                 }
                 return (object?)(sum / numElements);
-            }, description, descriptionUrl)
+            },
+            description: description, descriptionUrl: descriptionUrl)
         {
             if (description == null)
             {
-                description = DefaultDescription;
+                Description = DefaultDescription;
             }
         }
 

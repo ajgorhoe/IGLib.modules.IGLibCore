@@ -32,27 +32,7 @@ namespace IGLib.Commands.Tests
 
         #region SpecificCommands
 
-        [Fact]
-        protected void SpecificCommand_CommandSum_HasConsistentPropertiesAtCreation()
-        {
-            // Arrange:
-            Console.WriteLine($"Testing that command CommandSum has correct properties after creation:");
-            // Act:
-            CommandSum cmd = new CommandSum();
-            // Assert:
-            cmd.Should().NotBeNull(because: "it must be possible to create an instance of command");
-            cmd.StringId.Should().NotBeNull(because: "created command should have a proper StringId");
-            cmd.StringId.Should().Contain(cmd.Id.ToString(), because: "the StringId property should contain the unique ID of the command object");
-            cmd.StringId.Should().Contain(cmd.GetType().Name, because: "the StringId property should contain the name of the type");
-            cmd.Description.Should().NotBeNullOrEmpty(because: "this command should have a proper description");
-            cmd.Description.Length.Should().BeGreaterThan(40, because: "the description should be reasonably long to provide useful information");
-            cmd.Description.Should().Contain("sum", because: "the description should mention that the command computes sum of its arguments");
-            cmd.Description.Should().Contain("sum", because: "the description should mention that the command computes sum of its arguments");
-            cmd.Description.Should().Contain("return", because: "the description should describe the returned value");
-            cmd.Description.Should().Contain("return", because: "the description should describe the returned value");
-            cmd.Description.Should().Contain("arguments", because: "the description should mention the meaning of arguments");
-            cmd.Description.Should().Contain("exception", because: "the description should mention situations where exception is thrown");
-        }
+        #region CommandSum
 
         [Theory]
         [InlineData(null, 0)]  // null parameters
@@ -149,6 +129,63 @@ namespace IGLib.Commands.Tests
             }
         }
 
+        [Fact]
+        protected void SpecificCommand_CommandSum_HasConsistentPropertiesAtCreation()
+        {
+            // Arrange:
+            Console.WriteLine($"Testing that command CommandSum has correct properties after creation:");
+            // Act:
+            IGenericCommand cmd = new CommandSum();
+            // Assert:
+            cmd.Should().NotBeNull(because: "it must be possible to create an instance of command");
+            cmd.StringId.Should().NotBeNull(because: "created command should have a proper StringId");
+            cmd.StringId.Should().Contain(cmd.Id.ToString(), because: "the StringId property should contain the unique ID of the command object");
+            cmd.StringId.Should().Contain(cmd.GetType().Name, because: "the StringId property should contain the name of the type");
+            cmd.Description.Should().NotBeNullOrEmpty(because: "this command should have a proper description");
+            cmd.Description.Length.Should().BeGreaterThan(40, because: "the description should be reasonably long to provide useful information");
+            cmd.Description.Should().Contain("sum", because: "the description should mention that the command computes sum of its arguments");
+            cmd.Description.Should().Contain("sum", because: "the description should mention that the command computes sum of its arguments");
+            cmd.Description.Should().Contain("return", because: "the description should describe the returned value");
+            cmd.Description.Should().Contain("return", because: "the description should describe the returned value");
+            cmd.Description.Should().Contain("arguments", because: "the description should mention the meaning of arguments");
+            cmd.Description.Should().Contain("exception", because: "the description should mention situations where exception is thrown");
+        }
+
+        [Fact]
+        protected void SpecificCommand_CommandSum_CanBeAssignedDescription()
+        {
+            // Arrange:
+            Console.WriteLine($"Testing that a different Description can be assigned to CommandSum:");
+            string newDescription = "This is a new description for this command, which should replace the default one.";
+            // Act:
+            IGenericCommand cmd = new CommandSum(description: newDescription);
+            cmd.Should().NotBeNull(because: "PRECOND: it must be possible to create an instance of command");
+            Console.WriteLine($"Command's Description: {cmd.Description}");
+            // Assert:
+            cmd.Description.Should().NotBeNull(because: "non-null description was assigned to the command");
+            cmd.Description.Should().Be(newDescription, because: "the assigned description should be the one stored in the command");
+        }
+
+        [Fact]
+        protected void SpecificCommand_CommandSum_CanBeAssignedDescriptionUrl()
+        {
+            // Arrange:
+            Console.WriteLine($"Testing that a different DescriptionUrl can be assigned to CommandSum:");
+            string newDescriptionUrl = "http://www.example.com/CommandManual#MyCommand";
+            // Act:
+            GenericCommandBase cmd = new CommandSum(descriptionUrl: newDescriptionUrl);
+            cmd.Should().NotBeNull(because: "PRECOND: it must be possible to create an instance of command");
+            Console.WriteLine($"Command's DescriptionUrl: {cmd.DescriptionUrl}");
+            // Assert:
+            cmd.DescriptionUrl.Should().NotBeNull(because: "non-null description was assigned to the command");
+            cmd.DescriptionUrl.Should().Be(newDescriptionUrl, because: "the assigned DescriptionUrl should be the one stored in the command");
+        }
+
+        #endregion CommandSum
+
+
+
+        #region CommandProduct
 
         [Theory]
         [InlineData(null,             1)]  // null parameters
@@ -245,6 +282,63 @@ namespace IGLib.Commands.Tests
             }
         }
 
+        [Fact]
+        protected void SpecificCommand_CommandProduct_HasConsistentPropertiesAtCreation()
+        {
+            // Arrange:
+            Console.WriteLine($"Testing that command CommandProduct has correct properties after creation:");
+            // Act:
+            IGenericCommand cmd = new CommandProduct();
+            // Assert:
+            cmd.Should().NotBeNull(because: "it must be possible to create an instance of command");
+            cmd.StringId.Should().NotBeNull(because: "created command should have a proper StringId");
+            cmd.StringId.Should().Contain(cmd.Id.ToString(), because: "the StringId property should contain the unique ID of the command object");
+            cmd.StringId.Should().Contain(cmd.GetType().Name, because: "the StringId property should contain the name of the type");
+            cmd.Description.Should().NotBeNullOrEmpty(because: "this command should have a proper description");
+            cmd.Description.Length.Should().BeGreaterThan(40, because: "the description should be reasonably long to provide useful information");
+            cmd.Description.Should().Contain("product", because: "the description should mention that the command computes product of its arguments");
+            cmd.Description.Should().Contain("product", because: "the description should mention that the command computes product of its arguments");
+            cmd.Description.Should().Contain("return", because: "the description should describe the returned value");
+            cmd.Description.Should().Contain("return", because: "the description should describe the returned value");
+            cmd.Description.Should().Contain("arguments", because: "the description should mention the meaning of arguments");
+            cmd.Description.Should().Contain("exception", because: "the description should mention situations where exception is thrown");
+        }
+
+        [Fact]
+        protected void SpecificCommand_CommandProduct_CanBeAssignedDescription()
+        {
+            // Arrange:
+            Console.WriteLine($"Testing that a different Description can be assigned to CommandProduct:");
+            string newDescription = "This is a new description for this command, which should replace the default one.";
+            // Act:
+            IGenericCommand cmd = new CommandProduct(description: newDescription);
+            cmd.Should().NotBeNull(because: "PRECOND: it must be possible to create an instance of command");
+            Console.WriteLine($"Command's Description: {cmd.Description}");
+            // Assert:
+            cmd.Description.Should().NotBeNull(because: "non-null description was assigned to the command");
+            cmd.Description.Should().Be(newDescription, because: "the assigned description should be the one stored in the command");
+        }
+
+        [Fact]
+        protected void SpecificCommand_CommandProduct_CanBeAssignedDescriptionUrl()
+        {
+            // Arrange:
+            Console.WriteLine($"Testing that a different DescriptionUrl can be assigned to CommandProduct:");
+            string newDescriptionUrl = "http://www.example.com/CommandManual#MyCommand";
+            // Act:
+            GenericCommandBase cmd = new CommandProduct(descriptionUrl: newDescriptionUrl);
+            cmd.Should().NotBeNull(because: "PRECOND: it must be possible to create an instance of command");
+            Console.WriteLine($"Command's DescriptionUrl: {cmd.DescriptionUrl}");
+            // Assert:
+            cmd.DescriptionUrl.Should().NotBeNull(because: "non-null description was assigned to the command");
+            cmd.DescriptionUrl.Should().Be(newDescriptionUrl, because: "the assigned DescriptionUrl should be the one stored in the command");
+        }
+
+        #endregion CommandProduct
+
+
+
+        #region CommandAverage
 
         [Theory]
         [InlineData(null,             double.NaN)]  // null parameters
@@ -276,7 +370,6 @@ namespace IGLib.Commands.Tests
         // cannot convert parameters:
         [InlineData(new object[] { "abc", "def" }, 0.0, true, typeof(FormatException))]
         [InlineData(new object[] { 'a' }, 0.0, true, typeof(InvalidOperationException))]
-
         protected void SpecificCommand_CommandAverage_WorksCorrectly(object[] parameters, double expectedResult,
             bool shouldThrow = false, Type expectedExceptionType = null)
         {
@@ -309,7 +402,7 @@ namespace IGLib.Commands.Tests
             }
             Console.WriteLine("");
             IGenericCommand cmd = new CommandAverage();
-            cmd.Should().NotBeNull(because: $"PRECOND: It must be possible to create command of type CommandSum.");
+            cmd.Should().NotBeNull(because: $"PRECOND: It must be possible to create command of this type.");
             // Act:
             bool wasExceptionThrown = false;
             Type exceptionType = null;
@@ -328,9 +421,9 @@ namespace IGLib.Commands.Tests
             // Assert:
             if (!wasExceptionThrown)
             {
-                result.Should().BeOfType<double>(because: "CommandSum must return a double value.");
+                result.Should().BeOfType<double>(because: "CommandAverage must return a double value.");
                 double? dResultNullable = (double?)result;
-                dResultNullable.Should().NotBeNull(because: "CommandSum must return a non-null double value.");
+                dResultNullable.Should().NotBeNull(because: "CommandAverage must return a non-null double value.");
                 double dResult = dResultNullable.Value;
                 dResult.Should().Be(expectedResult);
             }
@@ -342,6 +435,65 @@ namespace IGLib.Commands.Tests
                     $"the exception type must be {expectedExceptionType.Name}");
             }
         }
+
+        [Fact]
+        protected void SpecificCommand_CommandAverage_HasConsistentPropertiesAtCreation()
+        {
+            // Arrange:
+            Console.WriteLine($"Testing that command CommandAverage has correct properties after creation:");
+            // Act:
+            IGenericCommand cmd = new CommandAverage();
+            // Assert:
+            cmd.Should().NotBeNull(because: "it must be possible to create an instance of command");
+            Console.WriteLine($"Command ID: {cmd.Id}");
+            Console.WriteLine($"Command StringId: {cmd.StringId}");
+            Console.WriteLine($"Command's Description: {cmd.StringId}");
+            Console.WriteLine($"Command's DescriptionUrl: {cmd.StringId}");
+            cmd.StringId.Should().NotBeNull(because: "created command should have a proper StringId");
+            cmd.StringId.Should().Contain(cmd.Id.ToString(), because: "the StringId property should contain the unique ID of the command object");
+            cmd.StringId.Should().Contain(cmd.GetType().Name, because: "the StringId property should contain the name of the type");
+            cmd.Description.Should().NotBeNullOrEmpty(because: "this command should have a proper description");
+            cmd.Description.Length.Should().BeGreaterThan(40, because: "the description should be reasonably long to provide useful information");
+            cmd.Description.Should().Contain("average", because: "the description should mention that the command computes average of its arguments");
+            cmd.Description.Should().Contain("average", because: "the description should mention that the command computes average of its arguments");
+            cmd.Description.Should().Contain("return", because: "the description should describe the returned value");
+            cmd.Description.Should().Contain("return", because: "the description should describe the returned value");
+            cmd.Description.Should().Contain("arguments", because: "the description should mention the meaning of arguments");
+            cmd.Description.Should().Contain("exception", because: "the description should mention situations where exception is thrown");
+        }
+
+        [Fact]
+        protected void SpecificCommand_CommandAverage_CanBeAssignedDescription()
+        {
+            // Arrange:
+            Console.WriteLine($"Testing that a different Description can be assigned to CommandAverage:");
+            string newDescription = "This is a new description for this command, which should replace the default one.";
+            // Act:
+            IGenericCommand cmd = new CommandAverage(description: newDescription);
+            cmd.Should().NotBeNull(because: "PRECOND: it must be possible to create an instance of command");
+            Console.WriteLine($"Command's Description: {cmd.Description}");
+            // Assert:
+            cmd.Description.Should().NotBeNull(because: "non-null description was assigned to the command");
+            cmd.Description.Should().Be(newDescription, because: "the assigned description should be the one stored in the command");
+        }
+
+        [Fact]
+        protected void SpecificCommand_CommandAverage_CanBeAssignedDescriptionUrl()
+        {
+            // Arrange:
+            Console.WriteLine($"Testing that a different DescriptionUrl can be assigned to CommandAverage:");
+            string newDescriptionUrl = "http://www.example.com/CommandManual#MyCommand";
+            // Act:
+            GenericCommandBase cmd = new CommandAverage(descriptionUrl: newDescriptionUrl);
+            cmd.Should().NotBeNull(because: "PRECOND: it must be possible to create an instance of command");
+            Console.WriteLine($"Command's DescriptionUrl: {cmd.DescriptionUrl}");
+            // Assert:
+            cmd.DescriptionUrl.Should().NotBeNull(because: "non-null description was assigned to the command");
+            cmd.DescriptionUrl.Should().Be(newDescriptionUrl, because: "the assigned DescriptionUrl should be the one stored in the command");
+        }
+
+        #endregion CommandAverage
+
 
         #endregion SpecificCommands
 
