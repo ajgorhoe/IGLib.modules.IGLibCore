@@ -283,7 +283,7 @@ namespace IGLib.Commands.Tests
             Console.WriteLine("");
             IGenericCommand cmd = new CommandSum();
             cmd.Should().NotBeNull(because: $"PRECOND: It must be possible to create command of type CommandSum.");
-            bool exceptionThrown = false;
+            bool wasExceptionThrown = false;
             Type exceptionType = null;
             try
             {
@@ -300,12 +300,12 @@ namespace IGLib.Commands.Tests
             catch (Exception ex)
             {
                 Console.WriteLine($"EXCEPTION {ex.GetType().Name} thrown: {ex.Message}");
-                exceptionThrown = true;
+                wasExceptionThrown = true;
                 exceptionType = ex.GetType();
             }
-            exceptionThrown.Should().Be(shouldThrow, because: 
+            wasExceptionThrown.Should().Be(shouldThrow, because: 
                 shouldThrow ? "an exception was expected to be thrown." : "no exception was expected to be thrown");
-            if (exceptionThrown && expectedExceptionType != null)
+            if (wasExceptionThrown && expectedExceptionType != null)
             {
                 exceptionType.Should().Be(expectedExceptionType, because: 
                     $"the exception type must be {expectedExceptionType.Name}");
@@ -375,7 +375,7 @@ namespace IGLib.Commands.Tests
             Console.WriteLine("");
             IGenericCommand cmd = new CommandProduct();
             cmd.Should().NotBeNull(because: $"PRECOND: It must be possible to create command of type CommandSum.");
-            bool exceptionThrown = false;
+            bool wasExceptionThrown = false;
             Type exceptionType = null;
             try
             {
@@ -392,12 +392,12 @@ namespace IGLib.Commands.Tests
             catch (Exception ex)
             {
                 Console.WriteLine($"EXCEPTION {ex.GetType().Name} thrown: {ex.Message}");
-                exceptionThrown = true;
+                wasExceptionThrown = true;
                 exceptionType = ex.GetType();
             }
-            exceptionThrown.Should().Be(shouldThrow, because: 
+            wasExceptionThrown.Should().Be(shouldThrow, because: 
                 shouldThrow ? "an exception was expected to be thrown." : "no exception was expected to be thrown");
-            if (exceptionThrown && expectedExceptionType != null)
+            if (wasExceptionThrown && expectedExceptionType != null)
             {
                 exceptionType.Should().Be(expectedExceptionType, because: 
                     $"the exception type must be {expectedExceptionType.Name}");
@@ -412,29 +412,29 @@ namespace IGLib.Commands.Tests
         [InlineData(new object[] { 5.4 }, 5.4)]
         [InlineData(new object[] { 1.0, 2.0, 3.0 }, 6 / 3)]
         [InlineData(new object[] { 1.43, 64.33, 4.56 }, (1.43 + 64.33 + 4.56) / 3.0)]
-        //// int parameters:
-        //[InlineData(new object[] { (int)5 }, 5)]
-        //[InlineData(new object[] { (int)5, (int)6, (int)7 }, 18)]
-        //// string parameters:
-        //[InlineData(new object[] { "5", "6", "7" }, 18)]
-        //[InlineData(new object[] { "5.35", "6", "7" }, 18.35)]
-        //// boolean parameters:
-        //[InlineData(new object[] { true }, 1.0)]
-        //[InlineData(new object[] { false }, 0.0)]
-        //[InlineData(new object[] { true, false, true, true }, 3.0)]
+        // int parameters:
+        [InlineData(new object[] { (int)5 }, 5)]
+        [InlineData(new object[] { (int)5, (int)6, (int)7 }, 18 / 3)]
+        // string parameters:
+        [InlineData(new object[] { "5", "6", "7" }, 18 / 3)]
+        [InlineData(new object[] { "5.35", "6", "7" }, 18.35 / 3)]
+        // boolean parameters:
+        [InlineData(new object[] { true }, 1.0)]
+        [InlineData(new object[] { false }, 0.0)]
+        [InlineData(new object[] { true, false, true, true }, 3.0 / 4.0)]
 
-        //// mixed types parameters:
-        //[InlineData(new object[] { 5.0, (int)3, 2.5, (int)4 }, 14.5)]
-        //[InlineData(new object[] { 5.0, "3", "2.5", (int)4 }, 14.5)]
+        // mixed types parameters:
+        [InlineData(new object[] { 5.0, (int)3, 2.5, (int)4 }, 14.5 / 4)]
+        [InlineData(new object[] { 5.0, "3", "2.5", (int)4 }, 14.5 / 4)]
 
-        //// parameters with nulls:
-        //[InlineData(new object[] { null, 5.0, null, (int)3 }, 8.0)]
-        //[InlineData(new object[] { null, 5, 6, 3 }, 5 + 6 + 3)]
-        //[InlineData(new object[] { 5, 6, 3, null }, 5 + 6 + 3)]
+        // parameters with nulls:
+        [InlineData(new object[] { null, 5.0, null, (int)3 }, 8.0 / 2)]
+        [InlineData(new object[] { null, 5, 6, 3 }, (double)(5 + 6 + 3) / 3)]
+        [InlineData(new object[] { 5, 6, 3, null }, (double)(5 + 6 + 3) / 3)]
 
-        //// cannot convert parameters:
-        //[InlineData(new object[] { "abc", "def" }, 0.0, true, typeof(FormatException))]
-        //[InlineData(new object[] { 'a' }, 0.0, true, typeof(InvalidOperationException))]
+        // cannot convert parameters:
+        [InlineData(new object[] { "abc", "def" }, 0.0, true, typeof(FormatException))]
+        [InlineData(new object[] { 'a' }, 0.0, true, typeof(InvalidOperationException))]
 
         protected void SpecificCommand_CommandAverage_WorksCorrectly(object[] parameters, double expectedResult,
             bool shouldThrow = false, Type expectedExceptionType = null)
@@ -469,29 +469,33 @@ namespace IGLib.Commands.Tests
             Console.WriteLine("");
             IGenericCommand cmd = new CommandAverage();
             cmd.Should().NotBeNull(because: $"PRECOND: It must be possible to create command of type CommandSum.");
-            bool exceptionThrown = false;
+            // Act:
+            bool wasExceptionThrown = false;
             Type exceptionType = null;
+            object result = null;
             try
             {
-                // Act:
-                object result = cmd.Execute(parameters);
-                Console.WriteLine($"Obtained result: {result}, type: {result?.GetType()}");
-                // Assert:
+                result = cmd.Execute(parameters);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"EXCEPTION {ex.GetType().Name} thrown: {ex.Message}");
+                wasExceptionThrown = true;
+                exceptionType = ex.GetType();
+            }
+            Console.WriteLine($"Obtained result: {result}, type: {result?.GetType()}");
+            // Assert:
+            if (!wasExceptionThrown)
+            {
                 result.Should().BeOfType<double>(because: "CommandSum must return a double value.");
                 double? dResultNullable = (double?)result;
                 dResultNullable.Should().NotBeNull(because: "CommandSum must return a non-null double value.");
                 double dResult = dResultNullable.Value;
                 dResult.Should().Be(expectedResult);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"EXCEPTION {ex.GetType().Name} thrown: {ex.Message}");
-                exceptionThrown = true;
-                exceptionType = ex.GetType();
-            }
-            exceptionThrown.Should().Be(shouldThrow, because:
+            wasExceptionThrown.Should().Be(shouldThrow, because:
                 shouldThrow ? "an exception was expected to be thrown." : "no exception was expected to be thrown");
-            if (exceptionThrown && expectedExceptionType != null)
+            if (wasExceptionThrown && expectedExceptionType != null)
             {
                 exceptionType.Should().Be(expectedExceptionType, because:
                     $"the exception type must be {expectedExceptionType.Name}");
