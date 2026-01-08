@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using IGLib.Tests.Base;
 using IGLib.Commands.Tests;
 using System.Text;
+using System.Linq;
 
 namespace IGLib.Commands.Tests
 {
@@ -27,8 +28,10 @@ namespace IGLib.Commands.Tests
         }
 
 
+        #region CommandCreation
+
         [Fact]
-        public void CommandCreation_CommandsHaveDistinctIDsGrowingWithCreationTime()
+        protected void CommandCreation_CommandsHaveDistinctIDsGrowingWithCreationTime()
         {
             // Arrange:
             Console.WriteLine("Testing that created commands have distinct IDs and that IDs grow with time of creation:\n");
@@ -51,7 +54,7 @@ namespace IGLib.Commands.Tests
         }
 
         [Fact]
-        public void CommandCreation_CommandsOfSameTypeHaveDistinctIDsGrowingWithCreationTime()
+        protected void CommandCreation_CommandsOfSameTypeHaveDistinctIDsGrowingWithCreationTime()
         {
             // Arrange:
             int numCreatedCommands = 200;
@@ -79,7 +82,7 @@ namespace IGLib.Commands.Tests
         }
 
         [Fact]
-        public void CommandCreation_CommandsOfDifferentTypesHaveDistinctIDsGrowingWithCreationTime()
+        protected void CommandCreation_CommandsOfDifferentTypesHaveDistinctIDsGrowingWithCreationTime()
         {
             // Arrange:
             int numCreatedCommands = 200;
@@ -116,9 +119,8 @@ namespace IGLib.Commands.Tests
             }
         }
 
-
         [Fact]
-        public void CommandCreation_CommandsOfDifferentTypesDerivedFromCommandBaseHaveConsistentProperties()
+        protected void CommandCreation_CommandsOfDifferentTypesDerivedFromCommandBaseHaveConsistentProperties()
         {
             // Arrange:
             Console.WriteLine($"Testing that created commands of different types based on {nameof(GenericCommandBase)}\n  have consistent properties:\n");
@@ -165,10 +167,8 @@ namespace IGLib.Commands.Tests
             cmd3.Description.Should().Contain(cmd3.Id.ToString(), because: $"Commands based on {nameof(GenericCommandBase)} must contain {nameof(GenericCommandBase.Id)} in {nameof(GenericCommandBase.Description)}.");
         }
 
-
-    
         [Fact]
-        public void CommandCreation_CommandsOfSameTypeDerivedFromCommandBaseHaveConsistentProperties()
+        protected void CommandCreation_CommandsOfSameTypeDerivedFromCommandBaseHaveConsistentProperties()
         {
             // Arrange:
             Console.WriteLine($"Testing that created commands of the same type based on {nameof(GenericCommandBase)}\n  have consistent properties:\n");
@@ -214,6 +214,73 @@ namespace IGLib.Commands.Tests
             cmd2.Description.Should().Contain(cmd2.Id.ToString(), because: $"Commands based on {nameof(GenericCommandBase)} must contain {nameof(GenericCommandBase.Id)} in {nameof(GenericCommandBase.Description)}.");
             cmd3.Description.Should().Contain(cmd3.Id.ToString(), because: $"Commands based on {nameof(GenericCommandBase)} must contain {nameof(GenericCommandBase.Id)} in {nameof(GenericCommandBase.Description)}.");
         }
+
+        #endregion CommandCreation
+
+        #region SpecificCommands
+
+
+        [Theory]
+        [InlineData(null, 0)]  // null parameters
+        [InlineData(new object[] {  }, 0)]  // empty array
+        // double parameters:
+        [InlineData(new object[] { 5.4 }, 5.4)]
+        [InlineData(new object[] { 1.0, 2.0, 3.0 }, 6)]
+        [InlineData(new object[] { 1.43, 64.33, 4.56 }, 1.43 + 64.33 + 4.56)]
+        // int parameters:
+        [InlineData(new object[] { (int)5 }, 5)]
+        [InlineData(new object[] { (int)5, (int)6, (int)7 }, 18)]
+        // string parameters:
+        [InlineData(new object[] { "5", "6", "7" }, 18)]
+        [InlineData(new object[] { "5.35", "6", "7" }, 18.35)]
+
+
+        // mixed types parameters:
+        [InlineData(new object[] { 5.0, (int)3, 2.5, (int)4 }, 14.5)]
+        [InlineData(new object[] { 5.0, "3", "2.5", (int)4 }, 14.5)]
+        
+        // parameters with nulls:
+        [InlineData(new object[] { null, 5.0, null, (int)3 }, 8.0)]
+        [InlineData(new object[] { null, 5, 6, 3 }, 5 + 6 + 3)]
+        [InlineData(new object[] { 5, 6, 3, null }, 5 + 6 + 3)]
+
+        protected void Test_CommandSum(object[] parameters, double expectedResult)
+        {
+            // Arrange:
+            Console.WriteLine($"Test of command CommandSum:");
+            Console.WriteLine("Parameters:");
+            if (parameters == null)
+            {
+                Console.WriteLine("  null");
+            } else if (parameters.Length == 0)
+            {
+                Console.WriteLine("  Empty array.");
+            } else
+            {
+                for (int i = 0; i < parameters.Length; ++i)
+                {
+                    Console.WriteLine($"  [{i}]: {parameters[i]}, type: {parameters[i]?.GetType()}");
+                }
+            }
+            Console.WriteLine($"Expected result: {expectedResult}");
+            IGenericCommand cmd = new CommandSum();
+            cmd.Should().NotBeNull(because: $"PRECOND: It must be possible to create command of type CommandSum.");
+            // Act:
+            object result = cmd.Execute(parameters);
+            Console.WriteLine($"Obtained result: {result}, type: {result?.GetType()}");
+            // Assert:
+            result.Should().BeOfType<double>(because: "CommandSum must return a double value.");
+            double? dResultNullable = (double?)result;
+            dResultNullable.Should().NotBeNull(because: "CommandSum must return a non-null double value.");
+            double dResult = dResultNullable.Value;
+            dResult.Should().Be(expectedResult);
+        }
+
+
+        #endregion SpecificCommands
+
+
+
     }
 
 
