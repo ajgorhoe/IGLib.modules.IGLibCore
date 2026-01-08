@@ -53,7 +53,6 @@ namespace IGLib.Commands
         #endregion CommandExecution
 
 
-
         #region CommandRegistration
 
         /// <summary>Returns true if the command named <paramref name="commandName"/> is rgistered on the current 

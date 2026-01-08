@@ -189,7 +189,7 @@ namespace IGLib.Commands
             {
                 return ExecuteDelegate(parameters);
             }
-            // This method is neither customly implemented (by overriding the base class' method)
+            // This method is neither custom implemented (by overriding the base class' method)
             // nor defined via delegate; try to call the ExecuteAsync method and prevent infinite recursion:
             try
             {
