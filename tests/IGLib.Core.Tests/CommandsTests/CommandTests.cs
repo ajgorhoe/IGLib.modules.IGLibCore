@@ -285,23 +285,27 @@ namespace IGLib.Commands.Tests
             cmd.Should().NotBeNull(because: $"PRECOND: It must be possible to create command of type CommandSum.");
             bool wasExceptionThrown = false;
             Type exceptionType = null;
+            object result = null;
+            // Act:
             try
             {
-                // Act:
-                object result = cmd.Execute(parameters);
-                Console.WriteLine($"Obtained result: {result}, type: {result?.GetType()}");
-                // Assert:
-                result.Should().BeOfType<double>(because: "CommandSum must return a double value.");
-                double? dResultNullable = (double?)result;
-                dResultNullable.Should().NotBeNull(because: "CommandSum must return a non-null double value.");
-                double dResult = dResultNullable.Value;
-                dResult.Should().Be(expectedResult);
+                result = cmd.Execute(parameters);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"EXCEPTION {ex.GetType().Name} thrown: {ex.Message}");
                 wasExceptionThrown = true;
                 exceptionType = ex.GetType();
+            }
+            Console.WriteLine($"Obtained result: {result}, type: {result?.GetType()}");
+            // Assert:
+            if (!wasExceptionThrown)
+            {
+                result.Should().BeOfType<double>(because: "CommandSum must return a double value.");
+                double? dResultNullable = (double?)result;
+                dResultNullable.Should().NotBeNull(because: "CommandSum must return a non-null double value.");
+                double dResult = dResultNullable.Value;
+                dResult.Should().Be(expectedResult);
             }
             wasExceptionThrown.Should().Be(shouldThrow, because: 
                 shouldThrow ? "an exception was expected to be thrown." : "no exception was expected to be thrown");
