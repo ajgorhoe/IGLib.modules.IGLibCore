@@ -39,11 +39,11 @@ namespace IGLib.Commands
         {
             if (description == null)
             {
-                Description = ThisCommandDescription;
+                Description = DefaultDescription;
             }
         }
 
-        public static string ThisCommandDescription =
+        public static string DefaultDescription =
               "This command returns sum of its arguments. "
               + "If no arguments are specified (null or empty array), double 0 is returned. "
               + "If arguments cannot be converted to type double, exception is thrown.";
@@ -74,11 +74,11 @@ namespace IGLib.Commands
         {
             if (description == null)
             {
-                Description = ThisCommandDescription;
+                Description = DefaultDescription;
             }
         }
 
-        public static string ThisCommandDescription =
+        public static string DefaultDescription =
               "This command returns product of its arguments. "
               + "If no arguments are specified (null or empty array), double 1 is returned. "
               + "If arguments cannot be converted to type double, exception is thrown.";
@@ -114,11 +114,11 @@ namespace IGLib.Commands
         {
             if (description == null)
             {
-                description = ThisCommandDescription;
+                description = DefaultDescription;
             }
         }
 
-        public static string ThisCommandDescription =
+        public static string DefaultDescription =
             "This command returns average of its arguments. "
             + "If no arguments are specified (null or empty array), double NaN is returned (not a number). "
             + "If arguments cannot be converted to type double, exception is thrown.";
