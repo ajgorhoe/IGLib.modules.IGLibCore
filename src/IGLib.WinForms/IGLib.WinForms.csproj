@@ -54,6 +54,18 @@
 		<PackageReference Include="GitVersion.MsBuild" Version="6.5.0" PrivateAssets="All" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<!-- The referenced InitModules below ensures that source code repositories are cloned to correct relative locations before building begins.
+			Attributes:
+		To prevent copying output of referenced project to output of this project (e.g. DLLs, but not text files):
+		  ReferenceOutputAssembly="false"
+		To prevent this reference to appear in NuGet package of this project:
+		  PrivateAssets="All"
+		ReferenceOutputAssembly="false" PrivateAssets="All"   -->
+		<ProjectReference Include="..\..\..\_external\mathnet-numerics\src\Numerics\Numerics.csproj" />
+		<ProjectReference Include="..\0InitModules\InitModulesCoreExtended\InitModulesCoreExtended.csproj" ReferenceOutputAssembly="false" PrivateAssets="All" />
+	</ItemGroup>
+
 	<!--
 	<ItemGroup>
 		<Compile Remove="FromIGLibBase\**" />
