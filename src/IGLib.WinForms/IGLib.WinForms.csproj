@@ -10,6 +10,8 @@
 		<Nullable>enable</Nullable>
 		<OutputType>Library</OutputType>
 		<UseWindowsForms>true</UseWindowsForms>
+		<!-- Fix error MSB3823: -->
+		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
 		<IsPackable>true</IsPackable>
@@ -65,15 +67,12 @@
 		<ProjectReference Include="..\..\..\_external\mathnet-numerics\src\Numerics\Numerics.csproj" />
 		<ProjectReference Include="..\0InitModules\InitModulesCoreExtended\InitModulesCoreExtended.csproj" ReferenceOutputAssembly="false" PrivateAssets="All" />
 	</ItemGroup>
-
-	<!--
-	<ItemGroup>
-		<Compile Remove="FromIGLibBase\**" />
-		<EmbeddedResource Remove="FromIGLibBase\**" />
-		<None Remove="FromIGLibBase\**" />
+	
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+		<!-- Fix error MSB3822: -->
+		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
 	</ItemGroup>
-	-->
-
+	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0" />
