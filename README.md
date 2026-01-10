@@ -64,12 +64,6 @@ The legacy IGLib's base library is located at:
   * [codedoc](https://github.com/ajgorhoe/IGLib.workspace.doc.codedoc) contains scripts and other tools for generating and viewing code documentation for software projects, including IGLib projects.
     * [CodeDocumentation](https://github.com/ajgorhoe/CodeDocumentation) contains compiled code documentation for parts of IGLib (experimental), generated via [codedoc](https://github.com/ajgorhoe/IGLib.workspace.doc.codedoc), then copied to and committed to tge repository.
 * [IGLibGraphics3D](https://github.com/ajgorhoe/IGLib.modules.IGLibGraphics3D) - a 3D graphics library. <img src="https://ajgorhoe.github.io/IGLibFramework/images/Graphics3D/TreFoilKnotRayTracing/TransparentBackground/TrefoilKnot_Blue_RayTracer_BlackBackground_MetallicBSDF_Transparent.png" alt="[Trefoil knot]" align="right" width="10em" style="float: right; max-width: 20%; width: 10em; margin-left: 2pt;" />
-
-<!--
- align="right" width="48pt"
-  style="float: right; max-width: 20%; width: 4em; margin-left: 8pt;" />
--->
-
 * [IGLibScripting](d:\users\ws\ws\other\iglibmodules\IGLibScripting) - Rudimentary scripting utilities; some utiities will be transferred here from legacy IGLib.
 * [IGLibScriptingCs](https://github.com/ajgorhoe/IGLib.modules.IGLibScriptingCs) - C# scripting, dynamic building and execution. Some utilities from legacyLib will be modernized in this repository.
 * [IGLibSandbox](https://github.com/ajgorhoe/IGLib.modules.IGLibSandbox) - a *private* repository for prototyping, experimental, and early development
