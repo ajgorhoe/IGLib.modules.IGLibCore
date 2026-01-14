@@ -374,6 +374,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptEvaluatorConsole", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WestwindScriptingInteractive", "..\IGLibScriptingCs\sampleapps\WestwindScriptingInteractive\WestwindScriptingInteractive.csproj", "{FAB1D1E1-EE97-4A92-D91B-9214FA726EC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.TestBase.ExampleTests", "tests\IGLib.TestBase.ExampleTests\IGLib.TestBase.ExampleTests.csproj", "{3EA7D1E1-6531-66AB-3373-E019B89FD5C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -632,6 +634,10 @@ Global
 		{FAB1D1E1-EE97-4A92-D91B-9214FA726EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAB1D1E1-EE97-4A92-D91B-9214FA726EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAB1D1E1-EE97-4A92-D91B-9214FA726EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA7D1E1-6531-66AB-3373-E019B89FD5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA7D1E1-6531-66AB-3373-E019B89FD5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA7D1E1-6531-66AB-3373-E019B89FD5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA7D1E1-6531-66AB-3373-E019B89FD5C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -749,6 +755,7 @@ Global
 		{A44BCC6F-CF20-41DA-BEAF-1D3D9BF38B7F} = {1F37D3D2-5309-41EB-B7A1-BEB99A3A77D0}
 		{F8C05425-8E80-376E-DF71-FEA9C5B16BB2} = {A44BCC6F-CF20-41DA-BEAF-1D3D9BF38B7F}
 		{FAB1D1E1-EE97-4A92-D91B-9214FA726EC1} = {A44BCC6F-CF20-41DA-BEAF-1D3D9BF38B7F}
+		{3EA7D1E1-6531-66AB-3373-E019B89FD5C8} = {49FA5358-3660-4DDD-919F-5BC0D39DF5E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B21775EA-26C3-407E-9DDB-5A7750E3F0F2}
