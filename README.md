@@ -28,7 +28,7 @@ This repository contains basic portions of the restructured ***Investigative Gen
 
 ## About this Repository - 'IGLibCore'
 
-[This repository](https://github.com/ajgorhoe/IGLib.modules.IGLibCore) contains the [IGLibCore library](./src/IGLib.Core/), which includes common lower-level utilities, and other libraries commonly used by more specialized libraries and by applications of both the new and the legacy IGLib, as well as some other libraries and applications. *IGLib* consists of several other libraries and demo applications. You can find more details [below](#the-investigative-generic-library-iglib) and in the [Links Section](#links).
+[This repository](https://github.com/ajgorhoe/IGLib.modules.IGLibCore) contains the [IGLibCore library](./src/IGLib.Core/) and other libraries that include common lower-level utilities for IGLib, and other libraries commonly used by more specialized libraries and by applications of both the new and the legacy IGLib, as well as some other libraries and applications. *IGLib* consists of several other libraries and demo applications. You can find more details [below](#the-investigative-generic-library-iglib) and in the [Links Section](#links).
 
 ### Projects within the `IGLibCore` Repository
 
