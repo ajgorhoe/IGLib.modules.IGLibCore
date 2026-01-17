@@ -4,7 +4,7 @@
 <img src="https://ajgorhoe.github.io/icons/IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
   style="float: right; max-width: 20%; width: 4em; margin-left: 8pt;" />
 
-This repository contains basic portions of the restructured ***Investigative Generic Library*** (***IGLib***) in the [repository section](#about-this-repository---iglibcore). The current document also contains **information about the complete *IGLib***, which consists of multiple repositories. **IGLib** is currently undergoing some changes.
+This repository contains basic portions of the restructured ***Investigative Generic Library*** (***IGLib***) in the [repository section](#about-this-repository---iglibcore). The current document also contains **information about the complete *IGLib*** in the [respective section](#the-investigative-generic-library-iglib), which consists of multiple repositories. **IGLib** is currently undergoing some changes.
 
 **Contents**:
 
