@@ -49,9 +49,9 @@ This repository contains basic portions of the restructured ***Investigative Gen
 
 To clone and work with this and other IGLib libraries (build, run, develop), use the new *[IGLib cotainer repository (iglibmodules)](https://github.com/ajgorhoe/iglibmodules)*. After cloning the repository, run one of the *PowerShell* scripts within `iglibmodules` clone for cloning / updating IGLib repositories, such as `UpdateRepos_Basic.ps1` or `UpdateReposLegacy_Extended.ps1`. After cloning, open the solution `IGLibCore.sln` within the current repository (`iglibmodules/IGLibCore/`), or one of the common solutions within the `iglibmodules/IGLibCore/` directory, such as `IGLibCore_All.sln`. See also the container repository's [readme file](https://github.com/ajgorhoe/iglibmodules/blob/main/README.md) for further information.
 
-Project can also be built and run without cloning the `iglibmodules` repository. Just clone the current repository into `IGLibScriptingCs/` directory in the appropriate location in the local file system, open the solution in Visual Studio or other ID, and build and run. 
+Project can also be built and run without cloning the `iglibmodules` repository. Just clone the current repository into `IGLibScriptingCs/` directory in the appropriate location in the local file system, open the solution in Visual Studio or other ID, and build and run.
 
-Building will automatically clone some dependency repositories in the directory containing the current repository (side-by-side to the repository), including possibly some repositories in the `../_external/` directory. 
+Building will automatically clone some dependency repositories in the directory containing the current repository (side-by-side to the repository), including possibly some repositories in the `../_external/` directory.
 
 Even better, you can manually clone the dependency repositories by runninng the scripts `scripts/UpdateDependencyRepos.ps1` and `scripts/UpdateDependencyReposExtended.ps1` before opening the solution. Without this preparation step, you may need to reload the dependency projects after running the first build (which will fail). After reloading the dependency projects, subsequent builds should pass.
 
