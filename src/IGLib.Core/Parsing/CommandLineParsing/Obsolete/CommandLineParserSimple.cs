@@ -14,6 +14,7 @@ namespace IGLib.Parsing
 {
 
 
+    [Obsolete("Not used any more, may be removed in the future.")]
     public static class StringExtensions
     {
 
@@ -63,6 +64,7 @@ namespace IGLib.Parsing
     /// <para>Implementation that follows this:</para>
     /// https://stackoverflow.com/questions/298830/split-string-containing-command-line-parameters-into-string-in-c-sharp
     /// </summary>
+    [Obsolete("Not used any more, may be removed in the future.")]
     public class CommandLineParserSimple
     {
 
