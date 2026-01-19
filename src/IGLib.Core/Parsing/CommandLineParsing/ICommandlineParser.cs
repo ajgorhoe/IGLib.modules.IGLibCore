@@ -6,7 +6,7 @@ using System.Text;
 namespace IGLib.Parsing
 {
     
-    public interface ICommandlineParser
+    public interface ICommandlineParser1
     {
 
         string[] CommandlineToArgs(string commandLine);
