@@ -2,50 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CommandLineParsing
+namespace IGLib.Parsing
+
 {
-    /// <summary>
-    /// Plain command-line parser contract that operates on <see cref="string"/> and returns a new array.
-    /// Use this when you do not need allocation-friendly overloads.
-    /// </summary>
-    public interface ICommandLineParserPlain
-    {
-        /// <summary>
-        /// Splits a command-line string into individual arguments.
-        /// The returned array contains the arguments in order; it may include the command name if present
-        /// in the provided <paramref name="commandLine"/>.
-        /// </summary>
-        /// <param name="commandLine">The raw command-line string to parse.</param>
-        /// <returns>An array of parsed arguments.</returns>
-        string[] CommandLineToArgs(string commandLine);
-
-        /// <summary>
-        /// Builds a command-line string from a sequence of arguments such that, when the returned string
-        /// is parsed with <see cref="CommandLineToArgs(string)"/>, it round-trips back to the same
-        /// argument sequence (for this parser's rules).
-        /// </summary>
-        /// <param name="commandLineArguments">The arguments to encode into a command line.</param>
-        /// <returns>A command-line string representation of the provided arguments.</returns>
-        string ArgsToCommandLine(IEnumerable<string> commandLineArguments);
-    }
-
-    /// <summary>
-    /// Extended command-line parser contract that includes allocation-friendly overloads.
-    /// This interface is useful for high-throughput scenarios where the command line may be a slice
-    /// of a larger buffer and you want to reuse a destination list.
-    /// </summary>
-    public interface ICommandLineParser : ICommandLineParserPlain
-    {
-        /// <summary>
-        /// Splits a command-line span into individual arguments and appends them to <paramref name="destination"/>.
-        /// This overload is allocation-friendly: it does not allocate intermediate substrings and allows callers
-        /// to reuse the destination list across calls.
-        /// </summary>
-        /// <param name="commandLine">The raw command-line characters to parse.</param>
-        /// <param name="destination">List that receives parsed arguments (appended).</param>
-        /// <returns>The number of arguments added to <paramref name="destination"/>.</returns>
-        int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
-    }
 
     /// <summary>
     /// Command-line parser that follows Windows/MSVC-style argument splitting rules, broadly compatible with
