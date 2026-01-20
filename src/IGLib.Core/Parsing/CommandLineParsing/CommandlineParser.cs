@@ -1,358 +1,407 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-public enum CommandLineStyle
+namespace CommandLineParsing
 {
-    Windows, // MSVC/CommandLineToArgvW-like
-    Posix    // sh/bash-like quoting subset (no expansions)
-}
-
-public interface ICommandLineParser
-{
-    string[] CommandLineToArgs(string commandLine);
-    string ArgsToCommandLine(IEnumerable<string> commandLineArguments);
-}
-
-public sealed class CommandLineParser : ICommandLineParser
-{
-    public CommandLineStyle Style { get; }
-
-    public CommandLineParser(CommandLineStyle style = CommandLineStyle.Windows)
-        => Style = style;
-
-    public string[] CommandLineToArgs(string commandLine)
+    /// <summary>
+    /// Plain command-line parser contract that operates on <see cref="string"/> and returns a new array.
+    /// Use this when you do not need allocation-friendly overloads.
+    /// </summary>
+    public interface ICommandLineParserPlain
     {
-        if (commandLine is null) throw new ArgumentNullException(nameof(commandLine));
-        var list = new List<string>();
-        CommandLineToArgs(commandLine.AsSpan(), list);
-        return list.ToArray();
+        /// <summary>
+        /// Splits a command-line string into individual arguments.
+        /// The returned array contains the arguments in order; it may include the command name if present
+        /// in the provided <paramref name="commandLine"/>.
+        /// </summary>
+        /// <param name="commandLine">The raw command-line string to parse.</param>
+        /// <returns>An array of parsed arguments.</returns>
+        string[] CommandLineToArgs(string commandLine);
+
+        /// <summary>
+        /// Builds a command-line string from a sequence of arguments such that, when the returned string
+        /// is parsed with <see cref="CommandLineToArgs(string)"/>, it round-trips back to the same
+        /// argument sequence (for this parser's rules).
+        /// </summary>
+        /// <param name="commandLineArguments">The arguments to encode into a command line.</param>
+        /// <returns>A command-line string representation of the provided arguments.</returns>
+        string ArgsToCommandLine(IEnumerable<string> commandLineArguments);
     }
 
-    // Allocation-friendly overload
-    public int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination)
+    /// <summary>
+    /// Extended command-line parser contract that includes allocation-friendly overloads.
+    /// This interface is useful for high-throughput scenarios where the command line may be a slice
+    /// of a larger buffer and you want to reuse a destination list.
+    /// </summary>
+    public interface ICommandLineParser : ICommandLineParserPlain
     {
-        if (destination is null) throw new ArgumentNullException(nameof(destination));
-        int before = destination.Count;
+        /// <summary>
+        /// Splits a command-line span into individual arguments and appends them to <paramref name="destination"/>.
+        /// This overload is allocation-friendly: it does not allocate intermediate substrings and allows callers
+        /// to reuse the destination list across calls.
+        /// </summary>
+        /// <param name="commandLine">The raw command-line characters to parse.</param>
+        /// <param name="destination">List that receives parsed arguments (appended).</param>
+        /// <returns>The number of arguments added to <paramref name="destination"/>.</returns>
+        int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
+    }
 
-        switch (Style)
+    /// <summary>
+    /// Command-line parser that follows Windows/MSVC-style argument splitting rules, broadly compatible with
+    /// the behavior used by many Windows programs (e.g., CommandLineToArgvW / MSVC CRT-style parsing).
+    /// </summary>
+    public sealed class WindowsCommandLineParser : ICommandLineParser
+    {
+        /// <inheritdoc />
+        public string[] CommandLineToArgs(string commandLine)
         {
-            case CommandLineStyle.Windows:
-                ParseWindows(commandLine, destination);
-                break;
-            case CommandLineStyle.Posix:
-                ParsePosix(commandLine, destination);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            if (commandLine is null) throw new ArgumentNullException(nameof(commandLine));
+            var list = new List<string>();
+            CommandLineToArgs(commandLine.AsSpan(), list);
+            return list.ToArray();
         }
 
-        return destination.Count - before;
-    }
-
-    public string ArgsToCommandLine(IEnumerable<string> commandLineArguments)
-    {
-        if (commandLineArguments is null) throw new ArgumentNullException(nameof(commandLineArguments));
-
-        switch (Style)
+        /// <inheritdoc />
+        public int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination)
         {
-            case CommandLineStyle.Windows:
-                return BuildWindows(commandLineArguments);
-            case CommandLineStyle.Posix:
-                return BuildPosix(commandLineArguments);
-            default:
-                throw new ArgumentOutOfRangeException();
+            if (destination is null) throw new ArgumentNullException(nameof(destination));
+            int before = destination.Count;
+            ParseWindows(commandLine, destination);
+            return destination.Count - before;
         }
-    }
 
-    // ---------------------------
-    // Windows parsing/building
-    // ---------------------------
-    private static void ParseWindows(ReadOnlySpan<char> s, List<string> args)
-    {
-        int i = 0;
-
-        // Skip leading whitespace
-        while (i < s.Length && IsWindowsWhite(s[i])) i++;
-
-        while (i < s.Length)
+        /// <inheritdoc />
+        public string ArgsToCommandLine(IEnumerable<string> commandLineArguments)
         {
-            var sb = new StringBuilder();
-            bool inQuotes = false;
+            if (commandLineArguments is null) throw new ArgumentNullException(nameof(commandLineArguments));
+            return BuildWindows(commandLineArguments);
+        }
+
+        // ---------------------------
+        // Windows parsing/building
+        // ---------------------------
+        private static void ParseWindows(ReadOnlySpan<char> s, List<string> args)
+        {
+            int i = 0;
+
+            // Skip leading whitespace
+            while (i < s.Length && IsWindowsWhite(s[i])) i++;
 
             while (i < s.Length)
             {
-                char c = s[i];
+                var sb = new StringBuilder();
+                bool inQuotes = false;
 
-                if (!inQuotes && IsWindowsWhite(c))
-                    break;
-
-                if (c == '"')
+                while (i < s.Length)
                 {
-                    inQuotes = !inQuotes;
-                    i++;
-                    continue;
-                }
+                    char c = s[i];
 
-                if (c == '\\')
-                {
-                    int slashStart = i;
-                    while (i < s.Length && s[i] == '\\') i++;
-                    int slashCount = i - slashStart;
+                    if (!inQuotes && IsWindowsWhite(c))
+                        break;
 
-                    if (i < s.Length && s[i] == '"')
+                    if (c == '"')
                     {
-                        // Backslashes before a quote:
-                        // - even: output slashCount/2 backslashes, treat quote as delimiter toggle
-                        // - odd:  output slashCount/2 backslashes, output literal quote
-                        int pairs = slashCount / 2;
-                        sb.Append('\\', pairs);
+                        inQuotes = !inQuotes;
+                        i++;
+                        continue;
+                    }
 
-                        if ((slashCount % 2) == 1)
+                    if (c == '\\')
+                    {
+                        int slashStart = i;
+                        while (i < s.Length && s[i] == '\\') i++;
+                        int slashCount = i - slashStart;
+
+                        if (i < s.Length && s[i] == '"')
                         {
-                            sb.Append('"'); // escaped quote
-                            i++; // consume the quote
+                            // Backslashes before a quote:
+                            // - even: output slashCount/2 backslashes, treat quote as delimiter toggle
+                            // - odd:  output slashCount/2 backslashes, output literal quote
+                            int pairs = slashCount / 2;
+                            sb.Append('\\', pairs);
+
+                            if ((slashCount % 2) == 1)
+                            {
+                                sb.Append('"'); // escaped quote
+                                i++; // consume the quote
+                            }
+                            else
+                            {
+                                inQuotes = !inQuotes;
+                                i++; // consume the quote
+                            }
                         }
                         else
                         {
-                            // quote toggles inQuotes
-                            inQuotes = !inQuotes;
-                            i++; // consume the quote
+                            // Literal backslashes
+                            sb.Append('\\', slashCount);
                         }
-                    }
-                    else
-                    {
-                        // Literal backslashes
-                        sb.Append('\\', slashCount);
+
+                        continue;
                     }
 
-                    continue;
+                    sb.Append(c);
+                    i++;
                 }
 
-                sb.Append(c);
-                i++;
+                args.Add(sb.ToString());
+
+                // Skip whitespace between args
+                while (i < s.Length && IsWindowsWhite(s[i])) i++;
             }
-
-            args.Add(sb.ToString());
-
-            // Skip whitespace between args
-            while (i < s.Length && IsWindowsWhite(s[i])) i++;
-        }
-    }
-
-    private static string BuildWindows(IEnumerable<string> argv)
-    {
-        var sb = new StringBuilder();
-        bool first = true;
-
-        foreach (var arg in argv)
-        {
-            if (!first) sb.Append(' ');
-            first = false;
-
-            string a = arg ?? string.Empty;
-
-            if (!NeedsWindowsQuoting(a))
-            {
-                sb.Append(a);
-                continue;
-            }
-
-            sb.Append('"');
-
-            // Windows escaping rule for building:
-            // - Backslashes are literal unless before a quote or end-of-arg when quoted.
-            // - Escape " as \" and double preceding backslashes accordingly.
-            int backslashes = 0;
-            foreach (char ch in a)
-            {
-                if (ch == '\\')
-                {
-                    backslashes++;
-                    continue;
-                }
-
-                if (ch == '"')
-                {
-                    // Escape all pending backslashes (double them), then escape quote
-                    sb.Append('\\', backslashes * 2 + 1);
-                    sb.Append('"');
-                    backslashes = 0;
-                    continue;
-                }
-
-                // Normal char: emit pending backslashes as-is
-                if (backslashes > 0)
-                {
-                    sb.Append('\\', backslashes);
-                    backslashes = 0;
-                }
-                sb.Append(ch);
-            }
-
-            // If quoted, trailing backslashes must be doubled before closing quote
-            if (backslashes > 0)
-                sb.Append('\\', backslashes * 2);
-
-            sb.Append('"');
         }
 
-        return sb.ToString();
-    }
-
-    private static bool NeedsWindowsQuoting(string arg)
-    {
-        if (arg.Length == 0) return true;
-        foreach (char c in arg)
+        private static string BuildWindows(IEnumerable<string> argv)
         {
-            if (IsWindowsWhite(c) || c == '"')
-                return true;
-        }
-        return false;
-    }
-
-    private static bool IsWindowsWhite(char c)
-        => c == ' ' || c == '\t' || c == '\r' || c == '\n';
-
-    // ---------------------------
-    // POSIX-like parsing/building
-    // ---------------------------
-    private static void ParsePosix(ReadOnlySpan<char> s, List<string> args)
-    {
-        int i = 0;
-        while (i < s.Length)
-        {
-            // skip whitespace
-            while (i < s.Length && char.IsWhiteSpace(s[i])) i++;
-            if (i >= s.Length) break;
-
             var sb = new StringBuilder();
-            bool inSingle = false;
-            bool inDouble = false;
+            bool first = true;
 
+            foreach (var arg in argv)
+            {
+                if (!first) sb.Append(' ');
+                first = false;
+
+                string a = arg ?? string.Empty;
+
+                if (!NeedsWindowsQuoting(a))
+                {
+                    sb.Append(a);
+                    continue;
+                }
+
+                sb.Append('"');
+
+                // Windows escaping rule for building:
+                // - Backslashes are literal unless before a quote or end-of-arg when quoted.
+                // - Escape " as \" and double preceding backslashes accordingly.
+                int backslashes = 0;
+                foreach (char ch in a)
+                {
+                    if (ch == '\\')
+                    {
+                        backslashes++;
+                        continue;
+                    }
+
+                    if (ch == '"')
+                    {
+                        // Escape all pending backslashes (double them), then escape quote
+                        sb.Append('\\', backslashes * 2 + 1);
+                        sb.Append('"');
+                        backslashes = 0;
+                        continue;
+                    }
+
+                    // Normal char: emit pending backslashes as-is
+                    if (backslashes > 0)
+                    {
+                        sb.Append('\\', backslashes);
+                        backslashes = 0;
+                    }
+                    sb.Append(ch);
+                }
+
+                // If quoted, trailing backslashes must be doubled before closing quote
+                if (backslashes > 0)
+                    sb.Append('\\', backslashes * 2);
+
+                sb.Append('"');
+            }
+
+            return sb.ToString();
+        }
+
+        private static bool NeedsWindowsQuoting(string arg)
+        {
+            if (arg.Length == 0) return true;
+            foreach (char c in arg)
+            {
+                if (IsWindowsWhite(c) || c == '"')
+                    return true;
+            }
+            return false;
+        }
+
+        private static bool IsWindowsWhite(char c)
+            => c == ' ' || c == '\t' || c == '\r' || c == '\n';
+    }
+
+    /// <summary>
+    /// Command-line parser that follows a POSIX-shell-like quoting and escaping subset:
+    /// whitespace separates arguments, single and double quotes group text, and backslash escapes
+    /// the following character (with limited special handling inside double quotes).
+    ///
+    /// This parser intentionally does NOT implement shell expansions (variables, globbing, command
+    /// substitution, etc.).
+    /// </summary>
+    public sealed class PosixCommandLineParser : ICommandLineParser
+    {
+        /// <inheritdoc />
+        public string[] CommandLineToArgs(string commandLine)
+        {
+            if (commandLine is null) throw new ArgumentNullException(nameof(commandLine));
+            var list = new List<string>();
+            CommandLineToArgs(commandLine.AsSpan(), list);
+            return list.ToArray();
+        }
+
+        /// <inheritdoc />
+        public int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination)
+        {
+            if (destination is null) throw new ArgumentNullException(nameof(destination));
+            int before = destination.Count;
+            ParsePosix(commandLine, destination);
+            return destination.Count - before;
+        }
+
+        /// <inheritdoc />
+        public string ArgsToCommandLine(IEnumerable<string> commandLineArguments)
+        {
+            if (commandLineArguments is null) throw new ArgumentNullException(nameof(commandLineArguments));
+            return BuildPosix(commandLineArguments);
+        }
+
+        // ---------------------------
+        // POSIX-like parsing/building
+        // ---------------------------
+        private static void ParsePosix(ReadOnlySpan<char> s, List<string> args)
+        {
+            int i = 0;
             while (i < s.Length)
             {
-                char c = s[i];
+                // Skip whitespace
+                while (i < s.Length && char.IsWhiteSpace(s[i])) i++;
+                if (i >= s.Length) break;
 
-                if (!inSingle && !inDouble && char.IsWhiteSpace(c))
-                    break;
+                var sb = new StringBuilder();
+                bool inSingle = false;
+                bool inDouble = false;
 
-                if (!inDouble && c == '\'')
+                while (i < s.Length)
                 {
-                    inSingle = !inSingle;
-                    i++;
-                    continue;
-                }
+                    char c = s[i];
 
-                if (!inSingle && c == '"')
-                {
-                    inDouble = !inDouble;
-                    i++;
-                    continue;
-                }
-
-                if (!inSingle && c == '\\')
-                {
-                    i++;
-                    if (i >= s.Length)
-                    {
-                        // trailing backslash: treat as literal backslash
-                        sb.Append('\\');
+                    if (!inSingle && !inDouble && char.IsWhiteSpace(c))
                         break;
+
+                    if (!inDouble && c == '\'')
+                    {
+                        inSingle = !inSingle;
+                        i++;
+                        continue;
                     }
 
-                    char next = s[i];
-                    // In double quotes, backslash typically escapes \, ", $, `, and newline in many shells.
-                    // Since we avoid expansions, we at least honor \" and \\ and \newline simplistically.
-                    if (inDouble)
+                    if (!inSingle && c == '"')
                     {
-                        if (next == '"' || next == '\\')
+                        inDouble = !inDouble;
+                        i++;
+                        continue;
+                    }
+
+                    if (!inSingle && c == '\\')
+                    {
+                        i++;
+                        if (i >= s.Length)
                         {
+                            // Trailing backslash: treat as literal backslash
+                            sb.Append('\\');
+                            break;
+                        }
+
+                        char next = s[i];
+
+                        // Inside double quotes, honor \" and \\ (conservative subset).
+                        if (inDouble)
+                        {
+                            if (next == '"' || next == '\\')
+                            {
+                                sb.Append(next);
+                                i++;
+                                continue;
+                            }
+
+                            // Otherwise keep backslash literally
+                            sb.Append('\\');
                             sb.Append(next);
                             i++;
                             continue;
                         }
-                        // otherwise keep the backslash literally
-                        sb.Append('\\');
+
+                        // Unquoted: backslash escapes any next char
                         sb.Append(next);
                         i++;
                         continue;
                     }
 
-                    // Unquoted: backslash escapes any next char
-                    sb.Append(next);
+                    sb.Append(c);
                     i++;
+                }
+
+                // Unterminated quotes: best-effort behavior (no exception)
+                args.Add(sb.ToString());
+
+                // Skip whitespace between args
+                while (i < s.Length && char.IsWhiteSpace(s[i])) i++;
+            }
+        }
+
+        private static string BuildPosix(IEnumerable<string> argv)
+        {
+            var sb = new StringBuilder();
+            bool first = true;
+
+            foreach (var arg in argv)
+            {
+                if (!first) sb.Append(' ');
+                first = false;
+
+                string a = arg ?? string.Empty;
+
+                if (a.Length == 0)
+                {
+                    sb.Append("''");
                     continue;
                 }
 
-                sb.Append(c);
-                i++;
+                // If safe, emit as-is
+                if (IsPosixSafeBareword(a))
+                {
+                    sb.Append(a);
+                    continue;
+                }
+
+                // Prefer single quotes (simple and widely compatible)
+                if (!a.Contains("'"))
+                {
+                    sb.Append('\'').Append(a).Append('\'');
+                    continue;
+                }
+
+                // Contains single quotes: use the classic close/open trick: 'foo'"'"'bar'
+                sb.Append('\'');
+                foreach (char ch in a)
+                {
+                    if (ch == '\'')
+                        sb.Append("'\"'\"'");
+                    else
+                        sb.Append(ch);
+                }
+                sb.Append('\'');
             }
 
-            // If quotes are unterminated, we still return best-effort (no exception).
-            args.Add(sb.ToString());
-
-            while (i < s.Length && char.IsWhiteSpace(s[i])) i++;
+            return sb.ToString();
         }
-    }
 
-    private static string BuildPosix(IEnumerable<string> argv)
-    {
-        var sb = new StringBuilder();
-        bool first = true;
-
-        foreach (var arg in argv)
+        private static bool IsPosixSafeBareword(string s)
         {
-            if (!first) sb.Append(' ');
-            first = false;
-
-            string a = arg ?? string.Empty;
-
-            if (a.Length == 0)
+            // Conservative: allow only alnum and a few common safe symbols.
+            foreach (char c in s)
             {
-                sb.Append("''");
-                continue;
+                if (!(char.IsLetterOrDigit(c) || c is '_' or '-' or '.' or '/' or ':' or '@' or '+'))
+                    return false;
             }
-
-            // If safe, emit as-is
-            if (IsPosixSafeBareword(a))
-            {
-                sb.Append(a);
-                continue;
-            }
-
-            // Prefer single quotes (simplest, most portable)
-            if (!a.Contains('\''))
-            {
-                sb.Append('\'').Append(a).Append('\'');
-                continue;
-            }
-
-            // If it contains single quotes, use the classic close/open trick: 'foo'"'"'bar'
-            sb.Append('\'');
-            foreach (char ch in a)
-            {
-                if (ch == '\'')
-                    sb.Append("'\"'\"'");
-                else
-                    sb.Append(ch);
-            }
-            sb.Append('\'');
+            return true;
         }
-
-        return sb.ToString();
-    }
-
-    private static bool IsPosixSafeBareword(string s)
-    {
-        // Conservative: only allow alnum and a few common safe symbols.
-        // If you want broader, extend this set.
-        foreach (char c in s)
-        {
-            if (!(char.IsLetterOrDigit(c) || c is '_' or '-' or '.' or '/' or ':' or '@' or '+'))
-                return false;
-        }
-        return true;
     }
 }
