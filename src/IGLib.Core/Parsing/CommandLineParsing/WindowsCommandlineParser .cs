@@ -31,10 +31,10 @@ namespace IGLib.Parsing
         }
 
         /// <inheritdoc />
-        public string ArgsToCommandLine(IEnumerable<string> commandLineArguments)
+        public string ArgsToCommandLine(IEnumerable<string> commandLineArguments, StringBuilder? sb = null)
         {
             if (commandLineArguments is null) throw new ArgumentNullException(nameof(commandLineArguments));
-            return BuildWindows(commandLineArguments);
+            return BuildWindows(commandLineArguments, sb);
         }
 
         // ---------------------------
@@ -111,9 +111,10 @@ namespace IGLib.Parsing
             }
         }
 
-        private static string BuildWindows(IEnumerable<string> argv)
+        private static string BuildWindows(IEnumerable<string> argv, StringBuilder? sb)
         {
-            var sb = new StringBuilder();
+            if (sb == null)
+            { sb = new StringBuilder(); }
             bool first = true;
 
             foreach (var arg in argv)

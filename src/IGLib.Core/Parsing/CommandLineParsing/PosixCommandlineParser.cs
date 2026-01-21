@@ -35,15 +35,16 @@ namespace IGLib.Parsing
         }
 
         /// <inheritdoc />
-        public string ArgsToCommandLine(IEnumerable<string> commandLineArguments)
+        public string ArgsToCommandLine(IEnumerable<string> commandLineArguments, StringBuilder? sb = null)
         {
             if (commandLineArguments is null) throw new ArgumentNullException(nameof(commandLineArguments));
-            return BuildPosix(commandLineArguments);
+            return BuildPosix(commandLineArguments, sb);
         }
 
         // ---------------------------
         // POSIX-like parsing/building
         // ---------------------------
+
         private static void ParsePosix(ReadOnlySpan<char> s, List<string> args)
         {
             int i = 0;
@@ -125,9 +126,10 @@ namespace IGLib.Parsing
             }
         }
 
-        private static string BuildPosix(IEnumerable<string> argv)
+        private static string BuildPosix(IEnumerable<string> argv, StringBuilder? sb = null)
         {
-            var sb = new StringBuilder();
+            if (sb==null)
+                sb = new StringBuilder();
             bool first = true;
 
             foreach (var arg in argv)
