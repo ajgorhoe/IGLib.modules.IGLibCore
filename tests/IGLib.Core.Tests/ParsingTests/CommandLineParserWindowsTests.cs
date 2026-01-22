@@ -31,7 +31,7 @@ namespace IGLib.Commands.Tests
         }
 
 
-        protected override ICommandLineParser CommandLineParser { get; } = new WindowsCommandLineParser();
+        protected override ICommandLineParser CommandLineParser { get; } = new CommandLineParserWindows();
 
 
         #region CommandLineToArguments

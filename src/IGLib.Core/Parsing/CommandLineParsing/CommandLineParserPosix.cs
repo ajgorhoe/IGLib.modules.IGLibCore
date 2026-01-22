@@ -14,7 +14,7 @@ namespace IGLib.Parsing
     /// This parser intentionally does NOT implement shell expansions (variables, globbing, command
     /// substitution, etc.).
     /// </summary>
-    public sealed class PosixCommandLineParser : ICommandLineParser
+    public sealed class CommandLineParserPosix : ICommandLineParser
     {
         /// <inheritdoc />
         public string[] CommandLineToArgs(string commandLine)

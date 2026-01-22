@@ -30,12 +30,12 @@ namespace IGLib.Commands.Tests
             // Remark: the base constructor will assign output parameter to the Output and Console property.
         }
 
-        protected PosixCommandLineParser CreatePosixParser()
+        protected CommandLineParserPosix CreatePosixParser()
         {
-            return new PosixCommandLineParser();
+            return new CommandLineParserPosix();
         }
 
-        protected virtual ICommandLineParser CommandLineParser { get; } = new PosixCommandLineParser();
+        protected virtual ICommandLineParser CommandLineParser { get; } = new CommandLineParserPosix();
 
         protected virtual void WriteCommandLineArguments(string[] args, int newLinesAfter = 0, int offset = 1)
         {
