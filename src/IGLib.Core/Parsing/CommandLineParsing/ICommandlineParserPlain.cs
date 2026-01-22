@@ -22,10 +22,8 @@ namespace IGLib.Parsing
         /// string is parsed with <see cref="CommandLineToArgs(string)"/>, it round-trips back to the same
         /// argument sequence (for this parser's rules).</summary>
         /// <param name="commandLineArguments">The arguments to encode into a command line.</param>
-        /// <param name="sb">Optional <see cref="StringBuilder"/> to use for building the command line,
-        /// which can be provided by the caller in order to reduce memoy allocations.
         /// <returns>A command-line string representation of the provided arguments.</returns>
-        string ArgsToCommandLine(IEnumerable<string> commandLineArguments, StringBuilder? sb = null);
+        string ArgsToCommandLine(IReadOnlyList<string> commandLineArgumennts);
     
     }
 

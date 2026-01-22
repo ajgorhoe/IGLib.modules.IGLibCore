@@ -35,10 +35,10 @@ namespace IGLib.Parsing
         }
 
         /// <inheritdoc />
-        public string ArgsToCommandLine(IEnumerable<string> commandLineArguments, StringBuilder? sb = null)
+        public string ArgsToCommandLine(IReadOnlyList<string> commandLineArguments)
         {
             if (commandLineArguments is null) throw new ArgumentNullException(nameof(commandLineArguments));
-            return BuildPosix(commandLineArguments, sb);
+            return BuildPosix(commandLineArguments);
         }
 
         // ---------------------------
@@ -126,7 +126,7 @@ namespace IGLib.Parsing
             }
         }
 
-        private static string BuildPosix(IEnumerable<string> argv, StringBuilder? sb = null)
+        private static string BuildPosix(IReadOnlyList<string> argv, StringBuilder? sb = null)
         {
             if (sb==null)
                 sb = new StringBuilder();

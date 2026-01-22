@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace IGLib.Parsing
-
 {
 
     /// <summary>
@@ -31,10 +30,10 @@ namespace IGLib.Parsing
         }
 
         /// <inheritdoc />
-        public string ArgsToCommandLine(IEnumerable<string> commandLineArguments, StringBuilder? sb = null)
+        public string ArgsToCommandLine(IReadOnlyList<string> commandLineArguments)
         {
             if (commandLineArguments is null) throw new ArgumentNullException(nameof(commandLineArguments));
-            return BuildWindows(commandLineArguments, sb);
+            return BuildWindows(commandLineArguments);
         }
 
         // ---------------------------
@@ -111,10 +110,9 @@ namespace IGLib.Parsing
             }
         }
 
-        private static string BuildWindows(IEnumerable<string> argv, StringBuilder? sb)
+        private static string BuildWindows(IReadOnlyList<string> argv)
         {
-            if (sb == null)
-            { sb = new StringBuilder(); }
+            StringBuilder sb = new StringBuilder();
             bool first = true;
 
             foreach (var arg in argv)
