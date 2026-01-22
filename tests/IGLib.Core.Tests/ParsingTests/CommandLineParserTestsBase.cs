@@ -83,7 +83,7 @@ namespace IGLib.Commands.Tests
         /// <param name="parsingMethod">This delegate (usually passed ass lambda expression) performs the conversion
         /// via the parser stored in the <see cref="ICommandLineParser"/> stored in teh  <see cref="CommandLineParser"/>
         /// property for the test class that calls this method.</param>
-        protected virtual void CommandlineToArgs_RoundTripConversionWorksCorrectly_Base(bool isRoundTrip, string? commandLine, 
+        protected virtual void CommandlineToArgs_Conversion_TestBase(bool isRoundTrip, string? commandLine, 
             string[] expectedArgs, bool shouldThrow, Func<ICommandLineParser, string, string[]> parsingMethod)
         {
             // Arrange:
@@ -194,10 +194,11 @@ namespace IGLib.Commands.Tests
         }
 
 
+
         #endregion CommandLineToArguments
 
 
-        }
-
     }
+
+}
 
