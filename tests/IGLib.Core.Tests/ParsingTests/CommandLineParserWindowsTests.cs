@@ -56,7 +56,7 @@ namespace IGLib.Commands.Tests
         [InlineData(true, "arg1 arg2", new string[] { "arg1", "arg2" })]
         // Command-line arguments in double quotes:
         [InlineData(true, "arg1 \"argument 1\"", new string[] { "arg1", "argument 1" })]
-        protected override void CommandlineToArgs_RoundTripConversionWorksCorrectly(bool isRoundTrip, string? commandLine,
+        protected virtual void CommandlineToArgs_RoundTripConversionWorksCorrectly(bool isRoundTrip, string? commandLine,
             string[] expectedArgs, bool shouldThrow = false)
         {
             CommandlineToArgs_RoundTripConversionWorksCorrectly_Base(isRoundTrip, commandLine,
@@ -84,7 +84,7 @@ namespace IGLib.Commands.Tests
         [InlineData(true, "arg1 arg2", new string[] { "arg1", "arg2" })]
         // Command-line arguments in double quotes:
         [InlineData(true, "arg1 \"argument 1\"", new string[] { "arg1", "argument 1" })]
-        protected override void CommandlineToArgs_RoundTripConversionWitSecondOverloadWorksCorrectly(bool isRoundTrip, string? commandLine,
+        protected virtual void CommandlineToArgs_RoundTripConversionWitSecondOverloadWorksCorrectly(bool isRoundTrip, string? commandLine,
             string[] expectedArgs, bool shouldThrow = false)
         {
             CommandlineToArgs_RoundTripConversionWorksCorrectly_Base(isRoundTrip, commandLine,

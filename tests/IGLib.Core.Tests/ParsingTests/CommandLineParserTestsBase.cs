@@ -35,7 +35,10 @@ namespace IGLib.Commands.Tests
             return new CommandLineParserPosix();
         }
 
-        protected virtual ICommandLineParser CommandLineParser { get; } = new CommandLineParserPosix();
+
+        /// <summary>Commandline parser that is used in the specific class; should be
+        /// overridden in derived classes.</summary>
+        protected abstract ICommandLineParser CommandLineParser { get; } 
 
         protected virtual void WriteCommandLineArguments(string[] args, int newLinesAfter = 0, int offset = 1)
         {
@@ -56,73 +59,6 @@ namespace IGLib.Commands.Tests
         }
 
         #region CommandLineToArguments
-
-        /// <summary>Tests conversion of command-line to a set of arguments by the current type <see cref="ICommandLineParser"/>,
-        /// which is defined for the current test class by the overridden <see cref="CommandLineParser"/> property. The round-trip
-        /// conversion is checked when applicable.</summary>
-        /// <param name="isRoundTrip">Whether round-trip conversion sgould be checked for the current input. When
-        /// true, the parsed arguments are converted back to command-line string by the current converter, then
-        /// converted to a set of arguments again, after which it is checked that the same arguments are obtained
-        /// as before. Note that conversion back to command-line may not be identical in many cases because variable
-        /// number of whitespace characters between arguments, or different quoting can produce the same results.</param>
-        /// <param name="commandLine">The command line from which arguments are parsed.</param>
-        /// <param name="expectedArgs">The expected arguments that should be obtained by parsing.</param>
-        /// <param name="shouldThrow">Whether parsing should throw an exception.</param>
-        [Theory]
-        // Empty string or null:
-        [InlineData(true, "", new string[] { })]
-        [InlineData(true, null, new string[] { }, true)]  // should throw, as indicated by the last parameter
-        // Basic Examples:
-        [InlineData(true, "arg1", new string[] { "arg1" })]
-        [InlineData(true, "arg1 arg2", new string[] { "arg1", "arg2" })]
-        // Command-line arguments in double quotes:
-        [InlineData(true, "arg1 \"argument 1\"", new string[] { "arg1", "argument 1" })]
-        protected virtual void CommandlineToArgs_RoundTripConversionWorksCorrectly(bool isRoundTrip, string? commandLine,
-            string[] expectedArgs, bool shouldThrow = false)
-        {
-            CommandlineToArgs_RoundTripConversionWorksCorrectly_Base(isRoundTrip, commandLine,
-                expectedArgs, shouldThrow, (parser, commandLine) => { return parser.CommandLineToArgs(commandLine); });
-        }
-
-
-        /// <summary>Tests conversion of command-line to a set of arguments by the current type <see cref="ICommandLineParser"/>,
-        /// which is defined for the current test class by the overridden <see cref="CommandLineParser"/> property. The round-trip
-        /// conversion is checked when applicable.</summary>
-        /// <param name="isRoundTrip">Whether round-trip conversion sgould be checked for the current input. When
-        /// true, the parsed arguments are converted back to command-line string by the current converter, then
-        /// converted to a set of arguments again, after which it is checked that the same arguments are obtained
-        /// as before. Note that conversion back to command-line may not be identical in many cases because variable
-        /// number of whitespace characters between arguments, or different quoting can produce the same results.</param>
-        /// <param name="commandLine">The command line from which arguments are parsed.</param>
-        /// <param name="expectedArgs">The expected arguments that should be obtained by parsing.</param>
-        /// <param name="shouldThrow">Whether parsing should throw an exception.</param>
-        [Theory]
-        // Empty string or null:
-        [InlineData(true, "", new string[] { })]
-        [InlineData(true, null, new string[] { }, true)]  // should throw, as indicated by the last parameter
-        // Basic Examples:
-        [InlineData(true, "arg1", new string[] { "arg1" })]
-        [InlineData(true, "arg1 arg2", new string[] { "arg1", "arg2" })]
-        // Command-line arguments in double quotes:
-        [InlineData(true, "arg1 \"argument 1\"", new string[] { "arg1", "argument 1" })]
-        protected virtual void CommandlineToArgs_RoundTripConversionWitSecondOverloadWorksCorrectly(bool isRoundTrip, string? commandLine,
-            string[] expectedArgs, bool shouldThrow = false)
-        {
-            CommandlineToArgs_RoundTripConversionWorksCorrectly_Base(isRoundTrip, commandLine,
-                expectedArgs, shouldThrow, (parser, commandLine) => {
-
-                    // int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
-                    if (commandLine == null)
-                    {
-                        return Array.Empty<string>();
-                    }
-                    ReadOnlySpan<char> commandLineSpan = commandLine != null ? commandLine.AsSpan() : ReadOnlySpan<char>.Empty;
-                    List<string> destination = new List<string>();
-                    int numArgs = parser.CommandLineToArgs(commandLineSpan, destination);
-                    string[] argsArray = destination.ToArray();
-                    return argsArray;
-                });
-        }
 
 
         protected virtual void CommandlineToArgs_RoundTripConversionWorksCorrectly_Base(bool isRoundTrip, string? commandLine, 
@@ -243,7 +179,7 @@ namespace IGLib.Commands.Tests
         //}
 
 
-            #endregion CommandLineToArguments
+#endregion CommandLineToArguments
 
 
         }
