@@ -17,7 +17,7 @@ namespace IGLib.Commands.Tests
 {
 
     /// <summary>Tests for generic commands (implementations of <see cref="IGenericCommand"/>).</summary>
-    public abstract class CommandLineParserTests_Posix_Base : TestBase<CommandLineParserTests_Posix_Base>
+    public abstract class CommandLineParserTests_Base<TestClass> : TestBase<TestClass>
     {
 
 
@@ -25,7 +25,7 @@ namespace IGLib.Commands.Tests
         /// of type <see cref="ITestOutputHelper"/>, which will be used to write on the tests' output,
         /// accessed through the base class's <see cref="Output"/> and <see cref="TestBase{TestClassType}.Console"/> properties.</summary>
         /// <param name=""></param>
-        public CommandLineParserTests_Posix_Base(ITestOutputHelper output) :  base(output)  // calls base class's constructor
+        public CommandLineParserTests_Base(ITestOutputHelper output) :  base(output)  // calls base class's constructor
         {
             // Remark: the base constructor will assign output parameter to the Output and Console property.
         }

@@ -17,7 +17,7 @@ namespace IGLib.Commands.Tests
 {
 
     /// <summary>Tests for generic commands (implementations of <see cref="IGenericCommand"/>).</summary>
-    public class CommandLineParserWindowsTests : CommandLineParserTests_Posix_Base
+    public class CommandLineParserWindowsTests : CommandLineParserTests_Base<CommandLineParserWindowsTests>
     {
 
 
