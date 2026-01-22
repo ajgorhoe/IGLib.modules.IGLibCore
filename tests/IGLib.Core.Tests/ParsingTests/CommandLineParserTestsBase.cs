@@ -194,6 +194,120 @@ namespace IGLib.Commands.Tests
         }
 
 
+        protected virtual void ArgsToCommandLine_Conversion_TestBase(bool isRoundTrip, string[]? args,
+            string[]? expectedArgs, bool shouldThrow, Func<ICommandLineParser, string[], string> builderMethod)
+        {
+            // Arrange:
+            ICommandLineParser parser = CommandLineParser;
+            Console.WriteLine($"Testing conversion of command-line arguments to command-line string; parser type: {parser.GetType().Name}");
+
+
+            string commandLine = null;
+            if (commandLine == null)
+            {
+                Console.WriteLine("\nCommand-line string is null.");
+            }
+            else
+            {
+                Console.WriteLine($"\nCommand-line string in single quotes:\n  '{commandLine}'");
+            }
+            // Act:
+            string[] parsedArgs;
+            try
+            {
+                parsedArgs = parser.CommandLineToArgs(commandLine!);
+                Console.WriteLine("\nParsed arguments:");
+                WriteCommandLineArguments(parsedArgs, 1);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nException {ex.GetType().Name} thrown with message:\n  {ex.Message}");
+                if (shouldThrow)
+                {
+                    Console.WriteLine("  Exception was expected.\n");
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("  Exception was NOT expected at this point, the test fails.\n");
+                    throw;  // re-throw unexpected exception
+                }
+            }
+            // Assert:
+            if (expectedArgs == null)
+            {
+                parsedArgs.Should().BeNull(because: "the current command-line should result in arguments being null");
+            }
+            else if (expectedArgs.Length == 0)
+            {
+                parsedArgs.Should().NotBeNull(because: "the current command-line should result in empty list of arguments, not null");
+                parsedArgs.Length.Should().Be(0, because: "the current command-line should result in empty list of arguments");
+            }
+            else
+            {
+                parsedArgs.Should().NotBeNull(because: "the resulting array of parsed arguments should not be null");
+                parsedArgs.Length.Should().Be(expectedArgs?.Length, because:
+                    $"the number of resulting arguments should ne {expectedArgs?.Length}, not {parsedArgs.Length}");
+                for (int i = 0; i < expectedArgs!.Length; ++i)
+                {
+                    parsedArgs[i].Should().Be(expectedArgs[i], because:
+                        $"the argument at index {i} should be '{expectedArgs[i]}', not '{parsedArgs[i]}'");
+                }
+            }
+            if (!isRoundTrip)
+            {
+                Console.WriteLine("\nNo round-trip conversion requested, test ends here.\n");
+            }
+            try
+            {
+                // Arrange (round-trip):
+                Console.WriteLine("\nRound-trip conversion requested, proceeding to convert back to command-line and re-parse:");
+                // Act:
+                // Convert back to command-line:
+                string reconstructedCommandLine = parser.ArgsToCommandLine(parsedArgs);
+                Console.WriteLine($"\nReconstructed command-line string in single quotes:\n  '{reconstructedCommandLine}'\n");
+                // And parse it again:
+                string[] reparsedArgs = parser.CommandLineToArgs(reconstructedCommandLine);
+                Console.WriteLine("\nRe-parsed arguments from reconstructed command-line:");
+                WriteCommandLineArguments(reparsedArgs, 1);
+                // Check that reparsed arguments match the original expected arguments:
+                if (expectedArgs == null)
+                {
+                    reparsedArgs.Should().BeNull(because: "the re-parsed arguments should be null");
+                }
+                else if (expectedArgs.Length == 0)
+                {
+                    reparsedArgs.Should().NotBeNull(because: "the re-parsed arguments should not be null");
+                    reparsedArgs.Length.Should().Be(0, because: "the re-parsed arguments should be empty");
+                }
+                else
+                {
+                    reparsedArgs.Should().NotBeNull(because: "the re-parsed arguments should not be null");
+                    reparsedArgs.Length.Should().Be(expectedArgs?.Length, because:
+                        $"the number of re-parsed arguments should ne {expectedArgs?.Length}, not {reparsedArgs.Length}");
+                    for (int i = 0; i < expectedArgs!.Length; ++i)
+                    {
+                        reparsedArgs[i].Should().Be(expectedArgs[i], because:
+                            $"the re-parsed argument at index {i} should be '{expectedArgs[i]}', not '{reparsedArgs[i]}'");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\nException {ex.GetType().Name} thrown during round-trip conversion with message:\n  {ex.Message}");
+                if (isRoundTrip)
+                {
+                    Console.WriteLine("  Round-trip conversion was required, test will fail due to exception.\n");
+                    throw;  // re-throw expected exception
+                }
+                else
+                {
+                    Console.WriteLine("  Round-trip conversion was NOT required, test will not fail because of exception.\n");
+                }
+            }
+        }
+
+
 
         #endregion CommandLineToArguments
 
