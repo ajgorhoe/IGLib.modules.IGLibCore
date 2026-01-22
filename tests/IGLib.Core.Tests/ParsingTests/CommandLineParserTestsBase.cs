@@ -40,6 +40,10 @@ namespace IGLib.Commands.Tests
         /// overridden in derived classes.</summary>
         protected abstract ICommandLineParser CommandLineParser { get; } 
 
+        /// <summary>Writes command-line arguments in a readable form via Console property to the test's standard output.</summary>
+        /// <param name="args">Command-line arguments to be written.</param>
+        /// <param name="newLinesAfter">The number of newlines added after writing the arguments.</param>
+        /// <param name="offset">The starting index of the first argument in the collection.</param>
         protected virtual void WriteCommandLineArguments(string[] args, int newLinesAfter = 0, int offset = 1)
         {
             if (args == null)
@@ -61,6 +65,24 @@ namespace IGLib.Commands.Tests
         #region CommandLineToArguments
 
 
+        /// <summary>Does the work for test methods that test conversion of command-line string to parsd 
+        /// arguments, and possibly back to command-line and again to arguments (round-trip).
+        /// <para>Different overloads of the conversion method can be verified by this method, and parameter
+        /// <paramref name="parsingMethod"/> specifies which overload is used for conversion and how.</para></summary>
+        /// <param name="isRoundTrip">Whether round-trip conversion should be performed. If false then only one
+        /// conversion from command-line to a set or parsed arguments happens. If true, arguments are converted
+        /// back to command-lie, which is converted to arguments again, and the final arguments are compared to
+        /// arguments after the first conversion.</param>
+        /// <param name="commandLine">Command-linee string to be parsed and convertted to a set of individual 
+        /// arguments. This can include command or not (both command and its arguments are parsed in the same way).</param>
+        /// <param name="expectedArgs">Expected arguments to be obtained aftter parding. These need to be provided 
+        /// because correctness of conversion is assessed on the basis of them (if <paramref name="isRoundTrip"/>
+        /// is true then, in addition, the correctness of round-trip through conversion to command-line and additional
+        /// conversion to a set of arguments is checked).</param>
+        /// <param name="shouldThrow">Whether conversion should throw an exception for the specific input data.</param>
+        /// <param name="parsingMethod">This delegate (usually passed ass lambda expression) performs the conversion
+        /// via the parser stored in the <see cref="ICommandLineParser"/> stored in teh  <see cref="CommandLineParser"/>
+        /// property for the test class that calls this method.</param>
         protected virtual void CommandlineToArgs_RoundTripConversionWorksCorrectly_Base(bool isRoundTrip, string? commandLine, 
             string[] expectedArgs, bool shouldThrow, Func<ICommandLineParser, string, string[]> parsingMethod)
         {
@@ -171,20 +193,11 @@ namespace IGLib.Commands.Tests
             }
         }
 
-        //protected void CommandlineToArgs_RoundTripConversionOverloadWorksCorrectly(bool isRoundTrip, string commandLine,
-        //    string[] expectedArgs, bool shouldThrow = false)
-        //{
-        //    // Arrange:
-        //    Console.WriteLine()
-        //}
 
-
-#endregion CommandLineToArguments
+        #endregion CommandLineToArguments
 
 
         }
-
-
 
     }
 
