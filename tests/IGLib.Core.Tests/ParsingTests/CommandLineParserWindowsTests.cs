@@ -57,10 +57,10 @@ namespace IGLib.Commands.Tests
             base.CommandlineToArgs_RoundTripConversionWorksCorrectly(isRoundTrip, commandLine,
                 expectedArgs, shouldThrow);
 #else
-            Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc
-                = (parser, commandLine) => { return parser.CommandLineToArgs(commandLine!); };
+            //Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc
+            //    = (parser, commandLine) => { return parser.CommandLineToArgs(commandLine!); };
             CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
-                expectedArgs, shouldThrow, commandLineToArgsFunc);
+                expectedArgs, shouldThrow, CommandLineToArgs);  // commandLineToArgsFunc);
 #endif
         }
 
@@ -83,22 +83,22 @@ namespace IGLib.Commands.Tests
             base.CommandlineToArgs_RoundTripConversionWitSecondOverloadWorksCorrectly(isRoundTrip, commandLine,
                 expectedArgs, shouldThrow);
 #else
-            Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc
-                = (parser, commandLine) => {
+            //Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc
+            //    = (parser, commandLine) => {
 
-                    // int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
-                    if (commandLine == null)
-                    {
-                        return Array.Empty<string>();
-                    }
-                    ReadOnlySpan<char> commandLineSpan = commandLine != null ? commandLine.AsSpan() : ReadOnlySpan<char>.Empty;
-                    List<string> destination = new List<string>();
-                    int numArgs = parser.CommandLineToArgs(commandLineSpan, destination);
-                    string[] argsArray = destination.ToArray();
-                    return argsArray;
-                };
+            //        // int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
+            //        if (commandLine == null)
+            //        {
+            //            return Array.Empty<string>();
+            //        }
+            //        ReadOnlySpan<char> commandLineSpan = commandLine != null ? commandLine.AsSpan() : ReadOnlySpan<char>.Empty;
+            //        List<string> destination = new List<string>();
+            //        int numArgs = parser.CommandLineToArgs(commandLineSpan, destination);
+            //        string[] argsArray = destination.ToArray();
+            //        return argsArray;
+            //    };
             CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
-                expectedArgs, shouldThrow, commandLineToArgsFunc);
+                expectedArgs, shouldThrow, CommandLineToArgsOverride1);  // commandLineToArgsFunc);
 #endif
         }
 
