@@ -65,13 +65,13 @@ namespace IGLib.Commands.Tests
 
         #region Operations
 
-        protected string[] CommandLineToArgsFunc (ICommandLineParser parser, string? commandLine)
+        protected string[] CommandLineToArgs(ICommandLineParser parser, string? commandLine)
         {
             return parser.CommandLineToArgs(commandLine!);
         }
 
 
-        protected string[] CommandLineToArgsFuncOverride1(ICommandLineParser parser, string? commandLine)
+        protected string[] CommandLineToArgsOverride1(ICommandLineParser parser, string? commandLine)
         {
             // int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
             if (commandLine == null)
