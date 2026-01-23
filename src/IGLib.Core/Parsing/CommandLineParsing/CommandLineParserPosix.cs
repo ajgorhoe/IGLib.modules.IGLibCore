@@ -41,9 +41,9 @@ namespace IGLib.Parsing
             return BuildPosix(commandLineArguments);
         }
 
-        // ---------------------------
-        // POSIX-like parsing/building
-        // ---------------------------
+        // -------------------------------------------
+        // POSIX-like parsing/building of command-line
+        // -------------------------------------------
 
         private static void ParsePosix(ReadOnlySpan<char> s, List<string> args)
         {

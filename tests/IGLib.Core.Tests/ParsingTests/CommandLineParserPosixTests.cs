@@ -1,6 +1,8 @@
 ﻿
 // #nullable disable
 
+#undef CallBaseClassImplementations
+
 using Xunit;
 using FluentAssertions;
 using Xunit.Abstractions;
@@ -49,8 +51,16 @@ namespace IGLib.Commands.Tests
         protected override void CommandlineToArgs_RoundTripConversionWorksCorrectly(bool isRoundTrip, string? commandLine,
             string[] expectedArgs, bool shouldThrow = false)
         {
+#if CallBaseClassImplementations
+            // REMARK: Tests are not detected by the test framework if we call the base implementation here.
             base.CommandlineToArgs_RoundTripConversionWorksCorrectly(isRoundTrip, commandLine,
                 expectedArgs, shouldThrow);
+#else
+            Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc
+                = (parser, commandLine) => { return parser.CommandLineToArgs(commandLine!); };
+            CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
+                expectedArgs, shouldThrow, commandLineToArgsFunc);
+#endif
         }
 
 
@@ -67,16 +77,35 @@ namespace IGLib.Commands.Tests
         protected override void CommandlineToArgs_RoundTripConversionWitSecondOverloadWorksCorrectly(bool isRoundTrip, string? commandLine,
             string[] expectedArgs, bool shouldThrow = false)
         {
+#if CallBaseClassImplementations
+            // REMARK: Tests are not detected by the test framework if we call the base implementation here.
             base.CommandlineToArgs_RoundTripConversionWitSecondOverloadWorksCorrectly(isRoundTrip, commandLine,
                 expectedArgs, shouldThrow);
+#else
+            Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc
+                = (parser, commandLine) => {
+
+                    // int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
+                    if (commandLine == null)
+                    {
+                        return Array.Empty<string>();
+                    }
+                    ReadOnlySpan<char> commandLineSpan = commandLine != null ? commandLine.AsSpan() : ReadOnlySpan<char>.Empty;
+                    List<string> destination = new List<string>();
+                    int numArgs = parser.CommandLineToArgs(commandLineSpan, destination);
+                    string[] argsArray = destination.ToArray();
+                    return argsArray;
+                };
+            CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
+                expectedArgs, shouldThrow, commandLineToArgsFunc);
+#endif
         }
 
 
+#endregion CommandLineToArguments
 
-            #endregion CommandLineToArguments
 
-
-        }
+    }
 
 
 }

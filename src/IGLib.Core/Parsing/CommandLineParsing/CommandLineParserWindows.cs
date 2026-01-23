@@ -36,9 +36,10 @@ namespace IGLib.Parsing
             return BuildWindows(commandLineArguments);
         }
 
-        // ---------------------------
-        // Windows parsing/building
-        // ---------------------------
+        // ----------------------------------------
+        // Windows parsing/building of command-line
+        // ----------------------------------------
+
         private static void ParseWindows(ReadOnlySpan<char> s, List<string> args)
         {
             int i = 0;

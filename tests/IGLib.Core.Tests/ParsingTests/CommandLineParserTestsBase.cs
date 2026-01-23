@@ -63,10 +63,35 @@ namespace IGLib.Commands.Tests
         }
 
 
+        #region Operations
+
+        protected string[] CommandLineToArgsFunc (ICommandLineParser parser, string? commandLine)
+        {
+            return parser.CommandLineToArgs(commandLine!);
+        }
+
+
+        protected string[] CommandLineToArgsFuncOverride1(ICommandLineParser parser, string? commandLine)
+        {
+            // int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
+            if (commandLine == null)
+            {
+                return Array.Empty<string>();
+            }
+            ReadOnlySpan<char> commandLineSpan = commandLine != null ? commandLine.AsSpan() : ReadOnlySpan<char>.Empty;
+            List<string> destination = new List<string>();
+            int numArgs = parser.CommandLineToArgs(commandLineSpan, destination);
+            string[] argsArray = destination.ToArray();
+            return argsArray;
+        }
+
+
+        #endregion Operations
+
+
 
 
         #region CommandLineToArguments
-
 
 
 
