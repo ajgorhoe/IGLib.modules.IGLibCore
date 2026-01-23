@@ -36,7 +36,7 @@ namespace IGLib.Commands.Tests
 
         #region CommandLineToArguments
 
-        /// <ingeritdoc />
+        /// <inheritdoc />
         [Theory]
         // Empty string or null:
         [InlineData(true, "", new string[] { })]
