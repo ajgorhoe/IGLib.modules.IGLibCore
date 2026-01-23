@@ -9,7 +9,7 @@ namespace IGLib.Parsing
     /// Command-line parser that follows Windows/MSVC-style argument splitting rules, broadly compatible with
     /// the behavior used by many Windows programs (e.g., CommandLineToArgvW / MSVC CRT-style parsing).
     /// </summary>
-    public sealed class CommandLineParserWindows : ICommandLineParser
+    public class CommandLineParserWindows : ICommandLineParser
     {
         /// <inheritdoc />
         public string[] CommandLineToArgs(string commandLine)

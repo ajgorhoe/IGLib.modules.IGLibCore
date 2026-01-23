@@ -56,11 +56,13 @@ namespace IGLib.Commands.Tests
         [InlineData(true, "arg1 arg2", new string[] { "arg1", "arg2" })]
         // Command-line arguments in double quotes:
         [InlineData(true, "arg1 \"argument 1\"", new string[] { "arg1", "argument 1" })]
-        protected virtual void CommandlineToArgs_RoundTripConversionWorksCorrectly(bool isRoundTrip, string? commandLine,
+        protected override void CommandlineToArgs_RoundTripConversionWorksCorrectly(bool isRoundTrip, string? commandLine,
             string[] expectedArgs, bool shouldThrow = false)
         {
+            Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc
+                = (parser, commandLine) => { return parser.CommandLineToArgs(commandLine!); };
             CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
-                expectedArgs, shouldThrow, (parser, commandLine) => { return parser.CommandLineToArgs(commandLine); });
+                expectedArgs, shouldThrow, commandLineToArgsFunc);
         }
 
 
@@ -84,11 +86,11 @@ namespace IGLib.Commands.Tests
         [InlineData(true, "arg1 arg2", new string[] { "arg1", "arg2" })]
         // Command-line arguments in double quotes:
         [InlineData(true, "arg1 \"argument 1\"", new string[] { "arg1", "argument 1" })]
-        protected virtual void CommandlineToArgs_RoundTripConversionWitSecondOverloadWorksCorrectly(bool isRoundTrip, string? commandLine,
+        protected override void CommandlineToArgs_RoundTripConversionWitSecondOverloadWorksCorrectly(bool isRoundTrip, string? commandLine,
             string[] expectedArgs, bool shouldThrow = false)
         {
-            CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
-                expectedArgs, shouldThrow, (parser, commandLine) => {
+            Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc
+                = (parser, commandLine) => {
 
                     // int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
                     if (commandLine == null)
@@ -100,7 +102,9 @@ namespace IGLib.Commands.Tests
                     int numArgs = parser.CommandLineToArgs(commandLineSpan, destination);
                     string[] argsArray = destination.ToArray();
                     return argsArray;
-                });
+                };
+            CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
+                expectedArgs, shouldThrow, commandLineToArgsFunc);
         }
 
 
