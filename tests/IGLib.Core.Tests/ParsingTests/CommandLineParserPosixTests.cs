@@ -59,8 +59,10 @@ namespace IGLib.Commands.Tests
         protected virtual void CommandlineToArgs_RoundTripConversionWorksCorrectly(bool isRoundTrip, string? commandLine,
             string[] expectedArgs, bool shouldThrow = false)
         {
+            Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc
+                = (parser, commandLine) => { return parser.CommandLineToArgs(commandLine!); };
             CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
-                expectedArgs, shouldThrow, (parser, commandLine) => { return parser.CommandLineToArgs(commandLine); });
+                expectedArgs, shouldThrow, commandLineToArgsFunc);
         }
 
 
@@ -87,8 +89,8 @@ namespace IGLib.Commands.Tests
         protected virtual void CommandlineToArgs_RoundTripConversionWitSecondOverloadWorksCorrectly(bool isRoundTrip, string? commandLine,
             string[] expectedArgs, bool shouldThrow = false)
         {
-            CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
-                expectedArgs, shouldThrow, (parser, commandLine) => {
+            Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc
+                = (parser, commandLine) => {
 
                     // int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
                     if (commandLine == null)
@@ -100,7 +102,9 @@ namespace IGLib.Commands.Tests
                     int numArgs = parser.CommandLineToArgs(commandLineSpan, destination);
                     string[] argsArray = destination.ToArray();
                     return argsArray;
-                });
+                };
+            CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
+                expectedArgs, shouldThrow, commandLineToArgsFunc);
         }
 
 

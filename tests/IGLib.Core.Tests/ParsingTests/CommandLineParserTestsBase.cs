@@ -68,7 +68,7 @@ namespace IGLib.Commands.Tests
         /// <summary>Does the work for test methods that test conversion of command-line string to parsd 
         /// arguments, and possibly back to command-line and again to arguments (round-trip).
         /// <para>Different overloads of the conversion method can be verified by this method, and parameter
-        /// <paramref name="parsingMethod"/> specifies which overload is used for conversion and how.</para></summary>
+        /// <paramref name="commandLineToArgsFunc"/> specifies which overload is used for conversion and how.</para></summary>
         /// <param name="isRoundTrip">Whether round-trip conversion should be performed. If false then only one
         /// conversion from command-line to a set or parsed arguments happens. If true, arguments are converted
         /// back to command-lie, which is converted to arguments again, and the final arguments are compared to
@@ -80,11 +80,11 @@ namespace IGLib.Commands.Tests
         /// is true then, in addition, the correctness of round-trip through conversion to command-line and additional
         /// conversion to a set of arguments is checked).</param>
         /// <param name="shouldThrow">Whether conversion should throw an exception for the specific input data.</param>
-        /// <param name="parsingMethod">This delegate (usually passed ass lambda expression) performs the conversion
+        /// <param name="commandLineToArgsFunc">This delegate (usually passed ass lambda expression) performs the conversion
         /// via the parser stored in the <see cref="ICommandLineParser"/> stored in teh  <see cref="CommandLineParser"/>
         /// property for the test class that calls this method.</param>
         protected virtual void CommandlineToArgs_Conversion_TestBase(bool isRoundTrip, string? commandLine, 
-            string[] expectedArgs, bool shouldThrow, Func<ICommandLineParser, string, string[]> parsingMethod)
+            string[] expectedArgs, bool shouldThrow, Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc)
         {
             // Arrange:
             ICommandLineParser parser = CommandLineParser;
@@ -101,7 +101,7 @@ namespace IGLib.Commands.Tests
             string[] parsedArgs;
             try
             {
-                parsedArgs = parser.CommandLineToArgs(commandLine!);
+                parsedArgs = commandLineToArgsFunc(parser, commandLine); // parser.CommandLineToArgs(commandLine!);
                 Console.WriteLine("\nParsed arguments:");
                 WriteCommandLineArguments(parsedArgs, 1);
             }
@@ -153,7 +153,7 @@ namespace IGLib.Commands.Tests
                 string reconstructedCommandLine = parser.ArgsToCommandLine(parsedArgs);
                 Console.WriteLine($"\nReconstructed command-line string in single quotes:\n  '{reconstructedCommandLine}'\n");
                 // And parse it again:
-                string[] reparsedArgs = parser.CommandLineToArgs(reconstructedCommandLine);
+                string[] reparsedArgs = commandLineToArgsFunc(parser, commandLine); // parser.CommandLineToArgs(reconstructedCommandLine);
                 Console.WriteLine("\nRe-parsed arguments from reconstructed command-line:");
                 WriteCommandLineArguments(reparsedArgs, 1);
                 // Check that reparsed arguments match the original expected arguments:
@@ -194,15 +194,37 @@ namespace IGLib.Commands.Tests
         }
 
 
-        protected virtual void ArgsToCommandLine_Conversion_TestBase(bool isRoundTrip, string[]? args,
-            string[]? expectedArgs, bool shouldThrow, Func<ICommandLineParser, string[], string> builderMethod)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        protected virtual void ArgsToCommandLine_Conversion_TestBase(bool isRoundTrip, bool checkFirstConversion, 
+            string[]? args, string[]? expectedArgs, bool shouldThrow, Func<ICommandLineParser, string[], string> builderMethod)
         {
             // Arrange:
             ICommandLineParser parser = CommandLineParser;
-            Console.WriteLine($"Testing conversion of command-line arguments to command-line string; parser type: {parser.GetType().Name}");
+            Console.WriteLine($"Testing conversion of command-line arguments to command-line string & back; parser type: {parser.GetType().Name}");
 
 
-            string commandLine = null;
+
+
+
+
+            string? commandLine = null;
             if (commandLine == null)
             {
                 Console.WriteLine("\nCommand-line string is null.");
