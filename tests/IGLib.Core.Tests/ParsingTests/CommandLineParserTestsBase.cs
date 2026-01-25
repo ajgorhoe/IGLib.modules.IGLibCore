@@ -341,9 +341,14 @@ namespace IGLib.Commands.Tests
             }
             // Assert:
             assembledCommandLine.Should().NotBeNull(because: "if the method works correctly then it should not result in null");
-            if (checkFirstConversion)
+            foreach(string arg in args!)
             {
-
+                if (arg == null)
+                {
+                    continue;
+                }
+                assembledCommandLine.Should().Contain(arg, 
+                    because: $"the assembled command-line should contain the argument '{arg}'");
             }
 
 
