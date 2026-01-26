@@ -65,12 +65,24 @@ namespace IGLib.Commands.Tests
 
         #region Operations
 
+
+        /// <summary>Operation that parses a command-line string and converts it to individual arguments. It calls
+        /// <see cref="ICommandLineParser.CommandLineToArgs(string)"/> on the <paramref name="parser"/> to do the job.</summary>
+        /// <param name="parser">The <see cref="ICommandLineParser"/> object used to do the conversion.</param>
+        /// <param name="commandLine">Command-line string to be parsed and converted to arguments.</param>
+        /// <returns>Array of arguments parsed from the specified <paramref name="commandLine"/>.</returns>
         protected string[] CommandLineToArgs(ICommandLineParser parser, string? commandLine)
         {
             return parser.CommandLineToArgs(commandLine!);
         }
 
 
+        /// <summary>Operation that parses a command-line string and converts it to individual arguments. It calls
+        /// <see cref="ICommandLineParser.CommandLineToArgs(ReadOnlySpan{char}, List{string})"/> on the
+        /// <paramref name="parser"/> to do the job.</summary>
+        /// <param name="parser">The <see cref="ICommandLineParser"/> object used to do the conversion.</param>
+        /// <param name="commandLine">Command-line string to be parsed and converted to arguments.</param>
+        /// <returns>Array of arguments parsed from the specified <paramref name="commandLine"/>.</returns>
         protected string[] CommandLineToArgsOverride1(ICommandLineParser parser, string? commandLine)
         {
             // int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
@@ -86,6 +98,12 @@ namespace IGLib.Commands.Tests
         }
 
 
+        /// <summary>Operation that converts a set of arguments to command-line string. It calls 
+        /// <see cref="ICommandLineParser.ArgsToCommandLine(string[])"/> on the <paramref name="parser"/> 
+        /// to do the job.</summary>
+        /// <param name="parser">The <see cref="ICommandLineParser"/> object used to do the conversion.</param>
+        /// <param name="args">Command-line arguments that are assempbled into command-line string that is returned.</param>
+        /// <returns>The command-line string assembled from <paramref name="args"/>.</returns>
         protected string ArgsToCommandLine(ICommandLineParser parser, string[] args)
         {
             return parser.ArgsToCommandLine(args);
