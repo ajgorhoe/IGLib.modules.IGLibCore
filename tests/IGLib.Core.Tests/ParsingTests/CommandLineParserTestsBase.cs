@@ -358,13 +358,23 @@ namespace IGLib.Commands.Tests
             if (isRoundTrip)
             {
                 // Parse the resulting command-line back to rrguments (for round-trip conversion):
-                Console.WriteLine("\nRound-trip conversion requested, proceeding to parse assembled command-line back to arguments:");
-                string[] parsedArgs = null;
                 try
                 {
+                    // Arrange:
+                    Console.WriteLine("\nRound-trip conversion requested, proceeding to parse assembled command-line back to arguments:");
+                    string[]? parsedArgs = null;
+                    // Act:
                     parsedArgs = parser.CommandLineToArgs(assembledCommandLine);
                     Console.WriteLine("\nParsed arguments from assembled command-line:");
                     WriteCommandLineArguments(parsedArgs, 1);
+                    if (args != null && args.Length > 0)
+                    {
+                        parsedArgs.Should().NotBeNullOrEmpty(because: "since the original arguments are not null or empty, the round-trip arguments should also not be");
+                        for (int i = 0; i < args.Length; i++)
+                        {
+                            parsedArgs[i].Should().Be(args[i], because: $"The round-trip argument No. {i} should be the same as the original one");
+                        }
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -372,9 +382,6 @@ namespace IGLib.Commands.Tests
                     throw;  // re-throw unexpected exception
                 }
             }
-
-
-
 
         }
             
