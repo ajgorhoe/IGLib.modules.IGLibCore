@@ -25,7 +25,7 @@ namespace IGLib.Commands.Tests
         /// of type <see cref="ITestOutputHelper"/>, which will be used to write on the tests' output,
         /// accessed through the base class's <see cref="Output"/> and <see cref="TestBase{TestClassType}.Console"/> properties.</summary>
         /// <param name=""></param>
-        public CommandLineParserTests_Base(ITestOutputHelper output) :  base(output)  // calls base class's constructor
+        public CommandLineParserTests_Base(ITestOutputHelper output) : base(output)  // calls base class's constructor
         {
             // Remark: the base constructor will assign output parameter to the Output and Console property.
         }
@@ -38,7 +38,7 @@ namespace IGLib.Commands.Tests
 
         /// <summary>Commandline parser that is used in the specific class; should be
         /// overridden in derived classes.</summary>
-        protected abstract ICommandLineParser CommandLineParser { get; } 
+        protected abstract ICommandLineParser CommandLineParser { get; }
 
         /// <summary>Writes command-line arguments in a readable form via Console property to the test's standard output.</summary>
         /// <param name="args">Command-line arguments to be written.</param>
@@ -103,8 +103,10 @@ namespace IGLib.Commands.Tests
 
         /// <summary>Tests conversion of command-line to a set of arguments by the current type <see cref="ICommandLineParser"/>,
         /// which is defined for the current test class by the overridden <see cref="CommandLineParser"/> property. The round-trip
-        /// conversion is checked when applicable.</summary>
-        /// <param name="isRoundTrip">Whether round-trip conversion sgould be checked for the current input. When
+        /// conversion is checked when applicable.
+        /// <para>This method contains the final test body, is defined in the base test class, and should be called
+        /// in derived test classes for specific types of <see cref="ICommandLineParser"/>.</para></summary>
+        /// <param name="isRoundTrip">Whether round-trip conversion should be checked for the current input. When
         /// true, the parsed arguments are converted back to command-line string by the current converter, then
         /// converted to a set of arguments again, after which it is checked that the same arguments are obtained
         /// as before. Note that conversion back to command-line may not be identical in many cases because variable
@@ -124,8 +126,10 @@ namespace IGLib.Commands.Tests
 
         /// <summary>Tests conversion of command-line to a set of arguments by the current type <see cref="ICommandLineParser"/>,
         /// which is defined for the current test class by the overridden <see cref="CommandLineParser"/> property. The round-trip
-        /// conversion is checked when applicable.</summary>
-        /// <param name="isRoundTrip">Whether round-trip conversion sgould be checked for the current input. When
+        /// conversion is checked when applicable.
+        /// <para>This method contains the final test body, is defined in the base test class, and should be called
+        /// in derived test classes for specific types of <see cref="ICommandLineParser"/>.</para></summary>
+        /// <param name="isRoundTrip">Whether round-trip conversion should be tested for the current input. When
         /// true, the parsed arguments are converted back to command-line string by the current converter, then
         /// converted to a set of arguments again, after which it is checked that the same arguments are obtained
         /// as before. Note that conversion back to command-line may not be identical in many cases because variable
@@ -175,7 +179,7 @@ namespace IGLib.Commands.Tests
         /// <param name="commandLineToArgsFunc">This delegate (usually passed ass lambda expression) performs the conversion
         /// via the parser stored in the <see cref="ICommandLineParser"/> stored in teh  <see cref="CommandLineParser"/>
         /// property for the test class that calls this method.</param>
-        protected virtual void CommandlineToArgs_Conversion_TestBase(bool isRoundTrip, string? commandLine, 
+        protected virtual void CommandlineToArgs_Conversion_TestBase(bool isRoundTrip, string? commandLine,
             string[] expectedArgs, bool shouldThrow, Func<ICommandLineParser, string?, string[]> commandLineToArgsFunc)
         {
             // Arrange:
@@ -197,7 +201,7 @@ namespace IGLib.Commands.Tests
                 Console.WriteLine("\nParsed arguments:");
                 WriteCommandLineArguments(parsedArgs, 1);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"\nException {ex.GetType().Name} thrown with message:\n  {ex.Message}");
                 if (shouldThrow)
@@ -215,7 +219,7 @@ namespace IGLib.Commands.Tests
             if (expectedArgs == null)
             {
                 parsedArgs.Should().BeNull(because: "the current command-line should result in arguments being null");
-            } 
+            }
             else if (expectedArgs.Length == 0)
             {
                 parsedArgs.Should().NotBeNull(because: "the current command-line should result in empty list of arguments, not null");
@@ -224,7 +228,7 @@ namespace IGLib.Commands.Tests
             else
             {
                 parsedArgs.Should().NotBeNull(because: "the resulting array of parsed arguments should not be null");
-                parsedArgs.Length.Should().Be(expectedArgs?.Length, because: 
+                parsedArgs.Length.Should().Be(expectedArgs?.Length, because:
                     $"the number of resulting arguments should ne {expectedArgs?.Length}, not {parsedArgs.Length}");
                 for (int i = 0; i < expectedArgs!.Length; ++i)
                 {
@@ -305,8 +309,35 @@ namespace IGLib.Commands.Tests
 
 
 
+        /// <summary>Tests conversion of a set of arguments to command-line by the current type of <see cref="ICommandLineParser"/>,
+        /// which is defined for the current test class by the overridden <see cref="CommandLineParser"/> property. The round-trip
+        /// conversion is checked when applicable.
+        /// <para>This method contains the final test body, is defined in the base test class, and should be called
+        /// in derived test classes for specific types of <see cref="ICommandLineParser"/>.</para></summary>
+        /// <param name="isRoundTrip">Whether round-trip conversion should be checked for the current input. When
+        /// true, the parsed arguments are converted back to command-line string by the current converter, then
+        /// converted to a set of arguments again, after which it is checked that the same arguments are obtained
+        /// as before. Note that conversion back to command-line may not be identical in many cases because variable
+        /// number of whitespace characters between arguments, or different quoting can produce the same results.</param>
+        /// <param name="checkFirstConversion">If true then the first conversion from arguments to command-line will be
+        /// tested by verifying whether arguments are contained (literally) in the command-liine that is generated from
+        /// them; this test should not be performed when arguments contain escape sequences or anything else that would
+        /// be subject to any transformation that would fail such a test when converting to command-line.</param>
+        /// <param name="args">Arguments for which conversion to command-line (and possibly back) willl be tested.</param>
+        /// <param name="expectedCommandLine">The expected command-line that should be the result of building from
+        /// <paramref name="args"/>, or null if the expected command-line is not specified.</param>
+        /// <param name="shouldThrow">Whether assembling command-line from <paramref name="args"/> should throw an exception.</param>
+        protected virtual void ArgsToCommandLine_RoundTripConversionWorksCorrectly(bool isRoundTrip, bool checkFirstConversion,
+            string[]? args, string? expectedCommandLine, bool shouldThrow)
+        {
+            Func<ICommandLineParser, string[], string> argsToCommandLineFunc
+                = (parser, args) => { return parser.ArgsToCommandLine(args); };
+            ArgsToCommandLine_Conversion_TestBase(isRoundTrip, checkFirstConversion,
+                args, expectedCommandLine, shouldThrow, argsToCommandLineFunc);
+        }
 
-        protected virtual void ArgsToCommandLine_Conversion_TestBase(bool isRoundTrip, bool checkFirstConversion, 
+
+        protected virtual void ArgsToCommandLine_Conversion_TestBase(bool isRoundTrip, bool checkFirstConversion,
             string[]? args, string? expectedCommandLine, bool shouldThrow, Func<ICommandLineParser, string[], string> argsToCommandLineFunc)
         {
             // Arrange:
@@ -314,9 +345,9 @@ namespace IGLib.Commands.Tests
             Console.WriteLine($"Testing conversion of command-line arguments to command-line string & back; parser type: {parser.GetType().Name}\n");
             Console.WriteLine("Input command-line arguments:");
             WriteCommandLineArguments(args!);
-            Console.WriteLine($"Expected command line in single quotes (<null> means that it is not specified):\n  {
-                (expectedCommandLine == null ? "<null>" : "'" + expectedCommandLine + "'")}");
-
+            Console.WriteLine($"Expected command line in single quotes (<null> means that it is not specified):\n  {(expectedCommandLine == null ? "<null>" : "'" + expectedCommandLine + "'")}");
+            (isRoundTrip || checkFirstConversion || expectedCommandLine != null).Should().BeTrue(
+                because: "PRECOND: at least one of tests (first conversion, round-trip) should be performed");
             // Act:
             string assembledCommandLine = ""; // assignment to empty string is important for the logic and for test detection in case of exceptions
             try
@@ -341,6 +372,10 @@ namespace IGLib.Commands.Tests
             }
             // Assert:
             assembledCommandLine.Should().NotBeNull(because: "if the method works correctly then it should not result in null");
+            if (expectedCommandLine != null)
+            {
+                assembledCommandLine.Should().Be(expectedCommandLine, because: "when expected command-line is specified, the actual command-line assembled from arguments should match");
+            }
             if (checkFirstConversion)
             {
                 foreach (string arg in args!)
