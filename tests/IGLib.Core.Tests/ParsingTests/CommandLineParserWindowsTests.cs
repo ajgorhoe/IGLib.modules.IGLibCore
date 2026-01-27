@@ -106,6 +106,28 @@ namespace IGLib.Commands.Tests
         #endregion CommandLineToArguments
 
 
+        #region ArgumentsToCommandLine
+
+
+        protected override void ArgsToCommandLine_RoundTripConversionWorksCorrectly(bool isRoundTrip, bool checkFirstConversion,
+            string[]? args, string? expectedCommandLine, bool shouldThrow = false)
+        {
+#if CallBaseClassImplementations
+            // REMARK: Tests are not detected by the test framework if we call the base implementation here.
+            base.ArgsToCommandLine_RoundTripConversionWorksCorrectly(isRoundTrip, checkFirstConversion,
+              args, expectedCommandLine, shouldThrow);
+#else
+            //Func<ICommandLineParser, string[], string> argsToCommandLineFunc =
+            //    (parser, arguments) => { return parser.ArgsToCommandLine(arguments); };
+            ArgsToCommandLine_Conversion_TestBase(isRoundTrip, checkFirstConversion,
+                args, expectedCommandLine, shouldThrow, ArgsToCommandLine);  // argsToCommandLineFunc); 
+#endif
+        }
+
+
+        #endregion ArgumentsToCommandLine
+
+
     }
 
 

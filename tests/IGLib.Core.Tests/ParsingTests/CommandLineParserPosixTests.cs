@@ -116,15 +116,12 @@ namespace IGLib.Commands.Tests
             base.ArgsToCommandLine_RoundTripConversionWorksCorrectly(isRoundTrip, checkFirstConversion,
               args, expectedCommandLine, shouldThrow);
 #else
-            Func<ICommandLineParser, string[], string> argsToCommandLineFunc = 
-                (parser, arguments) => { return parser.ArgsToCommandLine(arguments); };
+            //Func<ICommandLineParser, string[], string> argsToCommandLineFunc = 
+            //    (parser, arguments) => { return parser.ArgsToCommandLine(arguments); };
             ArgsToCommandLine_Conversion_TestBase(isRoundTrip, checkFirstConversion,
                 args, expectedCommandLine, shouldThrow, ArgsToCommandLine);  // argsToCommandLineFunc); 
 #endif
         }
-
-
-
 
 
 
