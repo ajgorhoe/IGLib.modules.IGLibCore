@@ -83,7 +83,7 @@ namespace IGLib.Commands.Tests
         /// <param name="parser">The <see cref="ICommandLineParser"/> object used to do the conversion.</param>
         /// <param name="commandLine">Command-line string to be parsed and converted to arguments.</param>
         /// <returns>Array of arguments parsed from the specified <paramref name="commandLine"/>.</returns>
-        protected string[] CommandLineToArgsOverride1(ICommandLineParser parser, string? commandLine)
+        protected string[] CommandLineToArgsOverload1(ICommandLineParser parser, string? commandLine)
         {
             // int CommandLineToArgs(ReadOnlySpan<char> commandLine, List<string> destination);
             if (commandLine == null)
@@ -308,23 +308,11 @@ namespace IGLib.Commands.Tests
         }
 
 
-
         #endregion CommandLineToArguments
 
 
 
-
-
-
-
-
-
-
-
-
-
         #region ArgumentsToCommandLine
-
 
 
         /// <summary>Tests conversion of a set of arguments to command-line by the current type of <see cref="ICommandLineParser"/>,

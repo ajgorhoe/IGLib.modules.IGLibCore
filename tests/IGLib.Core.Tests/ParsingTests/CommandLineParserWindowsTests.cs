@@ -98,7 +98,7 @@ namespace IGLib.Commands.Tests
             //        return argsArray;
             //    };
             CommandlineToArgs_Conversion_TestBase(isRoundTrip, commandLine,
-                expectedArgs, shouldThrow, CommandLineToArgsOverride1);  // commandLineToArgsFunc);
+                expectedArgs, shouldThrow, CommandLineToArgsOverload1);  // commandLineToArgsFunc);
 #endif
         }
 
