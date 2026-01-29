@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Globalization;
 
 
 
@@ -22,20 +23,21 @@ namespace IGLib.ConsoleUtils
 
 
         public static string ReadPassword(char displayChar = '*', bool repeatForValidation = true,
-            string insertionPrompt = "Insert the password: ",
-            string validationPrompt = "Insert the password again: ")
+            string insertionPrompt = "",
+            string validationPrompt = "")
         {
-            var password = new StringBuilder();
-            ConsoleKeyInfo key;
-
+            const string defaultInsertionPrompt = "Insert the password: ";
+            const string defaultValidationPrompt = "Insert the password again: ";
             if (string.IsNullOrEmpty(insertionPrompt))
             {
-                insertionPrompt = "Insert the password: ";
+                insertionPrompt = defaultInsertionPrompt;
             }
             if (string.IsNullOrEmpty(validationPrompt))
             {
-                validationPrompt = "Insert the password again: ";
+                validationPrompt = defaultValidationPrompt;
             }
+            var password = new StringBuilder();
+            ConsoleKeyInfo key;
             Console.Write(insertionPrompt);
             do
             {
