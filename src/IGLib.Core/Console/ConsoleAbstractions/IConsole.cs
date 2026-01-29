@@ -9,16 +9,6 @@ namespace IGLib.ConsoleUtils
     public interface IConsole
     {
 
-        /// <summary>A <see cref="TextReader"/> that reepresents the current console's input stream.</summary>
-        TextReader In { get; }
-
-        /// <summary>A <see cref="TextWriter"/> that reepresents the current console's output stream.</summary>
-        TextWriter Out { get; }
-
-        /// <summary>A <see cref="TextWriter"/> that reepresents the current console's error output stream.</summary>
-        TextWriter Error { get; }
-
-
         /// <summary>Reads / receives and returns one line of text input (from a user or an orchestration tool).</summary>
         /// <returns>The string (a line of text, without the newline) that was provided as line of input.</returns>
         string? ReadLine();
