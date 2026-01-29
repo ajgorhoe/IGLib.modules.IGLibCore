@@ -23,7 +23,6 @@ namespace IGLib.ConsoleUtils
         /// performed before <see cref="ReadKey(bool)"/> is performed.</summary>        
         bool KeyAvailable { get; }
 
-        }
     }
 
 }
