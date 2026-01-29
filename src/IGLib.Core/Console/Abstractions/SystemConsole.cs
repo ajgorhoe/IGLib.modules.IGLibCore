@@ -6,6 +6,8 @@ using System.IO;
 namespace IGLib.ConsoleUtils
 {
 
+    /// <summary>Adapter for the <see cref="System.Console"/> class. Implements the <see cref="IFullConsole"/> 
+    /// interface by forwarding all the operations to the usual <see cref="System.Console"/> static class.</summary>
     public sealed class SystemConsole : IFullConsole
     {
 
