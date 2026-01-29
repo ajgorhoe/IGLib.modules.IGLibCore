@@ -16,7 +16,6 @@ namespace IGLib.ConsoleUtils
         /// <summary>Sets the current console's foreground and background colors to their defaults.</summary>
         void ResetColor();
 
-
     }
 
 }
