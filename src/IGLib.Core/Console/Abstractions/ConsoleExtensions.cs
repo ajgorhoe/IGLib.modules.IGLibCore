@@ -6,6 +6,8 @@ using System.IO;
 namespace IGLib.ConsoleUtils
 {
 
+
+    /// <summary>Extension methods for the IConsole interface.</summary>
     public static class ConsoleExtensions
     {
         public static void Write(this IConsole c, object? value)
