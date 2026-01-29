@@ -19,11 +19,17 @@ namespace IGLib.ConsoleUtils
         #region PasswordUtilities
 
 
-        public static string ReadPassword()
+        public static string ReadPassword(char displayChar = '*', bool repeatforValidation = true, 
+            string insertionPrompt = "Insert the password: ", 
+            string validationPrompt = "Insert the password again: ")
         {
             var password = new StringBuilder();
             ConsoleKeyInfo key;
 
+            if (!string.IsNullOrEmpty(insertionPrompt))
+            {
+                Console.Write(insertionPrompt);
+            }
             do
             {
                 key = Console.ReadKey(true);
@@ -38,7 +44,7 @@ namespace IGLib.ConsoleUtils
                 else if (!char.IsControl(key.KeyChar))
                 {
                     password.Append(key.KeyChar);
-                    Console.Write("*");
+                    Console.Write(displayChar);
                 }
             } while (key.Key != ConsoleKey.Enter);
 
