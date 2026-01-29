@@ -4,6 +4,8 @@ using System;
 namespace IGLib.ConsoleUtils
 {
 
+    /// <summary>Capability interface for console abstractions, supplements <see cref="IConsole"/> with the ability
+    /// to set or obtain cursor position.</summary>
     public interface IConsoleScreen
     {
         /// <summary>Clears the console buffer and corresponding console window.</summary>
