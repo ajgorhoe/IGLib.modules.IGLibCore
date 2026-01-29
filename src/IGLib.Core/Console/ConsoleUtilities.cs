@@ -19,7 +19,7 @@ namespace IGLib.ConsoleUtils
         #region PasswordUtilities
 
 
-        public static string ReadPassword(char displayChar = '*', bool repeatForValidation = true, 
+        public static StringBuilder ReadPassword(char displayChar = '*', bool repeatForValidation = true, 
             string insertionPrompt = "Insert the password: ", 
             string validationPrompt = "Insert the password again: ")
         {
@@ -80,8 +80,7 @@ namespace IGLib.ConsoleUtils
                 }
             }
 
-
-            return password.ToString();
+            return password;
         }
 
 
