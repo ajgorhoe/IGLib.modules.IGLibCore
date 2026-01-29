@@ -4,7 +4,7 @@ using System;
 namespace IGLib.ConsoleUtils
 {
 
-    public interface IConsoleColor
+    public interface IConsoleColors
     {
 
         /// <summary>Gets or sets the foreground color of the console.</summary>
@@ -12,7 +12,6 @@ namespace IGLib.ConsoleUtils
 
         /// <summary>Gets or sets the background color of the console.</summary>
         ConsoleColor BackgroundColor { get; set; }
-
 
         /// <summary>Sets the current console's foreground and background colors to their defaults.</summary>
         void ResetColor();
