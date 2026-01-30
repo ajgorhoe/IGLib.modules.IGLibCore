@@ -36,7 +36,7 @@ namespace IGLib.ConsoleUtils
             {
                 validationPrompt = defaultValidationPrompt;
             }
-            var password = new StringBuilder();
+            var password = new List<char>();
             ConsoleKeyInfo key;
             Console.Write(insertionPrompt);
             do
@@ -44,21 +44,21 @@ namespace IGLib.ConsoleUtils
                 key = Console.ReadKey(true);
 
                 // Handle Backspace
-                if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+                if (key.Key == ConsoleKey.Backspace && password.Count > 0)
                 {
-                    password.Remove(password.Length - 1, 1);
+                    password.RemoveAt(password.Count - 1);
                     Console.Write("\b \b"); // move back, overwrite with space, move back again
                 }
                 else if (!char.IsControl(key.KeyChar)) // ignore other control keys (like Tab or Escape)
                 {
-                    password.Append(key.KeyChar);
+                    password.Add(key.KeyChar);
                     Console.Write(displayChar);
                 }
             } while (key.Key != ConsoleKey.Enter);
             Console.WriteLine(); // move to the next line after Enter
             if (repeatForValidation)
             {
-                var validationPassword = new StringBuilder();
+                var validationPassword = new List<char>();
                 while (validationPassword != password)
                 {
                     validationPassword.Clear();
@@ -68,14 +68,14 @@ namespace IGLib.ConsoleUtils
                         key = Console.ReadKey(true);
 
                         // Handle Backspace
-                        if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+                        if (key.Key == ConsoleKey.Backspace && validationPassword.Count > 0)
                         {
-                            password.Remove(password.Length - 1, 1);
+                            validationPassword.RemoveAt(validationPassword.Count - 1);
                             Console.Write("\b \b"); // move back, overwrite with space, move back again
                         }
                         else if (!char.IsControl(key.KeyChar)) // ignore other control keys (like Tab or Escape)
                         {
-                            password.Append(key.KeyChar);
+                            validationPassword.Add(key.KeyChar);
                             Console.Write(displayChar);
                         }
                     } while (key.Key != ConsoleKey.Enter);
@@ -84,7 +84,7 @@ namespace IGLib.ConsoleUtils
                 }
             }
 
-            return password.ToString();
+            return new string(password.ToArray());
         }
 
 
