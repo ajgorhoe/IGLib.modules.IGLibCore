@@ -54,7 +54,23 @@ namespace IGLib.ConsoleUtils
         #region PasswordUtilities
 
 
-        public static string ReadPassword(char displayChar = '*', bool repeatForValidation = true,
+        public static string ReadPasswordToString(char displayChar = '*', bool repeatForValidation = false,
+            string insertionPrompt = "", string validationPrompt = "")
+        {
+            List<char> pwd = new List<char>();
+
+            pwd = ReadPassword(displayChar, repeatForValidation, insertionPrompt, validationPrompt);
+
+            string ret = "";
+            if (pwd != null)
+            { 
+                ret = new string([.. pwd]);
+                OverWrite(pwd);
+            }
+            return ret;
+        }
+
+        public static List<char> ReadPassword(char displayChar = '*', bool repeatForValidation = true,
             string insertionPrompt = "",
             string validationPrompt = "")
         {
@@ -115,9 +131,7 @@ namespace IGLib.ConsoleUtils
                 }
                 OverWrite(validationPassword, '\0');  // overwrite contents for security reasons
             }
-            string ret = new string(password.ToArray());
-            OverWrite(password);
-            return ret;
+            return password;
         }
 
 
