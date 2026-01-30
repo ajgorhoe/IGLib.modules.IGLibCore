@@ -1,3 +1,6 @@
+
+// Source: https://learn.microsoft.com/en-us/dotnet/api/system.console.beep?view=net-10.0#system-console-beep
+
 // This example demonstrates the Console.Beep(Int32, Int32) method
 using System;
 using System.Threading;
