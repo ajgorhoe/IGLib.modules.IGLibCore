@@ -54,12 +54,14 @@ namespace IGLib.ConsoleUtils
         #region PasswordUtilities
 
 
+        [Obsolete("Do not use this in production as storing passwords in strings is not secure.")]
         public static string ReadPasswordToString(char displayChar = '*', bool repeatForValidation = false,
-            string insertionPrompt = "", string validationPrompt = "")
+            string insertionPrompt = "", string validationPrompt = "", string validationNotEqualPrompt = "")
         {
             List<char> pwd = new List<char>();
 
-            pwd = ReadPassword(displayChar, repeatForValidation, insertionPrompt, validationPrompt);
+            pwd = ReadPassword(displayChar, repeatForValidation, insertionPrompt, validationPrompt,
+                validationNotEqualPrompt);
 
             string ret = "";
             if (pwd != null)
@@ -71,11 +73,11 @@ namespace IGLib.ConsoleUtils
         }
 
         public static List<char> ReadPassword(char displayChar = '*', bool repeatForValidation = true,
-            string insertionPrompt = "",
-            string validationPrompt = "")
+            string insertionPrompt = "", string validationPrompt = "", string validationNotEqualPrompt = "")
         {
             const string defaultInsertionPrompt = "Insert the password: ";
             const string defaultValidationPrompt = "Insert the password again: ";
+            const string defaultValidationNotEqualPrompt = "\nInserted passwords are not equal. Please insert the passwords again.";
             if (string.IsNullOrEmpty(insertionPrompt))
             {
                 insertionPrompt = defaultInsertionPrompt;
@@ -131,6 +133,8 @@ namespace IGLib.ConsoleUtils
                 }
                 OverWrite(validationPassword, '\0');  // overwrite contents for security reasons
             }
+
+
             return password;
         }
 
