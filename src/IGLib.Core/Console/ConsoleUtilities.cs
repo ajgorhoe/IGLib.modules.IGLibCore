@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 
 
@@ -17,9 +19,39 @@ namespace IGLib.ConsoleUtils
     {
 
 
+
+        public static void OverWrite<T>(IList<T>? list, T newElementValue = default(T))
+        {
+            if (list != null)
+            {
+                for (int i = 0; i < list.Count; ++i)
+                {
+                    list[i] = newElementValue;
+                }
+            }
+        }
+
+        public static bool AreEqual<T>(IList<T> l1, IList<T> l2)
+            where T: IEquatable<T>
+        {
+            if (l1 == null || l2 == null)
+            {
+                return l1 == l2;
+            }
+            if (l1.Count != l2.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < l1.Count; ++i)
+            {
+                if (!(l1[i].Equals(l2[i])))
+                { return false; }
+            }
+            return true;
+        }
+
+
         #region PasswordUtilities
-
-
 
 
         public static string ReadPassword(char displayChar = '*', bool repeatForValidation = true,
@@ -59,7 +91,7 @@ namespace IGLib.ConsoleUtils
             if (repeatForValidation)
             {
                 var validationPassword = new List<char>();
-                while (validationPassword != password)
+                while (!AreEqual(password, validationPassword))
                 {
                     validationPassword.Clear();
                     Console.Write(validationPrompt);
@@ -80,11 +112,12 @@ namespace IGLib.ConsoleUtils
                         }
                     } while (key.Key != ConsoleKey.Enter);
                     Console.WriteLine(); // move to the next line after Enter
-
                 }
+                OverWrite(validationPassword, '\0');  // overwrite contents for security reasons
             }
-
-            return new string(password.ToArray());
+            string ret = new string(password.ToArray());
+            OverWrite(password);
+            return ret;
         }
 
 
