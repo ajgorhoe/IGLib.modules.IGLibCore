@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
+using System.Data.SqlTypes;
 
 
 
@@ -20,13 +21,14 @@ namespace IGLib.ConsoleUtils
 
         #region Helpers
 
-        public static void OverWrite<T>(IList<T?>? list, T? newElementValue = default(T))
+        public static void OverWrite<T>(IList<T>? list, T newElementValue = default!)
+            where T : class
         {
             if (list != null)
             {
                 for (int i = 0; i < list.Count; ++i)
                 {
-                    list[i] = newElementValue;
+                    list[i] = newElementValue!;
                 }
             }
         }
@@ -140,7 +142,6 @@ namespace IGLib.ConsoleUtils
 
 
         #endregion ReadValues
-
 
 
 
