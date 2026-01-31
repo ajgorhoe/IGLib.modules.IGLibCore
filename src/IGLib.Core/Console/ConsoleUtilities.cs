@@ -120,7 +120,7 @@ namespace IGLib.ConsoleUtils
                             Console.WriteLine("  \"?\" for help,");
                             Console.WriteLine("  non-boolean string to show current value,");
                             Console.WriteLine("  <Enter> to keep the old value.");
-                            Console.WriteLine("  Legal input: '0', '1', 'false', 'true', 'y', 'n', 'yes', 'no'.");
+                            Console.WriteLine("  Legal input: '0', '1', 'false', 'true', 'y', 'n', 'yes', 'no' (case insensitive).");
                             Console.WriteLine();
                         }
                         // Inserted string is not a valid representation of the output type,
