@@ -22,7 +22,6 @@ namespace IGLib.ConsoleUtils
         #region Helpers
 
         public static void OverWrite<T>(IList<T>? list, T newElementValue = default!)
-            where T : class
         {
             if (list != null)
             {
