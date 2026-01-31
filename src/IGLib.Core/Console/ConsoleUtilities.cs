@@ -141,7 +141,6 @@ namespace IGLib.ConsoleUtils
 
 
 
-
         public static StringBuilder ReadPasswordStringBuilder(char displayChar = '*', bool repeatForValidation = true, 
             string insertionPrompt = "Insert the password: ", 
             string validationPrompt = "Insert the password again: ")
@@ -205,7 +204,6 @@ namespace IGLib.ConsoleUtils
 
             return password;
         }
-
 
 
         #endregion PasswordUtilities
