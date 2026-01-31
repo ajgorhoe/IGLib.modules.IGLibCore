@@ -11,6 +11,14 @@ namespace IGLib.ConsoleUtils
     public sealed class SystemConsole : IFullConsole
     {
 
+        // Global System console, named simply Global:
+
+        protected static Lazy<SystemConsole> _global = new Lazy<SystemConsole>(() => new SystemConsole());
+
+        /// <summary>Global lazily initialized instance of <see cref="SystemConsole"/>.</summary>
+        public static SystemConsole Global => _global.Value;
+
+
         public string? ReadLine() => Console.ReadLine();
 
         public void Write(string? value) => Console.Write(value);
