@@ -18,9 +18,9 @@ namespace IGLib.ConsoleUtils
     public static class ConsoleUtilities
     {
 
+        #region Helpers
 
-
-        public static void OverWrite<T>(IList<T>? list, T newElementValue = default(T))
+        public static void OverWrite<T>(IList<T?>? list, T? newElementValue = default(T))
         {
             if (list != null)
             {
@@ -49,6 +49,100 @@ namespace IGLib.ConsoleUtils
             }
             return true;
         }
+
+        #endregion Helpers
+
+
+        #region ReadValues
+
+
+        /// <summary>Reads a boolean from a console and assigns it to a variable.
+        /// User can input a non-boolean to see current content, or insert an empty string to leave the old content.
+        /// Eligible input to assign a new boolean value (strings are not case sensitive!):
+        /// </summary>
+        /// <param name="value">Variable to which the inserted value is assigned.</param>
+        /// <returns>true if a new value has been assigned, false otherwise.</returns>
+        public static bool Read(ref bool value)
+        {
+            bool wasAssigned = false;
+            string? str = null;
+            int i = 0;
+            do
+            {
+                ++i;
+                str = Console.ReadLine();
+                if (string.IsNullOrEmpty(str))
+                {
+                    // Keep the old value and print it
+                    Console.WriteLine("  = " + value.ToString());
+                }
+                else
+                {
+                    try
+                    {
+                        try
+                        {
+                            value = bool.Parse(str);
+                            wasAssigned = true;  // value has been changed
+                            str = ""; // continue if successfully parsed
+                        }
+                        catch (Exception)
+                        {
+                            if (string.IsNullOrEmpty(str))
+                                throw;
+                            str = str.ToLower();
+                            if (str == "0")
+                                value = false;
+                            else if (str == "1")
+                                value = true;
+                            else if (str == "false")
+                                value = false;
+                            else if (str == "true")
+                                value = true;
+                            else if (str == "no")
+                                value = false;
+                            else if (str == "yes")
+                                value = true;
+                            else if (str == "n")
+                                value = false;
+                            else if (str == "y")
+                                value = true;
+                            else throw;
+                            str = null;
+                        }
+                    }
+                    catch
+                    {
+                        if (str == "?")
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Insert a boolean value,");
+                            Console.WriteLine("  \"?\" for help,");
+                            Console.WriteLine("  non-boolean string to show current value,");
+                            Console.WriteLine("  <Enter> to keep the old value.");
+                            Console.WriteLine("  Legal input: '0', '1', 'false', 'true', 'y', 'n', 'yes', 'no'.");
+                            Console.WriteLine();
+                        }
+                        // Inserted string is not a valid representation of the output type,
+                        // print the old value and request a new one:
+                        if (i > 1)
+                            Console.WriteLine("Insert a boolean, \"?\" for help.");
+                        Console.WriteLine("  Current value: " + value.ToString());
+                        Console.Write("  New value:     ");
+                    }
+                }
+            } while (!string.IsNullOrEmpty(str));
+            return wasAssigned;
+        }  // Read (ref bool)
+
+
+
+
+
+        #endregion ReadValues
+
+
+
 
 
         #region PasswordUtilities
