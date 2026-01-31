@@ -15,8 +15,8 @@ namespace IGLib.ConsoleUtils
 
         protected static Lazy<SystemConsole> _global = new Lazy<SystemConsole>(() => new SystemConsole());
 
-        /// <summary>Global lazily initialized instance of <see cref="SystemConsole"/>.</summary>
-        public static SystemConsole Global => _global.Value;
+        /// <summary>Global lazily initialized instance of <see cref="GlobalConsole"/>.</summary>
+        public static SystemConsole GlobalConsole => _global.Value;
 
 
         public string? ReadLine() => Console.ReadLine();

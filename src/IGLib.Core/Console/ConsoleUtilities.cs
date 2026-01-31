@@ -5,10 +5,11 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Diagnostics;
-using System.Data.SqlTypes;
 
+using IGLib.ConsoleUtils;
+
+using static IGLib.ConsoleUtils.SystemConsole;
+using MyConsole = IGLib.ConsoleUtils.SystemConsole;
 
 
 namespace IGLib.ConsoleUtils
@@ -18,6 +19,14 @@ namespace IGLib.ConsoleUtils
     /// <see cref="IConsoleKeyInput"/>, <see cref="IConsoleStreams"/>, <see cref="IConsoleStreams"/>, etc.).</summary>
     public static class ConsoleUtilities
     {
+
+        public static void Sandbox()
+        {
+            GlobalConsole.WriteLine("AAA");
+            MyConsole.GlobalConsole.WriteLine();
+
+        }
+
 
         #region Helpers
 
