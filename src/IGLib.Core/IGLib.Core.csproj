@@ -74,8 +74,8 @@
 	<ItemGroup>
 		<!-- Exclude directories from builds: -->
 		<!-- Console scripts (for testing console utilities and understanding how System.Console works): -->
-		<Compile Remove="Console\ConsoleScripts\**\*.cs" />
 		<!--
+		<Compile Remove="Console\ConsoleScripts\**\*.cs" />
 		<None Include="Console\ConsoleScripts\**\*" />
 		-->
 	</ItemGroup>
@@ -83,8 +83,10 @@
 		<!-- Copy all C# scripts in Console/ConsoleScripts/Tests/ to the output directory: -->
 		<None Update="Console/ConsoleScripts/Tests/*.csx">
 			<!-- Copy directly to output dir. rather than to nested directory -->
-			<Link>%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<!--
+			<Link>%(Filename)%(Extension)</Link>
+			-->
 		</None>
 	</ItemGroup>
 
