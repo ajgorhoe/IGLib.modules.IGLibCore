@@ -22,8 +22,8 @@ namespace IGLib.ConsoleUtils
 
         public static void Sandbox()
         {
-            GlobalConsole.WriteLine("AAA");
-            MyConsole.GlobalConsole.WriteLine();
+            GlobalConsole.WriteLine("AAA");  // because of: using static IGLib.ConsoleUtils.SystemConsole
+            MyConsole.GlobalConsole.WriteLine();  // because of: using MyConsole = IGLib.ConsoleUtils.SystemConsole
 
         }
 
