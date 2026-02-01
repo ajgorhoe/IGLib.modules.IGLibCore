@@ -75,7 +75,9 @@
 		<!-- Exclude directories from builds: -->
 		<!-- Console scripts (for testing console utilities and understanding how System.Console works): -->
 		<Compile Remove="Console\ConsoleScripts\**\*.cs" />
+		<!--
 		<None Include="Console\ConsoleScripts\**\*" />
+		-->
 	</ItemGroup>
 	<ItemGroup>
 		<!-- Copy all C# scripts in Console/ConsoleScripts/Tests/ to the output directory: -->
