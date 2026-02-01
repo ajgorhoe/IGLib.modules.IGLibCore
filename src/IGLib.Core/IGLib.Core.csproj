@@ -71,4 +71,16 @@
 		<PackageReference Include="System.Text.Json" Version="10.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<!-- Exclude directories from builds: -->
+		<!-- One-file applications, run by "dotnet ——file AppFile.cs", https://learn.microsoft.com/en-us/dotnet/core/sdk/file-based-apps -->
+		<Compile Remove="CsApps\**\*.cs" />
+		<None Include="CsApps\**\*" />
+		<!-- C# scripts, run by "dotnet script ScriptFile.csx": -->
+		<Compile Remove="Csx\**\*.cs" />
+		<None Include="Csx\**\*" />
+	</ItemGroup>
+
+
+
 </Project>
