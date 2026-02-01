@@ -115,7 +115,6 @@ namespace IGLib.ConsoleUtils
             return ret;
         }  // Read (ref int)
 
-
         /// <summary>Reads a boolean from a console and assigns it to a variable.
         /// User can input a non-boolean to see current content, or insert an empty string to leave the old content.
         /// Eligible input to assign a new boolean value (strings are not case sensitive!):
@@ -194,6 +193,55 @@ namespace IGLib.ConsoleUtils
             } while (!string.IsNullOrEmpty(str));
             return wasAssigned;
         }  // Read (ref bool)
+
+        /// <summary>Reads an integer (of type long) from a console and assigns it to a variable.
+        /// User can input a non-integer to see current content, or insert an empty string to leave the old content.</summary>
+        /// <param name="value">Variable to which the inserted value is assigned.</param>
+        /// <returns>true if a new value has been assigned, false otherwise.</returns>
+        public static bool Read(ref long value)
+        {
+            bool ret = false;
+            string str = null;
+            int i = 0;
+            do
+            {
+                ++i;
+                str = Console.ReadLine();
+                if (string.IsNullOrEmpty(str))
+                {
+                    // Keep the old value and print it
+                    Console.WriteLine("  = " + value.ToString());
+                }
+                else
+                {
+                    try
+                    {
+                        value = long.Parse(str);
+                        ret = true;  // value has been changed
+                        str = ""; // continue if successfully parsed
+                    }
+                    catch
+                    {
+                        if (str == "?")
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Insert an integer (long),");
+                            Console.WriteLine("  \"?\" for help,");
+                            Console.WriteLine("  non-numeric string to show current value,");
+                            Console.WriteLine("  <Enter> to keep the old value.");
+                            Console.WriteLine();
+                        }
+                        // Inserted string is not a valid representation of the output type,
+                        // print the old value and request a new one:
+                        if (i > 1)
+                            Console.WriteLine("Insert an integer (long), \"?\" for help.");
+                        Console.WriteLine("  Current value: " + value.ToString());
+                        Console.Write("  New value:     ");
+                    }
+                }
+            } while (!string.IsNullOrEmpty(str));
+            return ret;
+        }  // Read (ref long)
 
 
 
