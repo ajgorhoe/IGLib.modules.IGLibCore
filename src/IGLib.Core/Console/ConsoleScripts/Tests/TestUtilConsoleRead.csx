@@ -17,8 +17,10 @@ using static IGLib.ConsoleUtils.ConsoleUtilities;
 
 // Reading values from console:
 
-bool answer = true;
-bool wasRead = ConsoleUtilities.Read(ref answer);
+void TestReadBool(bool initial = true)
+{
+    bool value = initial; bool wasRead = ConsoleUtilities.Read(ref value);
+    Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {initial}")
+}
 
-(answer, wasRead)
 
