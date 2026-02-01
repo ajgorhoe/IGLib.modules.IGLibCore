@@ -80,7 +80,9 @@
 	<ItemGroup>
 		<!-- Copy all C# scripts in Console/ConsoleScripts/Tests/ to the output directory: -->
 		<None Update="Console/ConsoleScripts/Tests/*.csx">
+			<!-- Copy directly to output dir. rather than to nested directory -->
 			<Link>%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 
