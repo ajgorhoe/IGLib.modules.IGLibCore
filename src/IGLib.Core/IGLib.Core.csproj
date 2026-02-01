@@ -73,12 +73,9 @@
 
 	<ItemGroup>
 		<!-- Exclude directories from builds: -->
-		<!-- One-file applications, run by "dotnet ——file AppFile.cs", https://learn.microsoft.com/en-us/dotnet/core/sdk/file-based-apps -->
-		<Compile Remove="CsApps\**\*.cs" />
-		<None Include="CsApps\**\*" />
-		<!-- C# scripts, run by "dotnet script ScriptFile.csx": -->
-		<Compile Remove="Csx\**\*.cs" />
-		<None Include="Csx\**\*" />
+		<!-- Console scripts (for testing console utilities and understanding how System.Console works): -->
+		<Compile Remove="Console\ConsoleScripts\**\*.cs" />
+		<None Include="Console\ConsoleScripts\**\*" />
 	</ItemGroup>
 
 
