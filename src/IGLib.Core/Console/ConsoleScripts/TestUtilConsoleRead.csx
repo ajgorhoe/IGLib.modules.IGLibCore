@@ -20,6 +20,5 @@ using static IGLib.ConsoleUtils.ConsoleUtilities;
 bool answer = true;
 bool wasRead = ConsoleUtilities.Read(ref answer);
 
-
-
+(answer, wasRead)
 
