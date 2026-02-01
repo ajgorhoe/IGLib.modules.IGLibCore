@@ -77,7 +77,11 @@
 		<Compile Remove="Console\ConsoleScripts\**\*.cs" />
 		<None Include="Console\ConsoleScripts\**\*" />
 	</ItemGroup>
-
-
+	<ItemGroup>
+		<!-- Copy all C# scripts in Console/ConsoleScripts/Tests/ to the output directory: -->
+		<None Update="Console/ConsoleScripts/Tests/*.csx">
+			<Link>%(Filename)%(Extension)</Link>
+		</None>
+	</ItemGroup>
 
 </Project>
