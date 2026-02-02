@@ -174,15 +174,15 @@ namespace IGLib.ConsoleUtils
                 value = initialValue; // need to restore because TryParse modifies it
                 if (userInput == "?")
                 {
-                    Console.WriteLine();
                     Console.WriteLine($"\nInsert a number of type {value.GetType().Name},");
                     Console.WriteLine("  ? for help,");
                     Console.WriteLine("  non-numeric string to show current value,");
-                    Console.WriteLine("  <Enter> to keep the old value.");
-                    Console.WriteLine();
+                    Console.WriteLine("  <Enter> to keep the old value.\n");
                 }
-                if (i > 1 && userInput != "?")
+                else
+                {
                     Console.WriteLine($"Insert a number of type {value.GetType().Name}, ? for help.");
+                }
                 Console.WriteLine("  Current value: " + value.ToString());
                 Console.Write(    "  New value:     ");
 
