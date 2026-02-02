@@ -30,10 +30,6 @@ namespace IGLib.ConsoleUtils
 
         #region Constants
 
-        ///// <summary>Default <see cref="IFormatProvider"/> for this class. This specifies e.g. number and boolean formats for
-        ///// Parse(...) and TryParse(...) types of methods.</summary>
-        //public static IFormatProvider DefaultFormatProvider  => Global.DefaultFormatProvider;
-
         public static string[] BooleanTrueStrings { get; internal set; } = ["true", "1", "yes", "y"];
 
         public static string[] BooleanFalseStrings { get; internal set; } = ["false", "0", "no", "n"];
@@ -332,13 +328,13 @@ namespace IGLib.ConsoleUtils
                     Console.WriteLine("    = " + value.ToString());
                     return false;
                 }
-                valueProvided = double.TryParse(userInput, out value);
+                valueProvided = double.TryParse(userInput, NumberStyles.Integer, Global.DefaultFormatProvider, out value);
                 if (valueProvided)
                 {
                     // A valid value has been provided by user; return
                     return valueProvided;
                 }
-                value = initialValue; // need to restore because TryParse modifies it
+                value = initialValue; // need to restore because TryParse modifies the value
                 if (userInput == "?")
                 {
                     Console.WriteLine($"\n  Insert a number of type {value.GetType().Name},");
