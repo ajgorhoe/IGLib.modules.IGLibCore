@@ -80,7 +80,8 @@ namespace IGLib.ConsoleUtils
         /// </summary>
         /// <param name="value">Variable to which the inserted value is assigned.</param>
         /// <returns>true if a new value has been assigned, false otherwise.</returns>
-        public static bool Read(ref bool value)
+        [Obsolete("This method will soon be deleted.")]
+        public static bool ReadOld(ref bool value)
         {
             bool wasAssigned = false;
             string? str = null;
@@ -153,21 +154,95 @@ namespace IGLib.ConsoleUtils
 
 
 
+
+
+
+
+        /// <summary>Calls <see cref="Read(IConsole, ref bool, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
+        public static bool Read(ref bool value, IFormatProvider? formatProvider = null)
+        {
+            return Read(GlobalConsole, ref value, formatProvider);
+        }
+
+        /// <summary>Reads a boolean value from console input and assigns it to the specified boolean variable.
+        /// User can input a non-boolean string to see current content, or insert an empty string to leave the old content,
+        /// or input a question mark for help.</summary>
+        /// <param name="console">Console object (abatracted) from which the value is read.</param>
+        /// <param name="value">Variable to which the read value is assigned.</param>
+        /// <param name="formatProvider">Format provider used when parsing the value from the string input via <paramref name="console"/>.
+        /// Default is <see cref="Global.DefaultFormatProvider"/>.</param>
+        /// <returns>True if a value has been provided explicitly by the user, false if not (and the old value is kept).</returns>
+        public static bool Read(IConsole console, ref bool value, IFormatProvider? formatProvider = null)
+        {
+            if (formatProvider == null)
+            {
+                formatProvider = IGLib.Global.DefaultFormatProvider;
+            }
+            bool initialValue = value;
+            bool valueProvided = false;
+            string? userInput = null;
+            int i = 0;
+            do
+            {
+                ++i;
+                userInput = Console.ReadLine();
+                if (string.IsNullOrEmpty(userInput))
+                {
+                    // Keep the old value and print it
+                    Console.WriteLine("    = " + value.ToString());
+                    return false;
+                }
+                valueProvided = bool.TryParse(userInput, out value);
+                if (valueProvided)
+                {
+                    // A valid value has been provided by user; return
+                    return valueProvided;
+                }
+                value = initialValue; // need to restore because TryParse modifies it
+                if (userInput == "?")
+                {
+                    Console.WriteLine($"\n  Insert a number of type {value.GetType().Name},");
+                    Console.WriteLine($"  ? for help,");
+                    Console.WriteLine($"  non-numeric string to show current value,");
+                    Console.WriteLine($"  <Enter> to keep the current value ({value}).\n");
+                }
+                else
+                {
+                    Console.WriteLine($"Insert a number of type {value.GetType().Name}, ? for help.");
+                }
+                Console.WriteLine("  Current value: " + value.ToString());
+                Console.Write("  New value:     ");
+            } while (!string.IsNullOrEmpty(userInput));
+            return valueProvided;
+        }
+
+
+
+
+
+
+
+
+
         /// <summary>Calls <see cref="Read(IConsole, ref double, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
         public static bool Read(ref double value, IFormatProvider? formatProvider = null)
         {
             return Read(GlobalConsole, ref value, formatProvider);
         }
 
-        /// <summary>Reads a number of type double from a console and assigns it to a variable.
-        /// User can input a non-integer to see current content, or insert an empty string to leave the old content.</summary>
-        /// <param name="value">Variable to which the inserted value is assigned.</param>
+        /// <summary>Reads a number of type double from console input in a user friendy way  and assigns it to the specified variable.
+        /// User can input a non-numerical string to see current value, or input an empty string to leave the old value,
+        /// or input a question mark (`?`) do display help.</summary>
+        /// <param name="console">Console object (abatracted) from which the value is read.</param>
+        /// <param name="value">Variable to which the read value is assigned.</param>
+        /// <param name="formatProvider">Format provider used when parsing the value from the string input via <paramref name="console"/>.
+        /// Default is <see cref="Global.DefaultFormatProvider"/>.</param>
         /// <returns>True if a value has been provided explicitly by the user, false if not (and the old value is kept).</returns>
         public static bool Read(IConsole console, ref double value, IFormatProvider? formatProvider = null)
         {
             if (formatProvider == null)
             {
-                formatProvider = IGLib.Global.DefaultFormatProvider;
+                formatProvider = Global.DefaultFormatProvider;
             }
             double initialValue = value;
             bool valueProvided = false;
@@ -205,7 +280,7 @@ namespace IGLib.ConsoleUtils
                 Console.Write(    "  New value:     ");
             } while (!string.IsNullOrEmpty(userInput));
             return valueProvided;
-        }  // Read(ref double)
+        }
 
 
 
