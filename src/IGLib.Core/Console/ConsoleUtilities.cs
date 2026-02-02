@@ -298,6 +298,7 @@ namespace IGLib.ConsoleUtils
         /// <returns>True if a value has been provided explicitly by the user, false if not (and the old value is kept).</returns>
         public static bool Read(ref double value)
         {
+            double initialValue = value;
             bool valueProvided = false;
             string? userInput = null;
             int i = 0;
@@ -317,6 +318,7 @@ namespace IGLib.ConsoleUtils
                     // A valid value has been provided by user; return
                     return valueProvided;
                 }
+                value = initialValue; // need to restore because TryParse modifies it
                 if (userInput == "?")
                 {
                     Console.WriteLine();
