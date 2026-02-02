@@ -288,7 +288,46 @@ namespace IGLib.ConsoleUtils
         {
             //value = default;
             //return false;
-            throw new NotImplementedException("Generic TryParse is not implemented.");
+            Type valueType = typeof(NumericType);
+            switch (Type.GetTypeCode(valueType))
+            {
+                case TypeCode.Byte:
+                    {
+                        byte temp;
+                        bool result = byte.TryParse(console.ReadLine(), NumberStyles.Integer, formatProvider, out temp);
+                        value = (NumericType)(object)temp;
+                        return result;
+                    }
+                case TypeCode.SByte:
+                    {
+                        sbyte temp;
+                        bool result = sbyte.TryParse(console.ReadLine(), NumberStyles.Integer, formatProvider, out temp);
+                        value = (NumericType)(object)temp;
+                        return result;
+                    }
+                case TypeCode.Int16:
+                    {
+                        short temp;
+                        bool result = short.TryParse(console.ReadLine(), NumberStyles.Integer, formatProvider, out temp);
+                        value = (NumericType)(object)temp;
+                        return result;
+                    }
+                case TypeCode.UInt16:
+                    {
+                        ushort temp;
+                        bool result = ushort.TryParse(console.ReadLine(), NumberStyles.Integer, formatProvider, out temp);
+                        value = (NumericType)(object)temp;
+                        return result;
+                    }
+                case TypeCode.Int32:
+                    {
+                        int temp;
+                        bool result = int.TryParse(console.ReadLine(), NumberStyles.Integer, formatProvider, out temp);
+                        value = (NumericType)(object)temp;
+                        return result;
+                    }
+            }
+            throw new ArgumentException($"Generic TryParse is not implemented for type of the {nameof(value)} parameter, {valueType.Name}.", nameof(value));
         }
 
         /// <summary>Calls <see cref="Read(IConsole, ref NumericType, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
