@@ -26,18 +26,45 @@ void TestReadBool(bool initial = true)
 }
 
 
-void TestReadLong(long initial = 22)
+
+void TestReadLong(long initial = 0l)
 {
-    Console.Write($"\nInsert a long number (? for help): ");
-    var value = initial; 
+    Console.Write($"\nTest - reading a value of type {initial.GetType().name}.\nInsert a {initial.GetType().name} number (? for help): ");
+    var value = initial;
     bool wasRead = ConsoleUtilities.Read(ref value);
     Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
 }
 
 
+void TestReadDoubleOld(double initial = 0.0)
+{
+    Console.Write($"\nTest - reading a value of type {initial.GetType().name}.\nInsert a {
+        initial.GetType().name} number (? for help, <Enter> to keep {initial}): ");
+    var value = initial;
+    bool wasRead = ConsoleUtilities.ReadOld(ref value);
+    Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
+}
+
+void TestReadDouble(double initial = 0.0)
+{
+    Console.Write($"\nTest - reading a value of type {initial.GetType().name}.\nInsert a {initial.GetType().name} number (? for help, <Enter> to keep {initial}): ");
+    var value = initial;
+    bool wasRead = ConsoleUtilities.Read(ref value);
+    Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
+}
+
+
+
 /*
 
 TestReadBool(false);
+
+TestReadLong(22);
+
+TestReadDouble(2.3);
+
+TestReadDoubleOld(105e-2);
+
 
 
 */
