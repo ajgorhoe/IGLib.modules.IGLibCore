@@ -271,14 +271,17 @@ namespace IGLib.ConsoleUtils
 
                 if (userInput == "?")
                 {
-                    Console.WriteLine($"\n  Insert a number of type {value.GetType().Name},");
+                    Console.WriteLine($"\n  Insert a value of type {value.GetType().Name},");
                     Console.WriteLine($"  ? for help,");
-                    Console.WriteLine($"  non-numeric string to show current value,");
-                    Console.WriteLine($"  <Enter> to keep the current value ({value}).\n");
+                    Console.WriteLine($"  non-boolean string to show current value,");
+                    Console.WriteLine($"  <Enter> to keep the current value ({value}),");
+                    Console.WriteLine($"  [{string.Join(", ", BooleanFalseStrings)}] for False),");
+                    Console.WriteLine($"  [{string.Join(", ", BooleanTrueStrings)}] for True,");
+                    Console.WriteLine($"  0 for False, any other integer value for True.\n");
                 }
                 else
                 {
-                    Console.WriteLine($"Insert a number of type {value.GetType().Name}, ? for help.");
+                    Console.WriteLine($"Insert a value of type {value.GetType().Name}, ? for help.");
                 }
                 Console.WriteLine("  Current value: " + value.ToString());
                 Console.Write("  New value:     ");
