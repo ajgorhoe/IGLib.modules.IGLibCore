@@ -276,8 +276,15 @@ namespace IGLib.ConsoleUtils
                     Console.WriteLine($"  non-boolean string to show current value,");
                     Console.WriteLine($"  <Enter> to keep the current value ({value}),");
                     Console.WriteLine($"  [{string.Join(", ", BooleanFalseStrings)}] for False),");
-                    Console.WriteLine($"  [{string.Join(", ", BooleanTrueStrings)}] for True,");
-                    Console.WriteLine($"  0 for False, any other integer value for True.\n");
+                    Console.WriteLine($"  [{string.Join(", ", BooleanTrueStrings)}] for True ({(IsBooleanStringsCaseSensitive? "case sensitive" : "not case sensitive")}),");
+                    if (IsBooleanAnyIntegerAccepted)
+                    {
+                        Console.WriteLine($"  0 for False, any other integer value for True.\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"  arbitrary integer values are not accepted");
+                    }
                 }
                 else
                 {
