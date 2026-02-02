@@ -10,6 +10,7 @@ using IGLib.ConsoleUtils;
 
 using static IGLib.ConsoleUtils.SystemConsole;
 using MyConsole = IGLib.ConsoleUtils.SystemConsole;
+using System.ComponentModel;
 
 
 namespace IGLib.ConsoleUtils
@@ -27,6 +28,13 @@ namespace IGLib.ConsoleUtils
 
         }
 
+        #region Constants
+
+        /// <summary>Default <see cref="IFormatProvider"/> for this class. This specifies e.g. number and boolean formats for
+        /// Parse(...) and TryParse(...) types of methods.</summary>
+        public static IFormatProvider DefaultFormatProvider { get; } = CultureInfo.InvariantCulture;
+
+        #endregion Constants
 
         #region Helpers
 
@@ -145,12 +153,22 @@ namespace IGLib.ConsoleUtils
 
 
 
+        /// <summary>Calls <see cref="Read(IConsole, ref double, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
+        public static bool Read(ref double value, IFormatProvider? formatProvider = null)
+        {
+            return Read(GlobalConsole, ref value, formatProvider);
+        }
+
         /// <summary>Reads a number of type double from a console and assigns it to a variable.
         /// User can input a non-integer to see current content, or insert an empty string to leave the old content.</summary>
         /// <param name="value">Variable to which the inserted value is assigned.</param>
         /// <returns>True if a value has been provided explicitly by the user, false if not (and the old value is kept).</returns>
-        public static bool Read(ref double value)
+        public static bool Read(IConsole console, ref double value, IFormatProvider? formatProvider = null)
         {
+            if (formatProvider == null)
+            {
+                formatProvider = IGLib.Global.DefaultFormatProvider;
+            }
             double initialValue = value;
             bool valueProvided = false;
             string? userInput = null;
@@ -162,7 +180,7 @@ namespace IGLib.ConsoleUtils
                 if (string.IsNullOrEmpty(userInput))
                 {
                     // Keep the old value and print it
-                    Console.WriteLine("  = " + value.ToString());
+                    Console.WriteLine("    = " + value.ToString());
                     return false;
                 }
                 valueProvided = double.TryParse(userInput, out value);
@@ -174,7 +192,7 @@ namespace IGLib.ConsoleUtils
                 value = initialValue; // need to restore because TryParse modifies it
                 if (userInput == "?")
                 {
-                    Console.WriteLine($"\nInsert a number of type {value.GetType().Name},");
+                    Console.WriteLine($"\n  Insert a number of type {value.GetType().Name},");
                     Console.WriteLine($"  ? for help,");
                     Console.WriteLine($"  non-numeric string to show current value,");
                     Console.WriteLine($"  <Enter> to keep the current value ({value}).\n");
