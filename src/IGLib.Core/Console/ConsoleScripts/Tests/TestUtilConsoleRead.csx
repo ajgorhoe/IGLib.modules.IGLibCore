@@ -26,24 +26,6 @@ void TestReadBool(bool value = true)
 }
 
 
-
-void TestReadLong(long value = 0l)
-{
-    Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
-    Console.Write($"Insert a number of type {value.GetType().Name} (? for help, < Enter > to keep {value}): ");
-    bool wasRead = ConsoleUtilities.Read(ref value);
-    Console.WriteLine($"\nInitial value: {value}; was provided: {wasRead}; new value: {value}\n");
-}
-
-
-void TestReadDoubleOld(double value = 0.0)
-{
-    Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
-    Console.Write($"Insert a number of type {value.GetType().Name} (? for help, < Enter > to keep {value}): ");
-    bool wasRead = ConsoleUtilities.Read(ref value);
-    Console.WriteLine($"\nInitial value: {value}; was provided: {wasRead}; new value: {value}\n");
-}
-
 void TestReadDouble(double value = 0.0)
 {
     Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
@@ -62,7 +44,6 @@ TestReadLong(22);
 
 TestReadDouble(2.3);
 
-TestReadDoubleOld(105e-2);
 
 
 
