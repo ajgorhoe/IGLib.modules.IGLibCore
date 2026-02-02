@@ -19,8 +19,18 @@ using static IGLib.ConsoleUtils.ConsoleUtilities;
 
 void TestReadBool(bool initial = true)
 {
-    Console.Write($"Insert a boolean (? for help): ");
-    bool value = initial; bool wasRead = ConsoleUtilities.Read(ref value);
+    Console.Write($"\nInsert a boolean (? for help): ");
+    var value = initial; 
+    bool wasRead = ConsoleUtilities.Read(ref value);
+    Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
+}
+
+
+void TestReadLong(long initial = 22)
+{
+    Console.Write($"\nInsert a long number (? for help): ");
+    var value = initial; 
+    bool wasRead = ConsoleUtilities.Read(ref value);
     Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
 }
 
