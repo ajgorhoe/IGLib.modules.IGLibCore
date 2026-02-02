@@ -295,29 +295,29 @@ namespace IGLib.ConsoleUtils
         /// <summary>Reads a number of type double from a console and assigns it to a variable.
         /// User can input a non-integer to see current content, or insert an empty string to leave the old content.</summary>
         /// <param name="value">Variable to which the inserted value is assigned.</param>
-        /// <returns>True if a value has been provided by user, false if the old value is kept.</returns>
+        /// <returns>True if a value has been provided explicitly by the user, false if not (and the old value is kept).</returns>
         public static bool Read(ref double value)
         {
-            bool ret = false;
-            string? str = null;
+            bool valueProvided = false;
+            string? userInput = null;
             int i = 0;
             do
             {
                 ++i;
-                str = Console.ReadLine();
-                if (string.IsNullOrEmpty(str))
+                userInput = Console.ReadLine();
+                if (string.IsNullOrEmpty(userInput))
                 {
                     // Keep the old value and print it
                     Console.WriteLine("  = " + value.ToString());
                     return false;
                 }
-                ret = double.TryParse(str, out value);
-                if (ret)
+                valueProvided = double.TryParse(userInput, out value);
+                if (valueProvided)
                 {
                     // A valid value has been provided by user; return
-                    return ret;
+                    return valueProvided;
                 }
-                if (str == "?")
+                if (userInput == "?")
                 {
                     Console.WriteLine();
                     Console.WriteLine($"\nInsert a number of type {value.GetType().Name},");
@@ -326,7 +326,7 @@ namespace IGLib.ConsoleUtils
                     Console.WriteLine("  <Enter> to keep the old value.");
                     Console.WriteLine();
                 }
-                if (i > 1 && str != "?")
+                if (i > 1 && userInput != "?")
                     Console.WriteLine($"Insert a number of type {value.GetType().Name}, ? for help.");
                 Console.WriteLine("  Current value: " + value.ToString());
                 Console.Write(    "  New value:     ");
@@ -358,8 +358,8 @@ namespace IGLib.ConsoleUtils
                 //    }
                 //}
 
-            } while (!string.IsNullOrEmpty(str));
-            return ret;
+            } while (!string.IsNullOrEmpty(userInput));
+            return valueProvided;
         }  // Read(ref double)
 
 
