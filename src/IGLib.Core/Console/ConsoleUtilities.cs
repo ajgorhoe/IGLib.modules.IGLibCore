@@ -175,9 +175,9 @@ namespace IGLib.ConsoleUtils
                 if (userInput == "?")
                 {
                     Console.WriteLine($"\nInsert a number of type {value.GetType().Name},");
-                    Console.WriteLine("  ? for help,");
-                    Console.WriteLine("  non-numeric string to show current value,");
-                    Console.WriteLine("  <Enter> to keep the old value.\n");
+                    Console.WriteLine($"  ? for help,");
+                    Console.WriteLine($"  non-numeric string to show current value,");
+                    Console.WriteLine($"  <Enter> to keep the current value ({value}).\n");
                 }
                 else
                 {
@@ -185,34 +185,6 @@ namespace IGLib.ConsoleUtils
                 }
                 Console.WriteLine("  Current value: " + value.ToString());
                 Console.Write(    "  New value:     ");
-
-                //{
-                //    try
-                //    {
-                //        value = double.Parse(str);
-                //        ret = true;  // value has been changed
-                //        str = ""; // continue if successfully parsed
-                //    }
-                //    catch
-                //    {
-                //        if (str == "?")
-                //        {
-                //            Console.WriteLine();
-                //            Console.WriteLine("Insert a number (double precision),");
-                //            Console.WriteLine("  \"?\" for help,");
-                //            Console.WriteLine("  non-numeric string to show current value,");
-                //            Console.WriteLine("  <Enter> to keep the old value.");
-                //            Console.WriteLine();
-                //        }
-                //        // Inserted string is not a valid representation of the output type,
-                //        // print the old value and request a new one:
-                //        if (i > 1)
-                //            Console.WriteLine("Insert a number (double precision), \"?\" for help.");
-                //        Console.WriteLine("  Current value: " + value.ToString());
-                //        Console.Write("  New value:     ");
-                //    }
-                //}
-
             } while (!string.IsNullOrEmpty(userInput));
             return valueProvided;
         }  // Read(ref double)
