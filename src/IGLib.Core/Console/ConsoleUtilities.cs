@@ -283,7 +283,7 @@ namespace IGLib.ConsoleUtils
 
 
 
-        internal static bool TryParse<NumericType>(IConsole console, IFormatProvider formatProvider, out NumericType value)
+        internal static bool TryParse<NumericType>(IConsole console, out NumericType value, IFormatProvider? formatProvider = null)
             where NumericType : struct
         {
             //value = default;
@@ -366,7 +366,7 @@ namespace IGLib.ConsoleUtils
                     Console.WriteLine("    = " + value.ToString());
                     return false;
                 }
-                valueProvided = TryParse<NumericType>(console, Global.DefaultFormatProvider, out value);
+                valueProvided = TryParse<NumericType>(console, out value, formatProvider);
                 if (valueProvided)
                 {
                     // A valid value has been provided by user; return
