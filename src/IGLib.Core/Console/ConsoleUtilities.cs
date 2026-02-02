@@ -262,6 +262,16 @@ namespace IGLib.ConsoleUtils
                     value = false;
                     return true;
                 }
+                if (IsBooleanAnyIntegerAccepted)
+                {
+                    long intValue;
+                    bool isInteger = long.TryParse(userInput, NumberStyles.Integer, Global.DefaultFormatProvider, out intValue);
+                    if (isInteger)
+                    {
+                        value = (intValue != 0);
+                        return true;
+                    }
+                }
 
                 if (userInput == "?")
                 {
