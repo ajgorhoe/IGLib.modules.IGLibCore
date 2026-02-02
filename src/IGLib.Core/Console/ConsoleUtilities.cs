@@ -30,9 +30,62 @@ namespace IGLib.ConsoleUtils
 
         #region Constants
 
-        /// <summary>Default <see cref="IFormatProvider"/> for this class. This specifies e.g. number and boolean formats for
-        /// Parse(...) and TryParse(...) types of methods.</summary>
-        public static IFormatProvider DefaultFormatProvider { get; } = CultureInfo.InvariantCulture;
+        ///// <summary>Default <see cref="IFormatProvider"/> for this class. This specifies e.g. number and boolean formats for
+        ///// Parse(...) and TryParse(...) types of methods.</summary>
+        //public static IFormatProvider DefaultFormatProvider  => Global.DefaultFormatProvider;
+
+        public static string[] BooleanTrueStrings { get; internal set; } = ["true", "1", "yes", "y"];
+
+        public static string[] BooleanFalseStrings { get; internal set; } = ["false", "0", "no", "n"];
+
+        public static bool IsBooleanStringsCaseSensitive { get; internal set; } = false;
+
+        public static bool IsBooleanAnyIntegerAccepted { get; internal set; } = true;
+
+        public static bool IsTruePredefinedString(string? inputString)
+        {
+            if (string.IsNullOrEmpty(inputString))
+            {
+                return false;
+            }
+            foreach (string str in BooleanTrueStrings)
+            {
+                if (IsBooleanStringsCaseSensitive)
+                {
+                    if (inputString == str)
+                    { return true; }
+                } 
+                else
+                {
+                    if (str?.ToLower() == inputString?.ToLower())
+                    { return true; }
+                }
+            }
+            return false;
+        }
+
+        public static bool IsFalsePredefinedString(string? inputString)
+        {
+            if (string.IsNullOrEmpty(inputString))
+            {
+                return false;
+            }
+            foreach (string str in BooleanFalseStrings)
+            {
+                if (IsBooleanStringsCaseSensitive)
+                {
+                    if (inputString == str)
+                    { return true; }
+                } 
+                else
+                {
+                    if (str?.ToLower() == inputString?.ToLower())
+                    { return true; }
+                }
+            }
+            return false;
+        }
+
 
         #endregion Constants
 
@@ -199,6 +252,17 @@ namespace IGLib.ConsoleUtils
                     return valueProvided;
                 }
                 value = initialValue; // need to restore because TryParse modifies it
+                if (IsTruePredefinedString(userInput))
+                {
+                    value = true;
+                    return true;
+                }
+                if (IsFalsePredefinedString(userInput))
+                {
+                    value = false;
+                    return true;
+                }
+
                 if (userInput == "?")
                 {
                     Console.WriteLine($"\n  Insert a number of type {value.GetType().Name},");
