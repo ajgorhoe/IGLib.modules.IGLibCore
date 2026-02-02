@@ -21,7 +21,7 @@ void TestReadBool(bool initial = true)
 {
     Console.Write($"Insert a boolean (? for help): ");
     bool value = initial; bool wasRead = ConsoleUtilities.Read(ref value);
-    Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {initial}");
+    Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
 }
 
 
