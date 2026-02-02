@@ -150,24 +150,67 @@ namespace IGLib.ConsoleUtils
                             if (string.IsNullOrEmpty(str))
                                 throw;
                             str = str.ToLower();
-                            if (str == "0")
-                                value = false;
-                            else if (str == "1")
-                                value = true;
-                            else if (str == "false")
-                                value = false;
-                            else if (str == "true")
-                                value = true;
-                            else if (str == "no")
-                                value = false;
-                            else if (str == "yes")
-                                value = true;
-                            else if (str == "n")
-                                value = false;
-                            else if (str == "y")
-                                value = true;
-                            else throw;
-                            str = null;
+                            switch(str)
+                            {
+                                case "0":
+                                    value = false;
+                                    wasAssigned = true;
+                                    break;
+                                case "1":
+                                    value = true;
+                                    wasAssigned = true;
+                                    break;
+
+                                case "false":
+                                    value = false;
+                                    wasAssigned = true;
+                                    break;
+                                case "true":
+                                    value = true;
+                                    wasAssigned = true;
+                                    break;
+
+                                case "no":
+                                    value = false;
+                                    wasAssigned = true;
+                                    break;
+                                case "yes":
+                                    value = true;
+                                    wasAssigned = true;
+                                    break;
+
+                                case "n":
+                                    value = false;
+                                    wasAssigned = true;
+                                    break;
+                                case "y":
+                                    value = true;
+                                    wasAssigned = true;
+                                    break;
+                                default:
+                                    str = null;
+                                    throw;
+                            }
+                            
+                            //str = str.ToLower();
+                            //if (str == "0")
+                            //    value = false;
+                            //else if (str == "1")
+                            //    value = true;
+                            //else if (str == "false")
+                            //    value = false;
+                            //else if (str == "true")
+                            //    value = true;
+                            //else if (str == "no")
+                            //    value = false;
+                            //else if (str == "yes")
+                            //    value = true;
+                            //else if (str == "n")
+                            //    value = false;
+                            //else if (str == "y")
+                            //    value = true;
+                            //else throw;
+                            //str = null;
                         }
                     }
                     catch
