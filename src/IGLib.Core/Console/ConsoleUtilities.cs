@@ -134,106 +134,61 @@ namespace IGLib.ConsoleUtils
                 {
                     // Keep the old value and print it
                     Console.WriteLine("  = " + value.ToString());
+                    return false;
                 }
                 else
                 {
-                    try
+                    wasAssigned = bool.TryParse(str, out value);
+                    if (wasAssigned)
                     {
-                        try
-                        {
-                            value = bool.Parse(str);
-                            wasAssigned = true;  // value has been changed
-                            str = ""; // continue if successfully parsed
-                        }
-                        catch (Exception)
-                        {
-                            if (string.IsNullOrEmpty(str))
-                                throw;
-                            str = str.ToLower();
-                            switch(str)
-                            {
-                                case "0":
-                                    value = false;
-                                    wasAssigned = true;
-                                    break;
-                                case "1":
-                                    value = true;
-                                    wasAssigned = true;
-                                    break;
-
-                                case "false":
-                                    value = false;
-                                    wasAssigned = true;
-                                    break;
-                                case "true":
-                                    value = true;
-                                    wasAssigned = true;
-                                    break;
-
-                                case "no":
-                                    value = false;
-                                    wasAssigned = true;
-                                    break;
-                                case "yes":
-                                    value = true;
-                                    wasAssigned = true;
-                                    break;
-
-                                case "n":
-                                    value = false;
-                                    wasAssigned = true;
-                                    break;
-                                case "y":
-                                    value = true;
-                                    wasAssigned = true;
-                                    break;
-                                default:
-                                    str = null;
-                                    throw;
-                            }
-                            
-                            //str = str.ToLower();
-                            //if (str == "0")
-                            //    value = false;
-                            //else if (str == "1")
-                            //    value = true;
-                            //else if (str == "false")
-                            //    value = false;
-                            //else if (str == "true")
-                            //    value = true;
-                            //else if (str == "no")
-                            //    value = false;
-                            //else if (str == "yes")
-                            //    value = true;
-                            //else if (str == "n")
-                            //    value = false;
-                            //else if (str == "y")
-                            //    value = true;
-                            //else throw;
-                            //str = null;
-                        }
+                        return wasAssigned;
                     }
-                    catch
+                    switch (str)
                     {
-                        if (str == "?")
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine("Insert a boolean value,");
-                            Console.WriteLine("  \"?\" for help,");
-                            Console.WriteLine("  non-boolean string to show current value,");
-                            Console.WriteLine("  <Enter> to keep the old value.");
-                            Console.WriteLine("  Legal input: '0', '1', 'false', 'true', 'y', 'n', 'yes', 'no' (case insensitive).");
-                            Console.WriteLine();
-                        }
-                        // Inserted string is not a valid representation of the output type,
-                        // print the old value and request a new one:
-                        if (i > 1)
-                            Console.WriteLine("Insert a boolean, \"?\" for help.");
-                        Console.WriteLine("  Current value: " + value.ToString());
-                        Console.Write("  New value:     ");
+                        case "0":
+                            value = false;
+                            return true;
+                        case "1":
+                            value = true;
+                            return true;
+                        case "false":
+                            value = false;
+                            return true;
+                        case "true":
+                            value = true;
+                            return true;
+                        case "no":
+                            value = false;
+                            return true;
+                        case "yes":
+                            value = true;
+                            return true;
+
+                        case "n":
+                            value = false;
+                            return true;
+                        case "y":
+                            value = true;
+                            return true;
                     }
+                    if (str == "?")
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Insert a boolean value,");
+                        Console.WriteLine("  \"?\" for help,");
+                        Console.WriteLine("  non-boolean string to show current value,");
+                        Console.WriteLine("  <Enter> to keep the old value.");
+                        Console.WriteLine("  Legal input: '0', '1', 'false', 'true', 'y', 'n', 'yes', 'no' (case insensitive).");
+                        Console.WriteLine();
+                    }
+                    // Inserted string is not a valid representation of the output type,
+                    // print the old value and request a new one:
+                    if (i > 1)
+                        Console.WriteLine("Insert a boolean, \"?\" for help.");
+                    Console.WriteLine("  Current value: " + value.ToString());
+                    Console.Write("  New value:     ");
                 }
-            } while (!string.IsNullOrEmpty(str));
+            } while (!wasAssigned);
             return wasAssigned;
         }  // Read (ref bool)
 
