@@ -17,43 +17,39 @@ using static IGLib.ConsoleUtils.ConsoleUtilities;
 
 // Reading values from console:
 
-void TestReadBool(bool initial = true)
+void TestReadBool(bool value = true)
 {
-    Console.Write($"\nTest - reading a value of type {initial.GetType().Name}.\n");
-    Insert a number of type { initial.GetType().Name} (? for help, < Enter > to keep { initial}): ");
-    var value = initial;
-    bool wasRead = ConsoleUtilities.ReadOld(ref value);
-    Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
-}
-
-
-
-void TestReadLong(long initial = 0l)
-{
-    Console.Write($"\nTest - reading a number of type {initial.GetType().Name}.\n");
-    Insert a number of type { initial.GetType().Name} (? for help, < Enter > to keep { initial}): ");
-    var value = initial;
-    bool wasRead = ConsoleUtilities.ReadOld(ref value);
-    Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
-}
-
-
-void TestReadDoubleOld(double initial = 0.0)
-{
-    Console.Write($"\nTest - reading a number of type {initial.GetType().Name}.\n");
-    Insert a number of type {initial.GetType().Name} (? for help, <Enter> to keep {initial}): ");
-    var value = initial;
-    bool wasRead = ConsoleUtilities.ReadOld(ref value);
-    Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
-}
-
-void TestReadDouble(double initial = 0.0)
-{
-    Console.Write($"\nTest - reading a number of type {initial.GetType().Name}.\n");
-    Insert a number of type { initial.GetType().Name} (? for help, < Enter > to keep { initial}): ");
-    var value = initial;
+    Console.Write($"\nTest - reading a value of type {value.GetType().Name}.\n");
+    Console.Write($"Insert a number of type {value.GetType().Name} (? for help, < Enter > to keep {value}): ");
     bool wasRead = ConsoleUtilities.Read(ref value);
-    Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
+    Console.WriteLine($"Initial value: {value}; was read: {wasRead}; new value: {value}");
+}
+
+
+
+void TestReadLong(long value = 0l)
+{
+    Console.Write($"\nTest - reading a value of type {value.GetType().Name}.\n");
+    Console.Write($"Insert a number of type {value.GetType().Name} (? for help, < Enter > to keep {value}): ");
+    bool wasRead = ConsoleUtilities.Read(ref value);
+    Console.WriteLine($"Initial value: {value}; was read: {wasRead}; new value: {value}");
+}
+
+
+void TestReadDoubleOld(double value = 0.0)
+{
+    Console.Write($"\nTest - reading a value of type {value.GetType().Name}.\n");
+    Console.Write($"Insert a number of type {value.GetType().Name} (? for help, < Enter > to keep {value}): ");
+    bool wasRead = ConsoleUtilities.Read(ref value);
+    Console.WriteLine($"Initial value: {value}; was read: {wasRead}; new value: {value}");
+}
+
+void TestReadDouble(double value = 0.0)
+{
+    Console.Write($"\nTest - reading a value of type {value.GetType().Name}.\n");
+    Console.Write($"Insert a number of type {value.GetType().Name} (? for help, < Enter > to keep {value}): ");
+    bool wasRead = ConsoleUtilities.Read(ref value);
+    Console.WriteLine($"Initial value: {value}; was read: {wasRead}; new value: {value}");
 }
 
 
