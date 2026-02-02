@@ -219,7 +219,6 @@ namespace IGLib.ConsoleUtils
 
 
 
-
         /// <summary>Calls <see cref="Read(IConsole, ref double, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
         public static bool Read(ref double value, IFormatProvider? formatProvider = null)
         {
@@ -282,7 +281,83 @@ namespace IGLib.ConsoleUtils
 
 
 
+
+
+        internal static bool TryParse<NumericType>(IConsole console, IFormatProvider formatProvider, out NumericType value)
+            where NumericType : struct
+        {
+            //value = default;
+            //return false;
+            throw new NotImplementedException("Generic TryParse is not implemented.");
+        }
+
+        /// <summary>Calls <see cref="Read(IConsole, ref NumericType, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
+        internal static bool Read<NumericType>(ref NumericType value, IFormatProvider? formatProvider = null)
+            where NumericType : struct
+        {
+            return Read(GlobalConsole, ref value, formatProvider);
+        }
+
+        /// <summary>Reads a number of type double from console input in a user friendy way  and assigns it to the specified variable.
+        /// User can input a non-numerical string to see current value, or input an empty string to leave the old value,
+        /// or input a question mark (`?`) do display help.</summary>
+        /// <param name="console">Console object (abatracted) from which the value is read.</param>
+        /// <param name="value">Variable to which the read value is assigned.</param>
+        /// <param name="formatProvider">Format provider used when parsing the value from the string input via <paramref name="console"/>.
+        /// Default is <see cref="Global.DefaultFormatProvider"/>.</param>
+        /// <returns>True if a value has been provided explicitly by the user, false if not (and the old value is kept).</returns>
+        public static bool Read<NumericType>(IConsole console, ref NumericType value, IFormatProvider? formatProvider = null)
+            where NumericType : struct
+        {
+            if (formatProvider == null)
+            {
+                formatProvider = Global.DefaultFormatProvider;
+            }
+            NumericType initialValue = value;
+            bool valueProvided = false;
+            string? userInput = null;
+            int i = 0;
+            do
+            {
+                ++i;
+                userInput = Console.ReadLine();
+                if (string.IsNullOrEmpty(userInput))
+                {
+                    // Keep the old value and print it
+                    Console.WriteLine("    = " + value.ToString());
+                    return false;
+                }
+                valueProvided = TryParse<NumericType>(console, Global.DefaultFormatProvider, out value);
+                if (valueProvided)
+                {
+                    // A valid value has been provided by user; return
+                    return valueProvided;
+                }
+                value = initialValue; // need to restore because TryParse modifies the value
+                if (userInput == "?")
+                {
+                    Console.WriteLine($"\n  Insert a number of type {value.GetType().Name},");
+                    Console.WriteLine($"  ? for help,");
+                    Console.WriteLine($"  non-numeric string to show current value,");
+                    Console.WriteLine($"  <Enter> to keep the current value ({value}).\n");
+                }
+                else
+                {
+                    Console.WriteLine($"Insert a number of type {value.GetType().Name}, ? for help.");
+                }
+                Console.WriteLine("  Current value: " + value.ToString());
+                Console.Write(    "  New value:     ");
+            } while (!string.IsNullOrEmpty(userInput));
+            return valueProvided;
+        }
+
+
+
+
+
         #endregion ReadValues
+
+
 
 
 
