@@ -19,9 +19,10 @@ using static IGLib.ConsoleUtils.ConsoleUtilities;
 
 void TestReadBool(bool initial = true)
 {
-    Console.Write($"\nInsert a boolean (? for help): ");
-    var value = initial; 
-    bool wasRead = ConsoleUtilities.Read(ref value);
+    Console.Write($"\nTest - reading a value of type {initial.GetType().Name}.\n");
+    Insert a number of type { initial.GetType().Name} (? for help, < Enter > to keep { initial}): ");
+    var value = initial;
+    bool wasRead = ConsoleUtilities.ReadOld(ref value);
     Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
 }
 
@@ -29,17 +30,18 @@ void TestReadBool(bool initial = true)
 
 void TestReadLong(long initial = 0l)
 {
-    Console.Write($"\nTest - reading a value of type {initial.GetType().name}.\nInsert a {initial.GetType().name} number (? for help): ");
+    Console.Write($"\nTest - reading a number of type {initial.GetType().Name}.\n");
+    Insert a number of type { initial.GetType().Name} (? for help, < Enter > to keep { initial}): ");
     var value = initial;
-    bool wasRead = ConsoleUtilities.Read(ref value);
+    bool wasRead = ConsoleUtilities.ReadOld(ref value);
     Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
 }
 
 
 void TestReadDoubleOld(double initial = 0.0)
 {
-    Console.Write($"\nTest - reading a value of type {initial.GetType().name}.\nInsert a {
-        initial.GetType().name} number (? for help, <Enter> to keep {initial}): ");
+    Console.Write($"\nTest - reading a number of type {initial.GetType().Name}.\n");
+    Insert a number of type {initial.GetType().Name} (? for help, <Enter> to keep {initial}): ");
     var value = initial;
     bool wasRead = ConsoleUtilities.ReadOld(ref value);
     Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
@@ -47,7 +49,8 @@ void TestReadDoubleOld(double initial = 0.0)
 
 void TestReadDouble(double initial = 0.0)
 {
-    Console.Write($"\nTest - reading a value of type {initial.GetType().name}.\nInsert a {initial.GetType().name} number (? for help, <Enter> to keep {initial}): ");
+    Console.Write($"\nTest - reading a number of type {initial.GetType().Name}.\n");
+    Insert a number of type { initial.GetType().Name} (? for help, < Enter > to keep { initial}): ");
     var value = initial;
     bool wasRead = ConsoleUtilities.Read(ref value);
     Console.WriteLine($"Initial value: {initial}; was read: {wasRead}; new value: {value}");
