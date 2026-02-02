@@ -19,37 +19,37 @@ using static IGLib.ConsoleUtils.ConsoleUtilities;
 
 void TestReadBool(bool value = true)
 {
-    Console.Write($"\nTest - reading a value of type {value.GetType().Name}.\n");
+    Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
     Console.Write($"Insert a number of type {value.GetType().Name} (? for help, < Enter > to keep {value}): ");
     bool wasRead = ConsoleUtilities.Read(ref value);
-    Console.WriteLine($"Initial value: {value}; was read: {wasRead}; new value: {value}");
+    Console.WriteLine($"\nInitial value: {value}; was provided: {wasRead}; new value: {value}\n");
 }
 
 
 
 void TestReadLong(long value = 0l)
 {
-    Console.Write($"\nTest - reading a value of type {value.GetType().Name}.\n");
+    Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
     Console.Write($"Insert a number of type {value.GetType().Name} (? for help, < Enter > to keep {value}): ");
     bool wasRead = ConsoleUtilities.Read(ref value);
-    Console.WriteLine($"Initial value: {value}; was read: {wasRead}; new value: {value}");
+    Console.WriteLine($"\nInitial value: {value}; was provided: {wasRead}; new value: {value}\n");
 }
 
 
 void TestReadDoubleOld(double value = 0.0)
 {
-    Console.Write($"\nTest - reading a value of type {value.GetType().Name}.\n");
+    Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
     Console.Write($"Insert a number of type {value.GetType().Name} (? for help, < Enter > to keep {value}): ");
     bool wasRead = ConsoleUtilities.Read(ref value);
-    Console.WriteLine($"Initial value: {value}; was read: {wasRead}; new value: {value}");
+    Console.WriteLine($"\nInitial value: {value}; was provided: {wasRead}; new value: {value}\n");
 }
 
 void TestReadDouble(double value = 0.0)
 {
-    Console.Write($"\nTest - reading a value of type {value.GetType().Name}.\n");
+    Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
     Console.Write($"Insert a number of type {value.GetType().Name} (? for help, < Enter > to keep {value}): ");
     bool wasRead = ConsoleUtilities.Read(ref value);
-    Console.WriteLine($"Initial value: {value}; was read: {wasRead}; new value: {value}");
+    Console.WriteLine($"\nInitial value: {value}; was provided: {wasRead}; new value: {value}\n");
 }
 
 
