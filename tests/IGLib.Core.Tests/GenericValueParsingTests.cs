@@ -34,7 +34,7 @@ namespace IGLib.Tests
 
 
 
-        [Obsolete("Will probably not be needed any more");]
+        [Obsolete("Will probably not be needed any more")]
         protected void TryParse_OfBool_WorksCorrectly_AvoidGeneric(string parsedString, bool shouldBeParsed, bool expectedResult)
         {
             // Arrange:
@@ -166,6 +166,15 @@ namespace IGLib.Tests
             TryParse_WorksCorrectly_Base<bool>(parsedString, shouldBeParsed, expectedResult);
         }
 
+        // PARSING DOUBLE VALUES:
+
+        [Theory]
+        [InlineData("2", true, 2.0)]
+
+        protected void TryParse_OfDouble_WorksCorrectly(string? parsedString, bool shouldBeParsed, double expectedResult)
+        {
+            TryParse_WorksCorrectly_Base<double>(parsedString, shouldBeParsed, expectedResult);
+        }
 
 
     }
