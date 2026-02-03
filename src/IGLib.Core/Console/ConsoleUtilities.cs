@@ -294,7 +294,7 @@ namespace IGLib.ConsoleUtils
         /// a numeric value of type <typeparamref name="NumericType"/>), false if not.</returns>
         /// <exception cref="ArgumentException">When parsing is not implemented for the specified type.</exception>
         internal static bool TryParse<NumericType>(string str, out NumericType valueVariable, IFormatProvider? formatProvider = null)
-            where NumericType : struct
+            where NumericType : struct, IConvertible
         {
             //value = default;
             //return false;
@@ -350,7 +350,7 @@ namespace IGLib.ConsoleUtils
 
         /// <summary>Calls <see cref="Read(IConsole, ref NumericType, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
         internal static bool Read<NumericType>(ref NumericType value, IFormatProvider? formatProvider = null)
-            where NumericType : struct
+            where NumericType : struct, IConvertible
         {
             return Read(GlobalConsole, ref value, formatProvider);
         }
@@ -364,7 +364,7 @@ namespace IGLib.ConsoleUtils
         /// Default is <see cref="Global.DefaultFormatProvider"/>.</param>
         /// <returns>True if a value has been provided explicitly by the user, false if not (and the old value is kept).</returns>
         public static bool Read<NumericType>(IConsole console, ref NumericType value, IFormatProvider? formatProvider = null)
-            where NumericType : struct
+            where NumericType : struct, IConvertible
         {
             if (formatProvider == null)
             {
