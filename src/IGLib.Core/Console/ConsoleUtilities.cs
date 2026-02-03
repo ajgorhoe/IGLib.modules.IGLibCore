@@ -382,6 +382,29 @@ namespace IGLib.ConsoleUtils
                     {
                         Boolean temp;
                         bool result = Boolean.TryParse(str, out temp);
+                        if (!result)
+                        {
+                            if (IsTruePredefinedString(str))
+                            {
+                                temp = true;
+                                result = true;
+                            }
+                            else if (IsFalsePredefinedString(str))
+                            {
+                                temp = false;
+                                result = true;
+                            }
+                            else if (IsBooleanAnyIntegerAccepted)
+                            {
+                                long intValue;
+                                bool isInteger = long.TryParse(str, NumberStyles.Integer, formatProvider, out intValue);
+                                if (isInteger)
+                                {
+                                    temp = (intValue != 0);
+                                    result = true;
+                                }
+                            }
+                        }
                         valueVariable = (NumericType)(object)temp;
                         return result;
                     }
