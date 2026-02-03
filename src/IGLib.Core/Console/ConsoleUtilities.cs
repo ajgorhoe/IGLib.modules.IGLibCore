@@ -369,6 +369,22 @@ namespace IGLib.ConsoleUtils
                         return result;
                     }
 
+                    
+                 // Types char & bool:
+                 case TypeCode.Char:  // char
+                    {
+                        Char temp;
+                        bool result = Char.TryParse(str, out temp);
+                        valueVariable = (NumericType)(object)temp;
+                        return result;
+                    }
+                 case TypeCode.Boolean:  // bool
+                    {
+                        Boolean temp;
+                        bool result = Boolean.TryParse(str, out temp);
+                        valueVariable = (NumericType)(object)temp;
+                        return result;
+                    }
 
 
             }
