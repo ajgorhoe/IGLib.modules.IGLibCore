@@ -27,6 +27,7 @@ namespace IGLib
             {
                 return false;
             }
+            inputString = inputString!.Trim();
             foreach (string str in BooleanTrueStrings)
             {
                 if (IsBooleanStringsCaseSensitive)
@@ -49,6 +50,7 @@ namespace IGLib
             {
                 return false;
             }
+            inputString = inputString!.Trim();
             foreach (string str in BooleanFalseStrings)
             {
                 if (IsBooleanStringsCaseSensitive)
