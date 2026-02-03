@@ -172,13 +172,17 @@ namespace IGLib.Tests
         // PARSING DOUBLE VALUES:
 
         [Theory]
-        // Usual forms of double values:
+        // Usual decimal forms of inputing double values:
         [InlineData("2.2", true, 2.2)]
         [InlineData("0.005452", true, 0.005452)]
         [InlineData("-2.2", true, -2.2)]
         [InlineData("-0.005452", true, -0.005452)]
         [InlineData("-753987935.005452", true, -753987935.005452)]
 
+        //[InlineData("2.5e12", true, 2.5e12D)]
+        //[InlineData("2.5e-6", true, 2.5e-6D)]
+        //[InlineData("-2.5e12", true, -2.5e12)]
+        //[InlineData("-2.5e-6", true, -2.5e-5)]
 
 
 
