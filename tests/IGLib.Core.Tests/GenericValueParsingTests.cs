@@ -70,7 +70,7 @@ namespace IGLib.Tests
         [InlineData("  false ", true, false)]
         [InlineData("true  ", true, true)]
         [InlineData("  false", true, false)]
-        // Case doesn't matter with "true" / "false":
+        // case doesn't matter with "true" / "false":
         [InlineData("tRuE", true, true)]
         [InlineData("falSE", true, false)]
         [InlineData(" tRuE  ", true, true)]
@@ -84,6 +84,14 @@ namespace IGLib.Tests
         [InlineData("n", true, false)]
         [InlineData("1", true, true)]
         [InlineData("0", true, false)]
+        // trailing and leading spaces with predefined strings:
+        [InlineData("  yes", true, true)]
+        [InlineData("no  ", true, false)]
+        [InlineData("   yes  ", true, true)]
+        [InlineData("  no   ", true, false)]
+
+        // case with leading predefined strings:
+
         // Results from strings represention of integer values (non-zero, which map to True):
         [InlineData("2", true, true)]
         [InlineData("48943953", true, true)]
