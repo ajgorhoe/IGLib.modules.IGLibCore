@@ -302,6 +302,7 @@ namespace IGLib.ConsoleUtils
             switch (Type.GetTypeCode(valueType))
             {
 
+                // Integer types:
                 case TypeCode.Byte:  // byte
                     {
                         Byte temp;
@@ -371,8 +372,7 @@ namespace IGLib.ConsoleUtils
 
 
             }
-            throw new NotImplementedException($"Generic {nameof(ConsoleUtilities.TryParse)} is not implemented for type of the {
-                nameof(valueVariable)} parameter, {valueType.Name}.");
+            throw new NotImplementedException($"Generic {nameof(ConsoleUtilities.TryParse)} is not implemented for type of the {nameof(valueVariable)} parameter, {valueType.Name}.");
         }
 
         /// <summary>Calls <see cref="Read(IConsole, ref NumericType, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
