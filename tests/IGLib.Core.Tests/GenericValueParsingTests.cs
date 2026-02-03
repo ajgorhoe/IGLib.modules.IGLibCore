@@ -177,6 +177,7 @@ namespace IGLib.Tests
         [InlineData("0.005452", true, 0.005452)]
         [InlineData("-2.2", true, -2.2)]
         [InlineData("-0.005452", true, -0.005452)]
+        [InlineData("-753987935.005452", true, -753987935.005452)]
 
 
 
