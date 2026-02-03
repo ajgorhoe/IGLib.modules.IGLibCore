@@ -65,6 +65,11 @@ namespace IGLib.Tests
         // Basic results from bool.Parse:
         [InlineData("true", true, true)]
         [InlineData("false", true, false)]
+        // trailing and leading spaces are ignored:
+        [InlineData(" true  ", true, true)]
+        [InlineData("  false ", true, false)]
+        [InlineData("true  ", true, true)]
+        [InlineData("  false", true, false)]
         // results from predefined strings that can mean true or false:
         [InlineData("yes", true, true)]
         [InlineData("no", true, false)]
