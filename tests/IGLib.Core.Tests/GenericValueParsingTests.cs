@@ -186,8 +186,13 @@ namespace IGLib.Tests
         [InlineData("2.5e-6", true, 2.5e-6)]
         [InlineData("-2.5e12", true, -2.5e12)]
         [InlineData("-2.5e-6", true, -2.5e-6)]
+        // capitalized exponentisl symbol:
+        [InlineData("2E3", true, 2000)]
+        [InlineData("2.3E2", true, 230)]
+        [InlineData("2.5E-6", true, 2.5e-6)]
+        [InlineData("-2.5E-6", true, -2.5e-6)]
 
-
+        // Integer forms:
 
 
         [InlineData("2", true, 2.0)]
