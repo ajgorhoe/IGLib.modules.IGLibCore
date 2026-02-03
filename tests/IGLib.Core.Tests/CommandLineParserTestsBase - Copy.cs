@@ -23,6 +23,36 @@ namespace IGLib.Tests
     {
 
 
+        /// <summary>Base generic method for execution of tests for parsing values of diffeerent types from strings.</summary>
+        /// <typeparam name="ValueType">The type of the values that are parsed from strings in the current test using this method.</typeparam>
+        /// <param name="parsedString"></param>
+        /// <param name="shouldBeParsed"></param>
+        /// <param name="expectedResult"></param>
+        protected void TryParse_WorksCorrectly_Base<ValueType>(string parsedString, bool shouldBeParsed, ValueType expectedResult)
+            where ValueType : struct
+        {
+            // Arrange:
+            Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
+            Console.WriteLine($"  Parsing string:   '{parsedString}'");
+            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
+            if (shouldBeParsed)
+            {
+                Console.WriteLine($"  Expected result: {expectedResult}");
+            }
+            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
+            // Act:
+            ValueType parseResult;
+            bool wasParsed = TryParse<ValueType>(parsedString, out parseResult, Global.DefaultFormatProvider);
+            // Assert:
+            wasParsed.Should().Be(shouldBeParsed, because: $"whether the value can be parsed from input string should be: {shouldBeParsed}");
+            if (shouldBeParsed)
+            {
+                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
+            }
+        }
+
+
+
         /// <summary>This constructor, when called by the test framework, will bring in an object 
         /// of type <see cref="ITestOutputHelper"/>, which will be used to write on the tests' output,
         /// accessed through the base class's <see cref="Output"/> and <see cref="TestBase{TestClassType}.Console"/> properties.</summary>
@@ -77,30 +107,6 @@ namespace IGLib.Tests
             // Act:
             bool parseResult;
             bool wasParsed = TryParse<bool>(parsedString, out parseResult, Global.DefaultFormatProvider);
-            // Assert:
-            wasParsed.Should().Be(shouldBeParsed, because: $"whether the value can be parsed from input string should be: {shouldBeParsed}");
-            if (shouldBeParsed)
-            {
-                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
-            }
-        }
-
-
-        protected void TryParse_WorksCorrectly_Base<ValueType>(string parsedString, bool shouldBeParsed, ValueType expectedResult)
-            where ValueType : struct
-        {
-            // Arrange:
-            Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
-            Console.WriteLine($"  Parsing string:   '{parsedString}'");
-            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
-            if (shouldBeParsed)
-            {
-                Console.WriteLine($"  Expected result: {expectedResult}");
-            }
-            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
-            // Act:
-            ValueType parseResult;
-            bool wasParsed = TryParse<ValueType>(parsedString, out parseResult, Global.DefaultFormatProvider);
             // Assert:
             wasParsed.Should().Be(shouldBeParsed, because: $"whether the value can be parsed from input string should be: {shouldBeParsed}");
             if (shouldBeParsed)
