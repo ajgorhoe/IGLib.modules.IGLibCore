@@ -115,7 +115,12 @@ namespace IGLib.Tests
         [InlineData("-48943953", true, true)]
         [InlineData("9223372036854775807", true, true)]  // long.MaxValue works
         [InlineData("-9223372036854775808", true, true)]  // long.MinValue works
-        
+        // leading and trailing spaces are ignored with integer representations:
+        [InlineData("2  ", true, true)]
+        [InlineData("48943953  ", true, true)]
+        [InlineData("  -2  ", true, true)]         // negative long values also work
+        [InlineData("   -48943953", true, true)]
+
         // What is not working as integer representation parsable to bool:
         [InlineData("9223372036854775808", false, true)]  // long overflow - NOT SUPPORTED
         [InlineData("-9223372036854775809", false, true)]  // negative long overflow - NOT SUPPORTED
