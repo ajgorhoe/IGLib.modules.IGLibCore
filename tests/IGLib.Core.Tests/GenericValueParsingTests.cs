@@ -77,7 +77,8 @@ namespace IGLib.Tests
         [InlineData("  FAlse ", true, false)]
         [InlineData("trUe  ", true, true)]
         [InlineData("  faLSe", true, false)]
-        // results from predefined strings that can mean true or false:
+        
+        // Results from predefined strings that are also parsed to true or false:
         [InlineData("yes", true, true)]
         [InlineData("no", true, false)]
         [InlineData("y", true, true)]
@@ -85,16 +86,27 @@ namespace IGLib.Tests
         [InlineData("1", true, true)]
         [InlineData("0", true, false)]
         // trailing and leading spaces with predefined strings:
-        [InlineData("  Yes", true, true)]
-        [InlineData("NO  ", true, false)]
-        [InlineData("   yES  ", true, true)]
-        [InlineData("  nO   ", true, false)]
-
+        [InlineData("  yes", true, true)]
+        [InlineData("no  ", true, false)]
+        [InlineData("   yes  ", true, true)]
+        [InlineData("  no   ", true, false)]
+        [InlineData("  y", true, true)]
+        [InlineData("n  ", true, false)]
+        [InlineData("  y    ", true, true)]
+        [InlineData("    n  ", true, false)]
         // case with leading predefined strings:
         [InlineData("Yes", true, true)]
         [InlineData("No", true, false)]
         [InlineData("YES", true, true)]
         [InlineData("NO", true, false)]
+        [InlineData("  Yes", true, true)]
+        [InlineData("NO  ", true, false)]
+        [InlineData("   yES  ", true, true)]
+        [InlineData("  nO   ", true, false)]
+        [InlineData("  Y", true, true)]
+        [InlineData("N  ", true, false)]
+        [InlineData("  Y    ", true, true)]
+        [InlineData("    N  ", true, false)]
 
         // Results from strings represention of integer values (non-zero, which map to True):
         [InlineData("2", true, true)]
@@ -103,7 +115,8 @@ namespace IGLib.Tests
         [InlineData("-48943953", true, true)]
         [InlineData("9223372036854775807", true, true)]  // long.MaxValue works
         [InlineData("-9223372036854775808", true, true)]  // long.MinValue works
-        // what is not working as integer representation parsable to bool:
+        
+        // What is not working as integer representation parsable to bool:
         [InlineData("9223372036854775808", false, true)]  // long overflow - NOT SUPPORTED
         [InlineData("-9223372036854775809", false, true)]  // negative long overflow - NOT SUPPORTED
         [InlineData("a8f9", false, true)]  // hexadecimal representation without a prefix is NOT SUPORTED
