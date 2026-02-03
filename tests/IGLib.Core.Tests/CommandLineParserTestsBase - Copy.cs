@@ -45,14 +45,18 @@ namespace IGLib.Tests
         [InlineData("0", true, false)]
         // Results from strings represention of integer values (non-zero, which map to True):
         [InlineData("2", true, true)]
-        [InlineData("15", true, true)]
+        [InlineData("48943953", true, true)]
+        [InlineData("-2", true, true)]         // negative long values also work
+        [InlineData("-48943953", true, true)]
         [InlineData("9223372036854775807", true, true)]  // long.MaxValue works
+        [InlineData("-9223372036854775808", true, true)]  // long.MinValue works
         // what is not working as integer representation parsable to bool:
         [InlineData("9223372036854775808", false, true)]  // long overflow - NOT SUPPORTED
+        [InlineData("-9223372036854775809", false, true)]  // negative long overflow - NOT SUPPORTED
         [InlineData("a8f9", false, true)]  // hexadecimal representation without a prefix is NOT SUPORTED
         [InlineData("0xa8f9", false, true)]  // hexadecimal representation with 0x prefix is also NOT SUPORTED
         [InlineData("9,223,372", false, true)]  // numbers with thousand separators are NOT SUPPORTED
-
+        [InlineData("-9,223,372", false, true)]  // negative numbers with thousand separators are NOT SUPPORTED
         public void TryParse_Bool_WorksCorrectly(string parsedString, bool shouldBeParsed, bool expectedResult)
         {
             // Arrange:
