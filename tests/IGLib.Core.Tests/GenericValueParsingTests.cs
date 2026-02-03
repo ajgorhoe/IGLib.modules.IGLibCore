@@ -32,6 +32,34 @@ namespace IGLib.Tests
         }
 
 
+
+
+        [Obsolete("Will probably not be needed any more");]
+        protected void TryParse_OfBool_WorksCorrectly_AvoidGeneric(string parsedString, bool shouldBeParsed, bool expectedResult)
+        {
+            // Arrange:
+            Console.WriteLine($"Testing the generic TryParse method for type {expectedResult.GetType().Name}.");
+            Console.WriteLine($"  Parsing string:   '{parsedString}'");
+            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
+            if (shouldBeParsed)
+            {
+                Console.WriteLine($"  Expected result: {expectedResult}");
+            }
+            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
+            // Act:
+            bool parseResult;
+            bool wasParsed = TryParse<bool>(parsedString, out parseResult, Global.DefaultFormatProvider);
+            // Assert:
+            wasParsed.Should().Be(shouldBeParsed, because: $"whether the value can be parsed from input string should be: {shouldBeParsed}");
+            if (shouldBeParsed)
+            {
+                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
+            }
+        }
+
+
+
+
         /// <summary>Base generic method for execution of tests for parsing values of diffeerent types from strings.</summary>
         /// <typeparam name="ValueType">The type of the values that are parsed from strings in the current test using this method.</typeparam>
         /// <param name="parsedString"></param>
@@ -60,6 +88,8 @@ namespace IGLib.Tests
             }
         }
 
+
+        // PARING BOOLEAN VALUES:
 
         [Theory]
         // Basic results from bool.Parse:
@@ -134,29 +164,6 @@ namespace IGLib.Tests
         protected void TryParse_OfBool_WorksCorrectly(string? parsedString, bool shouldBeParsed, bool expectedResult)
         {
             TryParse_WorksCorrectly_Base<bool>(parsedString, shouldBeParsed, expectedResult);
-        }
-
-
-        protected void TryParse_OfBool_WorksCorrectly_AvoidGeneric(string parsedString, bool shouldBeParsed, bool expectedResult)
-        {
-            // Arrange:
-            Console.WriteLine($"Testing the generic TryParse method for type {expectedResult.GetType().Name}.");
-            Console.WriteLine($"  Parsing string:   '{parsedString}'");
-            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
-            if (shouldBeParsed)
-            {
-                Console.WriteLine($"  Expected result: {expectedResult}");
-            }
-            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
-            // Act:
-            bool parseResult;
-            bool wasParsed = TryParse<bool>(parsedString, out parseResult, Global.DefaultFormatProvider);
-            // Assert:
-            wasParsed.Should().Be(shouldBeParsed, because: $"whether the value can be parsed from input string should be: {shouldBeParsed}");
-            if (shouldBeParsed)
-            {
-                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
-            }
         }
 
 
