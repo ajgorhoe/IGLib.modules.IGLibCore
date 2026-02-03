@@ -91,6 +91,10 @@ namespace IGLib.Tests
         [InlineData("  no   ", true, false)]
 
         // case with leading predefined strings:
+        [InlineData("Yes", true, true)]
+        [InlineData("No", true, false)]
+        [InlineData("YES", true, true)]
+        [InlineData("NO", true, false)]
 
         // Results from strings represention of integer values (non-zero, which map to True):
         [InlineData("2", true, true)]
