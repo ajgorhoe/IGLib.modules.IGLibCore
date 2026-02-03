@@ -57,7 +57,13 @@ namespace IGLib.Tests
         [InlineData("0xa8f9", false, true)]  // hexadecimal representation with 0x prefix is also NOT SUPORTED
         [InlineData("9,223,372", false, true)]  // numbers with thousand separators are NOT SUPPORTED
         [InlineData("-9,223,372", false, true)]  // negative numbers with thousand separators are NOT SUPPORTED
-        protected void TryParse_OfBool_WorksCorrectly_1(string parsedString, bool shouldBeParsed, bool expectedResult)
+        protected void TryParse_OfBool_WorksCorrectly(string parsedString, bool shouldBeParsed, bool expectedResult)
+        {
+            TryParse_WorksCorrectly_Base<bool>(parsedString, shouldBeParsed, expectedResult);
+        }
+
+
+        protected void TryParse_OfBool_WorksCorrectly_AvoidGeneric(string parsedString, bool shouldBeParsed, bool expectedResult)
         {
             // Arrange:
             Console.WriteLine($"Testing the generic TryParse method for type {expectedResult.GetType().Name}.");
@@ -78,12 +84,6 @@ namespace IGLib.Tests
                 parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
             }
         }
-
-        protected void TryParse_OfBool_WorksCorrectly_2(string parsedString, bool shouldBeParsed, bool expectedResult)
-        {
-            TryParse_WorksCorrectly_Base<bool>(parsedString, shouldBeParsed, expectedResult);
-        }
-
 
 
         protected void TryParse_WorksCorrectly_Base<ValueType>(string parsedString, bool shouldBeParsed, ValueType expectedResult)
