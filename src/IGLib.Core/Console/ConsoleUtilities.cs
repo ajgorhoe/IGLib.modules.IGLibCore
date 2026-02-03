@@ -324,24 +324,38 @@ namespace IGLib.ConsoleUtils
                         valueVariable = (NumericType)(object)temp;
                         return result;
                     }
-                case TypeCode.UInt16:
+                case TypeCode.UInt16:  // ushort
                     {
                         UInt16 temp;
                         bool result = UInt16.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
                         valueVariable = (NumericType)(object)temp;
                         return result;
                     }
-                case TypeCode.Int32:
+                case TypeCode.Int32:  // int
                     {
                         Int32 temp;
                         bool result = Int32.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
                         valueVariable = (NumericType)(object)temp;
                         return result;
                     }
-                case TypeCode.UInt32:
+                case TypeCode.UInt32:  // uint
                     {
                         UInt32 temp;
                         bool result = UInt32.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
+                        return result;
+                    }
+                case TypeCode.Int64:  // long
+                    {
+                        Int64 temp;
+                        bool result = Int64.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
+                        return result;
+                    }
+                case TypeCode.UInt64:  // uint64
+                    {
+                        UInt64 temp;
+                        bool result = UInt64.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
                         valueVariable = (NumericType)(object)temp;
                         return result;
                     }
@@ -432,6 +446,24 @@ namespace IGLib.ConsoleUtils
                         valueVariable = (NumericType)(object)temp;
                         return result;
                     }
+#if NET8_0_OR_GREATER
+                // Pointer types:
+                case Type t when t == typeof(IntPtr):
+                {
+                    IntPtr temp;
+                    bool result = IntPtr.TryParse(str, formatProvider, out temp);
+                    valueVariable = (NumericType)(object)temp;
+                    return result;
+                }
+                case Type t when t == typeof(UIntPtr):
+                {
+                        UIntPtr temp;
+                    bool result = UIntPtr.TryParse(str, formatProvider, out temp);
+                    valueVariable = (NumericType)(object)temp;
+                    return result;
+                }
+#endif
+
                 default:
                     break;
             }
