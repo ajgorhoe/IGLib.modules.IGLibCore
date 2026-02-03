@@ -282,8 +282,18 @@ namespace IGLib.ConsoleUtils
 
 
 
-
-        internal static bool TryParse<NumericType>(IConsole console, out NumericType value, IFormatProvider? formatProvider = null)
+        /// <summary>Parses the specified string by the appropriate TryParse method (such as <see cref="double.TryParse(string?, NumberStyles, IFormatProvider?, out double))
+        /// selected accoding to the actual type of the <typeparamref name="NumericType"/> type parameter. If successful, 
+        /// it returns true and assigns the parsed numerical value to <paramref name="valueVariable"/>. 
+        /// <para>Warning: Even if parsing is not successful, <paramref name="valueVariable"/> may change.</para></summary>
+        /// <typeparam name="NumericType">Type of the value that is parsed from string and assigned to <paramref name="valueVariable"/>.</typeparam>
+        /// <param name="str">String that is parsed.</param>
+        /// <param name="valueVariable">Referene (variable) that the parsed value is assigned to.</param>
+        /// <param name="formatProvider">The <see cref="IFormatProvider"/> used for parsing.</param>
+        /// <returns>True if parsing was successful (i.e., the provided <paramref name="str"/> actually corresponds to
+        /// a numeric value of type <typeparamref name="NumericType"/>), false if not.</returns>
+        /// <exception cref="ArgumentException">When parsing is not implemented for the specified type.</exception>
+        internal static bool TryParse<NumericType>(string str, out NumericType valueVariable, IFormatProvider? formatProvider = null)
             where NumericType : struct
         {
             //value = default;
@@ -291,43 +301,51 @@ namespace IGLib.ConsoleUtils
             Type valueType = typeof(NumericType);
             switch (Type.GetTypeCode(valueType))
             {
-                case TypeCode.Byte:
+                case TypeCode.Byte:  // byte
                     {
-                        byte temp;
-                        bool result = byte.TryParse(console.ReadLine(), NumberStyles.Integer, formatProvider, out temp);
-                        value = (NumericType)(object)temp;
+                        Byte temp;
+                        bool result = Byte.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
                         return result;
                     }
-                case TypeCode.SByte:
+                case TypeCode.SByte:  // sbyte
                     {
-                        sbyte temp;
-                        bool result = sbyte.TryParse(console.ReadLine(), NumberStyles.Integer, formatProvider, out temp);
-                        value = (NumericType)(object)temp;
+                        SByte temp;
+                        bool result = SByte.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
                         return result;
                     }
-                case TypeCode.Int16:
+                case TypeCode.Int16:  // short
                     {
-                        short temp;
-                        bool result = short.TryParse(console.ReadLine(), NumberStyles.Integer, formatProvider, out temp);
-                        value = (NumericType)(object)temp;
+                        Int16 temp;
+                        bool result = Int16.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
                         return result;
                     }
                 case TypeCode.UInt16:
                     {
-                        ushort temp;
-                        bool result = ushort.TryParse(console.ReadLine(), NumberStyles.Integer, formatProvider, out temp);
-                        value = (NumericType)(object)temp;
+                        UInt16 temp;
+                        bool result = UInt16.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
                         return result;
                     }
                 case TypeCode.Int32:
                     {
-                        int temp;
-                        bool result = int.TryParse(console.ReadLine(), NumberStyles.Integer, formatProvider, out temp);
-                        value = (NumericType)(object)temp;
+                        Int32 temp;
+                        bool result = Int32.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
+                        return result;
+                    }
+                case TypeCode.UInt32:
+                    {
+                        UInt32 temp;
+                        bool result = UInt32.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
                         return result;
                     }
             }
-            throw new ArgumentException($"Generic TryParse is not implemented for type of the {nameof(value)} parameter, {valueType.Name}.", nameof(value));
+            throw new NotImplementedException($"Generic {nameof(ConsoleUtilities.TryParse)} is not implemented for type of the {
+                nameof(valueVariable)} parameter, {valueType.Name}.");
         }
 
         /// <summary>Calls <see cref="Read(IConsole, ref NumericType, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
@@ -366,7 +384,7 @@ namespace IGLib.ConsoleUtils
                     Console.WriteLine("    = " + value.ToString());
                     return false;
                 }
-                valueProvided = TryParse<NumericType>(console, out value, formatProvider);
+                valueProvided = TryParse<NumericType>(userInput, out value, formatProvider);
                 if (valueProvided)
                 {
                     // A valid value has been provided by user; return
