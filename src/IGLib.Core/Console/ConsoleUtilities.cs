@@ -293,8 +293,8 @@ namespace IGLib.ConsoleUtils
         /// <returns>True if parsing was successful (i.e., the provided <paramref name="str"/> actually corresponds to
         /// a numeric value of type <typeparamref name="NumericType"/>), false if not.</returns>
         /// <exception cref="ArgumentException">When parsing is not implemented for the specified type.</exception>
-        internal static bool TryParse<NumericType>(string str, out NumericType valueVariable, IFormatProvider? formatProvider = null)
-            where NumericType : struct, IConvertible
+        public static bool TryParse<NumericType>(string str, out NumericType valueVariable, IFormatProvider? formatProvider = null)
+            where NumericType : struct  // , IConvertible
         {
             //value = default;
             //return false;
@@ -390,11 +390,27 @@ namespace IGLib.ConsoleUtils
                 case TypeCode.DateTime:
                     {
                         DateTime temp;
-                        bool result = DateTime.TryParse(str, out temp);
+                        bool result = DateTime.TryParse(str, formatProvider,
+                            DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal, out temp);
                         valueVariable = (NumericType)(object)temp;
                         return result;
                     }
-
+                default:
+                    break;
+            }
+            switch(valueType)
+            {
+                // Date and time types:
+                case Type t when t == typeof(DateTimeOffset):
+                    {
+                        DateTimeOffset temp;
+                        bool result = DateTimeOffset.TryParse(str, formatProvider,
+                            DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal, out temp);
+                        valueVariable = (NumericType)(object)temp;
+                        return result;
+                    }
+                default:
+                    break;
             }
             throw new NotImplementedException($"Generic {nameof(ConsoleUtilities.TryParse)} is not implemented for type of the {nameof(valueVariable)} parameter, {valueType.Name}.");
         }
@@ -415,7 +431,7 @@ namespace IGLib.ConsoleUtils
         /// Default is <see cref="Global.DefaultFormatProvider"/>.</param>
         /// <returns>True if a value has been provided explicitly by the user, false if not (and the old value is kept).</returns>
         public static bool Read<NumericType>(IConsole console, ref NumericType value, IFormatProvider? formatProvider = null)
-            where NumericType : struct, IConvertible
+            where NumericType : struct  // , IConvertible
         {
             if (formatProvider == null)
             {
