@@ -163,14 +163,14 @@ namespace IGLib
                 case TypeCode.Single:  // float
                     {
                         Single temp;
-                        bool result = Single.TryParse(str, NumberStyles.Number, formatProvider, out temp);
+                        bool result = Single.TryParse(str, NumberStyles.Float, formatProvider, out temp);
                         valueVariable = (BasicType)(object)temp;
                         return result;
                     }
                 case TypeCode.Decimal:  // decimal
                     {
                         Decimal temp;
-                        bool result = Decimal.TryParse(str, NumberStyles.Number, formatProvider, out temp);
+                        bool result = Decimal.TryParse(str, NumberStyles.Float, formatProvider, out temp);
                         valueVariable = (BasicType)(object)temp;
                         return result;
                     }
