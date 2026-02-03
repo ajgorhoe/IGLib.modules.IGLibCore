@@ -43,6 +43,11 @@ namespace IGLib.Tests
         [InlineData("n", true, false)]
         [InlineData("1", true, true)]
         [InlineData("0", true, false)]
+        // results from strings representinf integer values (non-zero, which map to True):
+        [InlineData("2", true, true)]
+        [InlineData("15", true, true)]
+        [InlineData("a8f9", false, true)]  // hexadecimal representation not supported
+        [InlineData("0xa8f9", true, true)]  // hexadecimal representation not supported
         
         public void TryParse_Bool_WorksCorrectly(string parsedString, bool shouldBeParsed, bool expectedResult)
         {
