@@ -301,6 +301,7 @@ namespace IGLib.ConsoleUtils
             Type valueType = typeof(NumericType);
             switch (Type.GetTypeCode(valueType))
             {
+
                 case TypeCode.Byte:  // byte
                     {
                         Byte temp;
@@ -343,6 +344,32 @@ namespace IGLib.ConsoleUtils
                         valueVariable = (NumericType)(object)temp;
                         return result;
                     }
+
+                // Floating point types:
+                case TypeCode.Double:  // double
+                    {
+                        Double temp;
+                        bool result = Double.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
+                        return result;
+                    }
+                case TypeCode.Single:  // float
+                    {
+                        Single temp;
+                        bool result = Single.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
+                        return result;
+                    }
+                case TypeCode.Decimal:  // decimal
+                    {
+                        Decimal temp;
+                        bool result = Decimal.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        valueVariable = (NumericType)(object)temp;
+                        return result;
+                    }
+
+
+
             }
             throw new NotImplementedException($"Generic {nameof(ConsoleUtilities.TryParse)} is not implemented for type of the {
                 nameof(valueVariable)} parameter, {valueType.Name}.");
