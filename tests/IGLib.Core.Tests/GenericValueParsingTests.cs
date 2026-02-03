@@ -85,10 +85,10 @@ namespace IGLib.Tests
         [InlineData("1", true, true)]
         [InlineData("0", true, false)]
         // trailing and leading spaces with predefined strings:
-        [InlineData("  yes", true, true)]
-        [InlineData("no  ", true, false)]
-        [InlineData("   yes  ", true, true)]
-        [InlineData("  no   ", true, false)]
+        [InlineData("  Yes", true, true)]
+        [InlineData("NO  ", true, false)]
+        [InlineData("   yES  ", true, true)]
+        [InlineData("  nO   ", true, false)]
 
         // case with leading predefined strings:
         [InlineData("Yes", true, true)]
