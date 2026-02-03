@@ -158,6 +158,8 @@ namespace IGLib.Tests
         [InlineData("0xa8f9", false, true)]  // hexadecimal representation with 0x prefix is also NOT SUPORTED
         [InlineData("9,223,372", false, true)]  // numbers with thousand separators are NOT SUPPORTED
         [InlineData("-9,223,372", false, true)]  // negative numbers with thousand separators are NOT SUPPORTED
+        // digit separators are not allowed:
+        [InlineData("48_943_953", false, true)]
         // null and empty string:
         [InlineData(null, false, true)]
         [InlineData("", false, true)]
