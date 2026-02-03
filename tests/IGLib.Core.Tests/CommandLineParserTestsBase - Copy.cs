@@ -33,7 +33,7 @@ namespace IGLib.Tests
         }
 
         [Theory]
-        // basic results from bool.Parse:
+        // Basic results from bool.Parse:
         [InlineData("true", true, true)]
         [InlineData("false", true, false)]
         // results from predefined strings that can mean true or false:
@@ -43,12 +43,16 @@ namespace IGLib.Tests
         [InlineData("n", true, false)]
         [InlineData("1", true, true)]
         [InlineData("0", true, false)]
-        // results from strings representinf integer values (non-zero, which map to True):
+        // Results from strings represention of integer values (non-zero, which map to True):
         [InlineData("2", true, true)]
         [InlineData("15", true, true)]
-        [InlineData("a8f9", false, true)]  // hexadecimal representation without a prefix is not supported
-        [InlineData("0xa8f9", false, true)]  // hexadecimal representation with 0x prefix is also not supported
-        
+        [InlineData("9223372036854775807", true, true)]  // long.MaxValue works
+        // what is not working as integer representation parsable to bool:
+        [InlineData("9223372036854775808", false, true)]  // long overflow - NOT SUPPORTED
+        [InlineData("a8f9", false, true)]  // hexadecimal representation without a prefix is NOT SUPORTED
+        [InlineData("0xa8f9", false, true)]  // hexadecimal representation with 0x prefix is also NOT SUPORTED
+        [InlineData("9,223,372", false, true)]  // numbers with thousand separators are NOT SUPPORTED
+
         public void TryParse_Bool_WorksCorrectly(string parsedString, bool shouldBeParsed, bool expectedResult)
         {
             // Arrange:
