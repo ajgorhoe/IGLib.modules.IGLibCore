@@ -169,6 +169,16 @@ namespace IGLib.Tests
         // PARSING DOUBLE VALUES:
 
         [Theory]
+        // Usual forms of double values:
+        [InlineData("2.2", true, 2.2)]
+        [InlineData("0.005452", true, 0.005452)]
+        [InlineData("-2.2", true, -2.2)]
+        [InlineData("-0.005452", true, -0.005452)]
+
+
+
+
+
         [InlineData("2", true, 2.0)]
 
         protected void TryParse_OfDouble_WorksCorrectly(string? parsedString, bool shouldBeParsed, double expectedResult)
