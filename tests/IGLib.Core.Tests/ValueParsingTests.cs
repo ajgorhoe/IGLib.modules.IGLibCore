@@ -454,9 +454,21 @@ namespace IGLib.Tests
         }
 
 
+        protected void TryParseGeneric_OfDateTimeOffset_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, DateTime expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+        {
+            if (expectedResult == default)
+            {
+                expectedResult = DateTime.Now; // dummy value
+            }
+            TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
+        }
+
+
         //[Theory]
         //[InlineData("2024-01-01T12:00:00+02:00", true)]
         //[InlineData("invalid", false)]
+        [Obsolete("Teplace this with the above methods (reduced and full)")]
         protected void TryParseGeneric_OfDateTimeOffset_1_WorksCorrectly(string? parsedString, bool expectedSuccess)
         {
             DateTimeOffset dummy = default;
