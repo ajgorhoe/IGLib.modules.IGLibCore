@@ -223,14 +223,18 @@ namespace IGLib.Tests
         [InlineData("-24_521", false, -24_521)]
 
         // CultureInfo specified (default is gefined by Global.DefaultFormatProvider and should be CultureInfo.InvariantCulture):
-        // decimal separator (`.` vs. `,`):
+        // decimal separator (`.` vs. `,` in some cultures):
         [InlineData("3.14", true, 3.14, "en-US")]
         [InlineData("3,14", true, 3.14, "de-DE")]
         [InlineData("3,14", true, 314, "en-US")]  // WARNING: , is thousands separator in this culture, risk of errors
         [InlineData("3.14", true, 314, "de-DE")]  // WARNING: . is thousands separator in this culture, risk of errors
         [InlineData("3.14", true, 3.14, "Invariant")]
-
-
+        // thousands separator (`,` vs. `.` in some cultures):
+        [InlineData("1,234.5", true, 1234.5, "en-US")]
+        [InlineData("1.234,5", true, 1234.5, "de-DE")]
+        // thousand separator after decimal separator creates parsing error:
+        [InlineData("1,234.5", false, 0.0, "de-DE")]  // WARNING: . is thousands separator in this culture, risk of errors
+        [InlineData("1.234,5", false, 0.0, "en-US")]  // WARNING: , is thousands separator in this culture, risk of errors
         protected void TryParseGeneric_OfDouble_WorksCorrectly(string? parsedString, 
             bool expectedSuccess, double expectedResult, string? cultureKey = null)
         {
