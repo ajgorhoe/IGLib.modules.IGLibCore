@@ -51,7 +51,6 @@ namespace IGLib.Tests
             {
                 Console.WriteLine($"  Expected result: {expectedResult}");
             }
-            Console.WriteLine($"  Should be parsed: {expectedSuccess}");
             // Act:
             ValueType parseResult;
             bool wasParsed = TryParse<ValueType>(parsedString!, out parseResult, Global.DefaultFormatProvider);
@@ -62,7 +61,7 @@ namespace IGLib.Tests
             }
             else
             {
-                Console.WriteLine($"Value could NOT be parsed from input string.");
+                Console.WriteLine($"Value COULD NOT BE PARSED from input string.");
             }
                 // Assert:
                 wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
@@ -200,10 +199,10 @@ namespace IGLib.Tests
         [InlineData("2_825_934_521", false, 2_825_934_521)]
         [InlineData("-24_521", false, -24_521)]
         // overflows:
-        //[InlineData("2.7976931348623157E+308", false, 0)]
-        //[InlineData("1.7976931348623157E+309", false, 0)]
-        //[InlineData("-2.7976931348623157E+308", false, 0)]
-        //[InlineData("-1.7976931348623157E+309", false, 0)]
+        [InlineData("2.7976931348623157E+308", false, 0)]
+        [InlineData("1.7976931348623157E+309", false, 0)]
+        [InlineData("-2.7976931348623157E+308", false, 0)]
+        [InlineData("-1.7976931348623157E+309", false, 0)]
         protected void TryParse_OfDouble_WorksCorrectly(string? parsedString, bool expectedSuccess, double expectedResult)
         {
             TryParse_WorksCorrectly_Base<double>(parsedString, expectedSuccess, expectedResult);
