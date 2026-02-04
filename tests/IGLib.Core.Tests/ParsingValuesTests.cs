@@ -13,20 +13,20 @@ using System.Linq;
 
 using IGLib;
 
-using static IGLib.BaseUtils;
+using static IGLib.ParsingUtils;
 
 namespace IGLib.Tests
 {
 
-    /// <summary>Tests the generic TryParse method (implemented in <see cref="BaseUtils.TryParse{BasicType}(string, out BasicType, IFormatProvider?)"/>).</summary>
-    public class TryParseGenericTests : TestBase<TryParseGenericTests>
+    /// <summary>Tests the generic TryParse method (implemented in <see cref="ParsingUtils.TryParse{BasicType}(string, out BasicType, IFormatProvider?)"/>).</summary>
+    public class ParsingValuesTests : TestBase<ParsingValuesTests>
     {
 
         /// <summary>This constructor, when called by the test framework, will bring in an object 
         /// of type <see cref="ITestOutputHelper"/>, which will be used to write on the tests' output,
         /// accessed through the base class's <see cref="Output"/> and <see cref="TestBase{TestClassType}.Console"/> properties.</summary>
         /// <param name=""></param>
-        public TryParseGenericTests(ITestOutputHelper output) : base(output)  // calls base class's constructor
+        public ParsingValuesTests(ITestOutputHelper output) : base(output)  // calls base class's constructor
         {
             // Remark: the base constructor will assign output parameter to the Output and Console property.
         }

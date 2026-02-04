@@ -7,7 +7,7 @@ using System.Text;
 namespace IGLib
 {
 
-    public static class BaseUtils
+    public static class ParsingUtils
     {
 
         #region Constants

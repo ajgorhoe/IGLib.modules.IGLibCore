@@ -6,7 +6,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Globalization;
 
-using static IGLib.BaseUtils;
+using static IGLib.ParsingUtils;
 
 
 using static IGLib.ConsoleUtils.SystemConsole;
