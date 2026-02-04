@@ -421,7 +421,7 @@ namespace IGLib.Tests
         // PARSING DATETIME:
 
         [Theory]
-        [InlineData("2024-01-01", true, "Invariant", true)]
+        [InlineData("2024-01-15", true, "Invariant", true)]
         [InlineData("2024-01-01T12:30:00Z", true, "Invariant", true)]
         [InlineData("not-a-date", false, "Invariant", true)]
         protected void TryParseGeneric_OfDateTime_Reduced_WorksCorrectly(string? parsedString,
@@ -432,8 +432,8 @@ namespace IGLib.Tests
         }
 
         [Theory]
-        [InlineData("2024-01-01", true, default, "Invariant", true)]
-        [InlineData("not-a-date-offset", false, default)]
+        [InlineData("2024-01-05", true, default, "Invariant", true)]
+        [InlineData("not-a-date", false, default)]
         protected void TryParseGeneric_OfDateTime_WorksCorrectly(string? parsedString,
             bool expectedSuccess, DateTime expectedResult, string? cultureKey = null, bool skipValueVerification = false)
         {
@@ -448,8 +448,9 @@ namespace IGLib.Tests
         // PARSING DATETIMEOFFSET:
 
         [Theory]
-        [InlineData("2024-01-01T12:00:00+02:00", true, "Invariant", true)]
-        [InlineData("invalid", false)]
+        [InlineData("2024-01-01", true, "Invariant", true)]
+        [InlineData("2024-01-15T12:00:00+02:00", true, "Invariant", true)]
+        [InlineData("not-a-date-offset", false)]
         protected void TryParseGeneric_OfDateTimeOffset_Reduced_WorksCorrectly(string? parsedString,
             bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = false)
         {
