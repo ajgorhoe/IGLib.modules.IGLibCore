@@ -62,6 +62,7 @@ namespace IGLib.Tests
             Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
             Console.WriteLine($"  Parsing string:   '{parsedString}'");
             Console.WriteLine($"  Should be parsed: {expectedSuccess}");
+            Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
             if (expectedSuccess)
             {
                 Console.WriteLine($"  Expected result: {expectedResult}");
@@ -223,11 +224,11 @@ namespace IGLib.Tests
 
         // CultureInfo specified (default is gefined by Global.DefaultFormatProvider and should be CultureInfo.InvariantCulture):
         // decimal separator (`.` vs. `,`):
-        //[InlineData("3.14", true, 3.14, "en-US")]
-        //[InlineData("3,14", true, 3.14, "de-DE")]
-        //[InlineData("3,14", false, 0.0, "en-US")]
-        //[InlineData("3.14", false, 0.0, "de-DE")]
-        //[InlineData("3.14", true, 3.14, "Invariant")]
+        [InlineData("3.14", true, 3.14, "en-US")]
+        [InlineData("3,14", true, 3.14, "de-DE")]
+        [InlineData("3,14", true, 314, "en-US")]  // WARNING: , is thousands separator in this culture, risk of errors
+        [InlineData("3.14", true, 314, "de-DE")]  // WARNING: . is thousands separator in this culture, risk of errors
+        [InlineData("3.14", true, 3.14, "Invariant")]
 
 
         protected void TryParseGeneric_OfDouble_WorksCorrectly(string? parsedString, 
