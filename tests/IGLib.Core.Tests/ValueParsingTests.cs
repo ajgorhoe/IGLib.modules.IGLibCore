@@ -252,11 +252,12 @@ namespace IGLib.Tests
         [InlineData("1e3", true, 1000f)]
         [InlineData("-1e-3", true, -0.001f)]
         [InlineData("3_14", false, 0f)]
-        protected void TryParseGeneric_OfSingle_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfFloat_WorksCorrectly(string? parsedString, 
             bool expectedSuccess, float expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<float>(parsedString, expectedSuccess, expectedResult, cultureKey);
         }
+
 
         // PARSING DECIMAL:
 
@@ -278,14 +279,30 @@ namespace IGLib.Tests
 
         [InlineData("1,234.56", true, 1234.56, "en-US")]
         [InlineData("1.234,56", true, 1234.56, "de-DE")]
-        protected void TryParseGeneric_OfDecimal_WithCulture_WorksCorrectly(
-            string? parsedString, bool expectedSuccess, decimal expectedResult, string? cultureKey = null)
+        protected void TryParseGeneric_OfDecimal_WithCulture_WorksCorrectly(string? parsedString, 
+            bool expectedSuccess, decimal expectedResult, string? cultureKey = null)
         {
             // var x = 79228162514264337593543950335m;
             TryParse_WorksCorrectly_Base(parsedString, expectedSuccess, expectedResult, cultureKey);
         }
 
 
+        // PARSING BYTE:
+
+        [Theory]
+        [InlineData("0", true, (byte)0)]
+        [InlineData("255", true, (byte)255)]
+        [InlineData(" 128 ", true, (byte)128)]
+        [InlineData("-1", false, (byte)0)]          // underflow
+        [InlineData("256", false, (byte)0)]         // overflow
+        [InlineData("1,000", false, (byte)0)]       // thousands not allowed for byte
+        [InlineData("1_0", false, (byte)0)]
+        [InlineData(null, false, (byte)0)]
+        [InlineData("", false, (byte)0)]
+        protected void TryParseGeneric_OfByte_WorksCorrectly(string? parsedString, bool expectedSuccess, byte expectedResult, string? cultureKey = null)
+        {
+            TryParse_WorksCorrectly_Base<byte>(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
 
 
 
