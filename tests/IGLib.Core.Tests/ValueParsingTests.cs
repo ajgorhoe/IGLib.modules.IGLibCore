@@ -299,13 +299,27 @@ namespace IGLib.Tests
         [InlineData("1_0", false, (byte)0)]
         [InlineData(null, false, (byte)0)]
         [InlineData("", false, (byte)0)]
-        protected void TryParseGeneric_OfByte_WorksCorrectly(string? parsedString, bool expectedSuccess, byte expectedResult, string? cultureKey = null)
+        protected void TryParseGeneric_OfByte_WorksCorrectly(string? parsedString, 
+            bool expectedSuccess, byte expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<byte>(parsedString, expectedSuccess, expectedResult, cultureKey);
         }
 
 
+        // PARSING SBYTE:
 
+        [Theory]
+        [InlineData("-128", true, (sbyte)-128)]
+        [InlineData("127", true, (sbyte)127)]
+        [InlineData(" -5 ", true, (sbyte)-5)]
+        [InlineData("-129", false, (sbyte)0)]
+        [InlineData("128", false, (sbyte)0)]
+        [InlineData("1,000", false, (sbyte)0)]
+        protected void TryParseGeneric_OfSByte_WorksCorrectly(string? parsedString, 
+            bool expectedSuccess, sbyte expectedResult, string? cultureKey = null)
+        {
+            TryParse_WorksCorrectly_Base<sbyte>(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
 
 
 
