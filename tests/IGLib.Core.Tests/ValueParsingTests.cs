@@ -244,6 +244,20 @@ namespace IGLib.Tests
             TryParse_WorksCorrectly_Base<double>(parsedString, expectedSuccess, expectedResult, cultureKey);
         }
 
+
+        // PARSING FLOAT:
+
+        [Theory]
+        [InlineData("3.14", true, 3.14f)]
+        [InlineData("1e3", true, 1000f)]
+        [InlineData("-1e-3", true, -0.001f)]
+        [InlineData("3_14", false, 0f)]
+        protected void TryParseGeneric_OfSingle_WorksCorrectly(string? parsedString, 
+            bool expectedSuccess, float expectedResult, string? cultureKey = null)
+        {
+            TryParse_WorksCorrectly_Base<float>(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
+
         // PARSING DECIMAL:
 
         [Theory]
