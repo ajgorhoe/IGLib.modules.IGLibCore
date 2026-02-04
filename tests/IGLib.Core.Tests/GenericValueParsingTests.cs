@@ -32,7 +32,8 @@ namespace IGLib.Tests
         }
 
 
-        //#region GenericTryParseTests
+        #region GenericTryParseTests
+
 
         /// <summary>Base method for execution of generic tests for parsing values of diffeerent types from strings.</summary>
         /// <typeparam name="ValueType">The type of the values that are parsed from strings in the current test using this method.</typeparam>
@@ -72,8 +73,9 @@ namespace IGLib.Tests
         }
 
 
-        // PARING BOOLEAN VALUES:
+        // PARING BOOLEAN:
 
+        /// <summary>See <see cref="TryParse_WorksCorrectly_Base{ValueType}(string?, bool, ValueType)"/></summary>
         [Theory]
         // Basic results from bool.Parse:
         [InlineData("true", true, true)]
@@ -152,8 +154,10 @@ namespace IGLib.Tests
             TryParse_WorksCorrectly_Base<bool>(parsedString, expectedSuccess, expectedResult);
         }
 
-        // PARSING DOUBLE VALUES:
 
+        // PARSING DOUBLE:
+
+        /// <summary>See <see cref="TryParse_WorksCorrectly_Base{ValueType}(string?, bool, ValueType)"/></summary>
         [Theory]
         // Usual decimal forms of inputing double values:
         [InlineData("0.005452", true, 0.005452)]
@@ -200,12 +204,25 @@ namespace IGLib.Tests
         //[InlineData("1.7976931348623157E+309", false, 0)]
         //[InlineData("-2.7976931348623157E+308", false, 0)]
         //[InlineData("-1.7976931348623157E+309", false, 0)]
-
-
         protected void TryParse_OfDouble_WorksCorrectly(string? parsedString, bool expectedSuccess, double expectedResult)
         {
             TryParse_WorksCorrectly_Base<double>(parsedString, expectedSuccess, expectedResult);
         }
+
+
+        #endregion GenericTryParseTests
+
+
+
+        #region Specific TryParseTests
+
+        // TODO: Tests for specific methods should be added here when these methods are implemented.
+
+
+
+        #endregion Specific TryParseTests
+
+
 
 
     }
