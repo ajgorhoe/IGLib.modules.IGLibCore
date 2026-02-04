@@ -335,6 +335,17 @@ namespace IGLib.Tests
         }
 
 
+        // PARSING USHORT:
+
+        [Theory]
+        [InlineData("65,535", true, (ushort)65535)]
+        [InlineData("-1", false, (ushort)0)]
+        protected void TryParseGeneric_OfUInt16_WorksCorrectly(string? parsedString, 
+            bool expectedSuccess, ushort expectedResult, string? cultureKey = null)
+        {
+            TryParse_WorksCorrectly_Base<ushort>(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
+
 
 
 
