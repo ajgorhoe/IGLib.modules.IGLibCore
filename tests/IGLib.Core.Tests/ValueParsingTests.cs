@@ -384,28 +384,39 @@ namespace IGLib.Tests
         }
 
 
+        // PARSING ULONG:
 
-
-
-
-
-
-            #endregion GenericTryParseTests
-
-
-
-            #region Specific TryParseTests
-
-            // TODO: Tests for specific methods should be added here when these methods are implemented.
-
-
-
-            #endregion Specific TryParseTests
-
-
-
-
+        [Theory]
+        [InlineData("18,446,744,073,709,551,615", true, ulong.MaxValue)]
+        [InlineData("-1", false, 0ul)]
+        protected void TryParseGeneric_OfUInt64_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, ulong expectedResult, string? cultureKey = null)
+        {
+            TryParse_WorksCorrectly_Base<ulong>(parsedString, expectedSuccess, expectedResult, cultureKey);
         }
+
+
+
+
+
+
+
+        #endregion GenericTryParseTests
+
+
+
+        #region Specific TryParseTests
+
+        // TODO: Tests for specific methods should be added here when these methods are implemented.
+
+
+
+        #endregion Specific TryParseTests
+
+
+
+
+    }
 
     }
 
