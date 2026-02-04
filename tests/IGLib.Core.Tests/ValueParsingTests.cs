@@ -446,6 +446,9 @@ namespace IGLib.Tests
 
         // PARSING DATETIMEOFFSET:
 
+        [Theory]
+        [InlineData("2024-01-01T12:00:00+02:00", true, "Invariant", true)]
+        [InlineData("invalid", false)]
         protected void TryParseGeneric_OfDateTimeOffset_Reduced_WorksCorrectly(string? parsedString,
             bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = false)
         {
