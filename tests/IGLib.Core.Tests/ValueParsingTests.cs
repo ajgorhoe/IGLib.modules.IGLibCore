@@ -372,6 +372,16 @@ namespace IGLib.Tests
         }
 
 
+        // PARSING LONG:
+
+        [Theory]
+        [InlineData("9,223,372,036,854,775,807", true, long.MaxValue)]
+        [InlineData("-9,223,372,036,854,775,808", true, long.MinValue)]
+        protected void TryParseGeneric_OfInt64_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, long expectedResult, string? cultureKey = null)
+        {
+            TryParse_WorksCorrectly_Base<long>(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
 
 
 
@@ -380,22 +390,22 @@ namespace IGLib.Tests
 
 
 
-        #endregion GenericTryParseTests
+            #endregion GenericTryParseTests
 
 
 
-        #region Specific TryParseTests
+            #region Specific TryParseTests
 
-        // TODO: Tests for specific methods should be added here when these methods are implemented.
-
-
-
-        #endregion Specific TryParseTests
+            // TODO: Tests for specific methods should be added here when these methods are implemented.
 
 
 
+            #endregion Specific TryParseTests
+
+
+
+
+        }
 
     }
-
-}
 
