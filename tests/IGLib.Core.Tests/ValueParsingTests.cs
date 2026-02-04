@@ -31,14 +31,16 @@ namespace IGLib.Tests
         }
 
 
-        public static IFormatProvider GetFormatProvider(string cultureKey)
+        IFormatProvider GetFormatProvider(string? cultureKey)
         {
-            return cultureKey.ToLower() switch
+            return cultureKey switch
             {
+                null => CultureInfo.InvariantCulture,
+                "" => CultureInfo.InvariantCulture,
                 "Invariant" => CultureInfo.InvariantCulture,
                 "Current" => CultureInfo.CurrentCulture,
                 "CurrentUI" => CultureInfo.CurrentUICulture,
-                _ => new CultureInfo(cultureKey)
+                _ => new CultureInfo(cultureKey!)
             };
         }
 
@@ -51,10 +53,12 @@ namespace IGLib.Tests
         /// <param name="parsedString">String from which a number or other simple type is parsed.</param>
         /// <param name="expectedSuccess">Whether parsing should succeed with the specified input string <paramref name="parsedString"/>.</param>
         /// <param name="expectedResult">The expected result (has no meaning when <paramref name="expectedSuccess"/> is false).</param>
-        protected void TryParse_WorksCorrectly_Base<ValueType>(string? parsedString, bool expectedSuccess, ValueType expectedResult)
+        protected void TryParse_WorksCorrectly_Base<ValueType>(string? parsedString, 
+            bool expectedSuccess, ValueType expectedResult, string? cultureKey)
             where ValueType : struct
         {
             // Arrange:
+            IFormatProvider formatProvider = GetFormatProvider(cultureKey);
             Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
             Console.WriteLine($"  Parsing string:   '{parsedString}'");
             Console.WriteLine($"  Should be parsed: {expectedSuccess}");
@@ -64,7 +68,7 @@ namespace IGLib.Tests
             }
             // Act:
             ValueType parseResult;
-            bool wasParsed = TryParse<ValueType>(parsedString!, out parseResult, Global.DefaultFormatProvider);
+            bool wasParsed = TryParse<ValueType>(parsedString!, out parseResult, formatProvider);
             if (wasParsed)
             {
                 Console.WriteLine($"Value was successfully parsed from input string.");
@@ -159,9 +163,10 @@ namespace IGLib.Tests
         // null and empty string:
         [InlineData(null, false, true)]
         [InlineData("", false, true)]
-        protected void TryParseGeneric_OfBool_WorksCorrectly(string? parsedString, bool expectedSuccess, bool expectedResult)
+        protected void TryParseGeneric_OfBool_WorksCorrectly(string? parsedString, 
+            bool expectedSuccess, bool expectedResult, string? cultureKey = null)
         {
-            TryParse_WorksCorrectly_Base<bool>(parsedString, expectedSuccess, expectedResult);
+            TryParse_WorksCorrectly_Base<bool>(parsedString, expectedSuccess, expectedResult, cultureKey);
         }
 
 
@@ -215,9 +220,20 @@ namespace IGLib.Tests
         // digit separators are not supported:
         [InlineData("2_825_934_521", false, 2_825_934_521)]
         [InlineData("-24_521", false, -24_521)]
-        protected void TryParseGeneric_OfDouble_WorksCorrectly(string? parsedString, bool expectedSuccess, double expectedResult)
+
+        // CultureInfo specified (default is gefined by Global.DefaultFormatProvider and should be CultureInfo.InvariantCulture):
+        // decimal separator (`.` vs. `,`):
+        //[InlineData("3.14", true, 3.14, "en-US")]
+        //[InlineData("3,14", true, 3.14, "de-DE")]
+        //[InlineData("3,14", false, 0.0, "en-US")]
+        //[InlineData("3.14", false, 0.0, "de-DE")]
+        //[InlineData("3.14", true, 3.14, "Invariant")]
+
+
+        protected void TryParseGeneric_OfDouble_WorksCorrectly(string? parsedString, 
+            bool expectedSuccess, double expectedResult, string? cultureKey = null)
         {
-            TryParse_WorksCorrectly_Base<double>(parsedString, expectedSuccess, expectedResult);
+            TryParse_WorksCorrectly_Base<double>(parsedString, expectedSuccess, expectedResult, cultureKey);
         }
 
 
