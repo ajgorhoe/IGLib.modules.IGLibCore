@@ -1,18 +1,17 @@
 ﻿
 // #nullable disable
 
-using Xunit;
 using FluentAssertions;
-using Xunit.Abstractions;
+using IGLib;
+using IGLib.Commands.Tests;
+using IGLib.Tests.Base;
 using System;
 using System.Collections.Generic;
-using IGLib.Tests.Base;
-using IGLib.Commands.Tests;
-using System.Text;
+using System.Globalization;
 using System.Linq;
-
-using IGLib;
-
+using System.Text;
+using Xunit;
+using Xunit.Abstractions;
 using static IGLib.ParsingUtils;
 
 namespace IGLib.Tests
@@ -29,6 +28,18 @@ namespace IGLib.Tests
         public ParsingValuesTests(ITestOutputHelper output) : base(output)  // calls base class's constructor
         {
             // Remark: the base constructor will assign output parameter to the Output and Console property.
+        }
+
+
+        public static IFormatProvider GetFormatProvider(string cultureKey)
+        {
+            return cultureKey.ToLower() switch
+            {
+                "Invariant" => CultureInfo.InvariantCulture,
+                "Current" => CultureInfo.CurrentCulture,
+                "CurrentUI" => CultureInfo.CurrentUICulture,
+                _ => new CultureInfo(cultureKey)
+            };
         }
 
 
