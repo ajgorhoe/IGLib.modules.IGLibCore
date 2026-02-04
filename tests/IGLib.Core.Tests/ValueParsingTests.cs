@@ -38,8 +38,8 @@ namespace IGLib.Tests
         /// <summary>Base method for execution of generic tests for parsing values of diffeerent types from strings.</summary>
         /// <typeparam name="ValueType">The type of the values that are parsed from strings in the current test using this method.</typeparam>
         /// <param name="parsedString">String from which a number or other simple type is parsed.</param>
-        /// <param name="expectedSuccess"></param>
-        /// <param name="expectedResult"></param>
+        /// <param name="expectedSuccess">Whether parsing should succeed with the specified input string <paramref name="parsedString"/>.</param>
+        /// <param name="expectedResult">The expected result (has no meaning when <paramref name="expectedSuccess"/> is false).</param>
         protected void TryParse_WorksCorrectly_Base<ValueType>(string? parsedString, bool expectedSuccess, ValueType expectedResult)
             where ValueType : struct
         {
