@@ -420,7 +420,16 @@ namespace IGLib.Tests
 
         // PARSING DATETIME:
 
-
+        [Theory]
+        [InlineData("2024-01-01", true, "Invariant", true)]
+        [InlineData("2024-01-01T12:30:00Z", true, "Invariant", true)]
+        [InlineData("not-a-date", false, "Invariant", true)]
+        protected void TryParseGeneric_OfDateTime_Reduced_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = false)
+        {
+            DateTime expectedResult = DateTime.Now; // dummy value
+            TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
+        }
 
         [Theory]
         [InlineData("2024-01-01", true, default, "Invariant", true)]
@@ -436,18 +445,6 @@ namespace IGLib.Tests
 
 
 
-
-
-        [Theory]
-        [InlineData("2024-01-01", true, "Invariant", true)]
-        [InlineData("2024-01-01T12:30:00Z", true, "Invariant", true)]
-        [InlineData("not-a-date", false, "Invariant", true)]
-        protected void TryParseGeneric_OfDateTime_Reduced_WorksCorrectly(string? parsedString,
-            bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = false)
-        {
-            DateTime expectedResult = DateTime.Now; // dummy value
-            TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
-        }
 
 
 
