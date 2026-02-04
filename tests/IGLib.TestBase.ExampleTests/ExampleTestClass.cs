@@ -8,6 +8,7 @@ using IGLib.Types.Extensions;
 using LearnCs.Lib;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -182,8 +183,8 @@ namespace IGLib.Tests.Base
         // TheoryData<T1, T2, T3, ...>, which provides strongly typed sets:
 
         /// <summary>Public static property of type <see cref="TheoryData{object, bool}"/> that defines
-        /// parameter sets for tests.</summary>
-        public static TheoryData<object, bool> Data_IsOfNumericType => new()
+        /// strongly typed parameter sets for tests.</summary>
+        public static TheoryData<object, bool> Data_IsOfNumericType_Typed => new()
         {
             { new DateTime(2024, 1, 1), false },
             { (decimal) 999.99m, true},
@@ -192,12 +193,27 @@ namespace IGLib.Tests.Base
             { (ushort?) 158, true }
         };
 
-        /// <summary>Exampl test that gets its parameter sets via public static property of type
-        /// TheoryData<object, bool> (strongly typed).</summary>
+        /// <summary>Public static property of type <see cref="IEnumerable{object[]}"/> that defines non-tped
+        /// parameter sets for tests.</summary>
+        public static IEnumerable<object[]> Data_IsOfNumericType_Untyped =>
+            new[]
+            {
+                 new object[] { new DateTime(2024, 1, 1), false },
+                 new object[] { (decimal) 999.99m, true},
+                 new object[] { (decimal) -5.34m, true },
+                 new object[] { (System.IO.FileAccess) System.IO.FileAccess.Read, false },
+                 new object[] { (ushort?) 158, true }
+                //new object[] { "3.14", CultureInfo.InvariantCulture, true, 3.14 },
+                //new object[] { "3,14", new CultureInfo("de-DE"), true, 3.14 },
+            };
+
+        /// <summary>Example test that gets its parameter sets via public static property of type
+        /// TheoryData<object, bool> (strongly typed) property.</summary>
         /// <param name="o"></param>
-        /// <param name="shouldBeNumeric"></param>
+        /// <param name="shouldBeNumeric"></param> 
         [Theory]
-        [MemberData(nameof(Data_IsOfNumericType))]
+        [MemberData(nameof(Data_IsOfNumericType_Typed))]
+        [MemberData(nameof(Data_IsOfNumericType_Untyped))]
         protected void IsOfNumericType_WorksCorrectly(object o, bool shouldBeNumeric)
         {
             Console.WriteLine("Checking whether the specified object is of numeric type.");

@@ -2,11 +2,14 @@
 
 	<PropertyGroup>
 		<!--
-		This project should normally be build for all relevant platforms: the newest stable
-		.NET 8 or later; legacy .NET Framework 4.8; Don't use .NET Standard (not runnable).
-		<TargetFrameworks>net10.0;net8.0;net48</TargetFrameworks>
+		This project should normally be build for all relevant platforms: at least the newest stable
+		.NET (10 or later); legacy .NET Framework 4.8; Don't use .NET Standard (not runnable).
+		Full set of targets:
+		<TargetFrameworks>ne10.0;net8.0;net48</TargetFrameworks>
+		Minimal set of targets:
+		<TargetFrameworks>ne10.0;net48</TargetFrameworks>
 		-->
-		<TargetFrameworks>net8.0;net48</TargetFrameworks>
+		<TargetFrameworks>net10.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
