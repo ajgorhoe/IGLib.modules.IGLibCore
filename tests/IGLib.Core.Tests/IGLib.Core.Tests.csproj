@@ -8,11 +8,12 @@
 	
 	<PropertyGroup>
 		<!--
-		This project should normally be build for all relevant platforms: the newest stable
-		.NET 8 or later; legacy .NET Framework 4.8; Don't use .NET Standard (not a runnable platform).
+		This project should normally be build for at least the newest stable .NET 8 or later
+		and for legacy .NET Framework 4.8; Don't use .NET Standard (not a runnable platform).
+		Current full set of targets:
 		<TargetFrameworks>net10.0;net8.0;net48</TargetFrameworks>
 		-->
-		<TargetFrameworks>net10.0;net8.0;net48</TargetFrameworks>
+		<TargetFrameworks>net10.0;net48</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
@@ -58,7 +59,8 @@
 		To prevent this reference to appear in NuGet package of this project:
 		  PrivateAssets="All"
 		ReferenceOutputAssembly="false" PrivateAssets="All"   -->
-		<ProjectReference Include="..\..\src\0InitModules\InitModulesCore\InitModulesCore.csproj" ReferenceOutputAssembly="false" PrivateAssets="All" />
+		<ProjectReference Include="..\..\src\0InitModules\InitModulesCore\InitModulesCore.csproj" 
+				ReferenceOutputAssembly="false" PrivateAssets="All" />
 	</ItemGroup>
 	
 	<ItemGroup>
