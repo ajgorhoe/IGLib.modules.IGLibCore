@@ -347,6 +347,18 @@ namespace IGLib.Tests
         }
 
 
+        // PARSING INT:
+
+        [Theory]
+        [InlineData("2,147,483,647", true, int.MaxValue)]
+        [InlineData("-2,147,483,648", true, int.MinValue)]
+        [InlineData("2,147,483,648", false, 0)]
+        protected void TryParseGeneric_OfInt32_WorksCorrectly(string? parsedString, 
+            bool expectedSuccess, int expectedResult, string? cultureKey = null)
+        {
+            TryParse_WorksCorrectly_Base<int>(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
+
 
 
 
