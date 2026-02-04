@@ -156,7 +156,7 @@ namespace IGLib
                 case TypeCode.Double:  // double
                     {
                         Double temp;
-                        bool result = Double.TryParse(str, NumberStyles.Float, formatProvider, out temp);
+                        bool result = Double.TryParse(str, NumberStyles.Float | NumberStyles.AllowThousands, formatProvider, out temp);
                         valueVariable = (BasicType)(object)temp;
                         return result;
                     }
