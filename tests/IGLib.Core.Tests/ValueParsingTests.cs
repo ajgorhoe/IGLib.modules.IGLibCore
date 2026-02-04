@@ -31,7 +31,7 @@ namespace IGLib.Tests
         }
 
 
-        IFormatProvider GetFormatProvider(string? cultureKey)
+        IFormatProvider GetFormatProvider(string? cultureKey = null)
         {
             return cultureKey switch
             {
@@ -53,6 +53,9 @@ namespace IGLib.Tests
         /// <param name="parsedString">String from which a number or other simple type is parsed.</param>
         /// <param name="expectedSuccess">Whether parsing should succeed with the specified input string <paramref name="parsedString"/>.</param>
         /// <param name="expectedResult">The expected result (has no meaning when <paramref name="expectedSuccess"/> is false).</param>
+        /// <param name="cultureKey">Optional key specifying the culture to be used for parsing. Default is null, which maps ro
+        /// <see cref="CultureInfo.InvariantCulture"/>. The <see cref="GetFormatProvider(string?)"/> method is used to map
+        /// the key to <see cref="CultureInfo"/> and thus <see cref="IFormatProvider"/>.</param>
         protected void TryParse_WorksCorrectly_Base<ValueType>(string? parsedString, 
             bool expectedSuccess, ValueType expectedResult, string? cultureKey)
             where ValueType : struct
@@ -240,6 +243,50 @@ namespace IGLib.Tests
         {
             TryParse_WorksCorrectly_Base<double>(parsedString, expectedSuccess, expectedResult, cultureKey);
         }
+
+        // PARSING DECIMAL:
+
+        [Theory]
+
+        // Ovrflow:
+        [InlineData("1e28", true, 1e28, null)]
+        [InlineData("1e29", false, 0.0, null)] // decimal overflow
+        //[InlineData("79228162514264337593543950335", true, decimal.MaxValue)]
+        //[InlineData("-79228162514264337593543950335", true, decimal.MinValue)]
+        [InlineData("1e100", false, 0)] // exponent overflow for decimal
+
+        // Things that do not work:
+        [InlineData("1_234.56", false, 0.0, null)] // digit separators are not supported
+        
+        // Cultre specified:
+        [InlineData("1234.56", true, 1234.56, "en-US")]
+        [InlineData("1234,56", true, 1234.56, "de-DE")]
+
+        [InlineData("1,234.56", true, 1234.56, "en-US")]
+        [InlineData("1.234,56", true, 1234.56, "de-DE")]
+        protected void TryParseGeneric_OfDecimal_WithCulture_WorksCorrectly(
+            string? parsedString, bool expectedSuccess, decimal expectedResult, string? cultureKey = null)
+        {
+            // var x = 79228162514264337593543950335m;
+            TryParse_WorksCorrectly_Base(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         #endregion GenericTryParseTests
