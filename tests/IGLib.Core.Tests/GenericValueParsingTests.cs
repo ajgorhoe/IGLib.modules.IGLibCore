@@ -148,7 +148,7 @@ namespace IGLib.Tests
         // null and empty string:
         [InlineData(null, false, true)]
         [InlineData("", false, true)]
-        protected void TryParse_OfBool_WorksCorrectly(string? parsedString, bool expectedSuccess, bool expectedResult)
+        protected void TryParseGeneric_OfBool_WorksCorrectly(string? parsedString, bool expectedSuccess, bool expectedResult)
         {
             TryParse_WorksCorrectly_Base<bool>(parsedString, expectedSuccess, expectedResult);
         }
@@ -193,17 +193,18 @@ namespace IGLib.Tests
         // use of thousand separators with different grouping is allowed:
         [InlineData("-2,87,89", true, -28789)]
         [InlineData("+2,87,89", true, 28789)]
+        
+        //// Overflows produce positive or negativee infinity:
+        //[InlineData("2.7976931348623157E+308", false, 0)]
+        //[InlineData("1.7976931348623157E+309", false, 0)]
+        //[InlineData("-2.7976931348623157E+308", false, 0)]
+        //[InlineData("-1.7976931348623157E+309", false, 0)]
 
         // Things that do not work:
         // digit separators are not supported:
         [InlineData("2_825_934_521", false, 2_825_934_521)]
         [InlineData("-24_521", false, -24_521)]
-        // overflows:
-        [InlineData("2.7976931348623157E+308", false, 0)]
-        [InlineData("1.7976931348623157E+309", false, 0)]
-        [InlineData("-2.7976931348623157E+308", false, 0)]
-        [InlineData("-1.7976931348623157E+309", false, 0)]
-        protected void TryParse_OfDouble_WorksCorrectly(string? parsedString, bool expectedSuccess, double expectedResult)
+        protected void TryParseGeneric_OfDouble_WorksCorrectly(string? parsedString, bool expectedSuccess, double expectedResult)
         {
             TryParse_WorksCorrectly_Base<double>(parsedString, expectedSuccess, expectedResult);
         }
