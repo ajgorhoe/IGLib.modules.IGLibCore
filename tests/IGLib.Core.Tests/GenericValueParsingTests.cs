@@ -195,6 +195,9 @@ namespace IGLib.Tests
         // Integer forms:
         [InlineData("24", true, 24)]
         [InlineData("-5385", true, -5385)]
+        // thousands separators (commas):
+        [InlineData("2,347", true, 2347)]
+        [InlineData("-53,858,917", true, -53858917)]
 
         // Things that do not work:
         // digit separators are not supported:
