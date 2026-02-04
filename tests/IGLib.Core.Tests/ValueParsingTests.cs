@@ -56,8 +56,10 @@ namespace IGLib.Tests
         /// <param name="cultureKey">Optional key specifying the culture to be used for parsing. Default is null, which maps ro
         /// <see cref="CultureInfo.InvariantCulture"/>. The <see cref="GetFormatProvider(string?)"/> method is used to map
         /// the key to <see cref="CultureInfo"/> and thus <see cref="IFormatProvider"/>.</param>
-        protected void TryParse_WorksCorrectly_Base<ValueType>(string? parsedString, 
-            bool expectedSuccess, ValueType expectedResult, string? cultureKey)
+        /// <param name="skipValueVerification">Whether verification of parsed value is skipped even when <paramref name="expectedSuccess"/> 
+        /// is true.</param>
+        protected void TryParse_WorksCorrectly_Base<ValueType>(string? parsedString,
+            bool expectedSuccess, ValueType expectedResult, string? cultureKey, bool skipValueVerification = false)
             where ValueType : struct
         {
             // Arrange:
@@ -396,6 +398,17 @@ namespace IGLib.Tests
         }
 
 
+        // PARSING CHAR:
+
+        [Theory]
+        [InlineData("a", true, 'a')]
+        [InlineData("Z", true, 'Z')]
+        [InlineData("ab", false, '\0')]
+        [InlineData("", false, '\0')]
+        protected void TryParseGeneric_OfChar_WorksCorrectly(string? parsedString, bool expectedSuccess, char expectedResult, string? cultureKey = null)
+        {
+            TryParse_WorksCorrectly_Base<char>(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
 
 
 
@@ -418,5 +431,5 @@ namespace IGLib.Tests
 
     }
 
-    }
+}
 
