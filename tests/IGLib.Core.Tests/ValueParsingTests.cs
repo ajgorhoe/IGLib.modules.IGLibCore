@@ -58,7 +58,9 @@ namespace IGLib.Tests
         /// <see cref="CultureInfo.InvariantCulture"/>. The <see cref="GetFormatProvider(string?)"/> method is used to map
         /// the key to <see cref="CultureInfo"/> and thus <see cref="IFormatProvider"/>.</param>
         /// <param name="skipValueVerification">Whether verification of parsed value is skipped even when <paramref name="expectedSuccess"/> 
-        /// is true.</param>
+        /// is true. This is used in some cases where the correct expected value could not be provided, e.g. due to limitations in the
+        /// XUnit framework, where for example in DateeTime and similar tests the DateTime value cannot be provided as test parameter
+        /// via the <see cref="InlineDataAttribute"/> (canot form a constatnt <see cref="DateTime"/> value).</param>
         protected void TryParse_WorksCorrectly_Base<ValueType>(string? parsedString,
             bool expectedSuccess, ValueType expectedResult, string? cultureKey, bool skipValueVerification = false)
             where ValueType : struct
