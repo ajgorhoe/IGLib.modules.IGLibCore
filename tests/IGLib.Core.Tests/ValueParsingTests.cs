@@ -7,6 +7,7 @@ using IGLib.Commands.Tests;
 using IGLib.Tests.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -68,9 +69,12 @@ namespace IGLib.Tests
             Console.WriteLine($"  Parsing string:   '{parsedString}'");
             Console.WriteLine($"  Should be parsed: {expectedSuccess}");
             Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
-            if (expectedSuccess)
+            if (expectedSuccess && !skipValueVerification)
             {
                 Console.WriteLine($"  Expected result: {expectedResult}");
+            } else if (skipValueVerification)
+            {
+                Console.WriteLine("  Value verificattion will be skipped (correct expected value not provided).");
             }
             // Act:
             ValueType parseResult;
@@ -84,9 +88,9 @@ namespace IGLib.Tests
             {
                 Console.WriteLine($"Value COULD NOT BE PARSED from input string.");
             }
-                // Assert:
-                wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
-            if (expectedSuccess)
+            // Assert:
+            wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
+            if (expectedSuccess && !skipValueVerification)
             {
                 parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
             }
@@ -112,7 +116,7 @@ namespace IGLib.Tests
         [InlineData("  FAlse ", true, false)]
         [InlineData("trUe  ", true, true)]
         [InlineData("  faLSe", true, false)]
-        
+
         // Results from predefined strings that are also parsed to true or false:
         [InlineData("yes", true, true)]
         [InlineData("no", true, false)]
@@ -169,7 +173,7 @@ namespace IGLib.Tests
         // null and empty string:
         [InlineData(null, false, true)]
         [InlineData("", false, true)]
-        protected void TryParseGeneric_OfBool_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfBool_WorksCorrectly(string? parsedString,
             bool expectedSuccess, bool expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<bool>(parsedString, expectedSuccess, expectedResult, cultureKey);
@@ -240,7 +244,7 @@ namespace IGLib.Tests
         // thousand separator after decimal separator creates parsing error:
         [InlineData("1,234.5", false, 0.0, "de-DE")]  // WARNING: . is thousands separator in this culture, risk of errors
         [InlineData("1.234,5", false, 0.0, "en-US")]  // WARNING: , is thousands separator in this culture, risk of errors
-        protected void TryParseGeneric_OfDouble_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfDouble_WorksCorrectly(string? parsedString,
             bool expectedSuccess, double expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<double>(parsedString, expectedSuccess, expectedResult, cultureKey);
@@ -254,7 +258,7 @@ namespace IGLib.Tests
         [InlineData("1e3", true, 1000f)]
         [InlineData("-1e-3", true, -0.001f)]
         [InlineData("3_14", false, 0f)]
-        protected void TryParseGeneric_OfFloat_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfFloat_WorksCorrectly(string? parsedString,
             bool expectedSuccess, float expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<float>(parsedString, expectedSuccess, expectedResult, cultureKey);
@@ -274,14 +278,14 @@ namespace IGLib.Tests
 
         // Things that do not work:
         [InlineData("1_234.56", false, 0.0, null)] // digit separators are not supported
-        
+
         // Cultre specified:
         [InlineData("1234.56", true, 1234.56, "en-US")]
         [InlineData("1234,56", true, 1234.56, "de-DE")]
 
         [InlineData("1,234.56", true, 1234.56, "en-US")]
         [InlineData("1.234,56", true, 1234.56, "de-DE")]
-        protected void TryParseGeneric_OfDecimal_WithCulture_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfDecimal_WithCulture_WorksCorrectly(string? parsedString,
             bool expectedSuccess, decimal expectedResult, string? cultureKey = null)
         {
             // var x = 79228162514264337593543950335m;
@@ -301,7 +305,7 @@ namespace IGLib.Tests
         [InlineData("1_0", false, (byte)0)]
         [InlineData(null, false, (byte)0)]
         [InlineData("", false, (byte)0)]
-        protected void TryParseGeneric_OfByte_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfByte_WorksCorrectly(string? parsedString,
             bool expectedSuccess, byte expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<byte>(parsedString, expectedSuccess, expectedResult, cultureKey);
@@ -317,7 +321,7 @@ namespace IGLib.Tests
         [InlineData("-129", false, (sbyte)0)]
         [InlineData("128", false, (sbyte)0)]
         [InlineData("1,000", false, (sbyte)0)]
-        protected void TryParseGeneric_OfSByte_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfSByte_WorksCorrectly(string? parsedString,
             bool expectedSuccess, sbyte expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<sbyte>(parsedString, expectedSuccess, expectedResult, cultureKey);
@@ -330,7 +334,7 @@ namespace IGLib.Tests
         [InlineData("-32,768", true, (short)-32768)]
         [InlineData("32,767", true, (short)32767)]
         [InlineData("40,000", false, (short)0)]
-        protected void TryParseGeneric_OfInt16_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfInt16_WorksCorrectly(string? parsedString,
             bool expectedSuccess, short expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<short>(parsedString, expectedSuccess, expectedResult, cultureKey);
@@ -342,7 +346,7 @@ namespace IGLib.Tests
         [Theory]
         [InlineData("65,535", true, (ushort)65535)]
         [InlineData("-1", false, (ushort)0)]
-        protected void TryParseGeneric_OfUInt16_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfUInt16_WorksCorrectly(string? parsedString,
             bool expectedSuccess, ushort expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<ushort>(parsedString, expectedSuccess, expectedResult, cultureKey);
@@ -355,7 +359,7 @@ namespace IGLib.Tests
         [InlineData("2,147,483,647", true, int.MaxValue)]
         [InlineData("-2,147,483,648", true, int.MinValue)]
         [InlineData("2,147,483,648", false, 0)]
-        protected void TryParseGeneric_OfInt32_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfInt32_WorksCorrectly(string? parsedString,
             bool expectedSuccess, int expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<int>(parsedString, expectedSuccess, expectedResult, cultureKey);
@@ -367,7 +371,7 @@ namespace IGLib.Tests
         [Theory]
         [InlineData("4,294,967,295", true, uint.MaxValue)]
         [InlineData("-1", false, 0u)]
-        protected void TryParseGeneric_OfUInt32_WorksCorrectly(string? parsedString, 
+        protected void TryParseGeneric_OfUInt32_WorksCorrectly(string? parsedString,
             bool expectedSuccess, uint expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<uint>(parsedString, expectedSuccess, expectedResult, cultureKey);
@@ -405,7 +409,8 @@ namespace IGLib.Tests
         [InlineData("Z", true, 'Z')]
         [InlineData("ab", false, '\0')]
         [InlineData("", false, '\0')]
-        protected void TryParseGeneric_OfChar_WorksCorrectly(string? parsedString, bool expectedSuccess, char expectedResult, string? cultureKey = null)
+        protected void TryParseGeneric_OfChar_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, char expectedResult, string? cultureKey = null)
         {
             TryParse_WorksCorrectly_Base<char>(parsedString, expectedSuccess, expectedResult, cultureKey);
         }
@@ -413,14 +418,17 @@ namespace IGLib.Tests
 
         // PARSING DATETIME:
 
+        ///public static DateTime { get; set; } = new DateTime(2024, 01, 01, 12, 30, 0, DateTimeKind.Utc);
+
         [Theory]
-        //[InlineData("2024-01-01", true)]
-        //[InlineData("2024-01-01T12:30:00Z", true)]
-        [InlineData("not-a-date", false)]
-        protected void TryParseGeneric_OfDateTime_WorksCorrectly(string? parsedString, bool expectedSuccess, string? cultureKey = null)
+        [InlineData("2024-01-01", true, "Invariant", true)]
+        [InlineData("2024-01-01T12:30:00Z", true, "Invariant", true)]
+        [InlineData("not-a-date", false, "Invariant", true)]
+        protected void TryParseGeneric_OfDateTime_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = false)
         {
-            DateTime dummy = default;
-            TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, dummy, cultureKey);
+            DateTime expectedResult = DateTime.Now; // dummy value
+            TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
         }
 
 
