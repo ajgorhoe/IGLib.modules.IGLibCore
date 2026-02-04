@@ -12,8 +12,10 @@
 		and for legacy .NET Framework 4.8; Don't use .NET Standard (not a runnable platform).
 		Current full set of targets:
 		<TargetFrameworks>net10.0;net8.0;net48</TargetFrameworks>
-		-->
+		Minimal set:
 		<TargetFrameworks>net10.0;net48</TargetFrameworks>
+		-->
+		<TargetFrameworks>net10.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
