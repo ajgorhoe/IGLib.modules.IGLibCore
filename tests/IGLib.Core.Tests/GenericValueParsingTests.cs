@@ -193,12 +193,12 @@ namespace IGLib.Tests
         // use of thousand separators with different grouping is allowed:
         [InlineData("-2,87,89", true, -28789)]
         [InlineData("+2,87,89", true, 28789)]
-        
-        //// Overflows produce positive or negativee infinity:
-        //[InlineData("2.7976931348623157E+308", false, 0)]
-        //[InlineData("1.7976931348623157E+309", false, 0)]
-        //[InlineData("-2.7976931348623157E+308", false, 0)]
-        //[InlineData("-1.7976931348623157E+309", false, 0)]
+
+        //// Overflows should produce positive or negativee infinity:
+        [InlineData("2.7976931348623157E+308", true, double.PositiveInfinity)]
+        [InlineData("1.7976931348623157E+309", true, double.PositiveInfinity)]
+        [InlineData("-2.7976931348623157E+308", true, double.NegativeInfinity)]
+        [InlineData("-1.7976931348623157E+309", true, double.NegativeInfinity)]
 
         // Things that do not work:
         // digit separators are not supported:
