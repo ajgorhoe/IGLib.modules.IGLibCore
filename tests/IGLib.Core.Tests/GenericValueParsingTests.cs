@@ -196,8 +196,12 @@ namespace IGLib.Tests
         [InlineData("24", true, 24)]
         [InlineData("-5385", true, -5385)]
 
+        // Things that do not work:
+        // digit separators are not supported:
+        [InlineData("2_825_934_521", false, 2_825_934_521)]
+        [InlineData("-24_521", false, -24_521)]
 
-        [InlineData("2", true, 2.0)]
+
 
         protected void TryParse_OfDouble_WorksCorrectly(string? parsedString, bool shouldBeParsed, double expectedResult)
         {
