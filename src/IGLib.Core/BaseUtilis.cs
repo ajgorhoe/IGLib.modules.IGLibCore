@@ -112,42 +112,42 @@ namespace IGLib
                 case TypeCode.Int16:  // short
                     {
                         Int16 temp;
-                        bool result = Int16.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        bool result = Int16.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
                         valueVariable = (BasicType)(object)temp;
                         return result;
                     }
                 case TypeCode.UInt16:  // ushort
                     {
                         UInt16 temp;
-                        bool result = UInt16.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        bool result = UInt16.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
                         valueVariable = (BasicType)(object)temp;
                         return result;
                     }
                 case TypeCode.Int32:  // int
                     {
                         Int32 temp;
-                        bool result = Int32.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        bool result = Int32.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
                         valueVariable = (BasicType)(object)temp;
                         return result;
                     }
                 case TypeCode.UInt32:  // uint
                     {
                         UInt32 temp;
-                        bool result = UInt32.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        bool result = UInt32.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
                         valueVariable = (BasicType)(object)temp;
                         return result;
                     }
                 case TypeCode.Int64:  // long
                     {
                         Int64 temp;
-                        bool result = Int64.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        bool result = Int64.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
                         valueVariable = (BasicType)(object)temp;
                         return result;
                     }
                 case TypeCode.UInt64:  // uint64
                     {
                         UInt64 temp;
-                        bool result = UInt64.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        bool result = UInt64.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
                         valueVariable = (BasicType)(object)temp;
                         return result;
                     }
