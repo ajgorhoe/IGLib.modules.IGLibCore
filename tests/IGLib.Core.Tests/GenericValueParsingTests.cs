@@ -173,11 +173,15 @@ namespace IGLib.Tests
 
         [Theory]
         // Usual decimal forms of inputing double values:
-        [InlineData("2.2", true, 2.2)]
         [InlineData("0.005452", true, 0.005452)]
-        [InlineData("-2.2", true, -2.2)]
+        [InlineData("2.3", true, 2.3)]
+        [InlineData("+2.3", true, +2.3)]
+        [InlineData("-2.3", true, -2.3)]
         [InlineData("-0.005452", true, -0.005452)]
         [InlineData("-753987935.005452", true, -753987935.005452)]
+        // thousands separators (commas):
+        [InlineData("-753,987,935.005452", true, -753987935.005452)]
+        [InlineData("27,005,452,213.24e-5", true, 27005452213.24e-5)]
 
         // Exponential forms of inputing double values:
         [InlineData("2e3", true, 2000)]
@@ -200,6 +204,9 @@ namespace IGLib.Tests
         [InlineData("2,347", true, 2347)]
         [InlineData("-53,858,917", true, -53858917)]
         [InlineData("+53,858,917", true, 53858917)]
+        // use of thousand separators with different grouping is allowed:
+        [InlineData("-2,87,89", true, -28789)]
+        [InlineData("+2,87,89", true, 28789)]
 
         // Things that do not work:
         // digit separators are not supported:
