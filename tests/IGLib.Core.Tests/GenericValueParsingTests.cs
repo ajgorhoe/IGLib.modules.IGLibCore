@@ -32,51 +32,25 @@ namespace IGLib.Tests
         }
 
 
+        //#region GenericTryParseTests
 
-
-        [Obsolete("Will probably not be needed any more")]
-        protected void TryParse_OfBool_WorksCorrectly_AvoidGeneric(string parsedString, bool shouldBeParsed, bool expectedResult)
-        {
-            // Arrange:
-            Console.WriteLine($"Testing the generic TryParse method for type {expectedResult.GetType().Name}.");
-            Console.WriteLine($"  Parsing string:   '{parsedString}'");
-            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
-            if (shouldBeParsed)
-            {
-                Console.WriteLine($"  Expected result: {expectedResult}");
-            }
-            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
-            // Act:
-            bool parseResult;
-            bool wasParsed = TryParse<bool>(parsedString, out parseResult, Global.DefaultFormatProvider);
-            // Assert:
-            wasParsed.Should().Be(shouldBeParsed, because: $"whether the value can be parsed from input string should be: {shouldBeParsed}");
-            if (shouldBeParsed)
-            {
-                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
-            }
-        }
-
-
-
-
-        /// <summary>Base generic method for execution of tests for parsing values of diffeerent types from strings.</summary>
+        /// <summary>Base method for execution of generic tests for parsing values of diffeerent types from strings.</summary>
         /// <typeparam name="ValueType">The type of the values that are parsed from strings in the current test using this method.</typeparam>
-        /// <param name="parsedString"></param>
-        /// <param name="shouldBeParsed"></param>
+        /// <param name="parsedString">String from which a number or other simple type is parsed.</param>
+        /// <param name="expectedSuccess"></param>
         /// <param name="expectedResult"></param>
-        protected void TryParse_WorksCorrectly_Base<ValueType>(string? parsedString, bool shouldBeParsed, ValueType expectedResult)
+        protected void TryParse_WorksCorrectly_Base<ValueType>(string? parsedString, bool expectedSuccess, ValueType expectedResult)
             where ValueType : struct
         {
             // Arrange:
             Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
             Console.WriteLine($"  Parsing string:   '{parsedString}'");
-            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
-            if (shouldBeParsed)
+            Console.WriteLine($"  Should be parsed: {expectedSuccess}");
+            if (expectedSuccess)
             {
                 Console.WriteLine($"  Expected result: {expectedResult}");
             }
-            Console.WriteLine($"  Should be parsed: {shouldBeParsed}");
+            Console.WriteLine($"  Should be parsed: {expectedSuccess}");
             // Act:
             ValueType parseResult;
             bool wasParsed = TryParse<ValueType>(parsedString!, out parseResult, Global.DefaultFormatProvider);
@@ -90,8 +64,8 @@ namespace IGLib.Tests
                 Console.WriteLine($"Value could NOT be parsed from input string.");
             }
                 // Assert:
-                wasParsed.Should().Be(shouldBeParsed, because: $"whether the value can be parsed from input string should be: {shouldBeParsed}");
-            if (shouldBeParsed)
+                wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
+            if (expectedSuccess)
             {
                 parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
             }
@@ -173,9 +147,9 @@ namespace IGLib.Tests
         // null and empty string:
         [InlineData(null, false, true)]
         [InlineData("", false, true)]
-        protected void TryParse_OfBool_WorksCorrectly(string? parsedString, bool shouldBeParsed, bool expectedResult)
+        protected void TryParse_OfBool_WorksCorrectly(string? parsedString, bool expectedSuccess, bool expectedResult)
         {
-            TryParse_WorksCorrectly_Base<bool>(parsedString, shouldBeParsed, expectedResult);
+            TryParse_WorksCorrectly_Base<bool>(parsedString, expectedSuccess, expectedResult);
         }
 
         // PARSING DOUBLE VALUES:
@@ -228,9 +202,9 @@ namespace IGLib.Tests
         //[InlineData("-1.7976931348623157E+309", false, 0)]
 
 
-        protected void TryParse_OfDouble_WorksCorrectly(string? parsedString, bool shouldBeParsed, double expectedResult)
+        protected void TryParse_OfDouble_WorksCorrectly(string? parsedString, bool expectedSuccess, double expectedResult)
         {
-            TryParse_WorksCorrectly_Base<double>(parsedString, shouldBeParsed, expectedResult);
+            TryParse_WorksCorrectly_Base<double>(parsedString, expectedSuccess, expectedResult);
         }
 
 
