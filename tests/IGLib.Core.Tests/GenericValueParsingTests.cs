@@ -193,6 +193,8 @@ namespace IGLib.Tests
         [InlineData("-2.5E-6", true, -2.5e-6)]
 
         // Integer forms:
+        [InlineData("24", true, 24)]
+        [InlineData("-5385", true, -5385)]
 
 
         [InlineData("2", true, 2.0)]
