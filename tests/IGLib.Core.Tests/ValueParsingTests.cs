@@ -433,6 +433,7 @@ namespace IGLib.Tests
 
         [Theory]
         [InlineData("2024-01-01", true, default, "Invariant", true)]
+        [InlineData("not-a-date-offset", false, default)]
         protected void TryParseGeneric_OfDateTime_WorksCorrectly(string? parsedString,
             bool expectedSuccess, DateTime expectedResult, string? cultureKey = null, bool skipValueVerification = false)
         {
