@@ -322,6 +322,17 @@ namespace IGLib.Tests
         }
 
 
+        // PARSING SHORT:
+
+        [Theory]
+        [InlineData("-32,768", true, (short)-32768)]
+        [InlineData("32,767", true, (short)32767)]
+        [InlineData("40,000", false, (short)0)]
+        protected void TryParseGeneric_OfInt16_WorksCorrectly(string? parsedString, 
+            bool expectedSuccess, short expectedResult, string? cultureKey = null)
+        {
+            TryParse_WorksCorrectly_Base<short>(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
 
 
 
