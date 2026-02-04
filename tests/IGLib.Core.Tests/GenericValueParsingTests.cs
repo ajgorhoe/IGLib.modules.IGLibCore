@@ -80,8 +80,17 @@ namespace IGLib.Tests
             // Act:
             ValueType parseResult;
             bool wasParsed = TryParse<ValueType>(parsedString!, out parseResult, Global.DefaultFormatProvider);
-            // Assert:
-            wasParsed.Should().Be(shouldBeParsed, because: $"whether the value can be parsed from input string should be: {shouldBeParsed}");
+            if (wasParsed)
+            {
+                Console.WriteLine($"Value was successfully parsed from input string.");
+                Console.WriteLine($"  Parsed result: {parseResult}");
+            }
+            else
+            {
+                Console.WriteLine($"Value could NOT be parsed from input string.");
+            }
+                // Assert:
+                wasParsed.Should().Be(shouldBeParsed, because: $"whether the value can be parsed from input string should be: {shouldBeParsed}");
             if (shouldBeParsed)
             {
                 parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
@@ -212,7 +221,11 @@ namespace IGLib.Tests
         // digit separators are not supported:
         [InlineData("2_825_934_521", false, 2_825_934_521)]
         [InlineData("-24_521", false, -24_521)]
-
+        // overflows:
+        //[InlineData("2.7976931348623157E+308", false, 0)]
+        //[InlineData("1.7976931348623157E+309", false, 0)]
+        //[InlineData("-2.7976931348623157E+308", false, 0)]
+        //[InlineData("-1.7976931348623157E+309", false, 0)]
 
 
         protected void TryParse_OfDouble_WorksCorrectly(string? parsedString, bool shouldBeParsed, double expectedResult)
