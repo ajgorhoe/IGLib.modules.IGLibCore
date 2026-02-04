@@ -360,6 +360,18 @@ namespace IGLib.Tests
         }
 
 
+        // PARSING UINT:
+
+        [Theory]
+        [InlineData("4,294,967,295", true, uint.MaxValue)]
+        [InlineData("-1", false, 0u)]
+        protected void TryParseGeneric_OfUInt32_WorksCorrectly(string? parsedString, 
+            bool expectedSuccess, uint expectedResult, string? cultureKey = null)
+        {
+            TryParse_WorksCorrectly_Base<uint>(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
+
+
 
 
 
