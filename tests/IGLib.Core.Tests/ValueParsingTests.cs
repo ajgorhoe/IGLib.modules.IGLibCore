@@ -420,13 +420,29 @@ namespace IGLib.Tests
 
         // PARSING DATETIME:
 
-        ///public static DateTime { get; set; } = new DateTime(2024, 01, 01, 12, 30, 0, DateTimeKind.Utc);
+
+
+        [Theory]
+        [InlineData("2024-01-01", true, default, "Invariant", true)]
+        protected void TryParseGeneric_OfDateTime_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, DateTime expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+        {
+            if (expectedResult == default)
+            {
+                expectedResult = DateTime.Now; // dummy value
+            }
+            TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
+        }
+
+
+
+
 
         [Theory]
         [InlineData("2024-01-01", true, "Invariant", true)]
         [InlineData("2024-01-01T12:30:00Z", true, "Invariant", true)]
         [InlineData("not-a-date", false, "Invariant", true)]
-        protected void TryParseGeneric_OfDateTime_WorksCorrectly(string? parsedString,
+        protected void TryParseGeneric_OfDateTime_Reduced_WorksCorrectly(string? parsedString,
             bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = false)
         {
             DateTime expectedResult = DateTime.Now; // dummy value
