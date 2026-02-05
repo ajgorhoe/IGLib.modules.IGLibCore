@@ -284,11 +284,10 @@ namespace IGLib.Tests
         // Cultre specified:
         [InlineData("1234.56", true, 1234.56, "en-US")]
         [InlineData("1234,56", true, 1234.56, "de-DE")]
-
         [InlineData("3.14", true, 3.14, "en-US")]
         [InlineData("3,14", true, 3.14, "de-DE")]
-        [InlineData("3,14", true, 314, "en-US")]
-        [InlineData("3.14", true, 314, "de-DE")]
+        [InlineData("3,14", true, 314, "en-US")]  // Warning: , is thousands separator in this culture, risk of errors
+        [InlineData("3.14", true, 314, "de-DE")]  // Warning: . is thousands separator in this culture, risk of errors
         [InlineData("3.14", true, 3.14, "Invariant")]
 
 
