@@ -267,6 +267,8 @@ namespace IGLib.Tests
         [InlineData("1234,56", true, 1234.56, "de-DE")]
         [InlineData("3.14", true, 3.14, "en-US")]
         [InlineData("3,14", true, 3.14, "de-DE")]
+        [InlineData("3,14", true, 314, "en-US")]  // example: , is thousands separator in this culture, risk of errors
+        [InlineData("3.14", true, 314, "de-DE")]  // example: . is thousands separator in this culture, risk of errors
 
 
         protected void TryParseGeneric_OfFloat_WorksCorrectly(string? parsedString,
