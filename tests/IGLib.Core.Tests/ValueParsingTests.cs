@@ -261,7 +261,6 @@ namespace IGLib.Tests
         [InlineData("-1e-3", true, -0.001f)]
         [InlineData("3_14", false, 0f)]
 
-
         // Cultre specified:
         [InlineData("1234.56", true, 1234.56, "en-US")]
         [InlineData("1234,56", true, 1234.56, "de-DE")]
@@ -272,8 +271,10 @@ namespace IGLib.Tests
         [InlineData("3.14", true, 3.14, "Invariant")]
         [InlineData("1,234.56", true, 1234.56, "en-US")]
         [InlineData("1.234,56", true, 1234.56, "de-DE")]
-
-
+        [InlineData("1,234.5", true, 1_234.5, "en-US")]
+        [InlineData("1.234,5", true, 1_234.5, "de-DE")]
+        [InlineData("1,234.5", false, 0.0, "de-DE")]  // thousand separator after decimal point - parsing fails
+        [InlineData("1.234,5", false, 0.0, "en-US")]  // thousand separator after decimal point - parsing fails
         protected void TryParseGeneric_OfFloat_WorksCorrectly(string? parsedString,
             bool expectedSuccess, float expectedResult, string? cultureKey = null)
         {
