@@ -8,14 +8,16 @@
 	
 	<PropertyGroup>
 		<!--
-		This project should normally be build for at least the newest stable .NET 8 or later
+		This project should normally be build for at least the newest stable .NET or later
 		and for legacy .NET Framework 4.8; Don't use .NET Standard (not a runnable platform).
+		Temporarily you can remove .NET Framework 4.8 for faster development, but should add
+		it back before mergin into main branch.
 		Current full set of targets:
 		<TargetFrameworks>net10.0;net8.0;net48</TargetFrameworks>
-		Minimal set:
+		Reduced set:
 		<TargetFrameworks>net10.0;net48</TargetFrameworks>
 		-->
-		<TargetFrameworks>net10.0</TargetFrameworks>
+		<TargetFrameworks>net10.0;net480</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<OutputType>Library</OutputType>
 		<ImplicitUsings>disable</ImplicitUsings>
@@ -72,6 +74,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<!-- Keep NUnit and MSTests until these tests are transferred to XUnit! -->
 		<PackageReference Include="NUnit" Version="4.4.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="5.2.0" />
 		<PackageReference Include="MSTest.TestFramework" Version="4.0.1" />
@@ -86,9 +89,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Neovolve.Logging.Xunit" Version="6.3.0" />
-		<!-- Other testinf libraries & frameworks: -->
+		<!-- Other testing libraries & frameworks: -->
 		<PackageReference Include="Moq" Version="4.20.72" />
-
 	</ItemGroup>
 
 

@@ -448,12 +448,14 @@ namespace IGLib.Tests
 
         // PARSING DATETIMEOFFSET:
 
+        protected DateTime DummyDateTime { get; } = new DateTime();
+
         [Theory]
-        [InlineData("2024-01-01", true, "Invariant", true)]
-        [InlineData("2024-01-15T12:00:00+02:00", true, "Invariant", true)]
+        [InlineData("2024-01-01", true)]
+        [InlineData("2024-01-15T12:00:00+02:00", true)]
         [InlineData("not-a-date-offset", false)]
         protected void TryParseGeneric_OfDateTimeOffset_Reduced_WorksCorrectly(string? parsedString,
-            bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = false)
+            bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = true)
         {
             DateTime expectedResult = DateTime.Now; // dummy value
             TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
