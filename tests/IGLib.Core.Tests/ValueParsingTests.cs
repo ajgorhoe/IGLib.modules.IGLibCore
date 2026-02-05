@@ -294,6 +294,8 @@ namespace IGLib.Tests
         [InlineData("1.234,56", true, 1234.56, "de-DE")]
         [InlineData("1,234.5", true, 1_234.5, "en-US")]
         [InlineData("1.234,5", true, 1_234.5, "de-DE")]
+        [InlineData("1,234.5", false, 0.0, "de-DE")]  // thousand separator after decimal point - parsing fails
+        [InlineData("1.234,5", false, 0.0, "en-US")]  // thousand separator after decimal point - parsing fails
 
         protected void TryParseGeneric_OfDecimal_WithCulture_WorksCorrectly(string? parsedString,
             bool expectedSuccess, decimal expectedResult, string? cultureKey = null)
