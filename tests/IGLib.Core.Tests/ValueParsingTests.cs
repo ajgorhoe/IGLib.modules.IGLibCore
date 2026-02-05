@@ -260,6 +260,13 @@ namespace IGLib.Tests
         [InlineData("1e3", true, 1000f)]
         [InlineData("-1e-3", true, -0.001f)]
         [InlineData("3_14", false, 0f)]
+
+
+        // Cultre specified:
+        [InlineData("1234.56", true, 1234.56, "en-US")]
+        [InlineData("1234,56", true, 1234.56, "de-DE")]
+
+
         protected void TryParseGeneric_OfFloat_WorksCorrectly(string? parsedString,
             bool expectedSuccess, float expectedResult, string? cultureKey = null)
         {
@@ -286,10 +293,9 @@ namespace IGLib.Tests
         [InlineData("1234,56", true, 1234.56, "de-DE")]
         [InlineData("3.14", true, 3.14, "en-US")]
         [InlineData("3,14", true, 3.14, "de-DE")]
-        [InlineData("3,14", true, 314, "en-US")]  // Warning: , is thousands separator in this culture, risk of errors
-        [InlineData("3.14", true, 314, "de-DE")]  // Warning: . is thousands separator in this culture, risk of errors
+        [InlineData("3,14", true, 314, "en-US")]  // example: , is thousands separator in this culture, risk of errors
+        [InlineData("3.14", true, 314, "de-DE")]  // example: . is thousands separator in this culture, risk of errors
         [InlineData("3.14", true, 3.14, "Invariant")]
-
         [InlineData("1,234.56", true, 1234.56, "en-US")]
         [InlineData("1.234,56", true, 1234.56, "de-DE")]
         [InlineData("1,234.5", true, 1_234.5, "en-US")]
