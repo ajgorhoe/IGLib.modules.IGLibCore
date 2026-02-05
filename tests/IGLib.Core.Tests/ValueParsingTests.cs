@@ -265,6 +265,8 @@ namespace IGLib.Tests
         // Cultre specified:
         [InlineData("1234.56", true, 1234.56, "en-US")]
         [InlineData("1234,56", true, 1234.56, "de-DE")]
+        [InlineData("3.14", true, 3.14, "en-US")]
+        [InlineData("3,14", true, 3.14, "de-DE")]
 
 
         protected void TryParseGeneric_OfFloat_WorksCorrectly(string? parsedString,
