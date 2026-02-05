@@ -285,6 +285,13 @@ namespace IGLib.Tests
         [InlineData("1234.56", true, 1234.56, "en-US")]
         [InlineData("1234,56", true, 1234.56, "de-DE")]
 
+        [InlineData("3.14", true, 3.14, "en-US")]
+        [InlineData("3,14", true, 3.14, "de-DE")]
+        [InlineData("3,14", true, 314, "en-US")]
+        [InlineData("3.14", true, 314, "de-DE")]
+        [InlineData("3.14", true, 3.14, "Invariant")]
+
+
         [InlineData("1,234.56", true, 1234.56, "en-US")]
         [InlineData("1.234,56", true, 1234.56, "de-DE")]
         protected void TryParseGeneric_OfDecimal_WithCulture_WorksCorrectly(string? parsedString,
