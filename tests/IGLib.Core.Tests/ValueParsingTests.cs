@@ -384,7 +384,8 @@ namespace IGLib.Tests
         [Theory]
         [InlineData("2,147,483,647", true, int.MaxValue)]
         [InlineData("-2,147,483,648", true, int.MinValue)]
-        [InlineData("2,147,483,648", false, 0)]
+        [InlineData("2,147,483,648", false, 0)]  // overflow
+        [InlineData("-2,147,483,649", false, 0)]  // underflow
         protected void TryParseGeneric_OfInt32_WorksCorrectly(string? parsedString,
             bool expectedSuccess, int expectedResult, string? cultureKey = null)
         {
