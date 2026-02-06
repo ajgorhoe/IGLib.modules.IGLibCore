@@ -390,6 +390,15 @@ namespace IGLib.Tests
         [InlineData("-123", true, -123, null)]
         [InlineData("  123  ", true, 123, null)]
 
+        // Different cultures:
+        [InlineData("1,234", true, 1234, "en-US")]
+        [InlineData("1.234", true, 1234, "de-DE")]
+        [InlineData("1,234", false, 0, "de-DE")]
+        [InlineData("1.234", false, 0, "en-US")]
+        [InlineData("2,147,483,647", true, int.MaxValue, "en-US")]
+        [InlineData("2,147,483,648", false, 0, "en-US")]  // overflow
+
+
         protected void TryParseGeneric_OfInt32_WorksCorrectly(string? parsedString,
             bool expectedSuccess, int expectedResult, string? cultureKey = null)
         {
