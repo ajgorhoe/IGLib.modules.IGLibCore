@@ -386,6 +386,10 @@ namespace IGLib.Tests
         [InlineData("-2,147,483,648", true, int.MinValue)]
         [InlineData("2,147,483,648", false, 0)]  // overflow
         [InlineData("-2,147,483,649", false, 0)]  // underflow
+        [InlineData("+123", true, 123, null)]
+        [InlineData("-123", true, -123, null)]
+        [InlineData("  123  ", true, 123, null)]
+
         protected void TryParseGeneric_OfInt32_WorksCorrectly(string? parsedString,
             bool expectedSuccess, int expectedResult, string? cultureKey = null)
         {
