@@ -330,11 +330,11 @@ namespace IGLib.Tests
 
         // ToDo: Correct this
 
-        //[Theory]
-        //[InlineData(true, null)]
-        //[InlineData(true, "Invariant")]
-        //[InlineData(true, "en-US")]
-        //[InlineData(true, "de-DE")]
+        [Theory]
+        [InlineData(true, null)]
+        [InlineData(true, "Invariant")]
+        [InlineData(true, "en-US")]
+        [InlineData(true, "de-DE")]
         protected void TryParseGeneric_OfDecimal_Parses_MinAndMax_Correctly(
     bool expectedSuccess, string? cultureKey)
         {
