@@ -398,6 +398,9 @@ namespace IGLib.Tests
         [InlineData("2,147,483,647", true, int.MaxValue, "en-US")]
         [InlineData("2,147,483,648", false, 0, "en-US")]  // overflow
 
+        // Things that don't work:
+        [InlineData("1_234", false, 0, null)]  // digit separator is not allowed
+        [InlineData("12.34", false, 0, null)]  // decimal separator cannot be used for integers
 
         protected void TryParseGeneric_OfInt32_WorksCorrectly(string? parsedString,
             bool expectedSuccess, int expectedResult, string? cultureKey = null)
