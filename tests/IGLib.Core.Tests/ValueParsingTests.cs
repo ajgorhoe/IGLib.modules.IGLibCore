@@ -291,11 +291,6 @@ namespace IGLib.Tests
         // Ovrflow:
         [InlineData("1e28", true, 1e28, null)]
         [InlineData("1e29", false, 0.0, null)] // decimal overflow
-        //[InlineData("79228162514264337593543950335", true, 79228162514264337593543950335D)]
-        //[InlineData("-79228162514264337593543950335", true, -79228162514264337593543950335D)]
-        
-        //[InlineData("79228162514264337593543950335", true, decimal.MaxValue)]
-
 
         // Things that do not work:
         [InlineData("1e100", false, 0)] // exponent overflow for decimal (decimal dos not have positive and negative infinity)
@@ -322,6 +317,37 @@ namespace IGLib.Tests
         {
             // var x = 79228162514264337593543950335m;
             TryParse_WorksCorrectly_Base(parsedString, expectedSuccess, expectedResult, cultureKey);
+        }
+
+        // Specialized tests for decimal.MinValue and decimal.MaxValue (due to limitations in usual tests used):
+
+        private static readonly string DecimalMaxString =
+    decimal.MaxValue.ToString("G29", CultureInfo.InvariantCulture);
+
+        private static readonly string DecimalMinString =
+            decimal.MinValue.ToString("G29", CultureInfo.InvariantCulture);
+
+        [Theory]
+        [InlineData(true, null)]
+        [InlineData(true, "Invariant")]
+        [InlineData(true, "en-US")]
+        [InlineData(true, "de-DE")]
+        protected void TryParseGeneric_OfDecimal_Parses_MinAndMax_Correctly(
+    bool expectedSuccess, string? cultureKey)
+        {
+            // MaxValue
+            TryParse_WorksCorrectly_Base(
+                DecimalMaxString,
+                expectedSuccess,
+                decimal.MaxValue,
+                cultureKey);
+
+            // MinValue
+            TryParse_WorksCorrectly_Base(
+                DecimalMinString,
+                expectedSuccess,
+                decimal.MinValue,
+                cultureKey);
         }
 
 
