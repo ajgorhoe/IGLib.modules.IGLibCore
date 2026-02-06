@@ -259,7 +259,9 @@ namespace IGLib.Tests
         [InlineData("3.14", true, 3.14f)]
         [InlineData("1e3", true, 1000f)]
         [InlineData("-1e-3", true, -0.001f)]
-        [InlineData("3_14", false, 0f)]
+        [InlineData("3_14", false, 0f)]  // digit separator is not allowed
+        [InlineData("1.0e83", true, float.PositiveInfinity)]
+        [InlineData("-1.0e83", true, float.NegativeInfinity)]
 
         // Cultre specified:
         [InlineData("1234.56", true, 1234.56, "en-US")]
@@ -289,11 +291,16 @@ namespace IGLib.Tests
         // Ovrflow:
         [InlineData("1e28", true, 1e28, null)]
         [InlineData("1e29", false, 0.0, null)] // decimal overflow
+        //[InlineData("79228162514264337593543950335", true, 79228162514264337593543950335D)]
+        //[InlineData("-79228162514264337593543950335", true, -79228162514264337593543950335D)]
+        
         //[InlineData("79228162514264337593543950335", true, decimal.MaxValue)]
-        //[InlineData("-79228162514264337593543950335", true, decimal.MinValue)]
-        [InlineData("1e100", false, 0)] // exponent overflow for decimal
+
 
         // Things that do not work:
+        [InlineData("1e100", false, 0)] // exponent overflow for decimal (decimal dos not have positive and negative infinity)
+        [InlineData("79228162514264337593543950336", false, 0)] // overflow
+        [InlineData("-79228162514264337593543950336", false, 0)]  // underflow
         [InlineData("1_234.56", false, 0.0, null)] // digit separators are not supported
 
         // Cultre specified:
@@ -310,7 +317,6 @@ namespace IGLib.Tests
         [InlineData("1.234,5", true, 1_234.5, "de-DE")]
         [InlineData("1,234.5", false, 0.0, "de-DE")]  // thousand separator after decimal point - parsing fails
         [InlineData("1.234,5", false, 0.0, "en-US")]  // thousand separator after decimal point - parsing fails
-
         protected void TryParseGeneric_OfDecimal_WithCulture_WorksCorrectly(string? parsedString,
             bool expectedSuccess, decimal expectedResult, string? cultureKey = null)
         {
