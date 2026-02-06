@@ -496,7 +496,7 @@ namespace IGLib.Tests
 
         // PARSING DATETIME:
 
-        // protected DateTime DummyDateTime { get; } = new DateTime(0);
+        protected DateTime DummyDateTime { get; } = new DateTime(0);
 
         [Theory]
         [InlineData("2024-01-22", true, "Invariant")]
@@ -505,7 +505,7 @@ namespace IGLib.Tests
         protected void TryParseGeneric_OfDateTime_WorksCorrectly_Reduced(string? parsedString,
             bool expectedSuccess, string? cultureKey = null)
         {
-            DateTime expectedResult = DateTime.Now; // dummy value
+            DateTime expectedResult = DummyDateTime; // dummy value
             TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification: true);
         }
 
@@ -518,7 +518,7 @@ namespace IGLib.Tests
         {
             if (expectedResult == default)
             {
-                expectedResult = DateTime.Now; // dummy value
+                expectedResult = DummyDateTime; // dummy value
             }
             TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
         }
