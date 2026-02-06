@@ -496,7 +496,7 @@ namespace IGLib.Tests
 
         // PARSING DATETIME:
 
-        protected DateTime DummyDateTime { get; } = new DateTime(0);
+        // protected DateTime DummyDateTime { get; } = new DateTime(0);
 
         [Theory]
         [InlineData("2024-01-22", true, "Invariant")]
@@ -526,7 +526,7 @@ namespace IGLib.Tests
 
         // PARSING DATETIMEOFFSET:
 
-        protected static readonly DateTimeOffset DummyDateTimeOffset = new DateTimeOffset(0, new TimeSpan(1, 0, 0, 0));
+        // protected DateTimeOffset DummyDateTimeOffset = DateTimeOffset.Now; // new DateTimeOffset(1, 0, 0, 0, 0, 0, new TimeSpan(1, 0, 0));
 
         [Theory]
         [InlineData("2024-01-01", true)]
@@ -535,7 +535,7 @@ namespace IGLib.Tests
         protected void TryParseGeneric_OfDateTimeOffset_Reduced_WorksCorrectly(string? parsedString,
             bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = true)
         {
-            DateTime expectedResult = DummyDateTime; // dummy value
+            DateTime expectedResult = DateTime.Now; // dummy value
             TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
         }
 
