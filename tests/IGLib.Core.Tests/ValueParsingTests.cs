@@ -531,7 +531,7 @@ namespace IGLib.Tests
         [InlineData("2024-01-01", true)]
         [InlineData("2024-01-15T12:00:00+02:00", true)]
         [InlineData("not-a-date-offset", false)]
-        protected void TryParseGeneric_OfDateTimeOffset_Reduced_WorksCorrectly(string? parsedString,
+        protected void TryParseGeneric_OfDateTimeOffset_WorksCorrectly_Reduced(string? parsedString,
             bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = true)
         {
             DateTimeOffset expectedResult = DummyDateTimeOffset; // dummy value
@@ -552,21 +552,6 @@ namespace IGLib.Tests
             }
             TryParse_WorksCorrectly_Base<DateTimeOffset>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
         }
-
-
-        //[Theory]
-        //[InlineData("2024-01-01T12:00:00+02:00", true)]
-        //[InlineData("invalid", false)]
-        [Obsolete("Teplace this with the above methods (reduced and full)")]
-        protected void TryParseGeneric_OfDateTimeOffset_1_WorksCorrectly(string? parsedString, bool expectedSuccess)
-        {
-            DateTimeOffset dummy = DummyDateTime;
-            // TryParse_WorksCorrectly_Base<DateTimeOffset>(parsedString, expectedSuccess, dummy);
-        }
-
-
-
-
 
 
 
