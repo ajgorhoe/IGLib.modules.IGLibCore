@@ -328,8 +328,6 @@ namespace IGLib.Tests
             decimal.MinValue.ToString("G29", CultureInfo.InvariantCulture);
 
 
-        // ToDo: Correct this
-
         [Theory]
         [InlineData(true, null)]
         [InlineData(true, "Invariant")]
@@ -535,8 +533,8 @@ namespace IGLib.Tests
         protected void TryParseGeneric_OfDateTimeOffset_Reduced_WorksCorrectly(string? parsedString,
             bool expectedSuccess, string? cultureKey = null, bool skipValueVerification = true)
         {
-            DateTime expectedResult = DateTime.Now; // dummy value
-            TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
+            DateTimeOffset expectedResult = DateTimeOffset.Now; // dummy value
+            TryParse_WorksCorrectly_Base<DateTimeOffset>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
         }
 
 
@@ -545,13 +543,13 @@ namespace IGLib.Tests
         [InlineData("2024-01-15T12:00:00+02:00", true, default, "Invariant", true)]
         [InlineData("not-a-date-offset", false, default)]
         protected void TryParseGeneric_OfDateTimeOffset_WorksCorrectly(string? parsedString,
-            bool expectedSuccess, DateTime expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+            bool expectedSuccess, DateTimeOffset expectedResult, string? cultureKey = null, bool skipValueVerification = false)
         {
             if (expectedResult == default)
             {
-                expectedResult = DateTime.Now; // dummy value
+                expectedResult = DateTimeOffset.Now; // dummy value
             }
-            TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
+            TryParse_WorksCorrectly_Base<DateTimeOffset>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
         }
 
 
@@ -561,7 +559,7 @@ namespace IGLib.Tests
         [Obsolete("Teplace this with the above methods (reduced and full)")]
         protected void TryParseGeneric_OfDateTimeOffset_1_WorksCorrectly(string? parsedString, bool expectedSuccess)
         {
-            DateTimeOffset dummy = default;
+            DateTimeOffset dummy = DummyDateTime;
             // TryParse_WorksCorrectly_Base<DateTimeOffset>(parsedString, expectedSuccess, dummy);
         }
 
