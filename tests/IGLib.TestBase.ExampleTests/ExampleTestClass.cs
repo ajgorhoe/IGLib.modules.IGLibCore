@@ -186,26 +186,26 @@ namespace IGLib.Tests.Base
         /// strongly typed parameter sets for tests.</summary>
         public static TheoryData<object, bool> Data_IsOfNumericType_Typed => new()
         {
-            { new DateTime(2024, 1, 1), false },
-            { (decimal) 999.99m, true},
-            { (decimal) -5.34m, true },
-            { (System.IO.FileAccess) System.IO.FileAccess.Read, false },
+            { new DateTime(2024, 12, 28), false },
+            { 647.77m, true},
+            { -5.34, true },
+            { System.IO.FileAccess.Read, false },
             { (ushort?) 158, true }
         };
 
         /// <summary>Public static property of type <see cref="IEnumerable{object[]}"/> that defines non-tped
         /// parameter sets for tests.</summary>
-        public static IEnumerable<object[]> Data_IsOfNumericType_Untyped =>
-            new[]
-            {
-                 new object[] { new DateTime(2024, 1, 1), false },
-                 new object[] { (decimal) 999.99m, true},
-                 new object[] { (decimal) -5.34m, true },
-                 new object[] { (System.IO.FileAccess) System.IO.FileAccess.Read, false },
-                 new object[] { (ushort?) 158, true }
-                //new object[] { "3.14", CultureInfo.InvariantCulture, true, 3.14 },
-                //new object[] { "3,14", new CultureInfo("de-DE"), true, 3.14 },
-            };
+        public static IEnumerable<object[]> Data_IsOfNumericType_Untyped { get; } =
+            [
+                 [new DateTime(1901, 3, 25), false],
+                 [999.99m, true],
+                 [-4.58, true],
+                 [System.IO.FileAccess.Write, false],
+                 [(ushort?) 26, true],
+                 [(char) 62, false],
+                 [9999887766554433221L, true, 23, false, 23, 45], // remaining parameters will be captured by otherParameters
+                 [9999887766554433221L],  // missing parameter has default value true
+            ];
 
         /// <summary>Example test that gets its parameter sets via public static property of type
         /// TheoryData<object, bool> (strongly typed) property.</summary>
@@ -214,11 +214,17 @@ namespace IGLib.Tests.Base
         [Theory]
         [MemberData(nameof(Data_IsOfNumericType_Typed))]
         [MemberData(nameof(Data_IsOfNumericType_Untyped))]
-        protected void IsOfNumericType_WorksCorrectly(object o, bool shouldBeNumeric)
+        protected void IsOfNumericType_WorksCorrectly(object o, bool shouldBeNumeric = true, params object[] otherParameters)
         {
             Console.WriteLine("Checking whether the specified object is of numeric type.");
             Console.WriteLine($"Object checked: {o}, type: {o?.GetType().Name ?? "<null>"}, should be numeric: {shouldBeNumeric}");
-            bool isNumeric = UtilTypes.IsOfNumericType(o);
+            if (otherParameters == null)
+            {
+                Console.WriteLine("Other parameters: null");
+            }
+            else
+            { Console.WriteLine($"Number of other parameters: {otherParameters.Length}"); }
+                bool isNumeric = UtilTypes.IsOfNumericType(o);
             Console.WriteLine($"Returned from {nameof(UtilTypes.IsNumericType)}: {isNumeric}");
             isNumeric.Should().Be(shouldBeNumeric, because: $"this object is {(isNumeric ? "" : "NOT")} of numeric type.");
         }
