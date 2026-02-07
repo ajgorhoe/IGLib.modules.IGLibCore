@@ -3,6 +3,10 @@
 
 This project contains some **example tests**. You can look up the project to see how to do certain things in test projects. In particular, *[ExampleTestClass.cs](./ExampleTestClass.cs)* shows how to create tests with parameters, either with cased where input data that can be specified with constant expressions, or cases where this is not possible.
 
+**Table of Contents**:
+
+* [Using Loggers in Tests](#using-loggers-in-tests) discribes how one can test classes that log information, and provides information on alternatives to `Divergic.Logging.Xunit`, which is now deprecated
+
 ## Using Loggers in Tests
 
 We have used *`Divergic.Logging.Xunit`*, which is now **deprecated**. There is a **replacement and several alternative approaches**.
@@ -72,7 +76,7 @@ Same pattern works with the new package (`Neovolve.Logging.Xunit`). ([NuGet][2])
 
 If you don’t want to use `Neovolve.Logging.Xunit`, there are *other packages* that fulfill similar roles:
 
-#### ➤ MicrosoftExtensions.Logging.Xunit
+#### MicrosoftExtensions.Logging.Xunit
 
 * Provides an `ILogger` implementation backed by `ITestOutputHelper`
 * Works by forwarding logs to xUnit test output
@@ -114,7 +118,7 @@ public class MyTests
 
 ---
 
-### 🧾 Using loggers in xUnit tests in general
+### Using loggers in xUnit tests in general
 
 Yes — it *is* possible and common to use loggers in xUnit tests. There are three typical patterns:
 
