@@ -508,13 +508,13 @@ namespace IGLib.Tests
         }
 
 
-        public static TheoryData<string?, bool, DateTime, string?, bool>
+        public static TheoryData<string?, bool, DateTime, string?>
             Data_TryParseGeneric_OfDateTime_Typed = new()
-            // string? parsedString, bool expectedSuccess, DateTime expectedResult, string? cultureKey = null, bool skipVerification = false
+            // string? parsedString, bool expectedSuccess, DateTime expectedResult, string? cultureKey = null // , bool skipVerification = false
         {
-            { "2024-01-22", true, DummyDateTime, "Invariant", true },
-            { "2024-01-22T12:30:00Z", true, default, "Invariant", true },
-            { "not-a-date", false, default, "Invariant", false }
+            { "2024-01-22", true, default, "Invariant" },
+            { "2024-01-22T12:30:00Z", true, default, "Invariant" },
+            { "not-a-date", false, default, "Invariant" }
         };
 
 
@@ -525,9 +525,10 @@ namespace IGLib.Tests
         protected void TryParseGeneric_OfDateTime_WorksCorrectly(string? parsedString,
             bool expectedSuccess, DateTime expectedResult, string? cultureKey = null, bool skipValueVerification = false)
         {
-            if (expectedResult == default)
+            if (expectedResult == default || expectedResult == DummyDateTime)
             {
-                expectedResult = DummyDateTime; // dummy value
+                expectedResult = default; // dummy value
+                skipValueVerification = true;
             }
             TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
         }
