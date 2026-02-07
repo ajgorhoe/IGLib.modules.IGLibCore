@@ -494,7 +494,7 @@ namespace IGLib.Tests
 
         // PARSING DATETIME:
 
-        protected DateTime DummyDateTime { get; } = new DateTime(1500, 6, 30);
+        protected static DateTime DummyDateTime { get; } = new DateTime(1500, 6, 30);
 
         [Theory]
         [InlineData("2024-01-22", true, "Invariant")]
@@ -506,6 +506,17 @@ namespace IGLib.Tests
             DateTime expectedResult = DummyDateTime; // dummy value
             TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification: true);
         }
+
+
+        public static TheoryData<string?, bool, DateTime, string?, bool>
+            Data_TryParseGeneric_OfDateTime_Typed = new()
+            // string? parsedString, bool expectedSuccess, DateTime expectedResult, string? cultureKey = null, bool skipVerification = false
+        {
+            { "2024-01-22", true, DummyDateTime, "Invariant", true },
+            { "2024-01-22T12:30:00Z", true, default, "Invariant", true },
+            { "not-a-date", false, default, "Invariant", false }
+        };
+
 
         [Theory]
         [InlineData("2024-01-22", true, default, "Invariant", true)]
@@ -524,7 +535,7 @@ namespace IGLib.Tests
 
         // PARSING DATETIMEOFFSET:
 
-        protected DateTimeOffset DummyDateTimeOffset = 
+        protected static DateTimeOffset DummyDateTimeOffset = 
             new DateTimeOffset(new DateTime(1500, 6, 30), new TimeSpan(-6, 0, 0));  // DateTimeOffset.Now; // new 
 
         [Theory]
