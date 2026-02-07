@@ -512,7 +512,7 @@ namespace IGLib.Tests
             Data_TryParseGeneric_OfDateTime_Typed = new()
             // string? parsedString, bool expectedSuccess, DateTime expectedResult, string? cultureKey = null // , bool skipVerification = false
         {
-            { "2024-01-22", true, default, "Invariant" },
+            { "2024-01-22", true, new DateTime(2024, 01, 22, 01, 00, 00), "Invariant" },
             { "2024-01-22T12:30:00Z", true, default, "Invariant" },
             { "not-a-date", false, default, "Invariant" }
         };
