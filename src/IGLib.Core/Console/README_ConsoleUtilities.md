@@ -17,7 +17,6 @@ See also:
 
 ## Details on Provided Utilities
 
-
 ## Where to Find Advanced Console UI and Other Libraries
 
 Utilities provided here are very basic and **do not** provide rendering graphical user interfaces (GUIs) using system's console. We don't intend to support building GUI-like applications using console, our view is that proper GUI frameworks should be used for this purpose such as `WinForms` or `WPF` (MS Windows-only) or `Avalonia` or `MAUI` (cross-platform). Utilities provided here just provide some helpers for plain console use but using console abstractions rather than directly using the static `Sysem.Console` class.
@@ -27,8 +26,4 @@ If you ned libraries for rendering advanced console UI or other advanced console
 * [Terminal.Gui](https://github.com/gui-cs/Terminal.Gui) - a library for creating advanced graphical user interfaces (GUI) using only console
 * [Spectre.Console](https://github.com/spectreconsole/spectre.console) - another library for advanced GUIs using console
 * [A list of console libraries for .NET](https://github.com/goblinfactory/konsole?tab=readme-ov-file#other-net-console-libraries)
-
-
-
-
 

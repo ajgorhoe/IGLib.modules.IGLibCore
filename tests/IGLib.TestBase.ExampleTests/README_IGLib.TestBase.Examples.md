@@ -5,7 +5,8 @@ This project contains some **example tests**. You can look up the project to see
 
 **Table of Contents**:
 
-* [Using Loggers in Tests](#using-loggers-in-tests) discribes how one can test classes that log information, and provides information on alternatives to `Divergic.Logging.Xunit`, which is now deprecated
+* [Using Loggers in Tests](#using-loggers-in-tests) describes how one can test classes that log information, and provides information on alternatives to `Divergic.Logging.Xunit`, which is now deprecated
+  * [Using loggers in xUnit tests in general](#using-loggers-in-xunit-tests-in-general)
 
 ## Using Loggers in Tests
 
