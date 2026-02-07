@@ -10,17 +10,26 @@ namespace IGLib
     public static class ParsingUtils
     {
 
-        #region Constants
+        #region ConstantsAndSuppostingMethods
 
 
+        /// <summary>A set of boolean strings that are parsed to true.</summary>
         public static string[] BooleanTrueStrings { get; internal set; } = ["true", "1", "yes", "y"];
 
+        /// <summary>A set of boolean strings that are parsed to false.</summary>
         public static string[] BooleanFalseStrings { get; internal set; } = ["false", "0", "no", "n"];
 
+        /// <summary>Whether or not strings from <see cref="BooleanTrueStrings"/> and <see cref="BooleanFalseStrings"/> 
+        /// are case sensitive.</summary>
         public static bool IsBooleanStringsCaseSensitive { get; internal set; } = false;
 
+        /// <summary>Whether any nonzero integer is accepted as boolean true. In fact, when true, long inetgers
+        /// (class<see cref="Int64"/> are alse parsed to determine whether a string is an integer representation
+        /// of boolean - 0 for false and any non-zero (including negative) value for true.</summary>
         public static bool IsBooleanAnyIntegerAccepted { get; internal set; } = true;
 
+        /// <summary>Returns a boolean indiicating hether the specified string <paramref name="inputString"/> 
+        /// is contained in <see cref="BooleanTrueStrings"/>.</summary>
         public static bool IsTruePredefinedString(string? inputString)
         {
             if (string.IsNullOrEmpty(inputString))
@@ -44,6 +53,8 @@ namespace IGLib
             return false;
         }
 
+        /// <summary>Returns a boolean indicating hether the specified string <paramref name="inputString"/> 
+        /// is contained in <see cref="BooleanFalseStrings"/>.</summary>
         public static bool IsFalsePredefinedString(string? inputString)
         {
             if (string.IsNullOrEmpty(inputString))
@@ -69,7 +80,8 @@ namespace IGLib
 
 
 
-        #endregion Constants
+        #endregion ConstantsAndSuppostingMethods
+
 
         #region ParsingBasicTypesGeneric
 
