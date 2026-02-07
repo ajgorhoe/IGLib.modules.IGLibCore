@@ -179,11 +179,13 @@ namespace IGLib.Tests.Base
         }
 
 
-        // Datasets that provide test parameters can be defined via public static properties of type
-        // TheoryData<T1, T2, T3, ...>, which provides strongly typed sets:
+        // Datasets that provide test parameters can be defined via public static properties
+        // or fields of type IENumerable< TheoryData<T1, T2, T3, ...> >, which provides
+        // strongly typed sets, or via untyped public static properties or fields of type
+        // IEnumerable<object[]>:
 
-        /// <summary>Public static property of type <see cref="TheoryData{object, bool}"/> that defines
-        /// strongly typed parameter sets for tests.</summary>
+        /// <summary>Public static property or field of type <see cref="TheoryData{object, bool}"/> 
+        /// that defines strongly typed parameter sets for tests.</summary>
         public static TheoryData<object, bool> Data_IsOfNumericType_Typed => new()
         {
             { new DateTime(2024, 12, 28), false },
@@ -193,9 +195,9 @@ namespace IGLib.Tests.Base
             { (ushort?) 158, true }
         };
 
-        /// <summary>Public static property of type <see cref="IEnumerable{object[]}"/> that defines non-tped
+        /// <summary>Public static property or field  of type <see cref="IEnumerable{object[]}"/> that defines non-tped
         /// parameter sets for tests.</summary>
-        public static IEnumerable<object[]> Data_IsOfNumericType_Untyped { get; } =
+        public static IEnumerable<object[]> Data_IsOfNumericType_Untyped =
             [
                  [new DateTime(1901, 3, 25), false],
                  [999.99m, true],
@@ -228,6 +230,7 @@ namespace IGLib.Tests.Base
             Console.WriteLine($"Returned from {nameof(UtilTypes.IsNumericType)}: {isNumeric}");
             isNumeric.Should().Be(shouldBeNumeric, because: $"this object is {(isNumeric ? "" : "NOT")} of numeric type.");
         }
+
 
 
         // Datasets for tests defined by static public methods returning IEnumerable<object[]>:
