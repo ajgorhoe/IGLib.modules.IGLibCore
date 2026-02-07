@@ -46,6 +46,108 @@ namespace IGLib.Tests
         }
 
 
+        // PARSING INT:
+
+        [Theory]
+        [InlineData("2,147,483,647", true, int.MaxValue)]
+        [InlineData("-2,147,483,648", true, int.MinValue)]
+        [InlineData("2,147,483,648", false, 0)]  // overflow
+        [InlineData("-2,147,483,649", false, 0)]  // underflow
+        [InlineData("+123", true, 123, null)]
+        [InlineData("-123", true, -123, null)]
+        [InlineData("  123  ", true, 123, null)]
+
+        // Different cultures:
+        [InlineData("1,234", true, 1234, "en-US")]
+        [InlineData("1.234", true, 1234, "de-DE")]
+        [InlineData("1,234", false, 0, "de-DE")]
+        [InlineData("1.234", false, 0, "en-US")]
+        [InlineData("2,147,483,647", true, int.MaxValue, "en-US")]
+        [InlineData("2,147,483,648", false, 0, "en-US")]  // overflow
+
+        // Things that don't work:
+        [InlineData("1_234", false, 0, null)]  // digit separator is not allowed
+        [InlineData("12.34", false, 0, null)]  // decimal separator cannot be used for integers
+
+        protected void TryParseSpecific_OfInt_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, int expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+        {
+            // Arrange:
+            IFormatProvider formatProvider = GetFormatProvider(cultureKey);
+            Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
+            Console.WriteLine($"  Parsing string:   '{parsedString}'");
+            Console.WriteLine($"  Should be parsed: {expectedSuccess}");
+            Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
+            if (expectedSuccess && !skipValueVerification)
+            {
+                Console.WriteLine($"  Expected result: {expectedResult}");
+            }
+            else if (skipValueVerification)
+            {
+                Console.WriteLine("  Value verificattion will be skipped (correct expected value not provided).");
+            }
+            // Act:
+            int parseResult;
+            bool wasParsed = TryParse<int>(parsedString!, out parseResult, formatProvider);
+            if (wasParsed)
+            {
+                Console.WriteLine($"Value was successfully parsed from input string.");
+                Console.WriteLine($"  Parsed result: {parseResult}");
+            }
+            else
+            {
+                Console.WriteLine($"Value COULD NOT BE PARSED from input string.");
+            }
+            // Assert:
+            wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
+            if (expectedSuccess && !skipValueVerification)
+            {
+                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
+            }
+
+        }
+
+        protected void TryParse_WorksCorrectly_Base1<ValueType>(string? parsedString,
+    bool expectedSuccess, ValueType expectedResult, string? cultureKey, bool skipValueVerification = false)
+    where ValueType : struct
+        {
+            // Arrange:
+            IFormatProvider formatProvider = GetFormatProvider(cultureKey);
+            Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
+            Console.WriteLine($"  Parsing string:   '{parsedString}'");
+            Console.WriteLine($"  Should be parsed: {expectedSuccess}");
+            Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
+            if (expectedSuccess && !skipValueVerification)
+            {
+                Console.WriteLine($"  Expected result: {expectedResult}");
+            }
+            else if (skipValueVerification)
+            {
+                Console.WriteLine("  Value verificattion will be skipped (correct expected value not provided).");
+            }
+            // Act:
+            ValueType parseResult;
+            bool wasParsed = TryParse<ValueType>(parsedString!, out parseResult, formatProvider);
+            if (wasParsed)
+            {
+                Console.WriteLine($"Value was successfully parsed from input string.");
+                Console.WriteLine($"  Parsed result: {parseResult}");
+            }
+            else
+            {
+                Console.WriteLine($"Value COULD NOT BE PARSED from input string.");
+            }
+            // Assert:
+            wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
+            if (expectedSuccess && !skipValueVerification)
+            {
+                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
+            }
+        }
+
+
+
+
         #region SpecificParseTests
 
 
