@@ -496,18 +496,6 @@ namespace IGLib.Tests
 
         protected static DateTime DummyDateTime { get; } = new DateTime(1500, 6, 30);
 
-        [Theory]
-        [InlineData("2024-01-22", true, "Invariant")]
-        [InlineData("2024-01-22T12:30:00Z", true, "Invariant")]
-        [InlineData("not-a-date", false, "Invariant")]
-        protected void TryParseGeneric_OfDateTime_WorksCorrectly_Reduced(string? parsedString,
-            bool expectedSuccess, string? cultureKey = null)
-        {
-            DateTime expectedResult = DummyDateTime; // dummy value
-            TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification: true);
-        }
-
-
         public static TheoryData<string?, bool, DateTime, string?>
             Data_TryParseGeneric_OfDateTime_Typed = new()
             // string? parsedString, bool expectedSuccess, DateTime expectedResult, string? cultureKey = null // , bool skipVerification = false
@@ -516,6 +504,7 @@ namespace IGLib.Tests
             { "2024-01-22T12:30:00Z", true, default, "Invariant" },
             { "not-a-date", false, default, "Invariant" }
         };
+
 
 
         [Theory]
@@ -535,6 +524,26 @@ namespace IGLib.Tests
             }
             TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification);
         }
+
+        /// <summary>This reduced test method skips verification of correctness of parsed value, 
+        /// and just verifies whether the value can be parsed or not. This is what can be done 
+        /// with [InlineData(...)] attributes alone. For mor eadvanced variant, use the
+        /// <see cref="TryParseGeneric_OfDateTime_WorksCorrectly"/> method with the [MemberData()]
+        /// attributes and data defined as public static properties or fields.</summary>
+        /// <param name="parsedString"></param>
+        /// <param name="expectedSuccess"></param>
+        /// <param name="cultureKey"></param>
+        [Theory]
+        [InlineData("2024-01-22", true, "Invariant")]
+        [InlineData("2024-01-22T12:30:00Z", true, "Invariant")]
+        [InlineData("not-a-date", false, "Invariant")]
+        protected void TryParseGeneric_OfDateTime_WorksCorrectly_Reduced(string? parsedString,
+            bool expectedSuccess, string? cultureKey = null)
+        {
+            DateTime expectedResult = DummyDateTime; // dummy value
+            TryParse_WorksCorrectly_Base<DateTime>(parsedString, expectedSuccess, expectedResult, cultureKey, skipValueVerification: true);
+        }
+
 
 
         // PARSING DATETIMEOFFSET:
