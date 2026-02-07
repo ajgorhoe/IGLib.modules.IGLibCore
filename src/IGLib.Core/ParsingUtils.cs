@@ -13,6 +13,20 @@ namespace IGLib
         #region ConstantsAndSuppostingMethods
 
 
+        public static IFormatProvider GetFormatProvider(string? cultureKey = null)
+        {
+            return cultureKey switch
+            {
+                null => CultureInfo.InvariantCulture,
+                "" => CultureInfo.InvariantCulture,
+                "Invariant" => CultureInfo.InvariantCulture,
+                "Current" => CultureInfo.CurrentCulture,
+                "CurrentUI" => CultureInfo.CurrentUICulture,
+                _ => new CultureInfo(cultureKey!)
+            };
+        }
+
+
         /// <summary>A set of boolean strings that are parsed to true.</summary>
         public static string[] BooleanTrueStrings { get; internal set; } = ["true", "1", "yes", "y"];
 

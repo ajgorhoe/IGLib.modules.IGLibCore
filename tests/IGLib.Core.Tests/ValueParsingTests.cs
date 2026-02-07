@@ -32,19 +32,6 @@ namespace IGLib.Tests
         }
 
 
-        IFormatProvider GetFormatProvider(string? cultureKey = null)
-        {
-            return cultureKey switch
-            {
-                null => CultureInfo.InvariantCulture,
-                "" => CultureInfo.InvariantCulture,
-                "Invariant" => CultureInfo.InvariantCulture,
-                "Current" => CultureInfo.CurrentCulture,
-                "CurrentUI" => CultureInfo.CurrentUICulture,
-                _ => new CultureInfo(cultureKey!)
-            };
-        }
-
 
         // PARSING INT:
 
@@ -108,8 +95,8 @@ namespace IGLib.Tests
         }
 
         protected void TryParse_WorksCorrectly_Base1<ValueType>(string? parsedString,
-    bool expectedSuccess, ValueType expectedResult, string? cultureKey, bool skipValueVerification = false)
-    where ValueType : struct
+            bool expectedSuccess, ValueType expectedResult, string? cultureKey, bool skipValueVerification = false)
+            where ValueType : struct
         {
             // Arrange:
             IFormatProvider formatProvider = GetFormatProvider(cultureKey);
