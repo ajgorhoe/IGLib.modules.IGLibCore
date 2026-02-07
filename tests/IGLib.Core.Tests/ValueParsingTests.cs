@@ -64,6 +64,11 @@ namespace IGLib.Tests
             return TryParse<double>(str, out valueVariable, formatProvider);
         }
 
+        public static bool TryPrse(string str, out bool valueVariable, IFormatProvider? formatProvider = null)
+        {
+            return TryParse<bool>(str, out valueVariable, formatProvider);
+        }
+
         #endregion SpecificParseTests
 
 
