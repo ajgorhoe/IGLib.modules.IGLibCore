@@ -522,6 +522,9 @@ namespace IGLib.Tests
         [InlineData("2024-01-22", true, default, "Invariant", true)]
         [InlineData("2024-01-22T12:30:00Z", true, default, "Invariant", true)]
         [InlineData("not-a-date", false, default)]
+
+        [MemberData(nameof(Data_TryParseGeneric_OfDateTime_Typed))]
+
         protected void TryParseGeneric_OfDateTime_WorksCorrectly(string? parsedString,
             bool expectedSuccess, DateTime expectedResult, string? cultureKey = null, bool skipValueVerification = false)
         {
