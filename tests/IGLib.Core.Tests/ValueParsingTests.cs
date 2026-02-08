@@ -325,6 +325,136 @@ namespace IGLib.Tests
 
 
 
+
+
+        // PARING BOOLEAN:
+
+        /// <summary>See <see cref="TryParse_WorksCorrectly_Base{ValueType}(string?, bool, ValueType)"/></summary>
+        [Theory]
+        // Basic results from bool.Parse:
+        [InlineData("true", true, true)]
+        [InlineData("false", true, false)]
+        // trailing and leading spaces are ignored with "true" / "false":
+        [InlineData(" true  ", true, true)]
+        [InlineData("  false ", true, false)]
+        [InlineData("true  ", true, true)]
+        [InlineData("  false", true, false)]
+        // case doesn't matter with "true" / "false":
+        [InlineData("tRuE", true, true)]
+        [InlineData("falSE", true, false)]
+        [InlineData(" tRuE  ", true, true)]
+        [InlineData("  FAlse ", true, false)]
+        [InlineData("trUe  ", true, true)]
+        [InlineData("  faLSe", true, false)]
+
+        // Results from predefined strings that are also parsed to true or false:
+        [InlineData("yes", true, true)]
+        [InlineData("no", true, false)]
+        [InlineData("y", true, true)]
+        [InlineData("n", true, false)]
+        [InlineData("1", true, true)]
+        [InlineData("0", true, false)]
+        // trailing and leading spaces with predefined strings:
+        [InlineData("  yes", true, true)]
+        [InlineData("no  ", true, false)]
+        [InlineData("   yes  ", true, true)]
+        [InlineData("  no   ", true, false)]
+        [InlineData("  y", true, true)]
+        [InlineData("n  ", true, false)]
+        [InlineData("  y    ", true, true)]
+        [InlineData("    n  ", true, false)]
+        // case with leading predefined strings:
+        [InlineData("Yes", true, true)]
+        [InlineData("No", true, false)]
+        [InlineData("YES", true, true)]
+        [InlineData("NO", true, false)]
+        [InlineData("  Yes", true, true)]
+        [InlineData("NO  ", true, false)]
+        [InlineData("   yES  ", true, true)]
+        [InlineData("  nO   ", true, false)]
+        [InlineData("  Y", true, true)]
+        [InlineData("N  ", true, false)]
+        [InlineData("  Y    ", true, true)]
+        [InlineData("    N  ", true, false)]
+
+        // Results from strings represention of integer values (non-zero, which map to True):
+        [InlineData("2", true, true)]
+        [InlineData("48943953", true, true)]
+        [InlineData("-2", true, true)]         // negative long values also work
+        [InlineData("-48943953", true, true)]
+        [InlineData("9223372036854775807", true, true)]  // long.MaxValue works
+        [InlineData("-9223372036854775808", true, true)]  // long.MinValue works
+        // leading and trailing spaces are ignored with integer representations:
+        [InlineData("2  ", true, true)]
+        [InlineData("48943953  ", true, true)]
+        [InlineData("  -2  ", true, true)]         // negative long values also work
+        [InlineData("   -48943953", true, true)]
+
+        // What is not working as integer representation parsable to bool:
+        [InlineData("9223372036854775808", false, true)]  // long overflow - NOT SUPPORTED
+        [InlineData("-9223372036854775809", false, true)]  // negative long overflow - NOT SUPPORTED
+        [InlineData("a8f9", false, true)]  // hexadecimal representation without a prefix is NOT SUPORTED
+        [InlineData("0xa8f9", false, true)]  // hexadecimal representation with 0x prefix is also NOT SUPORTED
+        [InlineData("9,223,372", false, true)]  // numbers with thousand separators are NOT SUPPORTED
+        [InlineData("-9,223,372", false, true)]  // negative numbers with thousand separators are NOT SUPPORTED
+        // digit separators are not allowed:
+        [InlineData("48_943_953", false, true)]
+        [InlineData("48,943,953", false, true)]
+        // null and empty string:
+        [InlineData(null, false, true)]
+        [InlineData("", false, true)]
+
+        protected void TryParseSpecific_OfBool_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, bool expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+#if UseNestedCallsInSpecificParsingTests
+        {
+            TryParseSpecific_OfBool_WorksCorrectly_Base(parsedString,
+                expectedSuccess, expectedResult, cultureKey, skipValueVerification);
+        }
+
+        protected void TryParseSpecific_OfBool_WorksCorrectly_Base(string? parsedString,
+            bool expectedSuccess, bool expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+#endif
+        {
+            // Arrange:
+            IFormatProvider formatProvider = GetFormatProvider(cultureKey);
+            Console.WriteLine($"Testing the specific TryParse method for type {typeof(ValueType).Name}.");
+            Console.WriteLine($"  Parsing string:   '{parsedString}'");
+            Console.WriteLine($"  Should be parsed: {expectedSuccess}");
+            Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
+            if (expectedSuccess && !skipValueVerification)
+            {
+                Console.WriteLine($"  Expected result: {expectedResult}");
+            }
+            else if (skipValueVerification)
+            {
+                Console.WriteLine("  Value verificattion will be skipped (correct expected value not provided).");
+            }
+            // Act:
+            bool parseResult;
+            bool wasParsed = TryParse<bool>(parsedString!, out parseResult, formatProvider);
+            if (wasParsed)
+            {
+                Console.WriteLine($"Value was successfully parsed from input string.");
+                Console.WriteLine($"  Parsed result: {parseResult}");
+            }
+            else
+            {
+                Console.WriteLine($"Value COULD NOT BE PARSED from input string.");
+            }
+            // Assert:
+            wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
+            if (expectedSuccess && !skipValueVerification)
+            {
+                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
+            }
+        }
+
+
+
+
+
+
 #endif // if UseSpecificParsingTests
 
         #endregion SpecificParseTests
@@ -875,13 +1005,6 @@ namespace IGLib.Tests
 
 
 
-        #region Specific TryParseTests
-
-        // TODO: Tests for specific methods should be added here when these methods are implemented.
-
-
-
-        #endregion Specific TryParseTests
 
 
 
