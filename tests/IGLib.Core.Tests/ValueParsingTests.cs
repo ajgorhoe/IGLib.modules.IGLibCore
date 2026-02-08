@@ -1,8 +1,14 @@
 ﻿
 
 
+// Defines whether parsing tests for specific types are used (beside the generic tests).
+// These tests are redundant but may be used such that tests are detected correctly by CodeLense.
+#define UseSpecificParsingTests
+
 // When switched on, tests are delegated to a base meethod:
-// #define UseBaseMethodInSpecificTests
+// This is to test effects on test detection. As of Feb 7 2026, CodeLens in VS
+// does not detect tests if called via nested call to a base method form the test method
+//#define UseNestedCallsInSpecificParsingTests
 
 
 // #nullable disable
@@ -39,6 +45,35 @@ namespace IGLib.Tests
 
 
 
+
+
+        #region SpecificParseTests
+
+#if UseSpecificParsingTests
+
+        public static bool TryPrse(string str, out int valueVariable, IFormatProvider? formatProvider = null)
+        {
+            return TryParse<int>(str, out valueVariable, formatProvider);
+        }
+
+        public static bool TryPrse(string str, out long valueVariable, IFormatProvider? formatProvider = null)
+        {
+            return TryParse<long>(str, out valueVariable, formatProvider);
+        }
+
+        public static bool TryPrse(string str, out double valueVariable, IFormatProvider? formatProvider = null)
+        {
+            return TryParse<double>(str, out valueVariable, formatProvider);
+        }
+
+        public static bool TryPrse(string str, out bool valueVariable, IFormatProvider? formatProvider = null)
+        {
+            return TryParse<bool>(str, out valueVariable, formatProvider);
+        }
+
+
+
+
         // PARSING INT:
 
         [Theory]
@@ -64,7 +99,7 @@ namespace IGLib.Tests
 
         protected void TryParseSpecific_OfInt_WorksCorrectly(string? parsedString,
             bool expectedSuccess, int expectedResult, string? cultureKey = null, bool skipValueVerification = false)
-#if UseBaseMethodInSpecificTests
+#if UseNestedCallsInSpecificParsingTests
         {
             TryParseSpecific_OfInt_WorksCorrectly_Base(parsedString, 
                 expectedSuccess, expectedResult, cultureKey, skipValueVerification);
@@ -149,30 +184,8 @@ namespace IGLib.Tests
 
 
 
-
-        #region SpecificParseTests
-
-
-        public static bool TryPrse(string str, out int valueVariable, IFormatProvider? formatProvider = null)
-        {
-            return TryParse<int>(str, out valueVariable, formatProvider);
-        }
-
-        public static bool TryPrse(string str, out long valueVariable, IFormatProvider? formatProvider = null)
-        {
-            return TryParse<long>(str, out valueVariable, formatProvider);
-        }
-
-        public static bool TryPrse(string str, out double valueVariable, IFormatProvider? formatProvider = null)
-        {
-            return TryParse<double>(str, out valueVariable, formatProvider);
-        }
-
-        public static bool TryPrse(string str, out bool valueVariable, IFormatProvider? formatProvider = null)
-        {
-            return TryParse<bool>(str, out valueVariable, formatProvider);
-        }
-
+#endif // if UseSpecificParsingTests
+        
         #endregion SpecificParseTests
 
 
