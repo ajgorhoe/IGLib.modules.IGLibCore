@@ -1,7 +1,7 @@
 
 # Generic Parsing Utilities
 
-This project contains generic parsing utilities to parse strings into various basic types such as numeric integer (`int`, `long`, `uint`, etc.) and floating point types (`float`, `double`, `decimal`), `char`, date and time types (`DateAndTime`, `DateAndTimeOffset`, `DateOnly`, `TimeOnly`) - see the scope below.
+This project contains generic parsing utilities to parse strings into various basic types such as numeric integer (`int`, `long`, `uint`, etc.) and floating point types (`float`, `double`, `decimal`), `char`, `bool`, date and time types (`DateAndTime`, `DateAndTimeOffset`, `DateOnly`, `TimeOnly`) - see the scope below.
 
 These utilities are used to convert user input to supported type, especially console input but also input obtained fom text files or graphical user interfaces.
 
@@ -10,7 +10,7 @@ These utilities are used to convert user input to supported type, especially con
 Signature of the method is
 
 ~~~csharp
-public static bool TryParse<ParsedType>(string str, out ParsedType valueVariable, 
+public static bool TryParse<ParsedType>(string str, out ParsedType result, 
     IFormatProvider? formatProvider = null)
     where ParsedType : struct
 { ... }
@@ -30,6 +30,10 @@ The **type parameter constraint** is `struct` and is very broad, in order to als
 
 ### `TryParse` Parameters and Settings
 
+The method returns `true` if parsing is successful, and false if not.
 
+The first parameter `str` of the `TryParse` method is the string to be parsed.
 
+The second parameter `result` is an `out` parameter that will contain the value of the specific type parsed from the string parameter. If parsing is not successful then default value of the specific type is stored in `result`. Since the **generic type is determined by type of parameter `result`**, it is *not necessary to specify it* explicitly.
 
+The **optional** parameter `formatProvider` can be used to specify the **culture in which the parsed value is represented** in parameter `str`. The only parameter that defines the allowed format of the parsed string `str`. **Default is** `null`, which is translated internally to **[`CultureInfo.InvariantCulture` 🔗](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture)**. This is intentional and by design, in order for parsing with omitted parameter to give the same results on different devices (with different system's regional settings); this makes easier when transferring data between computers via text files, but requires users to explicitly specify the parameter (e.g. as `CultureInfo.CurrentCulture`) when wanting to use the system's regional format. This is somewhat different from the behavior of method overloads like `int.Parse(string, out int)`, which resort to [`CultureInfo.CurrentCulture` 🔗](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.currentculture) when there is no `IFormatProvider` parameter.
