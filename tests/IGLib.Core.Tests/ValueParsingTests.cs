@@ -327,7 +327,7 @@ namespace IGLib.Tests
 
 
 
-        // PARING BOOLEAN:
+        // PARSING BOOLEAN:
 
         /// <summary>See <see cref="TryParse_WorksCorrectly_Base{ValueType}(string?, bool, ValueType)"/></summary>
         [Theory]
@@ -514,7 +514,7 @@ namespace IGLib.Tests
         }
 
 
-        // PARING BOOLEAN:
+        // PARSING BOOLEAN:
 
         /// <summary>See <see cref="TryParse_WorksCorrectly_Base{ValueType}(string?, bool, ValueType)"/></summary>
         [Theory]
