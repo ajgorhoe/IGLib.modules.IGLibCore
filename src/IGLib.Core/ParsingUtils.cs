@@ -228,7 +228,8 @@ namespace IGLib
                             else if (IsBooleanAnyIntegerAccepted)
                             {
                                 long intValue;
-                                bool isInteger = long.TryParse(str, NumberStyles.Integer, formatProvider, out intValue);
+                                bool isInteger = long.TryParse(str, NumberStyles.Integer 
+                                    | NumberStyles.AllowThousands, formatProvider, out intValue);
                                 if (isInteger)
                                 {
                                     temp = (intValue != 0);
