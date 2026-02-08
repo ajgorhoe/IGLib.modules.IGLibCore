@@ -5,7 +5,7 @@ This contains abstractions of the *[System.Console class](https://learn.microsof
 
 See also:
 
-* *[System.Console class](https://learn.microsoft.com/en-us/dotnet/api/system.console)*
+* [System.Console class](https://learn.microsoft.com/en-us/dotnet/api/system.console)*
 
 
 

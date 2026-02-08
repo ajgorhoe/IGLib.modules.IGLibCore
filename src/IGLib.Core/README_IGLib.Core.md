@@ -10,6 +10,10 @@ Code in this project should not use reflection and should not have significant d
 
 * [Additional Information about the Project](#additional-information-about-the-project)
   * [Testing](#testing)
+  * Other documents:
+    * **[Console Abstractions and Console Utilities](./Console/README_Console)**:
+      * [Abstractions](./Console/README_ConsoleAbstractions.md); [Utilities](./Console/README_ConsoleUtilities.md)
+  * []
 * Other:
 * [Repository's README](../../README.md) ([on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md))
   * [About the Repository](../../README.md#about-this-repository---iglibcore)
