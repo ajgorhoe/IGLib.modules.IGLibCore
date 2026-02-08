@@ -389,6 +389,9 @@ namespace IGLib.Tests
         [InlineData("48943953  ", true, true)]
         [InlineData("  -2  ", true, true)]         // negative long values also work
         [InlineData("   -48943953", true, true)]
+        // thousands separators are allowed with intefet representations:
+        [InlineData("4,894,395,356", true, true)]
+        [InlineData("-4,894,395,356", true, true)]
 
         // What is not working as integer representation parsable to bool:
         [InlineData("9223372036854775808", false, true)]  // long overflow - NOT SUPPORTED
