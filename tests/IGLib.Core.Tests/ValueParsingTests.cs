@@ -8,7 +8,7 @@
 // When switched on, tests are delegated to a base meethod:
 // This is to test effects on test detection. As of Feb 7 2026, CodeLens in VS
 // does not detect tests if called via nested call to a base method form the test method
-//#define UseNestedCallsInSpecificParsingTests
+#define UseNestedCallsInSpecificParsingTests
 
 
 // #nullable disable
@@ -140,13 +140,75 @@ namespace IGLib.Tests
             {
                 parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
             }
-
         }
 
 
 
+
+
+        // PARSING LONG:
+
+        [Theory]
+        [InlineData("5356", true, 5356)]
+        [InlineData("-5356", true, -5356)]
+        [InlineData("-5,356", true, -5356)]
+        [InlineData("    -5,356", true, -5356)]
+        [InlineData("    -5,356  ", true, -5356)]
+        [InlineData("-5,356    ", true, -5356)]
+        [InlineData("9,223,372,036,854,775,807", true, long.MaxValue)]
+        [InlineData("-9,223,372,036,854,775,808", true, long.MinValue)]
+        [InlineData("23_736_646", false, 23_736_646)]  // digit separators don't work when parsing values
+        protected void TryParseSpecific_OfLong_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, long expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+#if UseNestedCallsInSpecificParsingTests
+        {
+            TryParseSpecific_OfLong_WorksCorrectly_Base(parsedString, 
+                expectedSuccess, expectedResult, cultureKey, skipValueVerification);
+        }
+
+        protected void TryParseSpecific_OfLong_WorksCorrectly_Base(string? parsedString,
+            bool expectedSuccess, long expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+#endif
+        {
+            // Arrange:
+            IFormatProvider formatProvider = GetFormatProvider(cultureKey);
+            Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
+            Console.WriteLine($"  Parsing string:   '{parsedString}'");
+            Console.WriteLine($"  Should be parsed: {expectedSuccess}");
+            Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
+            if (expectedSuccess && !skipValueVerification)
+            {
+                Console.WriteLine($"  Expected result: {expectedResult}");
+            }
+            else if (skipValueVerification)
+            {
+                Console.WriteLine("  Value verificattion will be skipped (correct expected value not provided).");
+            }
+            // Act:
+            long parseResult;
+            bool wasParsed = TryParse <long>(parsedString!, out parseResult, formatProvider);
+            if (wasParsed)
+            {
+                Console.WriteLine($"Value was successfully parsed from input string.");
+                Console.WriteLine($"  Parsed result: {parseResult}");
+            }
+            else
+            {
+                Console.WriteLine($"Value COULD NOT BE PARSED from input string.");
+            }
+            // Assert:
+            wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
+            if (expectedSuccess && !skipValueVerification)
+            {
+                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
+            }
+        }
+
+
+
+
 #endif // if UseSpecificParsingTests
-        
+
         #endregion SpecificParseTests
 
 
