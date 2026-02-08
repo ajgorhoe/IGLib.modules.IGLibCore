@@ -110,7 +110,7 @@ namespace IGLib.Tests
         {
             // Arrange:
             IFormatProvider formatProvider = GetFormatProvider(cultureKey);
-            Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
+            Console.WriteLine($"Testing the specific TryParse method for type {typeof(ValueType).Name}.");
             Console.WriteLine($"  Parsing string:   '{parsedString}'");
             Console.WriteLine($"  Should be parsed: {expectedSuccess}");
             Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
@@ -172,7 +172,7 @@ namespace IGLib.Tests
         {
             // Arrange:
             IFormatProvider formatProvider = GetFormatProvider(cultureKey);
-            Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
+            Console.WriteLine($"Testing the specific TryParse method for type {typeof(ValueType).Name}.");
             Console.WriteLine($"  Parsing string:   '{parsedString}'");
             Console.WriteLine($"  Should be parsed: {expectedSuccess}");
             Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
@@ -203,6 +203,124 @@ namespace IGLib.Tests
                 parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
             }
         }
+
+
+
+
+
+        // PARSING DOUBLE:
+
+        /// <summary>See <see cref="TryParse_WorksCorrectly_Base{ValueType}(string?, bool, ValueType)"/></summary>
+        [Theory]
+        // Usual decimal forms of inputing double values:
+        [InlineData("0.005452", true, 0.005452)]
+        [InlineData("2.3", true, 2.3)]
+        [InlineData("+2.3", true, +2.3)]
+        [InlineData("-2.3", true, -2.3)]
+        [InlineData("-0.005452", true, -0.005452)]
+        [InlineData("-753987935.005452", true, -753987935.005452)]
+        // thousands separators (commas):
+        [InlineData("-753,987,935.005452", true, -753987935.005452)]
+        [InlineData("27,005,452,213.24e-5", true, 27005452213.24e-5)]
+
+        // Exponential forms of inputing double values:
+        [InlineData("2e3", true, 2000)]
+        [InlineData("2.3e2", true, 230)]
+        [InlineData("2.5e12", true, 2.5e12)]
+        [InlineData("2.5e-6", true, 2.5e-6)]
+        [InlineData("-2.5e12", true, -2.5e12)]
+        [InlineData("-2.5e-6", true, -2.5e-6)]
+        // capitalized exponentisl symbol:
+        [InlineData("2E3", true, 2000)]
+        [InlineData("2.3E2", true, 230)]
+        [InlineData("2.5E-6", true, 2.5e-6)]
+        [InlineData("-2.5E-6", true, -2.5e-6)]
+
+        // Integer forms:
+        [InlineData("24", true, 24)]
+        [InlineData("-5385", true, -5385)]
+        [InlineData("+5385", true, 5385)]
+        // thousands separators (commas):
+        [InlineData("2,347", true, 2347)]
+        [InlineData("-53,858,917", true, -53858917)]
+        [InlineData("+53,858,917", true, 53858917)]
+        // use of thousand separators with different grouping is allowed:
+        [InlineData("-2,87,89", true, -28789)]
+        [InlineData("+2,87,89", true, 28789)]
+
+        //// Overflows should produce positive or negativee infinity:
+        [InlineData("2.7976931348623157E+308", true, double.PositiveInfinity)]
+        [InlineData("1.7976931348623157E+309", true, double.PositiveInfinity)]
+        [InlineData("-2.7976931348623157E+308", true, double.NegativeInfinity)]
+        [InlineData("-1.7976931348623157E+309", true, double.NegativeInfinity)]
+
+        // Things that do not work:
+        // digit separators are not supported:
+        [InlineData("2_825_934_521", false, 2_825_934_521)]
+        [InlineData("-24_521", false, -24_521)]
+
+        // CultureInfo specified (default is gefined by Global.DefaultFormatProvider and should be CultureInfo.InvariantCulture):
+        // decimal separator (`.` vs. `,` in some cultures):
+        [InlineData("3.14", true, 3.14, "en-US")]
+        [InlineData("3,14", true, 3.14, "de-DE")]
+        [InlineData("3,14", true, 314, "en-US")]  // WARNING: , is thousands separator in this culture, risk of errors
+        [InlineData("3.14", true, 314, "de-DE")]  // WARNING: . is thousands separator in this culture, risk of errors
+        [InlineData("3.14", true, 3.14, "Invariant")]
+        // thousands separator (`,` vs. `.` in some cultures):
+        [InlineData("1,234.5", true, 1234.5, "en-US")]
+        [InlineData("1.234,5", true, 1234.5, "de-DE")]
+        // thousand separator after decimal separator creates parsing error:
+        [InlineData("1,234.5", false, 0.0, "de-DE")]  // WARNING: . is thousands separator in this culture, risk of errors
+        [InlineData("1.234,5", false, 0.0, "en-US")]  // WARNING: , is thousands separator in this culture, risk of errors
+
+        protected void TryParseSpecific_OfDouble_WorksCorrectly(string? parsedString,
+            bool expectedSuccess, double expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+#if UseNestedCallsInSpecificParsingTests
+        {
+            TryParseSpecific_OfDouble_WorksCorrectly_Base(parsedString,
+                expectedSuccess, expectedResult, cultureKey, skipValueVerification);
+        }
+
+        protected void TryParseSpecific_OfDouble_WorksCorrectly_Base(string? parsedString,
+            bool expectedSuccess, double expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+#endif
+        {
+            // Arrange:
+            IFormatProvider formatProvider = GetFormatProvider(cultureKey);
+            Console.WriteLine($"Testing the specific TryParse method for type {typeof(ValueType).Name}.");
+            Console.WriteLine($"  Parsing string:   '{parsedString}'");
+            Console.WriteLine($"  Should be parsed: {expectedSuccess}");
+            Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
+            if (expectedSuccess && !skipValueVerification)
+            {
+                Console.WriteLine($"  Expected result: {expectedResult}");
+            }
+            else if (skipValueVerification)
+            {
+                Console.WriteLine("  Value verificattion will be skipped (correct expected value not provided).");
+            }
+            // Act:
+            double parseResult;
+            bool wasParsed = TryParse<double>(parsedString!, out parseResult, formatProvider);
+            if (wasParsed)
+            {
+                Console.WriteLine($"Value was successfully parsed from input string.");
+                Console.WriteLine($"  Parsed result: {parseResult}");
+            }
+            else
+            {
+                Console.WriteLine($"Value COULD NOT BE PARSED from input string.");
+            }
+            // Assert:
+            wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
+            if (expectedSuccess && !skipValueVerification)
+            {
+                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
+            }
+        }
+
+
+
 
 
 
@@ -455,7 +573,7 @@ namespace IGLib.Tests
 
         [Theory]
 
-        // Ovrflow:
+        // Overflow:
         [InlineData("1e28", true, 1e28, null)]
         [InlineData("1e29", false, 0.0, null)] // decimal overflow
 
