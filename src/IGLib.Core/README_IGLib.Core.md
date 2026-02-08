@@ -9,11 +9,11 @@ Code in this project should not use reflection and should not have significant d
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" /></a>
 
 * [Additional Information about the Project](#additional-information-about-the-project)
-  * [Testing](#testing)
   * Other documents:
-    * **[Console Abstractions and Console Utilities](./Console/README_Console)**:
+    * **[Console Abstractions and Console Utilities](./Console/README_Console.md)**:
       * [Abstractions](./Console/README_ConsoleAbstractions.md); [Utilities](./Console/README_ConsoleUtilities.md)
     * [Generic parsing Utilities](./README_ParsingUtilities.md)
+  * [Testing](#testing)
 * Other:
 * [Repository's README](../../README.md) ([on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md))
   * [About the Repository](../../README.md#about-this-repository---iglibcore)
@@ -29,7 +29,7 @@ This library **should not contain complex third-party dependencies**. In particu
 
 For documentation on some of the utilities provided by this library, see other documents, such as:
 
-* **[Console Abstractions and Console Utilities](./Console/README_Console)**:
+* **[Console Abstractions and Console Utilities](./Console/README_Console.md)**:
   * [Abstractions](./Console/README_ConsoleAbstractions.md); [Utilities](./Console/README_ConsoleUtilities.md)
 * [Parsing Utilities](./README_ParsingUtilities.md)
 
