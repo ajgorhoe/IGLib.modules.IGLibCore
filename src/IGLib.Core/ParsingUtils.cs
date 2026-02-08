@@ -201,7 +201,6 @@ namespace IGLib
                         return result;
                     }
 
-
                 // Types char & bool:
                 case TypeCode.Char:  // char
                     {
