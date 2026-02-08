@@ -1,6 +1,10 @@
 ﻿
 
 
+// When switched on, tests are delegated to a base meethod:
+// #define UseBaseMethodInSpecificTests
+
+
 // #nullable disable
 
 using FluentAssertions;
