@@ -144,43 +144,43 @@ namespace IGLib.Tests
 
         }
 
-        protected void TryParse_WorksCorrectly_Base1<ValueType>(string? parsedString,
-            bool expectedSuccess, ValueType expectedResult, string? cultureKey, bool skipValueVerification = false)
-            where ValueType : struct
-        {
-            // Arrange:
-            IFormatProvider formatProvider = GetFormatProvider(cultureKey);
-            Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
-            Console.WriteLine($"  Parsing string:   '{parsedString}'");
-            Console.WriteLine($"  Should be parsed: {expectedSuccess}");
-            Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
-            if (expectedSuccess && !skipValueVerification)
-            {
-                Console.WriteLine($"  Expected result: {expectedResult}");
-            }
-            else if (skipValueVerification)
-            {
-                Console.WriteLine("  Value verificattion will be skipped (correct expected value not provided).");
-            }
-            // Act:
-            ValueType parseResult;
-            bool wasParsed = TryParse<ValueType>(parsedString!, out parseResult, formatProvider);
-            if (wasParsed)
-            {
-                Console.WriteLine($"Value was successfully parsed from input string.");
-                Console.WriteLine($"  Parsed result: {parseResult}");
-            }
-            else
-            {
-                Console.WriteLine($"Value COULD NOT BE PARSED from input string.");
-            }
-            // Assert:
-            wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
-            if (expectedSuccess && !skipValueVerification)
-            {
-                parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
-            }
-        }
+        //protected void TryParse_WorksCorrectly_Base1<ValueType>(string? parsedString,
+        //    bool expectedSuccess, ValueType expectedResult, string? cultureKey, bool skipValueVerification = false)
+        //    where ValueType : struct
+        //{
+        //    // Arrange:
+        //    IFormatProvider formatProvider = GetFormatProvider(cultureKey);
+        //    Console.WriteLine($"Testing the generic TryParse method for type {typeof(ValueType).Name}.");
+        //    Console.WriteLine($"  Parsing string:   '{parsedString}'");
+        //    Console.WriteLine($"  Should be parsed: {expectedSuccess}");
+        //    Console.WriteLine($"  Using format provider: `{formatProvider}`");  // no need to add: (CultureInfo: '{(formatProvider as CultureInfo)?.Name}')
+        //    if (expectedSuccess && !skipValueVerification)
+        //    {
+        //        Console.WriteLine($"  Expected result: {expectedResult}");
+        //    }
+        //    else if (skipValueVerification)
+        //    {
+        //        Console.WriteLine("  Value verificattion will be skipped (correct expected value not provided).");
+        //    }
+        //    // Act:
+        //    ValueType parseResult;
+        //    bool wasParsed = TryParse<ValueType>(parsedString!, out parseResult, formatProvider);
+        //    if (wasParsed)
+        //    {
+        //        Console.WriteLine($"Value was successfully parsed from input string.");
+        //        Console.WriteLine($"  Parsed result: {parseResult}");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine($"Value COULD NOT BE PARSED from input string.");
+        //    }
+        //    // Assert:
+        //    wasParsed.Should().Be(expectedSuccess, because: $"whether the value can be parsed from input string should be: {expectedSuccess}");
+        //    if (expectedSuccess && !skipValueVerification)
+        //    {
+        //        parseResult.Should().Be(expectedResult, because: $"the parsed value should be: {expectedResult}");
+        //    }
+        //}
 
 
 
