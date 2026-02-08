@@ -102,16 +102,16 @@ namespace IGLib
 
         /// <summary>Parses the specified string by the appropriate TryParse method (such as <see cref="double.TryParse(string?, NumberStyles, IFormatProvider?, out double))
         /// selected accoding to the actual type of the <typeparamref name="ParsedType"/> type parameter. If successful, 
-        /// it returns true and assigns the parsed numerical value to <paramref name="valueVariable"/>. 
-        /// <para>Warning: Even if parsing is not successful, <paramref name="valueVariable"/> may change.</para></summary>
-        /// <typeparam name="ParsedType">Type of the value that is parsed from string and assigned to <paramref name="valueVariable"/>.</typeparam>
+        /// it returns true and assigns the parsed numerical value to <paramref name="result"/>. 
+        /// <para>Warning: Even if parsing is not successful, <paramref name="result"/> may change.</para></summary>
+        /// <typeparam name="ParsedType">Type of the value that is parsed from string and assigned to <paramref name="result"/>.</typeparam>
         /// <param name="str">String that is parsed.</param>
-        /// <param name="valueVariable">Referene (variable) that the parsed value is assigned to.</param>
+        /// <param name="result">Referene (variable) that the parsed value is assigned to.</param>
         /// <param name="formatProvider">The <see cref="IFormatProvider"/> used for parsing.</param>
         /// <returns>True if parsing was successful (i.e., the provided <paramref name="str"/> actually corresponds to
         /// a numeric value of type <typeparamref name="ParsedType"/>), false if not.</returns>
         /// <exception cref="ArgumentException">When parsing is not implemented for the specified type.</exception>
-        public static bool TryParse<ParsedType>(string str, out ParsedType valueVariable, IFormatProvider? formatProvider = null)
+        public static bool TryParse<ParsedType>(string str, out ParsedType result, IFormatProvider? formatProvider = null)
             where ParsedType : struct  // , IConvertible
         {
             //value = default;
@@ -124,106 +124,106 @@ namespace IGLib
                 case TypeCode.Byte:  // byte
                     {
                         Byte temp;
-                        bool result = Byte.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = Byte.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case TypeCode.SByte:  // sbyte
                     {
                         SByte temp;
-                        bool result = SByte.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = SByte.TryParse(str, NumberStyles.Integer, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case TypeCode.Int16:  // short
                     {
                         Int16 temp;
-                        bool result = Int16.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = Int16.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case TypeCode.UInt16:  // ushort
                     {
                         UInt16 temp;
-                        bool result = UInt16.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = UInt16.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case TypeCode.Int32:  // int
                     {
                         Int32 temp;
-                        bool result = Int32.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = Int32.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case TypeCode.UInt32:  // uint
                     {
                         UInt32 temp;
-                        bool result = UInt32.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = UInt32.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case TypeCode.Int64:  // long
                     {
                         Int64 temp;
-                        bool result = Int64.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = Int64.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case TypeCode.UInt64:  // uint64
                     {
                         UInt64 temp;
-                        bool result = UInt64.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = UInt64.TryParse(str, NumberStyles.Integer | NumberStyles.AllowThousands, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
 
                 // Floating point types:
                 case TypeCode.Double:  // double
                     {
                         Double temp;
-                        bool result = Double.TryParse(str, NumberStyles.Float | NumberStyles.AllowThousands, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = Double.TryParse(str, NumberStyles.Float | NumberStyles.AllowThousands, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case TypeCode.Single:  // float
                     {
                         Single temp;
-                        bool result = Single.TryParse(str, NumberStyles.Float | NumberStyles.AllowThousands, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = Single.TryParse(str, NumberStyles.Float | NumberStyles.AllowThousands, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case TypeCode.Decimal:  // decimal
                     {
                         Decimal temp;
-                        bool result = Decimal.TryParse(str, NumberStyles.Float | NumberStyles.AllowThousands, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = Decimal.TryParse(str, NumberStyles.Float | NumberStyles.AllowThousands, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
 
                 // Types char & bool:
                 case TypeCode.Char:  // char
                     {
                         Char temp;
-                        bool result = Char.TryParse(str, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = Char.TryParse(str, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case TypeCode.Boolean:  // bool
                     {
                         Boolean temp;
-                        bool result = Boolean.TryParse(str, out temp);
-                        if (!result)
+                        bool success = Boolean.TryParse(str, out temp);
+                        if (!success)
                         {
                             if (IsTruePredefinedString(str))
                             {
                                 temp = true;
-                                result = true;
+                                success = true;
                             }
                             else if (IsFalsePredefinedString(str))
                             {
                                 temp = false;
-                                result = true;
+                                success = true;
                             }
                             else if (IsBooleanAnyIntegerAccepted)
                             {
@@ -233,22 +233,22 @@ namespace IGLib
                                 if (isInteger)
                                 {
                                     temp = (intValue != 0);
-                                    result = true;
+                                    success = true;
                                 }
                             }
                         }
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
 
                 // Date and time types:
                 case TypeCode.DateTime:
                     {
                         DateTime temp;
-                        bool result = DateTime.TryParse(str, formatProvider,
+                        bool success = DateTime.TryParse(str, formatProvider,
                             DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 default:
                     break;
@@ -259,50 +259,50 @@ namespace IGLib
                 case Type t when t == typeof(DateTimeOffset):
                     {
                         DateTimeOffset temp;
-                        bool result = DateTimeOffset.TryParse(str, formatProvider,
+                        bool success = DateTimeOffset.TryParse(str, formatProvider,
                             DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
 #if NET8_0_OR_GREATER
                 case Type t when t == typeof(TimeOnly):
                     {
                         TimeOnly temp;
-                        bool result = TimeOnly.TryParse(str, formatProvider,
+                        bool success = TimeOnly.TryParse(str, formatProvider,
                             DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case Type t when t == typeof(DateOnly):
                     {
                         DateOnly temp;
-                        bool result = DateOnly.TryParse(str, formatProvider,
+                        bool success = DateOnly.TryParse(str, formatProvider,
                             DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
 
                 // Pointer types:
                 case Type t when t == typeof(IntPtr):  // nint
                     {
                         IntPtr temp;
-                        bool result = IntPtr.TryParse(str, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = IntPtr.TryParse(str, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
                 case Type t when t == typeof(UIntPtr):  // unint
                     {
                         UIntPtr temp;
-                        bool result = UIntPtr.TryParse(str, formatProvider, out temp);
-                        valueVariable = (ParsedType)(object)temp;
-                        return result;
+                        bool success = UIntPtr.TryParse(str, formatProvider, out temp);
+                        result = (ParsedType)(object)temp;
+                        return success;
                     }
 #endif
 
                 default:
                     break;
             }
-            throw new NotImplementedException($"Generic {nameof(TryParse)} is not implemented for type of the {nameof(valueVariable)} parameter, {valueType.Name}.");
+            throw new NotImplementedException($"Generic {nameof(TryParse)} is not implemented for type of the {nameof(result)} parameter, {valueType.Name}.");
         }
 
 
