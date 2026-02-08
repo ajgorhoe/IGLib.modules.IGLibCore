@@ -13,7 +13,7 @@ Code in this project should not use reflection and should not have significant d
   * Other documents:
     * **[Console Abstractions and Console Utilities](./Console/README_Console)**:
       * [Abstractions](./Console/README_ConsoleAbstractions.md); [Utilities](./Console/README_ConsoleUtilities.md)
-  * []
+    * [Generic parsing Utilities](./README_ParsingUtilities.md)
 * Other:
 * [Repository's README](../../README.md) ([on GitHub](https://github.com/ajgorhoe/IGLib.modules.IGLibCore/blob/main/README.md))
   * [About the Repository](../../README.md#about-this-repository---iglibcore)
@@ -26,6 +26,12 @@ Code in this project should not use reflection and should not have significant d
 This project is also used in the **[legacy IGLib](https://github.com/ajgorhoe/IGLib.workspace.base.iglib)** (see the [README file](https://github.com/ajgorhoe/IGLib.workspace.base.iglib/blob/master/README.md)), which is still  used in several applications. the project is **required to target both .NET Framework 4.8 and newer Frameworks** such as *.NET 8 and higher* (the latter versions will change as new stable or long term support frameworks arrive), and also supports **.NET Standard** 2.0. Please note that **new C# language features are enabled** via `<LangVersion>latest</LangVersion>` in the project file.
 
 This library **should not contain complex third-party dependencies**. In particular, it should **not rely on code that extensively uses reflection**. This is necessary when one wants to allow *self-contained deployment scenarios where trimming is used*. **Code that** provides generally used core utilities but **does not satisfy these constraints** should be **put to the extended project counterpart, `IGLib.CoreExtended`**.
+
+For documentation on some of the utilities provided by this library, see other documents, such as:
+
+* **[Console Abstractions and Console Utilities](./Console/README_Console)**:
+  * [Abstractions](./Console/README_ConsoleAbstractions.md); [Utilities](./Console/README_ConsoleUtilities.md)
+* [Parsing Utilities](./README_ParsingUtilities.md)
 
 ### Testing
 
