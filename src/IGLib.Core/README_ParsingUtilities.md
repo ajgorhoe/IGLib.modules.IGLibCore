@@ -28,7 +28,7 @@ The method follows similar rules as static `TryParse` methods for simple types i
 
 The **type parameter constraint** is `struct` and is very broad, in order to also include types like `DateTimeOffset`, `TimeOnly`, and `DateOnly`, for which the need to be parsed often appears in the intended applications.
 
-### `TryParse` Parameters and Settings
+### Generic `TryParse` Parameters and Settings
 
 The method returns `true` if parsing is successful, and false if not.
 
@@ -37,3 +37,10 @@ The first parameter `str` of the `TryParse` method is the string to be parsed.
 The second parameter `result` is an `out` parameter that will contain the value of the specific type parsed from the string parameter. If parsing is not successful then default value of the specific type is stored in `result`. Since the **generic type is determined by type of parameter `result`**, it is *not necessary to specify it* explicitly.
 
 The **optional** parameter `formatProvider` can be used to specify the **culture in which the parsed value is represented** in parameter `str`. The only parameter that defines the allowed format of the parsed string `str`. **Default is** `null`, which is translated internally to **[`CultureInfo.InvariantCulture` 🔗](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture)**. This is intentional and by design, in order for parsing with omitted parameter to give the same results on different devices (with different system's regional settings); this makes easier when transferring data between computers via text files, but requires users to explicitly specify the parameter (e.g. as `CultureInfo.CurrentCulture`) when wanting to use the system's regional format. This is somewhat different from the behavior of method overloads like `int.Parse(string, out int)`, which resort to [`CultureInfo.CurrentCulture` 🔗](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.currentculture) when there is no `IFormatProvider` parameter.
+
+Built-in parsing methods for basic types provide overloads with parameters defining **additional formatting information** such as the allowed number styles. The generic `TryParse` method does not provide such overloads, and the **additional formatting information** is fixed in the way that it **allows large variety of familiar input formats**. For example:
+
+* For integral numeric types, the method uses [`NumberStyles.Integer | NumberStyles.AllowThousands` 🔗](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.numberstyles)
+* For floating point numeric types, the method uses `NumberStyles.Float | NumberStyles.AllowThousands`
+
+
