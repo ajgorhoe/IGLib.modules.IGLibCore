@@ -1,4 +1,6 @@
 ﻿
+
+
 // #nullable disable
 
 using FluentAssertions;
@@ -58,6 +60,15 @@ namespace IGLib.Tests
 
         protected void TryParseSpecific_OfInt_WorksCorrectly(string? parsedString,
             bool expectedSuccess, int expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+#if UseBaseMethodInSpecificTests
+        {
+            TryParseSpecific_OfInt_WorksCorrectly_Base(parsedString, 
+                expectedSuccess, expectedResult, cultureKey, skipValueVerification);
+        }
+
+        protected void TryParseSpecific_OfInt_WorksCorrectly_Base(string? parsedString,
+            bool expectedSuccess, int expectedResult, string? cultureKey = null, bool skipValueVerification = false)
+#endif
         {
             // Arrange:
             IFormatProvider formatProvider = GetFormatProvider(cultureKey);
