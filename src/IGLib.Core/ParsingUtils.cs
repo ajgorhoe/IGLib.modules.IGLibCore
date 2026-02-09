@@ -114,8 +114,10 @@ namespace IGLib
         public static bool TryParse<ParsedType>(string str, out ParsedType result, IFormatProvider? formatProvider = null)
             where ParsedType : struct  // , IConvertible
         {
-            //value = default;
-            //return false;
+            if (formatProvider == null)
+            {
+                formatProvider = CultureInfo.InvariantCulture;
+            }
             Type valueType = typeof(ParsedType);
             switch (Type.GetTypeCode(valueType))
             {
