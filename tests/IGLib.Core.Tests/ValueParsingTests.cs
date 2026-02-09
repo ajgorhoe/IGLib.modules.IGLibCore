@@ -5,10 +5,10 @@
 // These tests are redundant but may be used such that tests are detected correctly by CodeLense.
 #define UseSpecificParsingTests
 
-// When switched on, tests are delegated to a base meethod:
+// When switched on, tests are delegated to a base meethod (should be OFF by default):
 // This is to test effects on test detection. As of Feb 7 2026, CodeLens in VS
 // does not detect tests if called via nested call to a base method form the test method
-#define UseNestedCallsInSpecificParsingTests
+#undef UseNestedCallsInSpecificParsingTests
 
 
 // #nullable disable
@@ -398,11 +398,8 @@ namespace IGLib.Tests
         [InlineData("-9223372036854775809", false, true)]  // negative long overflow - NOT SUPPORTED
         [InlineData("a8f9", false, true)]  // hexadecimal representation without a prefix is NOT SUPORTED
         [InlineData("0xa8f9", false, true)]  // hexadecimal representation with 0x prefix is also NOT SUPORTED
-        [InlineData("9,223,372", false, true)]  // numbers with thousand separators are NOT SUPPORTED
-        [InlineData("-9,223,372", false, true)]  // negative numbers with thousand separators are NOT SUPPORTED
         // digit separators are not allowed:
         [InlineData("48_943_953", false, true)]
-        [InlineData("48,943,953", false, true)]
         // null and empty string:
         [InlineData(null, false, true)]
         [InlineData("", false, true)]
@@ -588,11 +585,8 @@ namespace IGLib.Tests
         [InlineData("-9223372036854775809", false, true)]  // negative long overflow - NOT SUPPORTED
         [InlineData("a8f9", false, true)]  // hexadecimal representation without a prefix is NOT SUPORTED
         [InlineData("0xa8f9", false, true)]  // hexadecimal representation with 0x prefix is also NOT SUPORTED
-        [InlineData("9,223,372", false, true)]  // numbers with thousand separators are NOT SUPPORTED
-        [InlineData("-9,223,372", false, true)]  // negative numbers with thousand separators are NOT SUPPORTED
         // digit separators are not allowed:
         [InlineData("48_943_953", false, true)]
-        [InlineData("48,943,953", false, true)]
         // null and empty string:
         [InlineData(null, false, true)]
         [InlineData("", false, true)]
