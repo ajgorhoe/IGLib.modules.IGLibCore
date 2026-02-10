@@ -6,7 +6,9 @@ This is a short guide with explanatory notes on handling date and time in .NET, 
 **Contents**:
 
 * [Links](#links-times-and-dates)
-* 
+* []
+* [Formatting Time and Date Values](#formatting-time-and-date-values)
+  * [Format Providers](#date-and-time-format-providers)
 
 ## Links (Times and Dates)
 
@@ -27,6 +29,11 @@ This is a short guide with explanatory notes on handling date and time in .NET, 
     * 
 
 
+## Formatting Time and Date Values
+
+### Date and Time Format Providers
+
+See also: [DateTime API Remarks / TryParse method](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-datetime-tryparse)
 
 
 ## Auxiliary
