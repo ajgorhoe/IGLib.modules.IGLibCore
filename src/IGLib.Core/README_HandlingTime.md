@@ -25,7 +25,11 @@ This is a short guide with explanatory notes on handling dates and times in .NET
     * [Supplemental API Remarks](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-timespan)
       * [Parse method](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-timespan-parse)
       * [TryParse methods](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-timespan-tryparse)
-  * [TimeOnly]()
+  * [TimeOnly](https://learn.microsoft.com/en-us/dotnet/api/system.timeonly)
+  * [DateOnly](https://learn.microsoft.com/en-us/dotnet/api/system.dateonly)
+  * [TimeZoneInfo](https://learn.microsoft.com/en-us/dotnet/api/system.timezoneinfo)
+  * [TimeZoneInfo](https://learn.microsoft.com/en-us/dotnet/api/system.timezoneinfo)
+  * [TimeProvider](https://learn.microsoft.com/en-us/dotnet/api/system.timeprovider)
   * Format-related types (fot Parse(), TryParse(), ToString()):
     * [IFormatProvider Interface / Remarks](https://learn.microsoft.com/en-us/dotnet/api/system.iformatprovider#remarks) + derived type:
       * [CultureInfo Class](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo)
