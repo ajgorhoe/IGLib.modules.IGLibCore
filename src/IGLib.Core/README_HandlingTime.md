@@ -30,9 +30,11 @@ This is a short guide with explanatory notes on handling dates and times in .NET
   * [TimeOnly](https://learn.microsoft.com/en-us/dotnet/api/system.timeonly)
   * [DateOnly](https://learn.microsoft.com/en-us/dotnet/api/system.dateonly)
   * [TimeZoneInfo](https://learn.microsoft.com/en-us/dotnet/api/system.timezoneinfo)
-  * [TimeZoneInfo](https://learn.microsoft.com/en-us/dotnet/api/system.timezoneinfo)
   * [TimeProvider](https://learn.microsoft.com/en-us/dotnet/api/system.timeprovider)
-  * Format-related types (fot Parse(), TryParse(), ToString()):
+  * [Calendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar) - Represents time in divisions, such as weeks, months, and years. Calculation of year/month/week/day of week, leap years/months/days, addition/subtraction of time intervals, etc.
+    * Examples: [Gregorian calendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.gregoriancalendar), [Julian calendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.juliancalendar), [KoreanLunisolarCalendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.koreanlunisolarcalendar), [ChineseLunisolarCalendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.chineselunisolarcalendar)
+    [Working with calendars](https://learn.microsoft.com/en-us/dotnet/standard/datetime/working-with-calendars)
+  * **Format-related** types (fot Parse(), TryParse(), ToString()):
     * [IFormatProvider Interface / Remarks](https://learn.microsoft.com/en-us/dotnet/api/system.iformatprovider#remarks) + derived type:
       * [CultureInfo Class](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo)
       * [DateTimeFormatInfo Class](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo)
@@ -89,9 +91,9 @@ See also:
 
 ### Gregorian Calendar
 
-[Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) has *average calendar year `365.2425` days long*, compared to `365.2422`-day 'tropical' or *[solar year](https://en.wikipedia.org/wiki/Tropical_year)* determined by the Earth's revolution around the Sun. It replaced [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) with average year of 365.25 days (leap year every 4 years).
+[Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) has *average calendar year `365.2425` days long*, compared to `365.2422`-day 'tropical' or *[solar year](https://en.wikipedia.org/wiki/Tropical_year)* determined by the Earth's revolution around the Sun. It replaced [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) with average year of 365.25 days (leap year every 4 years), starting October 15, 1582 in some Catholic countries by papal decree.
 
-Rule: every year *divisible by four is a leap year*, *except for years that are divisible by 100*, *except in turn for years also divisible by 400*.
+Rules: every year *divisible by four is a leap year*, *except for years that are divisible by 100*, *except in turn for years also divisible by 400*.
 
 See also:
 
