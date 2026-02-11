@@ -32,7 +32,7 @@ This is a short guide with explanatory notes on handling dates and times in .NET
   * [TimeZoneInfo](https://learn.microsoft.com/en-us/dotnet/api/system.timezoneinfo)
   * [TimeProvider](https://learn.microsoft.com/en-us/dotnet/api/system.timeprovider)
   * [Calendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar) - Represents time in divisions, such as weeks, months, and years. Calculation of year/month/week/day of week, leap years/months/days, addition/subtraction of time intervals, etc.
-    * Examples: [Gregorian calendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.gregoriancalendar), [Julian calendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.juliancalendar), [KoreanLunisolarCalendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.koreanlunisolarcalendar), [ChineseLunisolarCalendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.chineselunisolarcalendar)
+    * Examples: [Gregorian calendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.gregoriancalendar), [Julian calendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.juliancalendar), [Hebrew calendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.hebrewcalendar), [KoreanLunisolarCalendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.koreanlunisolarcalendar), [ChineseLunisolarCalendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.chineselunisolarcalendar)
     [Working with calendars](https://learn.microsoft.com/en-us/dotnet/standard/datetime/working-with-calendars)
   * **Format-related** types (fot Parse(), TryParse(), ToString()):
     * [IFormatProvider Interface / Remarks](https://learn.microsoft.com/en-us/dotnet/api/system.iformatprovider#remarks) + derived type:
@@ -43,9 +43,41 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 ## Time Zones and `TimeZoneInfo` class
 
 
-~~~csharp
+Get avd print all time zones defined on computer:
 
+~~~csharp
+using System.Collections.ObjectModel;
+ReadOnlyCollection<TimeZoneInfo> timeZones;
+timeZones = TimeZoneInfo.GetSystemTimeZones();
+foreach (TimeZoneInfo timeZone in timeZones)
+    Console.WriteLine($"   {timeZone.Id}: {timeZone.DisplayName}");
 ~~~
+
+Example partial output:
+
+~~~text
+   Azores Standard Time: (UTC-01:00) Azores
+   Cape Verde Standard Time: (UTC-01:00) Cabo Verde Is.
+   UTC: (UTC) Coordinated Universal Time
+   GMT Standard Time: (UTC+00:00) Dublin, Edinburgh, Lisbon, London
+   Greenwich Standard Time: (UTC+00:00) Monrovia, Reykjavik
+   Sao Tome Standard Time: (UTC+00:00) Sao Tome
+   Morocco Standard Time: (UTC+01:00) Casablanca
+   W. Europe Standard Time: (UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+   Central Europe Standard Time: (UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague
+   Romance Standard Time: (UTC+01:00) Brussels, Copenhagen, Madrid, Paris
+   Central European Standard Time: (UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb
+   W. Central Africa Standard Time: (UTC+01:00) West Central Africa
+   GTB Standard Time: (UTC+02:00) Athens, Bucharest
+   Middle East Standard Time: (UTC+02:00) Beirut
+   Egypt Standard Time: (UTC+02:00) Cairo
+   E. Europe Standard Time: (UTC+02:00) Chisinau
+   West Bank Standard Time: (UTC+02:00) Gaza, Hebron
+   South Africa Standard Time: (UTC+02:00) Harare, Pretoria
+   FLE Standard Time: (UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius
+   Israel Standard Time: (UTC+02:00) Jerusalem
+~~~
+
 
 
 ## Formatting Time and Date Values
