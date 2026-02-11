@@ -77,7 +77,9 @@ If parsed string is the string representation of a leap day in a leap year in th
 See also:
 
 * [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) (Wikipedia)
-* [International Atomic Time (TAI)]() - 
+* [Universal Time (UT1)](https://en.wikipedia.org/wiki/Universal_Time) - a time standard based on Earth's rotation
+* [International Atomic Time (TAI)](https://en.wikipedia.org/wiki/International_Atomic_Time) - high-precision atomic coordinate time standard based on the notional passage of proper time on Earth's geoid, weighted average of many atomic clocks; UTC is based on TAI, via leap seconds
+  * [Leap second](https://en.wikipedia.org/wiki/Leap_second) - a one-second adjustment occasionally applied to (UTC), to accommodate the difference between more precise time (TAI) and imprecise observed solar time (UT1), which varies due to irregularities and long-term slowdown in the Earth's rotation; since 1972, 27 leap seconds have been added to UTC, recently on December 31, 2016
   * [Coordinate time](https://en.wikipedia.org/wiki/Einstein_synchronisation) (Wikipedia)
     * [Einstein synchronization](https://en.wikipedia.org/wiki/Einstein_synchronisation)
     * [Relativity of simultaneity](https://en.wikipedia.org/wiki/Relativity_of_simultaneity)
