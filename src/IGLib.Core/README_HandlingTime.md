@@ -49,9 +49,24 @@ See also:
 
 
 
-## Auxiliary
+
+The [DateTime.TryParse(String, IFormatProvider, DateTimeStyles, DateTime)](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.tryparse#system-datetime-tryparse(system-string-system-iformatprovider-system-globalization-datetimestyles-system-datetime@)) method parses a string that can contain date, time, and time zone information. It is similar to the [DateTime.Parse(String, IFormatProvider, DateTimeStyles)](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.parse#system-datetime-parse(system-string-system-iformatprovider-system-globalization-datetimestyles)) method, except that the [DateTime.TryParse(String, DateTime)](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.tryparse#system-datetime-tryparse(system-string-system-datetime@)) method does not throw an exception if the conversion fails.
+
+This method attempts to ignore unrecognized data and parse the input string (`s`) completely. If `s` contains a time but no date, the method by default substitutes the current date or, if `styles` includes the [NoCurrentDateDefault](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimestyles#system-globalization-datetimestyles-nocurrentdatedefault) flag, it substitutes `DateTime.Date.MinValue`. If `s` contains a date but no time, 12:00 midnight is used as the default time. If a date is present but its year component consists of only two digits, it is converted to a year in the `provider` parameter's current calendar based on the value of the [Calendar.TwoDigitYearMax](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar.twodigityearmax) property. Any leading, inner, or trailing white space characters in `s` are ignored. The date and time can be bracketed with a pair of leading and trailing NUMBER SIGN characters ('#', U+0023), and can be trailed with one or more NULL characters (U+0000).
+
+Specific valid formats for date and time elements, as well as the names and symbols used in dates and times, are defined by the `provider` parameter, which can be any of the following:
+
+-   A [CultureInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo) object that represents the culture whose formatting is used in the `s` parameter. The [DateTimeFormatInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo) object returned by the [CultureInfo.DateTimeFormat](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.datetimeformat) property defines the formatting used in `s`.
+-   A [DateTimeFormatInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo) object that defines the formatting used in `s`.
+-   A custom [IFormatProvider](https://learn.microsoft.com/en-us/dotnet/api/system.iformatprovider) implementation. Its [IFormatProvider.GetFormat](https://learn.microsoft.com/en-us/dotnet/api/system.iformatprovider.getformat) method returns a [DateTimeFormatInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo) object that defines the formatting used in `s`.
+
+If `provider` is `null`, the current culture is used.
+
+
 
 ---
+
+## Auxiliary
 
 ~~~csharp
 
