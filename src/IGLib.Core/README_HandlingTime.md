@@ -5,12 +5,14 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 
 **Contents**:
 
-* [Links](#links-times-and-dates)
+* [Links](#links)
 * []
+* [Time Zones and `TimeZoneInfo` class](#time-zones-and-timezoneinfo-class)
 * [Formatting Time and Date Values](#formatting-time-and-date-values)
   * [Format Providers](#date-and-time-format-providers)
+* About Specifying Times of Events ()
 
-## Links (Times and Dates)
+## Links
 
 * **[Dates, Times, and Time Zones](https://learn.microsoft.com/en-us/dotnet/standard/datetime/)**
 * [DateTimeOffset vs DateTime in C#](https://code-maze.com/csharp-datetimeoffset-vs-datetime/) (CodeMaze)
@@ -36,31 +38,49 @@ This is a short guide with explanatory notes on handling dates and times in .NET
       * [DateTimeFormatInfo Class](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo)
       * [DateTime API Remarks / TryParse method](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-datetime-tryparse)
 
+## Time Zones and `TimeZoneInfo` class
+
+
+~~~csharp
+
+~~~
+
+
 ## Formatting Time and Date Values
 
 ### Date and Time Format Providers
 
 See also:
+
 * [IFormatProvider Interface / Remarks](https://learn.microsoft.com/en-us/dotnet/api/system.iformatprovider#remarks) and **derived types**:
   * [CultureInfo Class](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo)
   * [DateTimeFormatInfo Class](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo)
   * [NumberFormatInfo Class](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.numberformatinfo)
 * [DateTime API Remarks / TryParse method](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-datetime-tryparse)
 
+The [DateTime.TryParse(String, IFormatProvider, DateTimeStyles, DateTime)](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.tryparse#system-datetime-tryparse(system-string-system-iformatprovider-system-globalization-datetimestyles-system-datetime@)) method parses a string that can contain date, time, and time zone information. It is similar to the corresponding `DateTime.Parse()` method, but it does not throw an exception if parsing fails. This method attempts to ignore unrecognized data and parse the input string completely. If the string contains a time but no date, the method by default substitutes the current date or, if `styles` includes the [NoCurrentDateDefault](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimestyles#system-globalization-datetimestyles-nocurrentdatedefault) flag, it substitutes `DateTime.Date.MinValue`. If the string contains a date but no time, 12:00 midnight (0:00) is used as the default time. If a date is present but its year component consists of only two digits, it is converted to a year in the `provider` parameter's current calendar based on the value of the [Calendar.TwoDigitYearMax](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar.twodigityearmax) property. Any leading, inner, or trailing white space characters in the string are ignored. The date and time can be bracketed with a pair of leading and trailing number sign characters ('#', U+0023), and can be trailed with one or more NULL characters (U+0000).
 
+Specific valid formats for date and time elements, as well as the names and symbols used in dates and times, are defined by the `IFormatProvider` parameter, which can be any of the following:
 
+* A [CultureInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo) object that represents the culture whose formatting is used in the input string parameter. The [DateTimeFormatInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo) object returned by the [CultureInfo.DateTimeFormat](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.datetimeformat) property defines the formatting used in the parsed input string.
+* A [DateTimeFormatInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo) object that defines the formatting used in the input string.
+* A custom [IFormatProvider](https://learn.microsoft.com/en-us/dotnet/api/system.iformatprovider) implementation. Its [IFormatProvider.GetFormat](https://learn.microsoft.com/en-us/dotnet/api/system.iformatprovider.getformat) method returns a [DateTimeFormatInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo) object that defines the formatting used in the input string.
 
-The [DateTime.TryParse(String, IFormatProvider, DateTimeStyles, DateTime)](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.tryparse#system-datetime-tryparse(system-string-system-iformatprovider-system-globalization-datetimestyles-system-datetime@)) method parses a string that can contain date, time, and time zone information. It is similar to the [DateTime.Parse(String, IFormatProvider, DateTimeStyles)](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.parse#system-datetime-parse(system-string-system-iformatprovider-system-globalization-datetimestyles)) method, except that the [DateTime.TryParse(String, DateTime)](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.tryparse#system-datetime-tryparse(system-string-system-datetime@)) method does not throw an exception if the conversion fails.
+If `IFormatProvider` is `null`, the current culture is used.
 
-This method attempts to ignore unrecognized data and parse the input string (`s`) completely. If `s` contains a time but no date, the method by default substitutes the current date or, if `styles` includes the [NoCurrentDateDefault](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimestyles#system-globalization-datetimestyles-nocurrentdatedefault) flag, it substitutes `DateTime.Date.MinValue`. If `s` contains a date but no time, 12:00 midnight is used as the default time. If a date is present but its year component consists of only two digits, it is converted to a year in the `provider` parameter's current calendar based on the value of the [Calendar.TwoDigitYearMax](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar.twodigityearmax) property. Any leading, inner, or trailing white space characters in `s` are ignored. The date and time can be bracketed with a pair of leading and trailing NUMBER SIGN characters ('#', U+0023), and can be trailed with one or more NULL characters (U+0000).
+If parsed string is the string representation of a leap day in a leap year in the current calendar, the method parses it successfully. If it represents a leap day in a non-leap year in the current calendar of `provider`, the parse operation fails and the method returns `false`.
 
-Specific valid formats for date and time elements, as well as the names and symbols used in dates and times, are defined by the `provider` parameter, which can be any of the following:
+## About Specifying Times of Events
 
--   A [CultureInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo) object that represents the culture whose formatting is used in the `s` parameter. The [DateTimeFormatInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo) object returned by the [CultureInfo.DateTimeFormat](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.datetimeformat) property defines the formatting used in `s`.
--   A [DateTimeFormatInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo) object that defines the formatting used in `s`.
--   A custom [IFormatProvider](https://learn.microsoft.com/en-us/dotnet/api/system.iformatprovider) implementation. Its [IFormatProvider.GetFormat](https://learn.microsoft.com/en-us/dotnet/api/system.iformatprovider.getformat) method returns a [DateTimeFormatInfo](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo) object that defines the formatting used in `s`.
+### Gregorian Calendar
 
-If `provider` is `null`, the current culture is used.
+See also:
+
+* [Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) (Wikipedia)
+* [Calendar](https://en.wikipedia.org/wiki/Calendar)
+  * [Calendar Epoch](https://en.wikipedia.org/wiki/Epoch)
+  * [Calendar era](https://en.wikipedia.org/wiki/Calendar_era)
+
 
 
 
@@ -68,6 +88,10 @@ If `provider` is `null`, the current culture is used.
 
 ## Auxiliary
 
+---
+
 ~~~csharp
 
 ~~~
+
+---
