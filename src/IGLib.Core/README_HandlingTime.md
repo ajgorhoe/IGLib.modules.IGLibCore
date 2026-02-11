@@ -72,14 +72,25 @@ If parsed string is the string representation of a leap day in a leap year in th
 
 ## About Specifying Times of Events
 
+### Coordinated Universal Time (UTC)
+
+See also:
+
+* [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) (Wikipedia)
+* [International Atomic Time (TAI)]() - 
+  * [Coordinate time](https://en.wikipedia.org/wiki/Einstein_synchronisation) (Wikipedia)
+    * [Einstein synchronization](https://en.wikipedia.org/wiki/Einstein_synchronisation)
+    * [Relativity of simultaneity](https://en.wikipedia.org/wiki/Relativity_of_simultaneity)
+  * [Proper time](https://en.wikipedia.org/wiki/Proper_time) (Wikipedia)
+
 ### Gregorian Calendar
 
 See also:
 
 * [Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) (Wikipedia)
 * [Calendar](https://en.wikipedia.org/wiki/Calendar)
-  * [Calendar Epoch](https://en.wikipedia.org/wiki/Epoch)
-  * [Calendar era](https://en.wikipedia.org/wiki/Calendar_era)
+  * [Calendar Epoch](https://en.wikipedia.org/wiki/Epoch) - an origin of calendar era (there may be more than one)
+  * [Calendar era](https://en.wikipedia.org/wiki/Calendar_era) - a period of time elapsed since one epoch of a calendar
 
 
 
