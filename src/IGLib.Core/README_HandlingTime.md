@@ -42,6 +42,22 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 
 ## Time Zones and `TimeZoneInfo` class
 
+See also:
+
+* [Time zones](https://learn.microsoft.com/en-us/dotnet/standard/datetime/time-zone-overview)
+  * [Use time zones in date and time arithmetic](https://learn.microsoft.com/en-us/dotnet/standard/datetime/use-time-zones-in-arithmetic)
+  * [Converting between DateTime and DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/standard/datetime/converting-between-datetime-and-offset)
+
+To get the local time zone that is set on the current computer:
+
+~~~csharp
+TimeZoneInfo localTimezone = TimeZoneInfo.Local;
+Console.WriteLine($"Local time zone: {localTimezone.Id}: {localTimezone.DisplayName}");
+
+// Example output:
+// Local time zone: Central Europe Standard Time: (UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague
+~~~
+
 
 Example: get and print **all time zones defined on computer**:
 
@@ -83,7 +99,7 @@ Example partial output:
 To obtain all time zones with the specified UTC offset:
 
 ~~~csharp
-List<TimeZoneInfo> GetTimeZoneFromOffset(TimeSpan offset) =>
+public static List<TimeZoneInfo> GetTimeZoneFromOffset(TimeSpan offset) =>
     TimeZoneInfo.GetSystemTimeZones()
     .Where(tz => tz.BaseUtcOffset == offset)
     .ToList();
