@@ -1,7 +1,7 @@
 
 # Handling Times and Dates in .NET
 
-This is a short guide with explanatory notes on handling date and time in .NET,  including types, conversions, time zones, etc.
+This is a short guide with explanatory notes on handling dates and times in .NET,  including types, conversions, time zones, etc. This is relevant for topics such as [Parsing Date and Time Data](./README_ParsingUtilities.md#parsing-date-and-time-data).
 
 **Contents**:
 
@@ -12,11 +12,12 @@ This is a short guide with explanatory notes on handling date and time in .NET, 
 
 ## Links (Times and Dates)
 
-* 
-* [](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-datetime)
-* Types:
+* **[Dates, Times, and Time Zones](https://learn.microsoft.com/en-us/dotnet/standard/datetime/)**
+* [DateTimeOffset vs DateTime in C#](https://code-maze.com/csharp-datetimeoffset-vs-datetime/) (CodeMaze)
+* [Converting Between DateTime and DateTimeOffset](https://www.crystalnet-tech.com/RuntimeLibrary/Help/html/scr/Converting_Between_DateTime_and_DateTimeOffset.html) (CrystalNet)
+* **Types**:
   * [DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime)
-    * [Supplemental API Remarks](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-datetime);
+    * **[Supplemental API Remarks](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-datetime)**
       * [ToBinary and FromBinary methods](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-datetime-tobinary)
       * [TryParse method](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-datetime-tryparse)
   * [DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset)

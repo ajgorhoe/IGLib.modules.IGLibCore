@@ -43,4 +43,10 @@ Built-in parsing methods for basic types provide overloads with parameters defin
 * For integral numeric types, the method uses [`NumberStyles.Integer | NumberStyles.AllowThousands` 🔗](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.numberstyles)
 * For floating point numeric types, the method uses `NumberStyles.Float | NumberStyles.AllowThousands`
 
+### Parsing Date and Time Data
+
+See also:
+
+* [Handling Times and Dates in .NET](./README_HandlingTime)
+
 
