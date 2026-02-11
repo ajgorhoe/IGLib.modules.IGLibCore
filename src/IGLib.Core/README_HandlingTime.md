@@ -87,6 +87,10 @@ See also:
 
 ### Gregorian Calendar
 
+[Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) has *average calendar year `365.2425` days long*, compared to `365.2422`-day 'tropical' or *[solar year](https://en.wikipedia.org/wiki/Tropical_year)* determined by the Earth's revolution around the Sun. It replaced [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) with average year of 365.25 days (leap year every 4 years).
+
+Rule: every year *divisible by four is a leap year*, *except for years that are divisible by 100*, *except in turn for years also divisible by 400*.
+
 See also:
 
 * [Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) (Wikipedia)
