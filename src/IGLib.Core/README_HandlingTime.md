@@ -43,19 +43,20 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 ## Time Zones and `TimeZoneInfo` class
 
 
-Get avd print all time zones defined on computer:
+Example: get and print **all time zones defined on computer**:
 
-~~~csharp
+~~~cs
 using System.Collections.ObjectModel;
-ReadOnlyCollection<TimeZoneInfo> timeZones;
-timeZones = TimeZoneInfo.GetSystemTimeZones();
-foreach (TimeZoneInfo timeZone in timeZones)
+ReadOnlyCollection<TimeZoneInfo> allTimeZones;
+allTimeZones = TimeZoneInfo.GetSystemTimeZones();
+foreach (TimeZoneInfo timeZone in allTimeZones)
     Console.WriteLine($"   {timeZone.Id}: {timeZone.DisplayName}");
 ~~~
 
 Example partial output:
 
-~~~text
+~~~txt
+...
    Azores Standard Time: (UTC-01:00) Azores
    Cape Verde Standard Time: (UTC-01:00) Cabo Verde Is.
    UTC: (UTC) Coordinated Universal Time
@@ -76,9 +77,34 @@ Example partial output:
    South Africa Standard Time: (UTC+02:00) Harare, Pretoria
    FLE Standard Time: (UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius
    Israel Standard Time: (UTC+02:00) Jerusalem
+...
 ~~~
 
+To obtain all time zones with the specified UTC offset:
 
+~~~csharp
+List<TimeZoneInfo> GetTimeZoneFromOffset(TimeSpan offset) =>
+    TimeZoneInfo.GetSystemTimeZones()
+    .Where(tz => tz.BaseUtcOffset == offset)
+    .ToList();
+
+DateTimeOffset currentTimeOffset = DateTimeOffset.Now;
+List<TimeZoneInfo> timeZones = GetTimeZoneFromOffset(currentTimeOffset.Offset);
+foreach (TimeZoneInfo timeZone in timeZones)
+{
+    Console.WriteLine($"Time Zone: {timeZone}");
+}
+~~~
+
+When run on a computer whose time zone has UTC offset +01:00, the result is something like this:
+
+~~~txt
+Time Zone: (UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+Time Zone: (UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague
+Time Zone: (UTC+01:00) Brussels, Copenhagen, Madrid, Paris
+Time Zone: (UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb
+Time Zone: (UTC+01:00) West Central Africa
+~~~
 
 ## Formatting Time and Date Values
 
