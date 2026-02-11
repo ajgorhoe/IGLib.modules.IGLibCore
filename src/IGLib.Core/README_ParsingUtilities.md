@@ -47,6 +47,6 @@ Built-in parsing methods for basic types provide overloads with parameters defin
 
 See also:
 
-* [Handling Times and Dates in .NET](./README_HandlingTime)
+* [Handling Times and Dates in .NET](./README_HandlingTime.md)
 
 
