@@ -40,6 +40,14 @@ This is a short guide with explanatory notes on handling dates and times in .NET
       * [DateTimeFormatInfo Class](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo)
       * [DateTime API Remarks / TryParse method](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-datetime-tryparse)
 
+## Logic of Working with Time and Dates in .NET
+
+### Introduction
+
+When working with time-related data, it is crucial to define the scope and the needs. 
+
+
+
 ## Time Zones and `TimeZoneInfo` class
 
 See also:
