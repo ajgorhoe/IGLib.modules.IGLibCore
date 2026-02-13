@@ -51,17 +51,11 @@ However, using only local times has two major limitations. First, some time zone
 
 A second limitation arises when times need to be exchanged between different locations on Earth or when times of events occurring in different locations (across time zones) need to be recorded. Local times describing the same point in time vary across time zones by approximately one day. The maximum difference between local times on Earth at any given moment is actually 26 hours rather than 24, and there is a two-hour window every day when three different calendar days exist simultaneously. To correlate local times with physical time, we must state the wall-clock time and the time zone in which it is recorded, which complicates software maintenance.
 
-
-
-
-
-
-
-
 To overcome the limitations of using local time, we use a standardized time, or coordinate time, which is consistent regardless of where on Earth an event occurs or where information about distributed events is gathered. Universal Coordinated Time (UTC) is the primary time standard by which the world regulates clocks and is used in computer software as a standardized time.
 
 Using a consistent strategy to handle times in software can significantly reduce complexity and increase maintainability and interoperability with other software. For example, event times are recorded in UTC, as are times exchanged between distributed locations or stored persistently. UTC times are converted to or from local times when needed, typically in use cases involving user interaction. For instance, when a user inputs a time at which an alarm should go off or an action should be triggered by the software, or when a time of an event is displayed to a user in their local time for easier interpretation. In some cases, times may need to be converted between time zones or displayed for different time zones (e.g., when planning itineraries or coordinating remote meetings with participants across time zones). This can be achieved by keeping times in UTC and converting them to different time zones.
 
+Special attention is needed when comparing or ordering times, or when performing arithmetic operations on times, such as calculating time intervals between events or calculating times by adding or subtracting specified time intervals from a known time. To obtain correct results, map the involved times to the same representation (often UTC) before performing operations. It simplifies matters to keep all recorded times in the appropriate standardized format and to convert to local times or specific time zones only when necessary.
 
 
 
