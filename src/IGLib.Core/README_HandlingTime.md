@@ -47,7 +47,7 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 
 When working with time-related data, it is crucial to define the context beforehand and identify the scope of time handling according to the needs. In the most **basic scenario**, all times can be defined as **local times**, corresponding to the *[time zone](https://en.wikipedia.org/wiki/Time_zone) of the host device on which the software is operating. The advantage of this is that times are readily stored in memory, recorded, and displayed or printed as times displayed in local clocks and used in the specific local environment, provided that the time zone of the device is correctly set and time is synchronized.
 
-However, using only local times has two major limitations. First, some time zones observe daylight saving time. Once a year (usually in the spring), the clocks are moved forward. This creates a gap in the displayed times of closely spaced events just after the shift. At another time of year, the clocks are moved back, causing another strange effect: some times are duplicated. Within the time interval of the shift, times have an ambiguous meaning because they can refer to either summer or winter time. Therefore, local time is not monotonic, making it unsuitable for recording events where the sequence or exact intervals need to be preserved.
+However, using only local times has two major limitations. First, some time zones observe [daylight saving time (DST)](https://en.wikipedia.org/wiki/Daylight_saving_time). Once a year (usually in the spring), the clocks are moved forward. This creates a gap in the displayed times of closely spaced events just after the shift. At another time of year, the clocks are moved back, causing another strange effect: some times are duplicated. Within the time interval of the shift, times have an ambiguous meaning because they can refer to either summer or winter time. Therefore, local time is not monotonic, making it unsuitable for recording events where the sequence or exact intervals need to be preserved.
 
 A second limitation arises when times need to be exchanged between different locations on Earth or when times of events occurring in different locations (across time zones) need to be recorded. Local times describing the same point in time vary across time zones by approximately one day. The maximum difference between local times on Earth at any given moment is actually 26 hours rather than 24, and there is a two-hour window every day when three different calendar days exist simultaneously. To correlate local times with physical time, we must state the wall-clock time and the time zone in which it is recorded, which complicates software maintenance.
 
@@ -76,13 +76,19 @@ Special attention is needed when comparing or ordering times and performing arit
 
 Conversions to and from the Universal Coordinated Time (UTC) are generally available in system libraries and base libraries in programming languages. UTC is adequate as standard time for a large variety of software applications.
 
-However, the above may not be the case in some scenarios where precise calculation of time intervals, correct time ordering of events, and strictly monotonic time measure are critical. Common examples are High Frequency Trading, Scientific instrumentation, distributed systems logging, navigation and aerospace.
+However, the UTC may not be the case in some scenarios where precise calculation of time intervals, correct time ordering of events, and strictly monotonic time measure are critical. Common examples are High Frequency Trading, Scientific instrumentation, distributed systems logging, navigation and aerospace.
+
+
+
+
 
 One limitation of the UTC lies in its introduction of leap seconds, which is necessary to coordinate the precise physical time with Earth rotation that UTC attempts to synchronize with Earth rotation and consequently the length of the day. The speed of earth rotation slows down over time due to Earth-Moon and Earth-Sun interactions and exhibits additional variations due to processes causing mass redistribution within Earth. Leap second are introduced occasionally in order to keep UTC in sync with the varying length of the astronomic day.  The practice was introduced in 1972, and recent dated include 31 Dec 2008, 30 Jun 2012, 30 Jun 2015, and 21 Dec 2016, then none was introduced until 2026. Variations of Earth rotation speed are significantly non-uniform, which is reflected in different spacing between leap seconds. Starting around 2020, Earth began a surprising speed-up phase, and the possibility of a "negative leap second" (skipping a second) is discussed. When a positive leap second occurs, UTC repeats or stretches time, and the clock sequence is usually 23:59:59 → 23:59:60 → 00:00:00. Most computer systems (using Unix time) cannot represent :60 part, and handle a leap second by "stepping" the clock back one second. This means the same timestamps appears twice within the one-second interval before midnight, causing the time ordering problem.
 
 
 
 
+
+For more information on limitations of the UTC and using system time-related utilities in general, see the section [Limitations of the UTC and System' Time Capturing Utilities](#limitations-of-the-utc-and-system-time-capturing-utilities).
 
 
 [Daylight saving time](https://en.wikipedia.org/wiki/Daylight_saving_time)
@@ -209,11 +215,15 @@ See also:
     * [Daylight saving time](https://en.wikipedia.org/wiki/Daylight_saving_time)
 * [Universal Time (UT1)](https://en.wikipedia.org/wiki/Universal_Time) - a time standard based on Earth's rotation
 * [International Atomic Time (TAI)](https://en.wikipedia.org/wiki/International_Atomic_Time) - high-precision atomic coordinate time standard based on the notional passage of proper time on Earth's geoid, weighted average of many atomic clocks; UTC is based on TAI, via leap seconds
-  * [Leap second](https://en.wikipedia.org/wiki/Leap_second) - a one-second adjustment occasionally applied to (UTC), to accommodate the difference between more precise time (TAI) and imprecise observed solar time (UT1), which varies due to irregularities and long-term slowdown in the Earth's rotation; since 1972, 27 leap seconds have been added to UTC, recently on December 31, 2016
+  * [Leap second](https://en.wikipedia.org/wiki/Leap_second) - a one-second adjustment occasionally applied to (UTC), to accommodate the difference between more precise time (TAI) and imprecise observed solar time (UT1), which varies due to irregularities and long-term slowdown in the Earth's rotation; since 1972, 27 leap seconds have been added to UTC, recently on December 31, 2016. See also:
   * [Coordinate time](https://en.wikipedia.org/wiki/Einstein_synchronisation) (Wikipedia)
     * [Einstein synchronization](https://en.wikipedia.org/wiki/Einstein_synchronisation)
     * [Relativity of simultaneity](https://en.wikipedia.org/wiki/Relativity_of_simultaneity)
   * [Proper time](https://en.wikipedia.org/wiki/Proper_time) (Wikipedia)
+
+#### Limitations of the UTC and System' Time Capturing Utilities
+
+
 
 ### Gregorian Calendar
 
@@ -227,6 +237,7 @@ See also:
 * [Calendar](https://en.wikipedia.org/wiki/Calendar)
   * [Calendar Epoch](https://en.wikipedia.org/wiki/Epoch) - an origin of calendar era (there may be more than one)
   * [Calendar era](https://en.wikipedia.org/wiki/Calendar_era) - a period of time elapsed since one epoch of a calendar
+
 
 
 
