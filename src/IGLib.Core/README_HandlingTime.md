@@ -6,7 +6,8 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 **Contents**:
 
 * [Links](#links)
-* []
+* [Logic of Working with Time and Dates in .NET](#logic-of-working-with-time-and-dates-in-net)
+  * [Introduction - Handling Time-related Data in Software](#introduction-to-handling-time-related-data--in-software)
 * [Time Zones and `TimeZoneInfo` class](#time-zones-and-timezoneinfo-class)
 * [Formatting Time and Date Values](#formatting-time-and-date-values)
   * [Format Providers](#date-and-time-format-providers)
@@ -42,9 +43,25 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 
 ## Logic of Working with Time and Dates in .NET
 
-### Introduction
+### Introduction to Handling Time-related Data  in Software
 
-When working with time-related data, it is crucial to define the scope and the needs. 
+When working with time-related data, it is crucial to define the context beforehand and identify the scope of time handling according to the needs. In the most **basic scenario**, all times can be defined as **local times**, corresponding to the *[time zone](https://en.wikipedia.org/wiki/Time_zone) of the host device on which the software is operating. The advantage of this is that times are readily stored in memory, recorded, and displayed or printed as times displayed in local clocks and used in the specific local environment, provided that the time zone of the device is correctly set and time is synchronized.
+
+However, using only local times has two major limitations. First, some time zones observe daylight saving time. Once a year (usually in the spring), the clocks are moved forward. This creates a gap in the displayed times of closely spaced events just after the shift. At another time of year, the clocks are moved back, causing another strange effect: some times are duplicated. Within the time interval of the shift, times have an ambiguous meaning because they can refer to either summer or winter time. Therefore, local time is not monotonic, making it unsuitable for recording events where the sequence or exact intervals need to be preserved.
+
+A second limitation arises when times need to be exchanged between different locations on Earth or when times of events occurring in different locations (across time zones) need to be recorded. Local times describing the same point in time vary across time zones by approximately one day. The maximum difference between local times on Earth at any given moment is actually 26 hours rather than 24, and there is a two-hour window every day when three different calendar days exist simultaneously. To correlate local times with physical time, we must state the wall-clock time and the time zone in which it is recorded, which complicates software maintenance.
+
+
+
+
+
+
+
+
+[Daylight saving time](https://en.wikipedia.org/wiki/Daylight_saving_time)
+
+
+
 
 
 
