@@ -58,15 +58,14 @@ A second limitation arises when times need to be exchanged between different loc
 
 
 
+To overcome the limitations of using local time, we use a standardized time, or coordinate time, which is consistent regardless of where on Earth an event occurs or where information about distributed events is gathered. Universal Coordinated Time (UTC) is the primary time standard by which the world regulates clocks and is used in computer software as a standardized time.
+
+Using a consistent strategy to handle times in software can significantly reduce complexity and increase maintainability and interoperability with other software. For example, event times are recorded in UTC, as are times exchanged between distributed locations or stored persistently. UTC times are converted to or from local times when needed, typically in use cases involving user interaction. For instance, when a user inputs a time at which an alarm should go off or an action should be triggered by the software, or when a time of an event is displayed to a user in their local time for easier interpretation. In some cases, times may need to be converted between time zones or displayed for different time zones (e.g., when planning itineraries or coordinating remote meetings with participants across time zones). This can be achieved by keeping times in UTC and converting them to different time zones.
 
 
 
 
-To overcome the limitations of using local time, we use some kind of coordinate time (standardized time), which is consistent regardless of where on Earth an event occurs and of where information about distributed events are gathered. The Universal Coordinated Time (UTC) is the primary time standard by which the world regulates clocks, and is primarily used as standardized time in computer software.
 
-Keeping a consistent strategy of handling times in a software can significantly reduce complexity and increase maintainability and interoperability with other software. For example, times of events are recorded in UTC, and times exchanged between distributed locations or stored persistently are in UTC. When needed, UTC times are converted to or from local times, typically in use cases that involve user interaction. For example, when user inputs a time at which an alarm should go off or some action should be triggered by the software, or a time of an event is displayed for a user as local time for easier interpretation. On come occasions, times may need to be converted between time zoned or displayed for different time zones (e.g. when planning itineraries or coordinating remote meetings with participants across time zones). This can also be achieved by keeping times as UTC converting it to different time zones.
-
-Special attention is needed when comparing or ordering times and performing arithmetic operations on times (calculating time intervals between events or calculating times by adding or subtracting specified time intervals to a known time). In order to obtain correct results, we need to map the involved times to the same representations before performing the operations. Again, it simplifies matters when keeping all recorded time as the appropriate standardized times, and converting to local times or to specific time zones only when necessary.
 
 
 
