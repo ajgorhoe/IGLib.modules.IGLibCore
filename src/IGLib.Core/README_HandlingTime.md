@@ -60,16 +60,11 @@ Special attention is needed when comparing or ordering times, or when performing
 
 
 
+Conversions to and from Universal Coordinated Time (UTC) are generally available in system and base programming language libraries. UTC is an adequate standard time for a wide range of software applications.
 
 
 
 
-
-
-
-Conversions to and from the Universal Coordinated Time (UTC) are generally available in system libraries and base libraries in programming languages. UTC is adequate as standard time for a large variety of software applications.
-
-However, the UTC may not be the case in some scenarios where precise calculation of time intervals, correct time ordering of events, and strictly monotonic time measure are critical. Common examples are High Frequency Trading, Scientific instrumentation, distributed systems logging, navigation and aerospace.
 
 
 
