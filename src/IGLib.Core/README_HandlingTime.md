@@ -57,10 +57,9 @@ Using a consistent strategy to handle times in software can significantly reduce
 
 Special attention is needed when comparing or ordering times, or when performing arithmetic operations on times, such as calculating time intervals between events or calculating times by adding or subtracting specified time intervals from a known time. To obtain correct results, map the involved times to the same representation (often UTC) before performing operations. It simplifies matters to keep all recorded times in the appropriate standardized format and to convert to local times or specific time zones only when necessary.
 
-
-
-
 Conversions to and from Universal Coordinated Time (UTC) are generally available in system and base programming language libraries. UTC is an adequate standard time for a wide range of software applications.
+
+However, UTC may not be appropriate in scenarios where precise time interval calculations, the correct ordering of events in time, and a strictly monotonic measure of time are critical. Examples include high-frequency trading, scientific instrumentation, distributed systems logging, navigation, and aerospace.
 
 
 
