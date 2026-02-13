@@ -69,13 +69,13 @@ However, UTC may not be appropriate in scenarios where precise time interval cal
 
 
 
-One limitation of the UTC lies in its introduction of leap seconds, which is necessary to coordinate the precise physical time with Earth rotation that UTC attempts to synchronize with Earth rotation and consequently the length of the day. The speed of earth rotation slows down over time due to Earth-Moon and Earth-Sun interactions and exhibits additional variations due to processes causing mass redistribution within Earth. Leap second are introduced occasionally in order to keep UTC in sync with the varying length of the astronomic day.  The practice was introduced in 1972, and recent dated include 31 Dec 2008, 30 Jun 2012, 30 Jun 2015, and 21 Dec 2016, then none was introduced until 2026. Variations of Earth rotation speed are significantly non-uniform, which is reflected in different spacing between leap seconds. Starting around 2020, Earth began a surprising speed-up phase, and the possibility of a "negative leap second" (skipping a second) is discussed. When a positive leap second occurs, UTC repeats or stretches time, and the clock sequence is usually 23:59:59 → 23:59:60 → 00:00:00. Most computer systems (using Unix time) cannot represent :60 part, and handle a leap second by "stepping" the clock back one second. This means the same timestamps appears twice within the one-second interval before midnight, causing the time ordering problem.
+One limitation of UTC is the introduction of leap seconds. These seconds are necessary to synchronize the UTC, which is based on precise physical time, with the rotation of the Earth and, consequently, the length of the day. The speed of Earth's rotation slows over time due to interactions with the Moon and Sun, as well as processes that cause mass redistribution within Earth. Leap seconds are occasionally introduced to keep UTC in sync with the varying length of the astronomical day.  This practice began in 1972, and recent dates with a leap second include December 31, 2008; June 30, 2012; June 30, 2015; and December 21, 2016. As of 2026, no additional leap seconds have been introduced.
 
 
 
 
 
-For more information on limitations of the UTC and using system time-related utilities in general, see the section [Limitations of the UTC and System' Time Capturing Utilities](#limitations-of-the-utc-and-system-time-capturing-utilities).
+For more information on the limitations of UTC and system time-related utilities, see the section [Limitations of UTC and System Time-Related Utilities](#limitations-of-the-utc-and-system-time-capturing-utilities).
 
 
 [Daylight saving time](https://en.wikipedia.org/wiki/Daylight_saving_time)
