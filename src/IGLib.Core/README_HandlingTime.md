@@ -61,14 +61,6 @@ Conversions to and from Universal Coordinated Time (UTC) are generally available
 
 However, UTC may not be appropriate in scenarios where precise time interval calculations, the correct ordering of events in time, and a strictly monotonic measure of time are critical. Examples include high-frequency trading, scientific instrumentation, distributed systems logging, navigation, and aerospace.
 
-
-
-
-
-
-
-
-
 One limitation of UTC is the introduction of leap seconds. These seconds are necessary to synchronize the UTC, which is based on precise physical time, with the rotation of the Earth and, consequently, the length of the day. The speed of Earth's rotation slows over time due to interactions with the Moon and Sun, as well as processes that cause mass redistribution within Earth. Leap seconds are occasionally introduced to keep UTC in sync with the varying length of the astronomical day.  This practice began in 1972, and recent dates with a leap second include December 31, 2008; June 30, 2012; June 30, 2015; and December 21, 2016. As of 2026, no additional leap seconds have been introduced. The variations in the speed of Earth's rotation are significantly non-uniform, as reflected by the different spacing between leap seconds. Starting around 2020, the Earth began an unexpected speed-up phase, prompting discussions about a "negative leap second" (omitting a second). When a positive leap second occurs, UTC repeats or stretches time, and the clock sequence is 23:59:59 → 23:59:60 → 00:00:00. However, most computer systems (those using Unix time) cannot represent the :60 part and handle a leap second by "stepping" the clock back one second. This means that the same timestamps appear twice within the one-second interval before midnight, which causes a time ordering problem.
 
 
@@ -76,9 +68,6 @@ One limitation of UTC is the introduction of leap seconds. These seconds are nec
 
 
 For more information on the limitations of UTC and system time-related utilities, see the section [Limitations of UTC and System Time-Related Utilities](#limitations-of-the-utc-and-system-time-capturing-utilities).
-
-
-[Daylight saving time](https://en.wikipedia.org/wiki/Daylight_saving_time)
 
 
 
