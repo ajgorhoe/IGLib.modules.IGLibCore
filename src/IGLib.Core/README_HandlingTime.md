@@ -13,7 +13,8 @@ This is a short guide with explanatory notes on handling dates and times in .NET
   * [Format Providers](#date-and-time-format-providers)
 * [About Specifying Times of Events](#about-specifying-times-of-events)
   * [Coordinated Universal Time(UTC)](#coordinated-universal-time-utc)
-    * [Limitations of the UTC and Computers' Time Capturing Capabilities]()
+    * [Limitations of UTC and Computers' Time Capturing Capabilities](#limitations-of-utc-and-computers-time-capturing-capabilities)
+* [Gregorian Calendar](#gregorian-calendar)
 
 ## Links
 
@@ -192,11 +193,10 @@ See also:
     * [Relativity of simultaneity](https://en.wikipedia.org/wiki/Relativity_of_simultaneity)
   * [Proper time](https://en.wikipedia.org/wiki/Proper_time) (Wikipedia)
 
-#### Limitations of the UTC and Computers' Time Capturing Capabilities
+#### Limitations of UTC and Computers' Time Capturing Capabilities
 
 
 One limitation of UTC is the introduction of leap seconds. These seconds are necessary to synchronize the UTC, which is based on precise physical time, with the rotation of the Earth and, consequently, the length of the day. The speed of Earth's rotation slows over time due to interactions with the Moon and Sun, as well as processes that cause mass redistribution within Earth. Leap seconds are occasionally introduced to keep UTC in sync with the varying length of the astronomical day.  This practice began in 1972, and recent dates with a leap second include December 31, 2008; June 30, 2012; June 30, 2015; and December 21, 2016. As of 2026, no additional leap seconds have been introduced. The variations in the speed of Earth's rotation are significantly non-uniform, as reflected by the different spacing between leap seconds. Starting around 2020, the Earth began an unexpected speed-up phase, prompting discussions about a "negative leap second" (omitting a second). When a positive leap second occurs, UTC repeats or stretches time, and the clock sequence is 23:59:59 → 23:59:60 → 00:00:00. However, most computer systems (those using Unix time) cannot represent the :60 part and handle a leap second by "stepping" the clock back one second. This means that the same timestamps appear twice within the one-second interval before midnight, which causes a time ordering problem.
-
 
 ### Gregorian Calendar
 
