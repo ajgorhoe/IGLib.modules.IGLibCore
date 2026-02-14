@@ -11,7 +11,9 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 * [Time Zones and `TimeZoneInfo` class](#time-zones-and-timezoneinfo-class)
 * [Formatting Time and Date Values](#formatting-time-and-date-values)
   * [Format Providers](#date-and-time-format-providers)
-* About Specifying Times of Events ()
+* [About Specifying Times of Events](#about-specifying-times-of-events)
+  * [Coordinated Universal Time(UTC)](#coordinated-universal-time-utc)
+    * [Limitations of the UTC and Computers' Time Capturing Capabilities]()
 
 ## Links
 
@@ -45,7 +47,7 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 
 ### Introduction to Handling Time-related Data  in Software
 
-When working with time-related data, it is crucial to define the context beforehand and identify the scope of time handling according to the needs. In the most **basic scenario**, all times can be defined as **local times**, corresponding to the *[time zone](https://en.wikipedia.org/wiki/Time_zone) of the host device on which the software is operating. The advantage of this is that times are readily stored in memory, recorded, and displayed or printed as times displayed in local clocks and used in the specific local environment, provided that the time zone of the device is correctly set and time is synchronized.
+When working with time-related data, it is crucial to define the context beforehand and identify the scope of time handling according to the needs. In the most **basic scenario**, all times can be defined as **local times**, corresponding to the *[time zone](https://en.wikipedia.org/wiki/Time_zone)* of the host device on which the software is operating. The advantage of this is that times are readily stored in memory, recorded, and displayed or printed as times displayed in local clocks and used in the specific local environment, provided that the time zone of the device is correctly set and time is synchronized.
 
 However, using only local times has two major limitations. First, some time zones observe [daylight saving time (DST)](https://en.wikipedia.org/wiki/Daylight_saving_time). Once a year (usually in the spring), the clocks are moved forward. This creates a gap in the displayed times of closely spaced events just after the shift. At another time of year, the clocks are moved back, causing another strange effect: some times are duplicated. Within the time interval of the shift, times have an ambiguous meaning because they can refer to either summer or winter time. Therefore, local time is not monotonic, making it unsuitable for recording events where the sequence or exact intervals need to be preserved.
 
@@ -63,16 +65,9 @@ However, UTC may not be appropriate in some scenarios where precise time interva
 
 One limitation of UTC is the introduction of leap seconds. Leap seconds are occasionally introduced to keep UTC in sync with the varying length of the astronomical day (as a consequence of variation of rotational speed of the Earth). Recent dates with a leap second include December 31, 2008; June 30, 2012; June 30, 2015; and December 21, 2016 (as of 2026, no additional leap seconds have been introduced yet). When a positive leap second occurs, UTC repeats or stretches time, and the clock sequence is 23:59:59 → 23:59:60 → 00:00:00. This means that the same timestamps appear twice within the one-second interval before midnight, which causes a time ordering problem.
 
-
-
-
+There are further limitations in precision and accuracy of time capturing time on computers and other general-purpose computational devices. Although types for storing time may have below microsecond resolution, the clock updates much slower (e.g. every 15.6 milliseconds on Windows). Precision of typical PC clocks is not do high and there may be of order of a second per a day drift if not synced. There is also variability in how long it takes to process a clock interrupt.
 
 For more information on the limitations of UTC and system time-related utilities, see the section [Limitations of UTC and System Time-Related Utilities](#limitations-of-the-utc-and-system-time-capturing-utilities).
-
-
-
-
-
 
 ## Time Zones and `TimeZoneInfo` class
 
@@ -197,7 +192,7 @@ See also:
     * [Relativity of simultaneity](https://en.wikipedia.org/wiki/Relativity_of_simultaneity)
   * [Proper time](https://en.wikipedia.org/wiki/Proper_time) (Wikipedia)
 
-#### Limitations of the UTC and System' Time Capturing Utilities
+#### Limitations of the UTC and Computers' Time Capturing Capabilities
 
 
 One limitation of UTC is the introduction of leap seconds. These seconds are necessary to synchronize the UTC, which is based on precise physical time, with the rotation of the Earth and, consequently, the length of the day. The speed of Earth's rotation slows over time due to interactions with the Moon and Sun, as well as processes that cause mass redistribution within Earth. Leap seconds are occasionally introduced to keep UTC in sync with the varying length of the astronomical day.  This practice began in 1972, and recent dates with a leap second include December 31, 2008; June 30, 2012; June 30, 2015; and December 21, 2016. As of 2026, no additional leap seconds have been introduced. The variations in the speed of Earth's rotation are significantly non-uniform, as reflected by the different spacing between leap seconds. Starting around 2020, the Earth began an unexpected speed-up phase, prompting discussions about a "negative leap second" (omitting a second). When a positive leap second occurs, UTC repeats or stretches time, and the clock sequence is 23:59:59 → 23:59:60 → 00:00:00. However, most computer systems (those using Unix time) cannot represent the :60 part and handle a leap second by "stepping" the clock back one second. This means that the same timestamps appear twice within the one-second interval before midnight, which causes a time ordering problem.
