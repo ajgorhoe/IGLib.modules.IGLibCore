@@ -138,7 +138,21 @@ DateTime.Now - DateTimeOffset.Now
 
 ~~~
 
+~~~csharp
+// Some examples for DateTimeOffset:
 
+// These expressions all return 0 time span or ticks when evaluated as UTC + 01:
+// Result is TimeSpan:
+(new DateTimeOffset(2026, 2, 15, 0, 0, 0, TimeSpan.FromHours(1)) - new DateTime(2026, 2, 15, 0, 0, 0))
+
+// Result is in ticks:
+(new DateTimeOffset(2026, 2, 15, 0, 0, 0, TimeSpan.FromHours(1)) - new DateTime(2026, 2, 15, 0, 0, 0))
+
+new DateTimeOffset(2026, 2, 15, 0, 0, 0, TimeSpan.FromHours(1)).Ticks - new DateTime(2026, 2, 15, 0, 0, 0).Ticks
+
+new DateTimeOffset(2026, 2, 15, 0, 0, 0, TimeSpan.FromHours(1)).Ticks - new DateTime(2026, 2, 15, 0, 0, 0, DateTimeKind.Utc).Ticks
+
+~~~
 
 
 ## Time Zones and `TimeZoneInfo` class
