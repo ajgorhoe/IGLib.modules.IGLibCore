@@ -76,7 +76,7 @@ For more information on the limitations of UTC and system time-related utilities
 
 *Structs* **[DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime)** and **[DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset)** are the **main types for date and time operations** like timestamping, obtaining the current time, capturing, storing and exchanging times, and performing various date and time calculations. Both store representation of a specific point in time, and provide **properties to extract** various human-familiar **components of date and time** of the day corresponding to the stored point in time: the calendar year (`Year`), month (`month`, between 1 and 12), day of the month (`Day`, between 1 and 12), day of the week (`DayOfWeek`, as `DayOfWeek` enum, `Sunday` (0) thru `Saturday` (6)), day of the year (`DayOfYear`, between 1 and 366), hour (`Hour`, between 0 and 23), minute (`Minute`, between 0 and 59), second (`Second`, between 0 and 59), millisecond (`Millisecond`, between 0 and 999), microsecond (`Microsecond`, between 0 and 999), and nanosecond (`Nanosecond`, between 0 and 900, in 100-nanosecond increments). Static method `DaysInMonth(int year, int month)` returns the number of days in the specified month (of the specified year).
 
-The **`Ticks` property** (of ype `long`) represents the number of **100-nanosecond intervals** that have elapsed **since 12:00:00 midnight on January 1, year 1** (in Gregorian calendar, years AD are counted from 1, and years BC are counted from -1 down, there is no year 0). This is what is actually stored in a DateTime structs, and other properties are calculated from this value. A nanosecond is one billionth of a second, so there are ten million ticks in a second.
+The **`Ticks` property** (of type `long`) represents the number of **100-nanosecond intervals** that have elapsed **since 12:00:00 midnight on January 1, year 1** (in Gregorian calendar, years AD are counted from 1, and years BC are counted from -1 down, there is no year 0). This is what is actually stored in a DateTime structs, and **other properties are calculated from the `Ticks` value**. A nanosecond is one billionth of a second, so there are ten million ticks in a second.
 
 In order to query the current type, the `DateTime` and `DateTimeOffset` provide the **static properties `Now` and `UTCNow`**, which get values of their type set to the **current date and time** of the computer. `Now` is expressed as the local time (according to the time zone set on the computer), while `UTCNow` is expressed as the Coordinated Universal Time (UTC).
 
@@ -92,9 +92,19 @@ The `DateTime` and `DateTimeOffset` **do not contain time zone information**. Th
 // context:
 DateTime.Now - DateTime.UtcNow
 
-
+// Demonstration of the Kind property:
 (DateTime.Now.Kind, DateTime.UtcNow.Kind)
 
+// Demonstration of round-trip conversion:
+(DateTime.Now, DateTime.Now.ToUniversalTime(), DateTime.Now.ToUniversalTime().ToLocalTime()).ToString()
+
+( DateTime.UtcNow, DateTime.UtcNow.ToLocalTime(), DateTime.UtcNow.ToLocalTime().ToUniversalTime() ).ToString()
+
+// Mere conversion works correctly: calling ToLocalTime() on already 
+// local time returns the same value:
+( DateTime.Now, DateTime.Now.ToLocalTime(), DateTime.Now.ToLocalTime().ToLocalTime() )
+
+( DateTime.UtcNow, DateTime.UtcNow.ToUniversalTime(), DateTime.UtcNow.ToUniversalTime().ToUniversalTime() )
 ~~~
 
 
