@@ -84,7 +84,7 @@ In order to query the current type, the `DateTime` and `DateTimeOffset` provide 
 
 The `DateTime` and `DateTimeOffset` **do not contain time zone information**. They cannot natively express physical times as local times in arbitrary time zone. Via the **`DateTime.Kind` property**, it can only be indicated **whether** the time stored in a `DateTime` value is **expressed as UTC time or a local time** (i.e., according to the time zone of the current computer), or this is unspecified. However, the  **`DateTime.Kind`** property is **ignored when comparing** `DateTimeKind` values **or performing date and time arithmetic on them**. These operations are performed only on nominal values of time stored in `DateTime` instances, which means that `DateTime.Kind` just provides informative information on the nature of how its value was produced, but is not intended to relate the value to an unambiguous point in time (or physical time). This is perhaps a single most important information to be aware of in order to understand date and time-related operations in .NET.
 
-
+Let us elaborate more on the statements above, as they are truly important to remember and understand when designing .NET software that handles dates and times. First, .NET contains some methods that **convert between local and UTC representations of `DateTime` and `DateTimeOffset` values**. These methods **work consistently** and as expected, in contrast with comparison and arithmetic operations.  
 
 ~~~csharp
 // Proof that DateTime with its Kind property does not represent points in time,
@@ -105,6 +105,22 @@ DateTime.Now - DateTime.UtcNow
 ( DateTime.Now, DateTime.Now.ToLocalTime(), DateTime.Now.ToLocalTime().ToLocalTime() )
 
 ( DateTime.UtcNow, DateTime.UtcNow.ToUniversalTime(), DateTime.UtcNow.ToUniversalTime().ToUniversalTime() )
+
+// Similar examples on DateTimeOffset:
+(DateTimeOffset.Now, DateTimeOffset.Now.ToUniversalTime(), DateTimeOffset.Now.ToUniversalTime().ToLocalTime()).ToString()
+
+( DateTimeOffset.Now, DateTimeOffset.Now.ToLocalTime(), DateTimeOffset.Now.ToLocalTime().ToLocalTime() )
+
+
+// Operations with mixed types - DateTime and DateTimeOffset:
+DateTime.Now == DateTimeOffset.Now
+
+DateTime.Now - DateTimeOffset.Now
+
+(DateTime.Now, DateTimeOffset.Now, new DateTimeOffset(DateTime.Now))
+
+(var t = DateTime.Now, var b = DateTimeOffset.Now)
+
 ~~~
 
 
