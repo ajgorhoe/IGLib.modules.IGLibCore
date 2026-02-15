@@ -90,7 +90,16 @@ Let us elaborate more on the statements above, as they are truly important to re
 // Proof that DateTime with its Kind property does not represent points in time,
 // but rather data container for nominal times, without actual time zone / UTC
 // context:
-DateTime.Now - DateTime.UtcNow
+(DateTime.Now - DateTime.UtcNow).ToString()
+
+var t1 = DateTime.Now; var t2 = DateTime.UtcNow; 
+var diff1 = t1 - t2; var diff1Seconds = diff1.TotalSeconds; 
+( t1, t1.Kind, t2, t2.Kind, diff1, Math.Abs(diff1Seconds) > 0.5 )
+
+var t6 = DateTime.Now; var t7 = t6.ToUniversalTime();
+var diff6 = t6 - t7; var diff6Seconds = diff6.TotalSeconds; 
+( t6, t6.Kind, t7, t7.Kind, diff6, Math.Abs(diff6Seconds) > 0.5 )
+
 
 // Demonstration of the Kind property:
 (DateTime.Now.Kind, DateTime.UtcNow.Kind)
@@ -107,12 +116,18 @@ DateTime.Now - DateTime.UtcNow
 ( DateTime.UtcNow, DateTime.UtcNow.ToUniversalTime(), DateTime.UtcNow.ToUniversalTime().ToUniversalTime() )
 
 // Similar examples on DateTimeOffset:
-(DateTimeOffset.Now, DateTimeOffset.Now.ToUniversalTime(), DateTimeOffset.Now.ToUniversalTime().ToLocalTime()).ToString()
+var to23 = DateTimeOffset.Now;
+(to23, to23.ToUniversalTime(), to23.ToUniversalTime().ToLocalTime()).ToString()
 
-( DateTimeOffset.Now, DateTimeOffset.Now.ToLocalTime(), DateTimeOffset.Now.ToLocalTime().ToLocalTime() )
+to24  = DateTimeOffset.Now;
+( to24, to24.ToLocalTime(), to24.ToLocalTime().ToLocalTime() )
 
 
 // Operations with mixed types - DateTime and DateTimeOffset:
+
+var t28 = DateTime.Now; var str28 = t28.ToString(); var to28 = DateTimeOffset.Parse(str28);
+(t28 == to28, t28, to28).ToString()
+
 DateTime.Now == DateTimeOffset.Now
 
 DateTime.Now - DateTimeOffset.Now
