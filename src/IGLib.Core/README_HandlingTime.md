@@ -157,6 +157,65 @@ new DateTimeOffset(2026, 2, 15, 0, 0, 0, TimeSpan.FromHours(1)).Ticks - new Date
 ~~~
 
 
+### Parsing and Formatting Date and Time Strings
+
+
+The `DateTime.GetDateTimeFormats` method returns an array of strings containing different representations of the time contained in the `DateTime` instance. Below is an example of getting string representations of the current time
+
+~~~csharp
+DateTime currentTime = DateTime.Now;
+string[] timeStrings = currentTime.GetDateTimeFormats();  // current time in different formats
+Console.WriteLine($"Retrieved time: {currentTime}");
+Console.WriteLine($"There are {timeStrings?.Length} representations of the time stored in the {currentTime.GetType()?.Name} instance:");
+foreach (string timeString in timeStrings)
+{
+  DateTime time;
+  bool successful = DateTime.TryParse(timeString, out time);
+  if (successful)
+  {
+    Console.WriteLine($"//  {time.ToString()} parsed from: \"{timeString}\"");
+  } else
+  {
+    Console.WriteLine($"Could not Parse: \"{timeString}\"");
+  }
+}
+
+// Retrieved time: 2/16/2026 11:29:14 AM
+// There are 29 representations of the time stored in the DateTime instance:
+//   2/16/2026 12:00:00 AM parsed from: "2/16/2026"
+//   2/16/2026 12:00:00 AM parsed from: "Feb 16, 2026"
+//   2/16/2026 12:00:00 AM parsed from: "2/16/26"
+//   2/16/2026 12:00:00 AM parsed from: "Monday, February 16, 2026"
+//   2/16/2026 12:00:00 AM parsed from: "February 16, 2026"
+//   2/16/2026 11:29:00 AM parsed from: "Monday, February 16, 2026 11:29 AM"
+//   2/16/2026 11:29:00 AM parsed from: "February 16, 2026 11:29 AM"
+//   2/16/2026 11:29:14 AM parsed from: "Monday, February 16, 2026 11:29:14 AM"
+//   2/16/2026 11:29:14 AM parsed from: "February 16, 2026 11:29:14 AM"
+//   2/16/2026 11:29:00 AM parsed from: "2/16/2026 11:29 AM"
+//   2/16/2026 11:29:00 AM parsed from: "Feb 16, 2026 11:29 AM"
+//   2/16/2026 11:29:00 AM parsed from: "2/16/26 11:29 AM"
+//   2/16/2026 11:29:14 AM parsed from: "2/16/2026 11:29:14 AM"
+//   2/16/2026 11:29:14 AM parsed from: "Feb 16, 2026 11:29:14 AM"
+//   2/16/2026 11:29:14 AM parsed from: "2/16/26 11:29:14 AM"
+//   2/16/2026 12:00:00 AM parsed from: "February 16"
+//   2/16/2026 12:00:00 AM parsed from: "February 16"
+//   2/16/2026 11:29:14 AM parsed from: "2026-02-16T11:29:14.7037045+01:00"
+//   2/16/2026 11:29:14 AM parsed from: "2026-02-16T11:29:14.7037045+01:00"
+//   2/16/2026 12:29:14 PM parsed from: "Mon, 16 Feb 2026 11:29:14 GMT"
+//   2/16/2026 12:29:14 PM parsed from: "Mon, 16 Feb 2026 11:29:14 GMT"
+//   2/16/2026 11:29:14 AM parsed from: "2026-02-16T11:29:14"
+//   2/16/2026 11:29:00 AM parsed from: "11:29 AM"
+//   2/16/2026 11:29:14 AM parsed from: "11:29:14 AM"
+//   2/16/2026 12:29:14 PM parsed from: "2026-02-16 11:29:14Z"
+//   2/16/2026 10:29:14 AM parsed from: "Monday, February 16, 2026 10:29:14 AM"
+//   2/16/2026 10:29:14 AM parsed from: "February 16, 2026 10:29:14 AM"
+//   2/1/2026 12:00:00 AM parsed from: "February 2026"
+//   2/1/2026 12:00:00 AM parsed from: "February 2026"
+~~~
+
+
+
+
 ## Time Zones and `TimeZoneInfo` class
 
 See also:
