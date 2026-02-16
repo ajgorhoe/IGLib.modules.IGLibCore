@@ -160,7 +160,7 @@ new DateTimeOffset(2026, 2, 15, 0, 0, 0, TimeSpan.FromHours(1)).Ticks - new Date
 ### Parsing and Formatting Date and Time Strings
 
 
-The `DateTime.GetDateTimeFormats` method returns an array of strings containing different representations of the time contained in the `DateTime` instance. Below is an example of getting string representations of the current time
+The [`DateTime.GetDateTimeFormats` method](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.getdatetimeformats) returns an array of strings containing different representations of the time contained in the `DateTime` instance, supported by the standard date and time format specifiers. Below is an example of getting string representations of the current time, and converting them back to `DateTime` using the [`DateTime.TryParse` method](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.tryparse):
 
 ~~~csharp
 DateTime currentTime = DateTime.Now;
