@@ -163,8 +163,10 @@ new DateTimeOffset(2026, 2, 15, 0, 0, 0, TimeSpan.FromHours(1)).Ticks - new Date
 The [`DateTime.GetDateTimeFormats` method](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.getdatetimeformats) returns an array of strings containing different representations of the time contained in the `DateTime` instance, supported by the standard date and time format specifiers. Below is an example of getting string representations of the current time, and converting them back to `DateTime` using the [`DateTime.TryParse` method](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.tryparse):
 
 ~~~csharp
+IFormatProvider formatProvider = CultureInfo.InvariantCulture;
 DateTime currentTime = DateTime.Now;
-string[] timeStrings = currentTime.GetDateTimeFormats();  // current time in different formats
+// Get current time representations in different formats:
+string[] timeStrings = currentTime.GetDateTimeFormats(formatProvider);
 Console.WriteLine($"Retrieved time: {currentTime}");
 Console.WriteLine($"There are {timeStrings?.Length} representations of the time stored in the {currentTime.GetType()?.Name} instance:");
 foreach (string timeString in timeStrings)
@@ -173,44 +175,49 @@ foreach (string timeString in timeStrings)
   bool successful = DateTime.TryParse(timeString, out time);
   if (successful)
   {
-    Console.WriteLine($"//  {time.ToString()} parsed from: \"{timeString}\"");
+    Console.WriteLine($"//   {time.ToString()} parsed from: \"{timeString}\"");
   } else
   {
     Console.WriteLine($"Could not Parse: \"{timeString}\"");
   }
 }
 
-// Retrieved time: 2/16/2026 11:29:14 AM
-// There are 29 representations of the time stored in the DateTime instance:
-//   2/16/2026 12:00:00 AM parsed from: "2/16/2026"
-//   2/16/2026 12:00:00 AM parsed from: "Feb 16, 2026"
-//   2/16/2026 12:00:00 AM parsed from: "2/16/26"
-//   2/16/2026 12:00:00 AM parsed from: "Monday, February 16, 2026"
-//   2/16/2026 12:00:00 AM parsed from: "February 16, 2026"
-//   2/16/2026 11:29:00 AM parsed from: "Monday, February 16, 2026 11:29 AM"
-//   2/16/2026 11:29:00 AM parsed from: "February 16, 2026 11:29 AM"
-//   2/16/2026 11:29:14 AM parsed from: "Monday, February 16, 2026 11:29:14 AM"
-//   2/16/2026 11:29:14 AM parsed from: "February 16, 2026 11:29:14 AM"
-//   2/16/2026 11:29:00 AM parsed from: "2/16/2026 11:29 AM"
-//   2/16/2026 11:29:00 AM parsed from: "Feb 16, 2026 11:29 AM"
-//   2/16/2026 11:29:00 AM parsed from: "2/16/26 11:29 AM"
-//   2/16/2026 11:29:14 AM parsed from: "2/16/2026 11:29:14 AM"
-//   2/16/2026 11:29:14 AM parsed from: "Feb 16, 2026 11:29:14 AM"
-//   2/16/2026 11:29:14 AM parsed from: "2/16/26 11:29:14 AM"
+// Retrieved time: 2/16/2026 1:27:53 PM
+// There are 34 representations of the time stored in the DateTime instance:
+//   2/16/2026 12:00:00 AM parsed from: "02/16/2026"
+//   2/16/2026 12:00:00 AM parsed from: "2026-02-16"
+//   2/16/2026 12:00:00 AM parsed from: "Monday, 16 February 2026"
+//   2/16/2026 1:27:00 PM parsed from: "Monday, 16 February 2026 13:27"
+//   2/16/2026 1:27:00 PM parsed from: "Monday, 16 February 2026 01:27 PM"
+//   2/16/2026 1:27:00 PM parsed from: "Monday, 16 February 2026 13:27"
+//   2/16/2026 1:27:00 PM parsed from: "Monday, 16 February 2026 1:27 PM"
+//   2/16/2026 1:27:53 PM parsed from: "Monday, 16 February 2026 13:27:53"
+//   2/16/2026 1:27:00 PM parsed from: "02/16/2026 13:27"
+//   2/16/2026 1:27:00 PM parsed from: "02/16/2026 01:27 PM"
+//   2/16/2026 1:27:00 PM parsed from: "02/16/2026 13:27"
+//   2/16/2026 1:27:00 PM parsed from: "02/16/2026 1:27 PM"
+//   2/16/2026 1:27:00 PM parsed from: "2026-02-16 13:27"
+//   2/16/2026 1:27:00 PM parsed from: "2026-02-16 01:27 PM"
+//   2/16/2026 1:27:00 PM parsed from: "2026-02-16 13:27"
+//   2/16/2026 1:27:00 PM parsed from: "2026-02-16 1:27 PM"
+//   2/16/2026 1:27:53 PM parsed from: "02/16/2026 13:27:53"
+//   2/16/2026 1:27:53 PM parsed from: "2026-02-16 13:27:53"
 //   2/16/2026 12:00:00 AM parsed from: "February 16"
 //   2/16/2026 12:00:00 AM parsed from: "February 16"
-//   2/16/2026 11:29:14 AM parsed from: "2026-02-16T11:29:14.7037045+01:00"
-//   2/16/2026 11:29:14 AM parsed from: "2026-02-16T11:29:14.7037045+01:00"
-//   2/16/2026 12:29:14 PM parsed from: "Mon, 16 Feb 2026 11:29:14 GMT"
-//   2/16/2026 12:29:14 PM parsed from: "Mon, 16 Feb 2026 11:29:14 GMT"
-//   2/16/2026 11:29:14 AM parsed from: "2026-02-16T11:29:14"
-//   2/16/2026 11:29:00 AM parsed from: "11:29 AM"
-//   2/16/2026 11:29:14 AM parsed from: "11:29:14 AM"
-//   2/16/2026 12:29:14 PM parsed from: "2026-02-16 11:29:14Z"
-//   2/16/2026 10:29:14 AM parsed from: "Monday, February 16, 2026 10:29:14 AM"
-//   2/16/2026 10:29:14 AM parsed from: "February 16, 2026 10:29:14 AM"
-//   2/1/2026 12:00:00 AM parsed from: "February 2026"
-//   2/1/2026 12:00:00 AM parsed from: "February 2026"
+//   2/16/2026 1:27:53 PM parsed from: "2026-02-16T13:27:53.9079396+01:00"
+//   2/16/2026 1:27:53 PM parsed from: "2026-02-16T13:27:53.9079396+01:00"
+//   2/16/2026 2:27:53 PM parsed from: "Mon, 16 Feb 2026 13:27:53 GMT"
+//   2/16/2026 2:27:53 PM parsed from: "Mon, 16 Feb 2026 13:27:53 GMT"
+//   2/16/2026 1:27:53 PM parsed from: "2026-02-16T13:27:53"
+//   2/16/2026 1:27:00 PM parsed from: "13:27"
+//   2/16/2026 1:27:00 PM parsed from: "01:27 PM"
+//   2/16/2026 1:27:00 PM parsed from: "13:27"
+//   2/16/2026 1:27:00 PM parsed from: "1:27 PM"
+//   2/16/2026 1:27:53 PM parsed from: "13:27:53"
+//   2/16/2026 2:27:53 PM parsed from: "2026-02-16 13:27:53Z"
+//   2/16/2026 12:27:53 PM parsed from: "Monday, 16 February 2026 12:27:53"
+//   2/1/2026 12:00:00 AM parsed from: "2026 February"
+//   2/1/2026 12:00:00 AM parsed from: "2026 February"
 ~~~
 
 
