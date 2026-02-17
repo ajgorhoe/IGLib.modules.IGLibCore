@@ -80,6 +80,10 @@ The **`Ticks` property** (of type `long`) represents the number of **100-nanosec
 
 Both types have a number of **constructors** to create new values of `DateTime` and `DateTimeOffset`. A large group of [DateTime constructors](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.-ctor) *specifically state* components of the current *calendar day and time components*. Up to first 8 `int` parameters specify the *year*, *month*, *day of month*, *hour*, *minute*, *second*, *millisecond*, and *microsecond* of the created `DateTime` value. There can be less leading integer parameters: with *7 integer parameters*, microseconds are omitted; with *8 integer parameters*, milliseconds are also omitted; with *3 integer parameters*, only the date part is specified but the time of the day is not, and is set to 00:00:00 (0r 12:00:00 AM).
 
+Beside integer parameters that define the date and time of the day, one can also specify the [Calendar](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar) and the [DateTimeKind](https://learn.microsoft.com/en-us/dotnet/api/system.datetimekind) parameter. The [`Calendar` parameter](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.calendar) defines how time is divided into years, months and days, and defaults to [Gregorian calendar](#gregorian-calendar). The [`DateTimeKind` parameter](https://learn.microsoft.com/en-us/dotnet/api/system.datetimekind) defines whether the time is represented as local time or UTC time, or unspecified (default) - see the discussion about the `DateTime.Kind` property below.
+
+The other kinds of `DateTime` constructors use the `long` value of `ticks`, or the combination of `DateOnly` and `TimeOnly` structs.
+
 In order to query the current time, the `DateTime` and `DateTimeOffset` provide the **static properties `Now` and `UTCNow`**, which get instances (values) of their type set to the **current date and time** of the computer. `Now` is expressed as the local time (according to the time zone set on the computer), while `UTCNow` is expressed as the Coordinated Universal Time (UTC).
 
 **Static factory methods**
