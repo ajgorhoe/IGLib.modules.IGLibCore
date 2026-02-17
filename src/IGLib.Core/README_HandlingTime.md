@@ -78,9 +78,11 @@ For more information on the limitations of UTC and system time-related utilities
 
 The **`Ticks` property** (of type `long`) represents the number of **100-nanosecond intervals** that have elapsed **since 12:00:00 midnight on January 1, year 1** (in Gregorian calendar, years AD are counted from 1, and years BC are counted from -1 down, there is no year 0). This is what is **actually stored** in a `DateTime` structs, and **other properties are calculated from the `Ticks` value**. A nanosecond is one billionth of a second, so there are ten million ticks in a second. A tick or **100 nanoseconds is the smallest representable interval** in types that keep absolute time in .NET, such as `DateTime` or `DateTimeOffset`.
 
-In order to query the current type, the `DateTime` and `DateTimeOffset` provide the **static properties `Now` and `UTCNow`**, which get instances of their type set to the **current date and time** of the computer. `Now` is expressed as the local time (according to the time zone set on the computer), while `UTCNow` is expressed as the Coordinated Universal Time (UTC).
+Both types have a number of **constructors** to create new values of `DateTime` and `DateTimeOffset`. A large group of [DateTime constructors](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.-ctor) *specifically state* components of the current *calendar day and time components*. Up to first 8 `int` parameters specify the *year*, *month*, *day of month*, *hour*, *minute*, *second*, *millisecond*, and *microsecond* of the created `DateTime` value. There can be less leading integer parameters: with *7 integer parameters*, microseconds are omitted; with *8 integer parameters*, milliseconds are also omitted; with *3 integer parameters*, only the date part is specified but the time of the day is not, and is set to 00:00:00 (0r 12:00:00 AM).
 
-Both types have a number of constructors and static  
+In order to query the current time, the `DateTime` and `DateTimeOffset` provide the **static properties `Now` and `UTCNow`**, which get instances (values) of their type set to the **current date and time** of the computer. `Now` is expressed as the local time (according to the time zone set on the computer), while `UTCNow` is expressed as the Coordinated Universal Time (UTC).
+
+**Static factory methods**
 
 `DateTime` can store times as **local times** (expressed in the local [time zone](#time-zones-and-timezoneinfo-class) set on the computer) or as **UTC times**. It has the **`Kind` property**, which is a `DateTimeKind` enum with values `Unspecified` (0), `Utc` (1), and `Local` (2). This specifies whether the contained time is **represented as local or UTC time**, or this is not specified.
 
@@ -155,6 +157,11 @@ new DateTimeOffset(2026, 2, 15, 0, 0, 0, TimeSpan.FromHours(1)).Ticks - new Date
 new DateTimeOffset(2026, 2, 15, 0, 0, 0, TimeSpan.FromHours(1)).Ticks - new DateTime(2026, 2, 15, 0, 0, 0, DateTimeKind.Utc).Ticks
 
 ~~~
+
+#### The `DateTimeOffset` Struct
+
+
+#### The DateOnly and TimeOnly Structs
 
 
 ### Parsing and Formatting Date and Time Strings
