@@ -72,7 +72,7 @@ For more information on the limitations of UTC and system time-related utilities
 
 ## Logic of Time Handling in .NET
 
-### `DateTime` and `DateTimeOffset` Structures
+### `DateTime` and `DateTimeOffset` Structs
 
 *Structs* **[DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime)** and **[DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset)** are the **main types for date and time operations** like timestamping, obtaining the current time, capturing, storing and exchanging times, and performing various date and time calculations. Both store representation of a specific point in time, and provide **properties to extract** various human-familiar **components of date and time** of the day corresponding to the stored point in time: the calendar year (`Year`), month (`month`, between 1 and 12), day of the month (`Day`, between 1 and 12), day of the week (`DayOfWeek`, as `DayOfWeek` enum, `Sunday` (0) thru `Saturday` (6)), day of the year (`DayOfYear`, between 1 and 366), hour (`Hour`, between 0 and 23), minute (`Minute`, between 0 and 59), second (`Second`, between 0 and 59), millisecond (`Millisecond`, between 0 and 999), microsecond (`Microsecond`, between 0 and 999), and nanosecond (`Nanosecond`, between 0 and 900, in 100-nanosecond increments). Static method `DaysInMonth(int year, int month)` returns the number of days in the specified month (of the specified year).
 
