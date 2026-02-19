@@ -6,8 +6,13 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 **Contents**:
 
 * [Links](#links)
-* [Logic of Working with Time and Dates in .NET](#logic-of-working-with-time-and-dates-in-net)
-  * [Introduction - Handling Time-related Data in Software](#introduction-to-handling-time-related-data--in-software)
+* [Introduction to Handling Time-related Data  in Software
+](#introduction-to-handling-time-related-data--in-software)
+* [Logic of Time Handling in .NET](#logic-of-working-with-time-and-dates-in-net)
+  * [DateTime and DateTimeOffset Structs](#datetime-and-datetimeoffset-structs)
+    * [Logic of Arithmetic Operations, Comparison, and Conversions of Time Representations](#logic-of-arithmetic-operations-comparison-and-conversions-of-time-representations)
+    * [DateTimeOffset Struct](#the-datetimeoffset-struct)
+    * [DateOnly and TimeOnly Sruct](#the-dateonly-and-timeonly-structs)
 * [Time Zones and `TimeZoneInfo` class](#time-zones-and-timezoneinfo-class)
 * [Formatting Time and Date Values](#formatting-time-and-date-values)
   * [Format Providers](#date-and-time-format-providers)
@@ -44,9 +49,7 @@ This is a short guide with explanatory notes on handling dates and times in .NET
       * [DateTimeFormatInfo Class](https://learn.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo)
       * [DateTime API Remarks / TryParse method](https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-datetime-tryparse)
 
-## Logic of Working with Time and Dates in .NET
-
-### Introduction to Handling Time-related Data  in Software
+## Introduction to Handling Time-related Data  in Software
 
 When working with time-related data, it is crucial to define the context beforehand and identify the scope of time handling according to the needs. In the most **basic scenario**, all times can be defined as **local times**, corresponding to the *[time zone](https://en.wikipedia.org/wiki/Time_zone)* of the host device on which the software is operating. The advantage of this is that times are readily stored in memory, recorded, and displayed or printed as times displayed in local clocks and used in the specific local environment, provided that the time zone of the device is correctly set and time is synchronized.
 
@@ -90,7 +93,7 @@ In order to query the current time, the `DateTime` and `DateTimeOffset` provide 
 
 **Static factory methods**
 
-#### Logic of Arithmetic Operations and Comparison
+#### Logic of Arithmetic Operations, Comparison, and Conversions of Time Representations
 
 `DateTime` can store times as **local times** (expressed in the local [time zone](#time-zones-and-timezoneinfo-class) set on the computer) or as **UTC times**. It has the **`Kind` property**, which is a `DateTimeKind` enum with values `Unspecified` (0), `Utc` (1), and `Local` (2). This specifies whether the contained time is **represented as local or UTC time**, or this is not specified.
 
