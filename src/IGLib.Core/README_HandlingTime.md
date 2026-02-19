@@ -89,13 +89,13 @@ The other kinds of `DateTime` constructors use the `long` value of `ticks`, or t
 
 In order to query the current time, the `DateTime` and `DateTimeOffset` provide the **static properties `Now` and `UTCNow`**, which get instances (values) of their type set to the **current date and time** of the computer. **`Now`** is expressed as the **local time** (according to the time zone set on the computer), while **`UTCNow`** is expressed as the **Coordinated Universal Time (UTC)**.
 
-`DateTime` and `DateTimeOffset` values can be converted to local or UTC time by using `ToLocalTime` and `ToUniversalTime` functions.
-
-**Static factory methods**
-
 #### Logic of Arithmetic Operations, Comparison, and Conversions of Time Representations
 
 `DateTime` can store times as **local times** (expressed in the local [time zone](#time-zones-and-timezoneinfo-class) set on the computer) or as **UTC times**. It has the **`Kind` property**, which is a `DateTimeKind` enum with values `Unspecified` (0), `Utc` (1), and `Local` (2). This specifies whether the contained time is **represented as local or UTC time**, or this is not specified.
+
+`DateTime` and `DateTimeOffset` values can be **converted to local or UTC time** by using `ToLocalTime` and `ToUniversalTime` functions. These conversions work consistently: conversion sets the `DateTime.Kind` property consistently with the 
+
+
 
 The `DateTime` and `DateTimeOffset` **do not contain time zone information**. They cannot natively express physical times as local times in arbitrary time zone. Via the **`DateTime.Kind` property**, it can only be indicated **whether** the time stored in a `DateTime` value is **expressed as UTC time or a local time** (i.e., according to the time zone of the current computer), or this is unspecified. However, the  **`DateTime.Kind`** property is **ignored when comparing** `DateTimeKind` values **or performing date and time arithmetic on them**. These operations are performed only on nominal values of time stored in `DateTime` instances, which means that `DateTime.Kind` just provides informative information on the nature of how its value was produced, but is not intended to relate the value to an unambiguous point in time (or physical time). This is perhaps a single most important information to be aware of in order to understand date and time-related operations in .NET.
 
