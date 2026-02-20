@@ -241,7 +241,7 @@ foreach (string timeString in timeStrings)
 
 
 
-## Time Zones and `TimeZoneInfo` class
+## Time Zones and TimeZoneInfo class
 
 See also:
 
