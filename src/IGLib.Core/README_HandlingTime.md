@@ -96,7 +96,17 @@ In order to query the current time, the `DateTime` and `DateTimeOffset` provide 
 `DateTime` and `DateTimeOffset` values can be **converted to local or UTC time** by using `ToLocalTime` and `ToUniversalTime` functions. These conversions work consistently: conversion sets the `DateTime.Kind` property consistently with the target representation, and the converted value describes the same point in time. Also, converting to the same representation does not change the value (Two `DateTime` values are the same if they have the same `Ticks` and `Kind` properties).
 
 ~~~csharp
-// Demonstration of round-trip conversion:
+// Demonstration of round-trip conversion of the current time from local to UTC representation and back:
+DateTime tNow = DateTime.Now;
+Console.WriteLine("Local representation of the current time:");
+Console.WriteLine($"  {tNow.ToString()}; Kind: {tNow.Kind}");
+DateTime tNowToUtc = tNow.ToUniversalTime();
+Console.WriteLine("UTC representation of the current time:");
+Console.WriteLine($"  {tNowToUtc.ToString()}; Kind: {tNowToUtc.Kind}");
+
+
+// ---------------------------------------------------------
+
 (DateTime.Now, DateTime.Now.ToUniversalTime(), DateTime.Now.ToUniversalTime().ToLocalTime()).ToString()
 
 ( DateTime.UtcNow, DateTime.UtcNow.ToLocalTime(), DateTime.UtcNow.ToLocalTime().ToUniversalTime() ).ToString()
