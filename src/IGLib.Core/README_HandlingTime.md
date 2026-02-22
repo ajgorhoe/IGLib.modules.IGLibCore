@@ -125,6 +125,24 @@ Console.WriteLine($"  Equals to original: {tNowToLocal == tNow}");
 ~~~
 
 
+~~~csharp
+// Demonstration of round-trip conversion of the current time from UTC to local representation and back:
+DateTime tUtcNow = DateTime.UtcNow;
+Console.WriteLine("\UTC representation of the current time:");
+Console.WriteLine($"  {tUtcNow.ToString()}; Kind: {tUtcNow.Kind}");
+DateTime tUtcNowToLocal = tUtcNow.ToLocalTime();
+Console.WriteLine("Converted to Local representation:");
+Console.WriteLine($"  {tUtcNowToLocal.ToString()}; Kind: {tUtcNowToLocal.Kind}");
+DateTime tUtcNowToLocalToUtc = tUtcNowToLocal.ToUniversalTime();
+Console.WriteLine("Converted back to UTC representation (round-trip):");
+Console.WriteLine($"  {tUtcNowToLocalToUtc.ToString()}; Kind: {tUtcNowToLocalToUtc.Kind}");
+Console.WriteLine($"  Equals to original: {tUtcNowToLocalToUtc == tUtcNow}");
+DateTime tUtcNowToUtc = tUtcNow.ToUniversalTime();
+Console.WriteLine("Original UTC representation converted to UTC representation:");
+Console.WriteLine($"  {tUtcNowToUtc.ToString()}; Kind: {tUtcNowToUtc.Kind}");
+Console.WriteLine($"  Equals to original: {tUtcNowToUtc == tUtcNow}");
+~~~
+
 
 
 ~~~csharp
