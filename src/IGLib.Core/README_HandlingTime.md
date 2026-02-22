@@ -111,9 +111,23 @@ DateTime tNowToLocal = tNow.ToLocalTime();
 Console.WriteLine("Original local representation converted to local representation:");
 Console.WriteLine($"  {tNowToLocal.ToString()}; Kind: {tNowToLocal.Kind}");
 Console.WriteLine($"  Equals to original: {tNowToLocal == tNow}");
+// Local representation of the current time:
+//   2/22/2026 8:36:35 PM; Kind: Local
+// Converted to UTC representation:
+//   2/22/2026 7:36:35 PM; Kind: Utc
+// Converted back to local representation (round-trip):
+//   2/22/2026 8:36:35 PM; Kind: Local
+//   Equals to original: True
+// Original local representation converted to local representation:
+//   2/22/2026 8:36:35 PM; Kind: Local
+//   Equals to original: True
+
+~~~
 
 
-// ---------------------------------------------------------
+
+
+~~~csharp
 
 (DateTime.Now, DateTime.Now.ToUniversalTime(), DateTime.Now.ToUniversalTime().ToLocalTime()).ToString()
 
