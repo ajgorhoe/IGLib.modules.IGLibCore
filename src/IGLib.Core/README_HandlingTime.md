@@ -98,11 +98,19 @@ In order to query the current time, the `DateTime` and `DateTimeOffset` provide 
 ~~~csharp
 // Demonstration of round-trip conversion of the current time from local to UTC representation and back:
 DateTime tNow = DateTime.Now;
-Console.WriteLine("Local representation of the current time:");
+Console.WriteLine("\nLocal representation of the current time:");
 Console.WriteLine($"  {tNow.ToString()}; Kind: {tNow.Kind}");
 DateTime tNowToUtc = tNow.ToUniversalTime();
-Console.WriteLine("UTC representation of the current time:");
+Console.WriteLine("Converted to UTC representation:");
 Console.WriteLine($"  {tNowToUtc.ToString()}; Kind: {tNowToUtc.Kind}");
+DateTime tNowToUtcToLocal = tNowToUtc.ToLocalTime();
+Console.WriteLine("Converted back to local representation (round-trip):");
+Console.WriteLine($"  {tNowToUtcToLocal.ToString()}; Kind: {tNowToUtcToLocal.Kind}");
+Console.WriteLine($"  Equals to original: {tNowToUtcToLocal == tNow}");
+DateTime tNowToLocal = tNow.ToLocalTime();
+Console.WriteLine("Original local representation converted to local representation:");
+Console.WriteLine($"  {tNowToLocal.ToString()}; Kind: {tNowToLocal.Kind}");
+Console.WriteLine($"  Equals to original: {tNowToLocal == tNow}");
 
 
 // ---------------------------------------------------------
