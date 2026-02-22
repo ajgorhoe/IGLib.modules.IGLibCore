@@ -10,7 +10,7 @@ This is a short guide with explanatory notes on handling dates and times in .NET
 ](#introduction-to-handling-time-related-data--in-software)
 * [Logic of Time Handling in .NET](#logic-of-working-with-time-and-dates-in-net)
   * [DateTime and DateTimeOffset Structs](#datetime-and-datetimeoffset-structs)
-    * [Logic of Arithmetic Operations, Comparison, and Conversions of Time Representations](#logic-of-arithmetic-operations-comparison-and-conversions-of-time-representations)
+    * [Logic of Arithmetic Operations, Comparisons, and Conversions Between Time Representations](#logic-of-arithmetic-operations-comparisons-and-conversions-between-time-representations)
     * [DateTimeOffset Struct](#the-datetimeoffset-struct)
     * [DateOnly and TimeOnly Sruct](#the-dateonly-and-timeonly-structs)
 * [Time Zones and `TimeZoneInfo` class](#time-zones-and-timezoneinfo-class)
@@ -89,7 +89,7 @@ The other kinds of `DateTime` constructors use the `long` value of `ticks`, or t
 
 In order to query the current time, the `DateTime` and `DateTimeOffset` provide the **static properties `Now` and `UTCNow`**, which get instances (values) of their type set to the **current date and time** of the computer. **`Now`** is expressed as the **local time** (according to the time zone set on the computer), while **`UTCNow`** is expressed as the **Coordinated Universal Time (UTC)**.
 
-#### Logic of Arithmetic Operations, Comparison, and Conversions of Time Representations
+#### Logic of Arithmetic Operations, Comparisons, and Conversions Between Time Representations
 
 `DateTime` can store times as **local times** (expressed in the local [time zone](#time-zones-and-timezoneinfo-class) set on the computer) or as **UTC times**. It has the **`Kind` property**, which is a `DateTimeKind` enum with values `Unspecified` (0), `Utc` (1), and `Local` (2). This specifies whether the contained time is **represented as local or UTC time**, or this is not specified.
 
