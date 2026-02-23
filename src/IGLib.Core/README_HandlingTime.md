@@ -91,9 +91,11 @@ In order to query the current time, the `DateTime` and `DateTimeOffset` provide 
 
 #### Logic of Arithmetic Operations, Comparisons, and Conversions Between Time Representations
 
-`DateTime` can store times as **local times** (expressed in the local [time zone](#time-zones-and-timezoneinfo-class) set on the computer) or as **UTC times**. It has the **`Kind` property**, which is a `DateTimeKind` enum with values `Unspecified` (0), `Utc` (1), and `Local` (2). This specifies whether the contained time is **represented as local or UTC time**, or this is not specified.
+`DateTime` can store times as **local times** (expressed in the local [time zone](#time-zones-and-timezoneinfo-class) set on the computer) or as **UTC times**. It has the ***Kind* property**, which is a `DateTimeKind` enum with values `Unspecified` (0), `Utc` (1), and `Local` (2). This specifies whether the contained time is **represented as local or UTC time**, or this is not specified. **Conversions between local and UTC time representations are done consistently** by using the `DateKind.Kind` property: they result in nominally different times (shifted according to the local time zone's rule), but the result represents the same point in time as the original. 
 
 `DateTime` and `DateTimeOffset` values can be **converted to local or UTC time** by using `ToLocalTime` and `ToUniversalTime` functions. These conversions work consistently: conversion sets the `DateTime.Kind` property consistently with the target representation, and the converted value describes the same point in time. Also, converting to the same representation does not change the value (Two `DateTime` values are the same if they have the same `Ticks` and `Kind` properties).
+
+Consistent conversion behavior is demonstrated in the example below. First, the current local date and time representation is created by the static `DateTime.Now` property. The local representation is then converted to UTC representation by calling the `ToUniversalTime` method, then back to local representation by calling the `ToLocalTime` method. After each step, the created `DateTime` value is written to console, together with its `Kind` property. The generated output is shown for 
 
 ~~~csharp
 // Demonstration of round-trip conversion of the current time from local to UTC representation and back:
@@ -107,6 +109,7 @@ DateTime tNowToUtcToLocal = tNowToUtc.ToLocalTime();
 Console.WriteLine("Converted back to local representation (round-trip):");
 Console.WriteLine($"  {tNowToUtcToLocal.ToString()}; Kind: {tNowToUtcToLocal.Kind}");
 Console.WriteLine($"  Equals to original: {tNowToUtcToLocal == tNow}");
+// Conversion to the same representation preserves the value:
 DateTime tNowToLocal = tNow.ToLocalTime();
 Console.WriteLine("Original local representation converted to local representation:");
 Console.WriteLine($"  {tNowToLocal.ToString()}; Kind: {tNowToLocal.Kind}");
@@ -136,6 +139,7 @@ DateTime tUtcNowToLocalToUtc = tUtcNowToLocal.ToUniversalTime();
 Console.WriteLine("Converted back to UTC representation (round-trip):");
 Console.WriteLine($"  {tUtcNowToLocalToUtc.ToString()}; Kind: {tUtcNowToLocalToUtc.Kind}");
 Console.WriteLine($"  Equals to original: {tUtcNowToLocalToUtc == tUtcNow}");
+// Conversion to the same representation preserves the value:
 DateTime tUtcNowToUtc = tUtcNow.ToUniversalTime();
 Console.WriteLine("Original UTC representation converted to UTC representation:");
 Console.WriteLine($"  {tUtcNowToUtc.ToString()}; Kind: {tUtcNowToUtc.Kind}");
