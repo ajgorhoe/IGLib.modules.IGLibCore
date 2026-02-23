@@ -95,9 +95,7 @@ In order to query the current time, the `DateTime` and `DateTimeOffset` provide 
 
 On the contrary, **comparison operations and arithmetic operations on** different representations of **time do not take into account the `DateTime.Kind` property**. These operations **do not operate consistently on `DateTime` values as on points in time**. Instead, they just work on nominal times represented, without regard to the time zone information.
 
-`DateTime` and `DateTimeOffset` values can be **converted to local or UTC time** by using `ToLocalTime` and `ToUniversalTime` functions. These conversions work consistently: conversion sets the `DateTime.Kind` property consistently with the target representation, and the converted value describes the same point in time. Also, converting to the same representation does not change the value (Two `DateTime` values are the same if they have the same `Ticks` and `Kind` properties).
-
-Consistent conversion behavior is demonstrated in the example below. First, the current local date and time representation is created by the static `DateTime.Now` property. The local representation is then converted to UTC representation by calling the `ToUniversalTime` method, then back to local representation by calling the `ToLocalTime` method. After each step, the created `DateTime` value is written to console, together with its `Kind` property. The generated output is shown for 
+Let us take a closer look in the above described behavior on some examples. **Consistent conversion behavior** is demonstrated in the example below. First, the current local date and time representation is created by the static `DateTime.Now` property. The local representation is then converted to UTC representation by calling the `ToUniversalTime` method, then back to local representation by calling the `ToLocalTime` method. After each step, the created `DateTime` value is written to console, together with its `Kind` property. The generated output is shown for 
 
 ~~~csharp
 // Demonstration of round-trip conversion of the current time from local to UTC representation and back:
