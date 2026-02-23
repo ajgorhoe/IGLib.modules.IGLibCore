@@ -99,7 +99,7 @@ Let us take a closer look in the above described behavior on some examples. **Co
 
 ~~~csharp
 // Demonstration of round-trip conversion of the current time from local to UTC representation and back:
-DateTime tNow = DateTime.Now;
+DateTime tNow = new DateTime(2028, 03, 15, 18, 00, 00, DateTimeKind.Local);
 Console.WriteLine("Local representation of the current time:");
 Console.WriteLine($"  {tNow.ToString()}; Kind: {tNow.Kind}");
 DateTime tNowToUtc = tNow.ToUniversalTime();
@@ -108,23 +108,23 @@ Console.WriteLine($"  {tNowToUtc.ToString()}; Kind: {tNowToUtc.Kind}");
 DateTime tNowToUtcToLocal = tNowToUtc.ToLocalTime();
 Console.WriteLine("Converted back to local representation (round-trip):");
 Console.WriteLine($"  {tNowToUtcToLocal.ToString()}; Kind: {tNowToUtcToLocal.Kind}");
-Console.WriteLine($"  Equals to original: {tNowToUtcToLocal == tNow}");
+Console.WriteLine($"  Equals the original: {tNowToUtcToLocal == tNow}");
 // Conversion to the same representation preserves the value:
 DateTime tNowToLocal = tNow.ToLocalTime();
 Console.WriteLine("Original local representation converted to local representation:");
 Console.WriteLine($"  {tNowToLocal.ToString()}; Kind: {tNowToLocal.Kind}");
-Console.WriteLine($"  Equals to original: {tNowToLocal == tNow}");
-// Example output (time zone: UTC+1)
+Console.WriteLine($"  Equals the original: {tNowToLocal == tNow}");
+// Example output (for a time zone with UTC+01:00)
 // Local representation of the current time:
-//   2/22/2026 8:36:35 PM; Kind: Local
+//   3/15/2028 6:00:00 PM; Kind: Local
 // Converted to UTC representation:
-//   2/22/2026 7:36:35 PM; Kind: Utc
+//   3/15/2028 5:00:00 PM; Kind: Utc
 // Converted back to local representation (round-trip):
-//   2/22/2026 8:36:35 PM; Kind: Local
-//   Equals to original: True
+//   3/15/2028 6:00:00 PM; Kind: Local
+//   Equals the original: True
 // Original local representation converted to local representation:
-//   2/22/2026 8:36:35 PM; Kind: Local
-//   Equals to original: True
+//   3/15/2028 6:00:00 PM; Kind: Local
+//   Equals the original: True
 ~~~
 
 ~~~csharp
@@ -138,23 +138,23 @@ Console.WriteLine($"  {tUtcNowToLocal.ToString()}; Kind: {tUtcNowToLocal.Kind}")
 DateTime tUtcNowToLocalToUtc = tUtcNowToLocal.ToUniversalTime();
 Console.WriteLine("Converted back to UTC representation (round-trip):");
 Console.WriteLine($"  {tUtcNowToLocalToUtc.ToString()}; Kind: {tUtcNowToLocalToUtc.Kind}");
-Console.WriteLine($"  Equals to original: {tUtcNowToLocalToUtc == tUtcNow}");
+Console.WriteLine($"  Equals the original: {tUtcNowToLocalToUtc == tUtcNow}");
 // Conversion to the same representation preserves the value:
 DateTime tUtcNowToUtc = tUtcNow.ToUniversalTime();
 Console.WriteLine("Original UTC representation converted to UTC representation:");
 Console.WriteLine($"  {tUtcNowToUtc.ToString()}; Kind: {tUtcNowToUtc.Kind}");
-Console.WriteLine($"  Equals to original: {tUtcNowToUtc == tUtcNow}");
-// Example output (time zone: UTC+1)
+Console.WriteLine($"  Equals the original: {tUtcNowToUtc == tUtcNow}");
+// Example output (time zone with UTC+01:00)
 // UTC representation of the current time:
 //   2/22/2026 8:15:27 PM; Kind: Utc
 // Converted to Local representation:
 //   2/22/2026 9:15:27 PM; Kind: Local
 // Converted back to UTC representation (round-trip):
 //   2/22/2026 8:15:27 PM; Kind: Utc
-//   Equals to original: True
+//   Equals the original: True
 // Original UTC representation converted to UTC representation:
 //   2/22/2026 8:15:27 PM; Kind: Utc
-//   Equals to original: True
+//   Equals the original: True
 ~~~
 
 
