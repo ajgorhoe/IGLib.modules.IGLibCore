@@ -95,7 +95,7 @@ In order to query the current time, the `DateTime` and `DateTimeOffset` provide 
 
 On the contrary, **comparison operations and arithmetic operations on** different representations of **time do not take into account the `DateTime.Kind` property**. These operations **do not operate consistently on `DateTime` values as on points in time**. Instead, they just work on nominal times represented, without regard to the time zone information.
 
-Let us take a closer look in the above described behavior on some examples. **Consistent conversion behavior** is demonstrated in the example below. First, a specific local date and time representation is created using the appropriate constructor. The original local representation is then converted to UTC representation by calling the `ToUniversalTime` method, then back to local representation by calling the `ToLocalTime` method. After each step, the created `DateTime` value is written to console, together with its `Kind` property. In the second part, local representation is converted to local representation, which preserves the value. Comparing the values shows that all conversions result in representations of the same point in time than the originals. The generated outputs are for a local time zone that is one hour ahead of UTC. The example would lose the demonstrative value if the local time was the same as UTC (e.g. locations close to the zeroth meridian, no daylight saving).
+Let us take a closer look in the above described behavior on some examples. **Consistent conversion behavior** is demonstrated in the example below. First, a specific local date and time representation is created using the appropriate constructor. The original local representation is then converted to UTC representation by calling the `ToUniversalTime` method, then back to local representation by calling the `ToLocalTime` method. After each step, the created `DateTime` value is written to console, together with its `Kind` property. In the second part, local representation is converted to local representation, which preserves the value. Comparing the values shows that all conversions result in representations of the same point in time than the originals. The generated outputs are for a local time zone that is one hour ahead of UTC. The example would lose the demonstrative value if the local time was the same as UTC (e.g. for locations close to the zeroth meridian, no daylight saving).
 
 ~~~csharp
 // Demonstration of round-trip conversion of the current time from local to UTC representation and back:
@@ -127,6 +127,8 @@ Console.WriteLine($"  Equals the original: {tNowToLocal == tNow}");
 //   Equals the original: True
 ~~~
 
+The example below is similar, but it starts from the current time represented as UTC time, cna creates round trip to local time and then back to UTC time.
+
 ~~~csharp
 // Demonstration of round-trip conversion of the current time from UTC to local representation and back:
 DateTime tUtcNow = DateTime.UtcNow;
@@ -156,6 +158,9 @@ Console.WriteLine($"  Equals the original: {tUtcNowToUtc == tUtcNow}");
 //   2/22/2026 8:15:27 PM; Kind: Utc
 //   Equals the original: True
 ~~~
+
+In the following example, we perform similar **conversions on a `DateTimeOffset` value**. We **start with UTC representation** of the current time, convert it to local representation, and back to UTC representation.
+
 
 
 
