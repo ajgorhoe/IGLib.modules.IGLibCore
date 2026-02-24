@@ -114,6 +114,10 @@ DateTime tNowToLocal = tNow.ToLocalTime();
 Console.WriteLine("Original local representation converted to local representation:");
 Console.WriteLine($"  {tNowToLocal.ToString()}; Kind: {tNowToLocal.Kind}");
 Console.WriteLine($"  Equals the original: {tNowToLocal == tNow}");
+
+Console.WriteLine($"\nLocal equals UTC: {tUtcNow == tUtcNowToLocal}");
+Console.WriteLine($"Local - UTC: {tUtcNow - tUtcNowToLocal}");
+
 // Example output (for a time zone with UTC+01:00)
 // Local representation of the current time:
 //   3/15/2028 6:00:00 PM; Kind: Local
@@ -178,6 +182,8 @@ DateTimeOffset tUtcNowToUtc = tUtcNow.ToUniversalTime();
 Console.WriteLine("Original UTC representation converted to UTC representation:");
 Console.WriteLine($"  {tUtcNowToUtc.ToString()}; Offset: {tUtcNowToUtc.Offset}");
 Console.WriteLine($"  Equals the original: {tUtcNowToUtc == tUtcNow}");
+Console.WriteLine($"\nLocal equals UTC: {tUtcNowToLocal == tUtcNow}");
+Console.WriteLine($"Local - UTC: {tUtcNowToLocal - tUtcNow}");
 // Example output (time zone with UTC+01:00)
 ~~~
 
