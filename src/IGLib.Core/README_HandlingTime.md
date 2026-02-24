@@ -131,7 +131,7 @@ The example below is similar, but it starts from the current time represented as
 
 ~~~csharp
 // Demonstration of round-trip conversion of the current time from UTC to local representation and back:
-DateTime tUtcNow = DateTime.UtcNow;
+DateTime tUtcNow = DateTime.UtcNow;:
 Console.WriteLine("UTC representation of the current time:");
 Console.WriteLine($"  {tUtcNow.ToString()}; Kind: {tUtcNow.Kind}");
 DateTime tUtcNowToLocal = tUtcNow.ToLocalTime();
@@ -165,30 +165,20 @@ In the following example, we perform similar **conversions on a `DateTimeOffset`
 // Demonstration of round-trip conversion of the current time from UTC to local representation and back:
 DateTimeOffset tUtcNow = DateTimeOffset.UtcNow;
 Console.WriteLine("UTC representation of the current time:");
-Console.WriteLine($"  {tUtcNow.ToString()}; Kind: {tUtcNow.Kind}");
+Console.WriteLine($"  {tUtcNow.ToString()}; Offset: {tUtcNow.Offset}");
 DateTimeOffset tUtcNowToLocal = tUtcNow.ToLocalTime();
 Console.WriteLine("Converted to Local representation:");
-Console.WriteLine($"  {tUtcNowToLocal.ToString()}; Kind: {tUtcNowToLocal.Kind}");
+Console.WriteLine($"  {tUtcNowToLocal.ToString()}; Offset: {tUtcNowToLocal.Offset}");
 DateTimeOffset tUtcNowToLocalToUtc = tUtcNowToLocal.ToUniversalTime();
 Console.WriteLine("Converted back to UTC representation (round-trip):");
-Console.WriteLine($"  {tUtcNowToLocalToUtc.ToString()}; Kind: {tUtcNowToLocalToUtc.Kind}");
+Console.WriteLine($"  {tUtcNowToLocalToUtc.ToString()}; Offset: {tUtcNowToLocalToUtc.Offset}");
 Console.WriteLine($"  Equals the original: {tUtcNowToLocalToUtc == tUtcNow}");
 // Conversion to the same representation preserves the value:
 DateTimeOffset tUtcNowToUtc = tUtcNow.ToUniversalTime();
 Console.WriteLine("Original UTC representation converted to UTC representation:");
-Console.WriteLine($"  {tUtcNowToUtc.ToString()}; Kind: {tUtcNowToUtc.Kind}");
+Console.WriteLine($"  {tUtcNowToUtc.ToString()}; Offset: {tUtcNowToUtc.Offset}");
 Console.WriteLine($"  Equals the original: {tUtcNowToUtc == tUtcNow}");
 // Example output (time zone with UTC+01:00)
-// UTC representation of the current time:
-//   2/22/2026 8:15:27 PM; Kind: Utc
-// Converted to Local representation:
-//   2/22/2026 9:15:27 PM; Kind: Local
-// Converted back to UTC representation (round-trip):
-//   2/22/2026 8:15:27 PM; Kind: Utc
-//   Equals the original: True
-// Original UTC representation converted to UTC representation:
-//   2/22/2026 8:15:27 PM; Kind: Utc
-//   Equals the original: True
 ~~~
 
 
