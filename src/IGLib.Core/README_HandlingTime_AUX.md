@@ -36,3 +36,23 @@ Unlike `DateTime`, which has a `Kind` (an enum of 0, 1, or 2), `DateTimeOffset` 
 
 ---
 
+##### How it handles the Inconsistencies
+
+Let’s revisit your modes of inconsistency using `DateTimeOffset` for a **UTC+01:00** zone.
+
+###### 1. "False Equality" (Fixed)
+
+Because `DateTimeOffset` compares the **UTC normalized time**, it correctly identifies when two different nominal strings represent the same moment.
+
+~~~csharp
+// 10:00 UTC
+var utc = new DateTimeOffset(2026, 1, 1, 10, 0, 0, TimeSpan.Zero);
+// 11:00 UTC+1
+var local = new DateTimeOffset(2026, 1, 1, 11, 0, 0, TimeSpan.FromHours(1));
+
+bool isEqual = (utc == local); 
+// Result: True. 
+// Logic: Both are 10:00 UTC.
+
+~~~
+
