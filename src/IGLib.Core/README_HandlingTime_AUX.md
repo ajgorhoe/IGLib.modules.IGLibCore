@@ -75,3 +75,26 @@ bool areSame = (first230 == second230);
 Subtraction now uses the underlying UTC ticks, so the result is physically accurate regardless of DST changes.
 
 ---
+
+##### The Remaining Inconsistency: "The Static Offset Trap"
+
+The one thing `DateTimeOffset` **does not** know is the **Rules of the Time Zone**. It only knows the **Offset** at the moment the object was created.
+
+###### The "Future DST" Problem
+
+If you take a `DateTimeOffset` in January (UTC+1) and add 6 months, the arithmetic is physically correct (it adds exactly  hours worth of ticks), but the **Offset remains +1**.
+
+**Example:**
+
+~~~csharp
+// January in Vienna (UTC+1)
+var winter = new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.FromHours(1));
+
+// Add 6 months
+var summer = winter.AddMonths(6); 
+
+// Result: July 1st, 12:00 PM +01:00
+// INCONSISTENCY: In July, Vienna is actually +02:00 (CEST). 
+
+~~~
+
