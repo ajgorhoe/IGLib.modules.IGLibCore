@@ -98,3 +98,16 @@ var summer = winter.AddMonths(6);
 
 ~~~
 
+In this case, the `summer` variable represents a physically valid moment in time, but it is **not the correct local time** for that date in that location. To fix this, you would need `TimeZoneInfo` to "re-project" the UTC time back into the local rules.
+
+##### Summary Comparison
+
+| Feature | `DateTime` | `DateTimeOffset` |
+| --- | --- | --- |
+| **Storage** | Ticks + 2-bit Kind | Ticks (UTC) + 16-bit Offset |
+| **Point-in-time Equality** | No (Nominal only) | **Yes** (Absolute) |
+| **Duration Math** | No (Ignores shifts) | **Yes** (UTC-based) |
+| **DST Awareness** | No | **No** (Offset is static) |
+
+Would you like to see how `TimeZoneInfo.ConvertTime` is used to bridge the gap between a `DateTimeOffset` and actual local wall-clock rules?
+
