@@ -310,10 +310,76 @@ In order to provide consistency of comparison and arithmetic operations on times
 
 The `DateTimeOffset` struct stores two primary components internally:
 
-* **A UTC DateTime (64-bit)**; internally, it keeps the time normalized to UTC (as a tick count).
-2. **An Offset (16-bit)**: the difference between the local time at the moment the value was created and the stored UTC time (e.g., `+01:00`).
+* **A UTC DateTime (64-bit, type `long`)**; internally, it keeps the time normalized to UTC (as a tick count).
+* **An Offset (16-bit, type `short`)**: the difference between the local time at the moment the value was created and the stored UTC time (e.g., `+01:00`), expressed as 100-nanosecond ticks.
 
-Unlike `DateTime`, which has a `Kind` property (an `DateTimeKind` enum), `DateTimeOffset` stores the **exact numerical offset**, which eliminates some issues with calculations.
+Unlike `DateTime`, which has a `Kind` property (an `DateTimeKind` enum), `DateTimeOffset` stores the **exact numerical offset**. Storing the UTC time internally makes conversion to UTC time straight forward, and arithmetic and comparison operations fast. 
+
+
+
+
+
+
+
+Because DateTimeOffset treats the underlying UTC moment as the "source of truth," it behaves much more predictably than DateTime.
+
+
+
+
+
+
+
+
+
+
+
+While `DateTimeOffset` stores those two components internally, the **public properties** behave a bit differently to ensure the object remains easy to use for "wall-clock" time.
+
+Here is how the internal storage maps to the public API:
+
+### 1. The Internal Storage
+
+Internally, `DateTimeOffset` uses a private 64-bit field for **Ticks** (which, unlike a regular `DateTime`, are always normalized to UTC) and a 16-bit field for the **Offset** (in minutes).
+
+### 2. The Public Properties
+
+You cannot "directly" grab the internal private fields, but the public properties provide that data in a reconstructed format:
+
+* **`.UtcDateTime`**: This returns a `DateTime` object with `Kind.Utc`. It is essentially the "normalized" 64-bit tick count.
+* **`.Offset`**: This returns a `TimeSpan` representing the 16-bit offset.
+* **`.DateTime`**: **Warning!** This returns the "wall-clock" time (UTC + Offset) as a `DateTime` with `Kind.Unspecified`.
+* **`.LocalDateTime`**: This converts the UTC ticks to the **current system's** local time zone, regardless of what the original offset was.
+
+---
+
+### The Property Layout
+
+| Property | Value for `11:00 +01:00` | `DateTime.Kind` |
+| --- | --- | --- |
+| **`.UtcDateTime`** | `10:00:00` | `Utc` |
+| **`.Offset`** | `01:00:00` | N/A (`TimeSpan`) |
+| **`.DateTime`** | `11:00:00` | **`Unspecified`** |
+| **`.LocalDateTime`** | *Depends on your PC* | `Local` |
+
+### Why the `.DateTime` property is "Unspecified"
+
+This is a critical detail for your writing on inconsistencies. When you call `.DateTime` on a `DateTimeOffset`, the resulting `DateTime` loses its offset metadata.
+
+If you then perform arithmetic on that resulting `DateTime`, you fall right back into the "nominal value" traps we discussed earlier. The `DateTimeOffset` protects the timeline, but as soon as you "extract" the `DateTime` component, you lose that protection.
+
+> **Pro-Tip:** If you need to perform calculations that are physically accurate, **always** stay within the `DateTimeOffset` domain. Only drop down to `.DateTime` if you are passing data to a legacy API that doesn't support the offset type.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -442,7 +508,13 @@ This is a critical detail for your writing on inconsistencies. When you call `.D
 
 If you then perform arithmetic on that resulting `DateTime`, you fall right back into the "nominal value" traps we discussed earlier. The `DateTimeOffset` protects the timeline, but as soon as you "extract" the `DateTime` component, you lose that protection.
 
-> **Pro-Tip:** If you need to perform calculations that are physically accurate, **always** stay within the `DateTimeOffset` domain. Only drop down to `.DateTime` if you are passing data to a legacy API that doesn't support the offset type.
+
+
+
+> **Q**: How the `==` operator is implemented under the hood in the .NET Source code to see how it uses these internal fields?
+
+
+> **Tip:** If you need to perform calculations that are physically accurate, **always** stay within the `DateTimeOffset` domain. Only drop down to `.DateTime` if you are passing data to a legacy API that doesn't support the offset type.
 
 
 
@@ -451,6 +523,13 @@ If you then perform arithmetic on that resulting `DateTime`, you fall right back
 > **ToDo**: elaborate on how `TimeZoneInfo.ConvertTime` is used to bridge the gap between a `DateTimeOffset` and actual local wall-clock rules?
 
 
+
+
+
+
+
+
+> **ToDo**: how the == operator is implemented under the hood in the .NET Source code to see how it uses these internal fields?
 
 
 
