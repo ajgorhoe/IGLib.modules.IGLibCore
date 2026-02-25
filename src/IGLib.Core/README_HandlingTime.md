@@ -306,6 +306,21 @@ Console.WriteLine($"Time difference (end - start): {elapsed}")
 
 #### The `DateTimeOffset` Struct
 
+In order to provide consistency of comparison and arithmetic operations on times instances, one can use the **[DateTimeOffset struct](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset)** instead of `DateTime`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
