@@ -243,7 +243,7 @@ Console.WriteLine($"Local - UTC: {toUtcNowToLocal - toUtcNow}");
 // Local - UTC: 00:00:00
 ~~~
 
-For completeness, let us state the primary modes of inconsistency for a time zone like *Central European Time (CET/CEST)*, which is *UTC+01:00 in winter and UTC+02:00 during Daylight Saving Time*, with short examples.
+For completeness, let us state the primary modes of inconsistency for a time zone like *Central European Time (CET/CEST)*, which is *UTC+01:00 in winter and UTC+02:00 during Daylight Saving Time*, with short examples. If working with code that uses `DateTime` struct to perform time-relation calculations, it is good to be aware of these modes such that eventual bugs created by inconsistent use can be more easily identified.
 
 **The "False Equality" Mode (Kind Mismatch)**:
 
@@ -290,6 +290,21 @@ Console.WriteLine($"Is firstInstance equal to secondInstance: {areSameMoment}");
 // Result: True.
 // Inconsistency: Physically, these are 60 minutes apart, but the 
 // nominal comparison treats them as identical.
+~~~
+
+**Elapsed Time Calculation Errors**:
+
+If you calculate the duration between two Local times that span a DST change, the subtraction operator (-) will give you a result that ignores the time shift:
+
+~~~csharp
+DateTime start = new DateTime(2026, 3, 29, 1, 0, 0, DateTimeKind.Local); // Before jump
+Console.WriteLine($"start: {start.ToString()}; Kind: {start.Kind}");
+DateTime end = new DateTime(2026, 3, 29, 4, 0, 0, DateTimeKind.Local);   // After jump
+Console.WriteLine($"start: {end.ToString()}; Kind: {end.Kind}");
+TimeSpan elapsed = end - start;
+Console.WriteLine($"Time difference (end - start): {elapsed}")
+// Result: 3 hours.
+// Inconsistency: Physically, only 2 hours have passed because the  clock skipped the 2:00 hour.
 ~~~
 
 
