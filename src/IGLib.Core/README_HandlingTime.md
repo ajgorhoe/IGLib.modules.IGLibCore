@@ -274,7 +274,14 @@ The `DateTimeOffset` struct stores two primary components internally:
 * **A UTC DateTime (64-bit, type `long`)**; internally, it keeps the time normalized to UTC (as a tick count).
 * **An Offset (16-bit, type `short`)**: the difference between the local time at the moment the value was created and the stored UTC time (e.g., `+01:00`), expressed as 100-nanosecond ticks.
 
-Unlike `DateTime`, which has a `Kind` property (an `DateTimeKind` enum), `DateTimeOffset` **stores the exact numerical offset**. Storing the UTC time internally makes conversion to UTC time straight forward, and arithmetic and comparison operations fast. Because DateTimeOffset treats the underlying UTC moment as the "source of truth," it behaves much more predictably than DateTime.
+Unlike `DateTime`, which has a `Kind` property (an `DateTimeKind` enum), `DateTimeOffset` **stores the exact numerical offset**. Storing the UTC time internally makes conversion to UTC time straight forward, and arithmetic and comparison operations fast. Because DateTimeOffset treats the underlying UTC moment as the "source of truth," it behaves much more predictably than `DateTime`. **Comparison operations are performed correctly** in terms of absolute physical time.
+
+**Arithmetic operations** can yield results that are **technically accurate yet "surprising"** regarding the offset. While the math is "correct", `DateTimeOffset` arithmetic is **ignorant of geography**. There is **offset persistence**: If you have a DateTimeOffset representing 11:00 PM on the night before a Daylight Saving change and you call on it .AddHours(2), the result will have the old offset, even though the new local time should technically have a different offset.
+
+
+
+
+
 
 > .
 > **ToDo**: put some properties information here.
