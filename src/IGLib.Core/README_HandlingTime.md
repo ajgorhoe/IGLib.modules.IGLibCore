@@ -200,45 +200,6 @@ Console.WriteLine($"  Equals the original: {tUtcNowToUtc == tUtcNow}");
 ~~~
 -->
 
-In the following example, we perform similar **conversions of `DateTimeOffset` values**. We **start with UTC representation** of the current time, convert it to local representation, and back to UTC representation.
-
-~~~csharp
-// Demonstration of round-trip conversion of the current time from UTC to local representation and back:
-DateTimeOffset toUtcNow = DateTimeOffset.UtcNow;
-Console.WriteLine("UTC representation of the current time:");
-Console.WriteLine($"  {toUtcNow.ToString()}; Kind: {toUtcNow.DateTime.Kind}");
-DateTimeOffset toUtcNowToLocal = toUtcNow.ToLocalTime();
-Console.WriteLine("Converted to Local representation:");
-Console.WriteLine($"  {toUtcNowToLocal.ToString()}; Kind: {toUtcNowToLocal.DateTime.Kind}");
-DateTimeOffset toUtcNowToLocalToUtc = toUtcNowToLocal.ToUniversalTime();
-Console.WriteLine("Converted back to UTC representation (round-trip):");
-Console.WriteLine($"  {toUtcNowToLocalToUtc.ToString()}; Kind: {toUtcNowToLocalToUtc.DateTime.Kind}");
-Console.WriteLine($"  Equals the original: {toUtcNowToLocalToUtc == toUtcNow}");
-// Conversion to the same representation preserves the value:
-DateTimeOffset toUtcNowToUtc = toUtcNow.ToUniversalTime();
-Console.WriteLine("Original UTC representation converted to UTC representation:");
-Console.WriteLine($"  {toUtcNowToUtc.ToString()}; Kind: {toUtcNowToUtc.DateTime.Kind}");
-Console.WriteLine($"  Equals the original: {toUtcNowToUtc == toUtcNow}");
-// Example output (time zone with UTC+01:00)
-// UTC representation of the current time:
-//   2/25/2026 1:09:07 AM +00:00; Kind: Unspecified
-// Converted to Local representation:
-//   2/25/2026 2:09:07 AM +01:00; Kind: Unspecified
-// Converted back to UTC representation (round-trip):
-//   2/25/2026 1:09:07 AM +00:00; Kind: Unspecified
-//   Equals the original: True
-// Original UTC representation converted to UTC representation:
-//   2/25/2026 1:09:07 AM +00:00; Kind: Unspecified
-//   Equals the original: True
-
-// Additional test: comparison and difference:
-Console.WriteLine($"\nLocal equals UTC: {toUtcNowToLocal == toUtcNow}");
-Console.WriteLine($"Local - UTC: {toUtcNowToLocal - toUtcNow}");
-// Output:
-// Local equals UTC: True
-// Local - UTC: 00:00:00
-~~~
-
 For completeness, let us state the primary modes of inconsistency for a time zone like *Central European Time (CET/CEST)*, which is *UTC+01:00 in winter and UTC+02:00 during Daylight Saving Time*, with short examples. If working with code that uses `DateTime` struct to perform time-relation calculations, it is good to be aware of these modes such that eventual bugs created by inconsistent use can be more easily identified.
 
 **The "False Equality" Mode (Kind Mismatch)**:
@@ -313,19 +274,52 @@ The `DateTimeOffset` struct stores two primary components internally:
 * **A UTC DateTime (64-bit, type `long`)**; internally, it keeps the time normalized to UTC (as a tick count).
 * **An Offset (16-bit, type `short`)**: the difference between the local time at the moment the value was created and the stored UTC time (e.g., `+01:00`), expressed as 100-nanosecond ticks.
 
-Unlike `DateTime`, which has a `Kind` property (an `DateTimeKind` enum), `DateTimeOffset` stores the **exact numerical offset**. Storing the UTC time internally makes conversion to UTC time straight forward, and arithmetic and comparison operations fast. 
+Unlike `DateTime`, which has a `Kind` property (an `DateTimeKind` enum), `DateTimeOffset` **stores the exact numerical offset**. Storing the UTC time internally makes conversion to UTC time straight forward, and arithmetic and comparison operations fast. Because DateTimeOffset treats the underlying UTC moment as the "source of truth," it behaves much more predictably than DateTime.
 
+> .
+> **ToDo**: put some properties information here.
+> .
 
+As demonstration, let us first perform some **conversions of `DateTimeOffset` values** between local and UTC representations. We **start with UTC representation** of the current time, convert it to local representation, and back to UTC representation.
 
+~~~csharp
+// Demonstration of round-trip conversion of the current time from UTC to local representation and back:
+DateTimeOffset toUtcNow = DateTimeOffset.UtcNow;
+Console.WriteLine("UTC representation of the current time:");
+Console.WriteLine($"  {toUtcNow.ToString()}; Kind: {toUtcNow.DateTime.Kind}");
+DateTimeOffset toUtcNowToLocal = toUtcNow.ToLocalTime();
+Console.WriteLine("Converted to Local representation:");
+Console.WriteLine($"  {toUtcNowToLocal.ToString()}; Kind: {toUtcNowToLocal.DateTime.Kind}");
+DateTimeOffset toUtcNowToLocalToUtc = toUtcNowToLocal.ToUniversalTime();
+Console.WriteLine("Converted back to UTC representation (round-trip):");
+Console.WriteLine($"  {toUtcNowToLocalToUtc.ToString()}; Kind: {toUtcNowToLocalToUtc.DateTime.Kind}");
+Console.WriteLine($"  Equals the original: {toUtcNowToLocalToUtc == toUtcNow}");
+// Conversion to the same representation preserves the value:
+DateTimeOffset toUtcNowToUtc = toUtcNow.ToUniversalTime();
+Console.WriteLine("Original UTC representation converted to UTC representation:");
+Console.WriteLine($"  {toUtcNowToUtc.ToString()}; Kind: {toUtcNowToUtc.DateTime.Kind}");
+Console.WriteLine($"  Equals the original: {toUtcNowToUtc == toUtcNow}");
+// Example output (time zone with UTC+01:00)
+// UTC representation of the current time:
+//   2/25/2026 1:09:07 AM +00:00; Kind: Unspecified
+// Converted to Local representation:
+//   2/25/2026 2:09:07 AM +01:00; Kind: Unspecified
+// Converted back to UTC representation (round-trip):
+//   2/25/2026 1:09:07 AM +00:00; Kind: Unspecified
+//   Equals the original: True
+// Original UTC representation converted to UTC representation:
+//   2/25/2026 1:09:07 AM +00:00; Kind: Unspecified
+//   Equals the original: True
 
+// Additional test: comparison and difference:
+Console.WriteLine($"\nLocal equals UTC: {toUtcNowToLocal == toUtcNow}");
+Console.WriteLine($"Local - UTC: {toUtcNowToLocal - toUtcNow}");
+// Output:
+// Local equals UTC: True
+// Local - UTC: 00:00:00
+~~~
 
-
-
-Because DateTimeOffset treats the underlying UTC moment as the "source of truth," it behaves much more predictably than DateTime.
-
-
-
-
+The second part of the above example shows that comparisons and arithmetic operations are now performed consistently. The local and the UTC representation represent the same moment in time, therefore comparison identifies them as equal, and their time difference is calculated to be zero.
 
 
 
