@@ -140,7 +140,7 @@ Console.WriteLine($"Local - UTC: {tNow - tNowToUtc}");
 
 The **second part** of the example **compares the local and UTC representations of the same time and subtracts them**. Comparison returns `false`, although both representations represent the same physical time. Local time in the example;s results is expressed in a UTC+01:00 time zone, winter time, which is one hour ahead of UTC. Local time is `6:00:00 PM`, which corresponds exactly to the UTC time `5:00:00 PM` to which it is compared. Similarly, subtracting the UTC representation from local representation returns the time difference of one hour between the two, although they represent exactly the same time. As explained above, the reason is that logic and arithmetic only take into account the nominal time stored (`6:00:00 PM` for local vs. `5:00:00 PM` for UTC representation of the same time), without regard to the context provided by the `DateTime.Kind` property (`DateTimeKind.Local` vs. 'DateTimeKind.Utc').
 
-For `DateTime` values to be regarded the same, they need to have the same nominal values. For example:
+For two `DateTime` values to be regarded the same, they need to have the same nominal time values. This is demonstrated by the example below. Two values, one local and one UTC, are created with the same nominal time (`4:00:00 PM`). Comparisons show these values as the same, and the calculated time difference between them is zero. This is not consistent with the fact that the values actually represent two different physical times, which is verified by conversing both `DateTime` values to UTC: comparison of times converted to UTC shows that times are different, and their time difference is minus 1 hour (the local time is 1 hour earlier than the UTC value). The output of the example is provided for the case where the code is run on a UTC+01:00 time zone (when running on computers with different time zones, the calculated time difference between times converted to UTC would be different, dependent on the time difference for those time zones).
 
 ~~~csharp
 // The following two DateTime values are considered equal in a a UTC+01:00 time zone,
@@ -155,6 +155,15 @@ Console.WriteLine($"  localTime - utcTime: {localTime - utcTime}");
 Console.WriteLine("Actual comparison and time difference by conversion to UTC:");
 Console.WriteLine($"  localTime == utcTime: {localTime.ToUniversalTime() == utcTime.ToUniversalTime()}");
 Console.WriteLine($"  localTime - utcTime: {localTime.ToUniversalTime() - utcTime.ToUniversalTime()}");
+// Example output (for a UTC+01:00 time zone, winter time or no daylight saving):
+// localTime: 2/24/2026 4:00:00 PM; Kind: Local
+// utcTime: 2/24/2026 4:00:00 PM; Kind: Utc
+// Comparing localTime and utcTime and creating their time difference:
+//   localTime == utcTime: True
+//   localTime - utcTime: 00:00:00
+// Actual comparison and time difference by conversion to UTC:
+//   localTime == utcTime: False
+//   localTime - utcTime: -01:00:00
 ~~~
 
 
