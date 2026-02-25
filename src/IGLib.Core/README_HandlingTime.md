@@ -406,6 +406,8 @@ Would you like to see how `TimeZoneInfo.ConvertTime` is used to bridge the gap b
 
 
 
+
+
 > Q: Since DateTimeOffset stores a UTC datetime and an 16 bit offset, are these obtained available directly as public properties? 
 
 > A: Not exactly. While `DateTimeOffset` stores those two components internally, the public properties behave a bit differently to ensure the object remains easy to use for "wall-clock" time.
