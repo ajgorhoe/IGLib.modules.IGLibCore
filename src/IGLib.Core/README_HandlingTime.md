@@ -138,12 +138,23 @@ Console.WriteLine($"Local - UTC: {tNow - tNowToUtc}");
 // Local - UTC: 01:00:00
 ~~~
 
-The **second part** of the example **compares the local and UTC representations of the same time and subtracts them**. Comparison returns `false`, although both representations represent the same physical time. Local time in the example;s results is expressed in an UTC+01:00 time zone, winter time, which is one hour ahead of UTC. Local time is `6:00:00 PM`, which corresponds exactly to the UTC time `5:00:00 PM` to which it is compared. Similarly, subtracting the UTC representation from local representation returns the time difference of one hour between the two, although they represent exactly the same time. As explained above, the reason is that logic and arithmetic only take into account the nominal time stored (`6:00:00 PM` for local vs. `5:00:00 PM` for UTC representation of the same time), without regard to the context provided by the `DateTime.Kind` property (`DateTimeKind.Local` vs. 'DateTimeKind.Utc').
+The **second part** of the example **compares the local and UTC representations of the same time and subtracts them**. Comparison returns `false`, although both representations represent the same physical time. Local time in the example;s results is expressed in a UTC+01:00 time zone, winter time, which is one hour ahead of UTC. Local time is `6:00:00 PM`, which corresponds exactly to the UTC time `5:00:00 PM` to which it is compared. Similarly, subtracting the UTC representation from local representation returns the time difference of one hour between the two, although they represent exactly the same time. As explained above, the reason is that logic and arithmetic only take into account the nominal time stored (`6:00:00 PM` for local vs. `5:00:00 PM` for UTC representation of the same time), without regard to the context provided by the `DateTime.Kind` property (`DateTimeKind.Local` vs. 'DateTimeKind.Utc').
 
 For `DateTime` values to be regarded the same, they need to have the same nominal values. For example:
 
 ~~~csharp
-
+// The following two DateTime values are considered equal in a a UTC+01:00 time zone,
+// although they represent different points in time:
+DateTime localTime = new DateTime(2026, 02, 24, 16, 00, 00, DateTimeKind.Local);
+Console.WriteLine($"localTime: {localTime.ToString()}; Kind: {localTime.Kind}");
+DateTime utcTime = new DateTime(2026, 02, 24, 16, 00, 00, DateTimeKind.Utc);
+Console.WriteLine($"utcTime: {utcTime.ToString()}; Kind: {utcTime.Kind}");
+Console.WriteLine("Comparing localTime and utcTime and creating their time difference:");
+Console.WriteLine($"  localTime == utcTime: {localTime == utcTime}");
+Console.WriteLine($"  localTime - utcTime: {localTime - utcTime}");
+Console.WriteLine("Actual comparison and time difference by conversion to UTC:");
+Console.WriteLine($"  localTime == utcTime: {localTime.ToUniversalTime() == utcTime.ToUniversalTime()}");
+Console.WriteLine($"  localTime - utcTime: {localTime.ToUniversalTime() - utcTime.ToUniversalTime()}");
 ~~~
 
 
