@@ -259,8 +259,20 @@ Console.WriteLine($"Are times equal: {isEqual}")
 // Logic: It compares 10:00 to 11:00 "nominally" and sees a difference.
 ~~~
 
+**The "Spring Forward" Gap (Arithmetic Inconsistency)**:
 
+When the clocks jump forward for DST, a one-hour gap is created in physical time. If you add time across this gap using DateTime, the result will be mathematically correct but physically impossible in that local zone. Example - transition to CEST on March 29:
 
+~~~csharp
+// 1:30 AM on the night of the "Spring Forward"
+DateTime beforeGap = new DateTime(2026, 3, 29, 1, 30, 0, DateTimeKind.Local);
+// Add 1 hour physically
+DateTime afterGap = beforeGap.AddHours(1); 
+Console.WriteLine($"Time after the gap, obtained by adding one hour: {afterGap}");
+// Result: 2:30 AM.
+// Inconsistency: In UTC+1, 2:30 AM on this day DOES NOT EXIST. 
+// The clock jumps from 02:00 to 03:00.
+~~~
 
 
 ~~~csharp
