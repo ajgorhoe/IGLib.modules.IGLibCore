@@ -200,10 +200,6 @@ Console.WriteLine($"  Equals the original: {tUtcNowToUtc == tUtcNow}");
 ~~~
 -->
 
-
-#### The `DateTimeOffset` Struct
-
-
 In the following example, we perform similar **conversions of `DateTimeOffset` values**. We **start with UTC representation** of the current time, convert it to local representation, and back to UTC representation.
 
 ~~~csharp
@@ -308,7 +304,16 @@ Console.WriteLine($"Time difference (end - start): {elapsed}")
 ~~~
 
 
+#### The `DateTimeOffset` Struct
 
+
+
+
+
+
+
+
+---
 
 ~~~csharp
 
