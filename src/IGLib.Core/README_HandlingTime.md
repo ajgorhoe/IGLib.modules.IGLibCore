@@ -308,20 +308,18 @@ Console.WriteLine($"Time difference (end - start): {elapsed}")
 
 In order to provide consistency of comparison and arithmetic operations on times instances, one can use the **[DateTimeOffset struct](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset)** instead of `DateTime`.
 
+The `DateTimeOffset` struct stores two primary components internally:
+
+* **A UTC DateTime (64-bit)**; internally, it keeps the time normalized to UTC (as a tick count).
+2. **An Offset (16-bit)**: the difference between the local time at the moment the value was created and the stored UTC time (e.g., `+01:00`).
+
+Unlike `DateTime`, which has a `Kind` property (an `DateTimeKind` enum), `DateTimeOffset` stores the **exact numerical offset**, which eliminates some issues with calculations.
+
+
+
 
 
 `DateTimeOffset` **does not eliminate every inconsistency**, but it solves the most dangerous ones. It shifts the problem from "mathematical errors" to "contextual ambiguity."
-
----
-
-##### What is actually stored in `DateTimeOffset`?
-
-A `DateTimeOffset` is a value type that stores two primary components:
-
-1. **A UTC DateTime (64-bit):** Internally, it keeps the time normalized to UTC (as a tick count).
-2. **An Offset (16-bit):** The difference between that UTC time and the local time at the moment the value was created (e.g., `+01:00`).
-
-Unlike `DateTime`, which has a `Kind` (an enum of 0, 1, or 2), `DateTimeOffset` stores the **exact numerical offset**.
 
 ---
 
@@ -398,7 +396,7 @@ In this case, the `summer` variable represents a physically valid moment in time
 | **Duration Math** | No (Ignores shifts) | **Yes** (UTC-based) |
 | **DST Awareness** | No | **No** (Offset is static) |
 
-Would you like to see how `TimeZoneInfo.ConvertTime` is used to bridge the gap between a `DateTimeOffset` and actual local wall-clock rules?
+
 
 ---
 
@@ -450,7 +448,7 @@ If you then perform arithmetic on that resulting `DateTime`, you fall right back
 
 
 
-
+> **ToDo**: elaborate on how `TimeZoneInfo.ConvertTime` is used to bridge the gap between a `DateTimeOffset` and actual local wall-clock rules?
 
 
 
