@@ -19,8 +19,6 @@ This file contains auxiliary notes on handling time, which might be used later.
 
 In order to provide consistency of comparison and arithmetic operations on times instances, one can use the **[DateTimeOffset struct](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset)** instead of `DateTime`.
 
-
-
 `DateTimeOffset` does not eliminate every inconsistency**, but it solves the most dangerous ones. It shifts the problem from "mathematical errors" to "contextual ambiguity."
 
 ---
@@ -151,4 +149,3 @@ If you then perform arithmetic on that resulting `DateTime`, you fall right back
 
 > **Pro-Tip:** If you need to perform calculations that are physically accurate, **always** stay within the `DateTimeOffset` domain. Only drop down to `.DateTime` if you are passing data to a legacy API that doesn't support the offset type.
 
-Would you like to see how the `==` operator is implemented under the hood in the .NET Source code to see how it uses these internal fields?
