@@ -180,21 +180,21 @@ In the following example, we perform similar **conversions of `DateTimeOffset` v
 
 ~~~csharp
 // Demonstration of round-trip conversion of the current time from UTC to local representation and back:
-DateTimeOffset tUtcNow = DateTimeOffset.UtcNow;
+DateTimeOffset toUtcNow = DateTimeOffset.UtcNow;
 Console.WriteLine("UTC representation of the current time:");
-Console.WriteLine($"  {tUtcNow.ToString()}; Kind: {tUtcNow.DateTime.Kind}");
-DateTimeOffset tUtcNowToLocal = tUtcNow.ToLocalTime();
+Console.WriteLine($"  {toUtcNow.ToString()}; Kind: {toUtcNow.DateTime.Kind}");
+DateTimeOffset toUtcNowToLocal = toUtcNow.ToLocalTime();
 Console.WriteLine("Converted to Local representation:");
-Console.WriteLine($"  {tUtcNowToLocal.ToString()}; Kind: {tUtcNowToLocal.DateTime.Kind}");
-DateTimeOffset tUtcNowToLocalToUtc = tUtcNowToLocal.ToUniversalTime();
+Console.WriteLine($"  {toUtcNowToLocal.ToString()}; Kind: {toUtcNowToLocal.DateTime.Kind}");
+DateTimeOffset toUtcNowToLocalToUtc = toUtcNowToLocal.ToUniversalTime();
 Console.WriteLine("Converted back to UTC representation (round-trip):");
-Console.WriteLine($"  {tUtcNowToLocalToUtc.ToString()}; Kind: {tUtcNowToLocalToUtc.DateTime.Kind}");
-Console.WriteLine($"  Equals the original: {tUtcNowToLocalToUtc == tUtcNow}");
+Console.WriteLine($"  {toUtcNowToLocalToUtc.ToString()}; Kind: {toUtcNowToLocalToUtc.DateTime.Kind}");
+Console.WriteLine($"  Equals the original: {toUtcNowToLocalToUtc == toUtcNow}");
 // Conversion to the same representation preserves the value:
-DateTimeOffset tUtcNowToUtc = tUtcNow.ToUniversalTime();
+DateTimeOffset toUtcNowToUtc = toUtcNow.ToUniversalTime();
 Console.WriteLine("Original UTC representation converted to UTC representation:");
-Console.WriteLine($"  {tUtcNowToUtc.ToString()}; Kind: {tUtcNowToUtc.DateTime.Kind}");
-Console.WriteLine($"  Equals the original: {tUtcNowToUtc == tUtcNow}");
+Console.WriteLine($"  {toUtcNowToUtc.ToString()}; Kind: {toUtcNowToUtc.DateTime.Kind}");
+Console.WriteLine($"  Equals the original: {toUtcNowToUtc == toUtcNow}");
 // Example output (time zone with UTC+01:00)
 // UTC representation of the current time:
 //   2/25/2026 1:09:07 AM +00:00; Kind: Unspecified
@@ -208,8 +208,8 @@ Console.WriteLine($"  Equals the original: {tUtcNowToUtc == tUtcNow}");
 //   Equals the original: True
 
 // Additional test: comparison and difference:
-Console.WriteLine($"\nLocal equals UTC: {tUtcNowToLocal == tUtcNow}");
-Console.WriteLine($"Local - UTC: {tUtcNowToLocal - tUtcNow}");
+Console.WriteLine($"\nLocal equals UTC: {toUtcNowToLocal == toUtcNow}");
+Console.WriteLine($"Local - UTC: {toUtcNowToLocal - toUtcNow}");
 // Output:
 // Local equals UTC: True
 // Local - UTC: 00:00:00
