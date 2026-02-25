@@ -114,10 +114,6 @@ DateTime tNowToLocal = tNow.ToLocalTime();
 Console.WriteLine("Original local representation converted to local representation:");
 Console.WriteLine($"  {tNowToLocal.ToString()}; Kind: {tNowToLocal.Kind}");
 Console.WriteLine($"  Equals the original: {tNowToLocal == tNow}");
-
-Console.WriteLine($"\nLocal equals UTC: {tUtcNow == tUtcNowToLocal}");
-Console.WriteLine($"Local - UTC: {tUtcNow - tUtcNowToLocal}");
-
 // Example output (for a time zone with UTC+01:00)
 // Local representation of the current time:
 //   3/15/2028 6:00:00 PM; Kind: Local
@@ -129,6 +125,13 @@ Console.WriteLine($"Local - UTC: {tUtcNow - tUtcNowToLocal}");
 // Original local representation converted to local representation:
 //   3/15/2028 6:00:00 PM; Kind: Local
 //   Equals the original: True
+
+// Additional test: comparison and difference:
+Console.WriteLine($"\nLocal equals UTC: {tNow == tNowToUtc}");
+Console.WriteLine($"Local - UTC: {tNow - tNowToUtc}");
+// Output:
+// Local equals UTC: False
+// Local - UTC: 01:00:00
 ~~~
 
 The example below is similar, but it starts from the current time represented as UTC time, cna creates round trip to local time and then back to UTC time.
@@ -163,29 +166,45 @@ Console.WriteLine($"  Equals the original: {tUtcNowToUtc == tUtcNow}");
 //   Equals the original: True
 ~~~
 
-In the following example, we perform similar **conversions on a `DateTimeOffset` value**. We **start with UTC representation** of the current time, convert it to local representation, and back to UTC representation.
+In the following example, we perform similar **conversions of `DateTimeOffset` values**. We **start with UTC representation** of the current time, convert it to local representation, and back to UTC representation.
 
 ~~~csharp
 // Demonstration of round-trip conversion of the current time from UTC to local representation and back:
 DateTimeOffset tUtcNow = DateTimeOffset.UtcNow;
 Console.WriteLine("UTC representation of the current time:");
-Console.WriteLine($"  {tUtcNow.ToString()}; Offset: {tUtcNow.Offset}");
+Console.WriteLine($"  {tUtcNow.ToString()}; Kind: {tUtcNow.DateTime.Kind}");
 DateTimeOffset tUtcNowToLocal = tUtcNow.ToLocalTime();
 Console.WriteLine("Converted to Local representation:");
-Console.WriteLine($"  {tUtcNowToLocal.ToString()}; Offset: {tUtcNowToLocal.Offset}");
+Console.WriteLine($"  {tUtcNowToLocal.ToString()}; Kind: {tUtcNowToLocal.DateTime.Kind}");
 DateTimeOffset tUtcNowToLocalToUtc = tUtcNowToLocal.ToUniversalTime();
 Console.WriteLine("Converted back to UTC representation (round-trip):");
-Console.WriteLine($"  {tUtcNowToLocalToUtc.ToString()}; Offset: {tUtcNowToLocalToUtc.Offset}");
+Console.WriteLine($"  {tUtcNowToLocalToUtc.ToString()}; Kind: {tUtcNowToLocalToUtc.DateTime.Kind}");
 Console.WriteLine($"  Equals the original: {tUtcNowToLocalToUtc == tUtcNow}");
 // Conversion to the same representation preserves the value:
 DateTimeOffset tUtcNowToUtc = tUtcNow.ToUniversalTime();
 Console.WriteLine("Original UTC representation converted to UTC representation:");
-Console.WriteLine($"  {tUtcNowToUtc.ToString()}; Offset: {tUtcNowToUtc.Offset}");
+Console.WriteLine($"  {tUtcNowToUtc.ToString()}; Kind: {tUtcNowToUtc.DateTime.Kind}");
 Console.WriteLine($"  Equals the original: {tUtcNowToUtc == tUtcNow}");
+// Example output (time zone with UTC+01:00)
+// UTC representation of the current time:
+//   2/25/2026 1:09:07 AM +00:00; Kind: Unspecified
+// Converted to Local representation:
+//   2/25/2026 2:09:07 AM +01:00; Kind: Unspecified
+// Converted back to UTC representation (round-trip):
+//   2/25/2026 1:09:07 AM +00:00; Kind: Unspecified
+//   Equals the original: True
+// Original UTC representation converted to UTC representation:
+//   2/25/2026 1:09:07 AM +00:00; Kind: Unspecified
+//   Equals the original: True
+
+// Additional test: comparison and difference:
 Console.WriteLine($"\nLocal equals UTC: {tUtcNowToLocal == tUtcNow}");
 Console.WriteLine($"Local - UTC: {tUtcNowToLocal - tUtcNow}");
-// Example output (time zone with UTC+01:00)
+// Output:
+// Local equals UTC: True
+// Local - UTC: 00:00:00
 ~~~
+
 
 
 
