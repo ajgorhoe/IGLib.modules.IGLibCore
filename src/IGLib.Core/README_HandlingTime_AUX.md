@@ -56,3 +56,22 @@ bool isEqual = (utc == local);
 
 ~~~
 
+###### 2. "Fall Back" Overlap (Fixed)
+
+During the "Fall Back" hour, you can now distinguish between the first 2:30 AM (Offset +2) and the second 2:30 AM (Offset +1).
+
+~~~csharp
+var first230 = new DateTimeOffset(2026, 10, 25, 2, 30, 0, TimeSpan.FromHours(2));
+var second230 = new DateTimeOffset(2026, 10, 25, 2, 30, 0, TimeSpan.FromHours(1));
+
+bool areSame = (first230 == second230); 
+// Result: False. 
+// They are physically 60 minutes apart.
+
+~~~
+
+###### 3. Elapsed Time Calculation (Fixed)
+
+Subtraction now uses the underlying UTC ticks, so the result is physically accurate regardless of DST changes.
+
+---
