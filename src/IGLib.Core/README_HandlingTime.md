@@ -261,7 +261,7 @@ Console.WriteLine($"Are times equal: {isEqual}")
 
 **The "Spring Forward" Gap (Arithmetic Inconsistency)**:
 
-When the clocks jump forward for DST, a one-hour gap is created in physical time. If you add time across this gap using DateTime, the result will be mathematically correct but physically impossible in that local zone. Example - transition to CEST on March 29:
+When the clocks jump forward for DST, a one-hour gap is created in physical time. If you add time across this gap using DateTime, the result will be mathematically correct but physically impossible in that local zone. Example (transition to CEST on March 29):
 
 ~~~csharp
 // 1:30 AM on the night of the "Spring Forward"
@@ -273,6 +273,26 @@ Console.WriteLine($"Time after the gap, obtained by adding one hour: {afterGap}"
 // Inconsistency: In UTC+1, 2:30 AM on this day DOES NOT EXIST. 
 // The clock jumps from 02:00 to 03:00.
 ~~~
+
+**The "Fall Back" Overlap (Ambiguous Comparison)**:
+
+When clocks jump back, a specific hour repeats (e.g., 2:00 AM to 3:00 AM happens twice). DateTime cannot distinguish between these two distinct physical moments because they have the same nominal value. Example (Transition to CET on October 25):
+
+~~~csharp
+// First instance of 2:30 AM (Still DST)
+DateTime firstInstance = new DateTime(2026, 10, 25, 2, 30, 0, DateTimeKind.Local);
+Console.WriteLine($"firstInstance: {firstInstance.ToString()}; Kind: {firstInstance.Kind}");
+// Second instance of 2:30 AM (Standard Time, 1 hour later)
+DateTime secondInstance = new DateTime(2026, 10, 25, 2, 30, 0, DateTimeKind.Local);
+Console.WriteLine($"secondInstance: {secondInstance.ToString()}; Kind: {secondInstance.Kind}");
+bool areSameMoment = (firstInstance == secondInstance);
+Console.WriteLine($"Is firstInstance equal to secondInstance: {areSameMoment}");
+// Result: True.
+// Inconsistency: Physically, these are 60 minutes apart, but the 
+// nominal comparison treats them as identical.
+~~~
+
+
 
 
 ~~~csharp
