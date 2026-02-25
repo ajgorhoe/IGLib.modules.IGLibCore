@@ -310,7 +310,7 @@ In order to provide consistency of comparison and arithmetic operations on times
 
 
 
-`DateTimeOffset` does not eliminate every inconsistency**, but it solves the most dangerous ones. It shifts the problem from "mathematical errors" to "contextual ambiguity."
+`DateTimeOffset` **does not eliminate every inconsistency**, but it solves the most dangerous ones. It shifts the problem from "mathematical errors" to "contextual ambiguity."
 
 ---
 
