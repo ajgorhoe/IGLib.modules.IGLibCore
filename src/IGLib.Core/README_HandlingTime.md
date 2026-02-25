@@ -55,7 +55,7 @@ When working with time-related data, it is crucial to define the context beforeh
 
 However, using only local times has two major limitations. First, some time zones observe [daylight saving time (DST)](https://en.wikipedia.org/wiki/Daylight_saving_time). Once a year (usually in the spring), the clocks are moved forward. This creates a gap in the displayed times of closely spaced events just after the shift. At another time of year, the clocks are moved back, causing another strange effect: some times are duplicated. Within the time interval of the shift, times have an ambiguous meaning because they can refer to either summer or winter time. Therefore, local time is not monotonic, making it unsuitable for recording events where the sequence or exact intervals need to be preserved.
 
-A second limitation arises when times need to be exchanged between different locations on Earth or when times of events occurring in different locations (across time zones) need to be recorded. Local times describing the same point in time vary across time zones by approximately one day. The maximum difference between local times on Earth at any given moment is actually 26 hours rather than 24, and there is a two-hour window every day when three different calendar days exist simultaneously. To correlate local times with physical time, we must state the wall-clock time and the time zone in which it is recorded, which complicates software maintenance.
+A second limitation arises when times need to be exchanged between different locations on Earth or when times of events occurring in different locations (across time zones) need to be recorded. Local times describing the same point in time vary across time zones by approximately one day. The maximum difference between local times on Earth at any given moment is actually 26 hours rather than 24, and there is a two-hour window every day when three different calendar days exist simultaneously. To relate local times with physical time, we must state the wall-clock time and the time zone in which it is recorded, which complicates software maintenance.
 
 To overcome the limitations of using local time, we use a standardized time, or coordinate time, which is consistent regardless of where on Earth an event occurs or where information about distributed events is gathered. Universal Coordinated Time (UTC) is the primary time standard by which the world regulates clocks and is used in computer software as a standardized time.
 
@@ -140,7 +140,7 @@ Console.WriteLine($"Local - UTC: {tNow - tNowToUtc}");
 
 The **second part** of the example **compares the local and UTC representations of the same time and subtracts them**. Comparison returns `false`, although both representations represent the same physical time. Local time in the example;s results is expressed in a UTC+01:00 time zone, winter time, which is one hour ahead of UTC. Local time is `6:00:00 PM`, which corresponds exactly to the UTC time `5:00:00 PM` to which it is compared. Similarly, subtracting the UTC representation from local representation returns the time difference of one hour between the two, although they represent exactly the same time. As explained above, the reason is that logic and arithmetic only take into account the nominal time stored (`6:00:00 PM` for local vs. `5:00:00 PM` for UTC representation of the same time), without regard to the context provided by the `DateTime.Kind` property (`DateTimeKind.Local` vs. 'DateTimeKind.Utc').
 
-For two `DateTime` values to be regarded the same, they need to have the same nominal time values. This is demonstrated by the example below. Two values, one local and one UTC, are created with the same nominal time (`4:00:00 PM`). Comparisons show these values as the same, and the calculated time difference between them is zero. This is not consistent with the fact that the values actually represent two different physical times, which is verified by conversing both `DateTime` values to UTC: comparison of times converted to UTC shows that times are different, and their time difference is minus 1 hour (the local time is 1 hour earlier than the UTC value). The output of the example is provided for the case where the code is run on a UTC+01:00 time zone (when running on computers with different time zones, the calculated time difference between times converted to UTC would be different, dependent on the time difference for those time zones).
+For two `DateTime` values to be regarded the same, they need to have the same nominal time values. This is demonstrated by the example below. Two values, one local and one UTC, are created with the same nominal time (`4:00:00 PM`). Comparisons show these values as the same, and the calculated time difference between them is zero. This is not consistent with the fact that the values actually represent two different physical moments, which is verified by conversing both `DateTime` values to UTC: comparison of times converted to UTC shows that times are different, and their time difference is minus 1 hour (the local time is 1 hour earlier than the UTC value). The output of the example is provided for the case where the code is run on a UTC+01:00 time zone (when running on computers with different time zones, the calculated time difference between times converted to UTC would be different, dependent on the time difference for those time zones).
 
 ~~~csharp
 // The following two DateTime values are considered equal in a a UTC+01:00 time zone,
@@ -165,7 +165,6 @@ Console.WriteLine($"  localTime - utcTime: {localTime.ToUniversalTime() - utcTim
 //   localTime == utcTime: False
 //   localTime - utcTime: -01:00:00
 ~~~
-
 
 <!-- 
 The example below is similar, but it starts from the current time represented as UTC time, cna creates round trip to local time and then back to UTC time.
@@ -242,6 +241,22 @@ Console.WriteLine($"Local - UTC: {toUtcNowToLocal - toUtcNow}");
 // Output:
 // Local equals UTC: True
 // Local - UTC: 00:00:00
+~~~
+
+For completeness, let us state the primary modes of inconsistency for a time zone like *Central European Time (CET/CEST)*, which is *UTC+01:00 in winter and UTC+02:00 during Daylight Saving Time*, with short examples.
+
+**The "False Equality" Mode (Kind Mismatch)**:
+
+A common inconsistency occurs when comparing a UTC time and a Local time that represent the exact same physical moment. Because DateTime only compares the Ticks property, it reports them as different:
+
+~~~csharp
+// Physical moment: 10:00 AM UTC is the same as 11:00 AM UTC+1
+DateTime utcTime = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Utc);
+DateTime localTime = new DateTime(2026, 1, 1, 11, 0, 0, DateTimeKind.Local);
+bool isEqual = (utcTime == localTime);
+Console.WriteLine($"Are times equal: {isEqual}")
+// Result: False. 
+// Logic: It compares 10:00 to 11:00 "nominally" and sees a difference.
 ~~~
 
 
