@@ -14,7 +14,10 @@ This file contains auxiliary notes on handling time, which might be used later.
 
 
 
-## DateTimeOffset Struct
+
+#### The `DateTimeOffset` Struct
+
+In order to provide consistency of comparison and arithmetic operations on times instances, one can use the **[DateTimeOffset struct](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset)** instead of `DateTime`.
 
 
 
@@ -32,3 +35,4 @@ A `DateTimeOffset` is a value type that stores two primary components:
 Unlike `DateTime`, which has a `Kind` (an enum of 0, 1, or 2), `DateTimeOffset` stores the **exact numerical offset**.
 
 ---
+
