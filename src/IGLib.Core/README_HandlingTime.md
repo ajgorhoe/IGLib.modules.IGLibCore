@@ -373,17 +373,13 @@ var summer = winter.AddMonths(6);
 // INCONSISTENCY: In July, Vienna is actually +02:00 (CEST). 
 ~~~
 
-
-
-
-
 In this case, the `summer` variable represents a physically valid moment in time, but it is **not the correct local time** for that date in that location. To fix this, you would need `TimeZoneInfo` to "re-project" the UTC time back into the local rules.
 
-##### Summary Comparison
+`DateTime` and `DateTimeOffset` Comparison:
 
 | Feature | `DateTime` | `DateTimeOffset` |
 | --- | --- | --- |
-| **Storage** | Ticks + 2-bit Kind | Ticks (UTC) + 16-bit Offset |
+| **Storage** | Ticks (local) + 2-bit Kind | Ticks (UTC) + 16-bit Offset |
 | **Point-in-time Equality** | No (Nominal only) | **Yes** (Absolute) |
 | **Duration Math** | No (Ignores shifts) | **Yes** (UTC-based) |
 | **DST Awareness** | No | **No** (Offset is static) |
@@ -397,9 +393,9 @@ In this case, the `summer` variable represents a physically valid moment in time
 
 
 
+##### DateOffset properties
 
-
-
+> **ToDo**: set this as paragraph instead of section, move to appropriate location
 
 While `DateTimeOffset` stores those two components internally, the **public properties** behave a bit differently to ensure the object remains easy to use for "wall-clock" time.
 
