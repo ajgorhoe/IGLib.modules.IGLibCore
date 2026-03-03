@@ -9,8 +9,8 @@ using System.Globalization;
 using static IGLib.ParsingUtils;
 
 
-using static IGLib.ConsoleUtils.SystemConsole;
-using MyConsole = IGLib.ConsoleUtils.SystemConsole;
+using static IGLib.ConsoleAbstractions.SystemConsole;
+using MyConsole = IGLib.ConsoleAbstractions.SystemConsole;
 using System.ComponentModel;
 
 

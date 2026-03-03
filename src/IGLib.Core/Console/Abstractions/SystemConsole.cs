@@ -3,7 +3,9 @@
 using System;
 using System.IO;
 
-namespace IGLib.ConsoleUtils
+using IGLib.ConsoleUtils;
+
+namespace IGLib.ConsoleAbstractions
 {
 
     /// <summary>Adapter for the <see cref="System.Console"/> class. Implements the <see cref="IFullConsole"/> 
