@@ -1,7 +1,7 @@
 
 using System;
 
-namespace IGLib.ConsoleUtils
+namespace IGLib.ConsoleAbstractions
 {
 
     public interface IConsole

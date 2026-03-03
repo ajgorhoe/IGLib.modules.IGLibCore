@@ -3,7 +3,7 @@
 using System;
 using System.IO;
 
-namespace IGLib.ConsoleUtils
+namespace IGLib.ConsoleAbstractions
 {
 
     public interface IConsoleStreams

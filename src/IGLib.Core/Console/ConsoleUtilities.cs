@@ -14,7 +14,7 @@ using MyConsole = IGLib.ConsoleAbstractions.SystemConsole;
 using System.ComponentModel;
 
 
-namespace IGLib.ConsoleUtils
+namespace IGLib.ConsoleAbstractions
 {
 
     /// <summary>Various utilities that work with console abstractions (interfaces like <see cref="IConsole"/>,

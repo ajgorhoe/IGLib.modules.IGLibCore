@@ -2,7 +2,7 @@
 
 using System;
 
-namespace IGLib.ConsoleUtils
+namespace IGLib.ConsoleAbstractions
 {
 
     /// <summary>A capability interface that supplements the <see cref="IConsole"/> interface with

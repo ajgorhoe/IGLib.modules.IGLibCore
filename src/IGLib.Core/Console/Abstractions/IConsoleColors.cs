@@ -1,7 +1,7 @@
 
 using System;
 
-namespace IGLib.ConsoleUtils
+namespace IGLib.ConsoleAbstractions
 {
 
     /// <summary>Capability interface for console abstractions, supplements <see cref="IConsole"/> with the ability
