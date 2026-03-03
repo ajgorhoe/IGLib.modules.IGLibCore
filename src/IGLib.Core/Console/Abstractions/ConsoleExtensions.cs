@@ -3,7 +3,7 @@
 using System;
 using System.IO;
 
-namespace IGLib.ConsoleAbstractions
+namespace IGLib.ConsoleAbstractions.Extensions
 {
 
 
