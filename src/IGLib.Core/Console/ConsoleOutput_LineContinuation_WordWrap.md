@@ -34,7 +34,23 @@ If you prefer something subtle that looks like a "connector," these centered sym
 * **⋯ (U+22EF): Midline Horizontal Ellipsis**
 * **Why:** Unlike standard periods (...), these are vertically centered. It signifies "to be continued" without looking like the end of a sentence.
 
-
 * **⸗ (U+2E17): Double Oblique Hyphen**
 * **Why:** It’s an ancient hyphenation mark. It is very rare in modern text but looks intentionally like a "connector."
 * **Vibe:** Highly technical and distinct.
+
+Just using 🔗 U+1F517 is too high-plane, so try for example the following:
+
+* **┄ (U+2504): Box Drawings Light Triple Dash Horizontal**
+* **Why:** It looks like a "perforated" or "connected" line. It stays in the BMP.
+
+---
+
+### Comparison Table
+
+| Character | Unicode | Name | Intuition | Font Support |
+| --- | --- | --- | --- | --- |
+| **↵** | `U+21B5` | Corner Left Arrow | Very High (Standard CR) | Excellent |
+| **↴** | `U+21B4` | Corner Right Arrow | High (Word Wrap) | Good |
+| **⋯** | `U+22EF` | Midline Ellipsis | High (Continuity) | Excellent |
+| **⸗** | `U+2E17` | Double Oblique Hyphen | Medium (Rare Hyphen) | Fair |
+| **⮑** | `U+2B91` | Return Arrow | High | Low (Avoid) |
