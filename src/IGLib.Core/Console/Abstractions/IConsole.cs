@@ -19,7 +19,8 @@ namespace IGLib.ConsoleAbstractions
         /// <param name="value">String to be written / output (a newline is appended internally).</param>
         void WriteLine(string? value = null);
 
-        //// Common formatting overloads (optional, but Console-like)
+        //// Common formatting overloads (optional)
+        //// Remark: overloads like this one moved to extension methods
         //void WriteLine(string format, params object?[] args);
         //void Write(string format, params object?[] args);
     }
