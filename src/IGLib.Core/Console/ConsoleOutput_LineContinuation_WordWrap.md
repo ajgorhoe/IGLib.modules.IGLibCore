@@ -54,3 +54,18 @@ Just using 🔗 U+1F517 is too high-plane, so try for example the following:
 | **⋯** | `U+22EF` | Midline Ellipsis | High (Continuity) | Excellent |
 | **⸗** | `U+2E17` | Double Oblique Hyphen | Medium (Rare Hyphen) | Fair |
 | **⮑** | `U+2B91` | Return Arrow | High | Low (Avoid) |
+
+### Recommendation: The "Corner Right Arrow" (`↴`)
+
+For the specific xUnit problem and other situations, I recommend **`↴` (U+21B4)**.
+
+When you see for example:
+
+~~~text
+Starting process... ↴
+Done!
+~~~
+
+It visually tells the reader: "I wanted to stay on the same line, but the system forced me down." It is rare enough that it probably won't appear in actual text that is written to standard output, and it is part of the standard **Arrows** block in the BMP, so it should render in almost any terminal or test runner.
+
+---
