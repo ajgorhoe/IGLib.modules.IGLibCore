@@ -69,3 +69,19 @@ Done!
 It visually tells the reader: "I wanted to stay on the same line, but the system forced me down." It is rare enough that it probably won't appear in actual text that is written to standard output, and it is part of the standard **Arrows** block in the BMP, so it should render in almost any terminal or test runner.
 
 ---
+
+### Implementation Tip (C#)
+
+In xUnit, one could create a simple extension helper to handle this:
+
+~~~csharp
+public static class TestOutputExtensions
+{
+    private const char ContinuationChar = '\u21B4'; // ↴
+
+    public static void WriteContinuation(this ITestOutputHelper output, string message)
+    {
+        output.WriteLine($"{message}{ContinuationChar}");
+    }
+}
+~~~
