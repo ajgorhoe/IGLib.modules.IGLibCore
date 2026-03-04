@@ -23,9 +23,18 @@ These are the most intuitive because they mimic the "Return" key on a keyboard o
 * **Why:** This is the universal symbol for a carriage return/line feed.
 * **Vibe:** "The line ends here, but moves down and back to the start."
 
-### The Downwards Arrow with Corner Rightwards
-
 * **↴ (U+21B4): Downwards Arrow with Corner Rightwards**
 * **Why:** Often used in code editors to show that a long line has been wrapped to the next line.
 * **Vibe:** Very modern "wrapped text" look.
 
+### The Hyphen/Connection Symbols
+
+If you prefer something subtle that looks like a "connector," these centered symbols work well:
+
+* **⋯ (U+22EF): Midline Horizontal Ellipsis**
+* **Why:** Unlike standard periods (...), these are vertically centered. It signifies "to be continued" without looking like the end of a sentence.
+
+
+* **⸗ (U+2E17): Double Oblique Hyphen**
+* **Why:** It’s an ancient hyphenation mark. It is very rare in modern text but looks intentionally like a "connector."
+* **Vibe:** Highly technical and distinct.
