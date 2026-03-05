@@ -52,9 +52,8 @@ namespace IGLib.ConsoleAbstractions.Testing
     /// Note: This type is intended for unit tests and is not designed for concurrent use without external synchronization.
     /// </para>
     /// </remarks>
-    public sealed class FakeConsole : ConsoleBase // , IConsoleKeyInput
+    public sealed class FakeConsole : ConsoleBase, IConsoleKeyInput
     {
-
         private readonly Queue<string?> _lines = new();
         private readonly Queue<ConsoleKeyInfo> _keys = new();
         private readonly StringBuilder _currentLine = new();
@@ -89,7 +88,6 @@ namespace IGLib.ConsoleAbstractions.Testing
         /// </remarks>
         public string OutputText { get; private set; } = string.Empty;
 
-
         /// <summary>
         /// Enqueues a line that will be returned by the next call to <see cref="ReadLine"/>.
         /// </summary>
@@ -123,7 +121,6 @@ namespace IGLib.ConsoleAbstractions.Testing
             if (keys is null) throw new ArgumentNullException(nameof(keys));
             foreach (var key in keys) _keys.Enqueue(key);
         }
-
 
         /// <summary>
         /// Clears the recorded <see cref="Events"/> and captured <see cref="OutputText"/>, and resets any buffered line output.
@@ -173,6 +170,21 @@ namespace IGLib.ConsoleAbstractions.Testing
             _currentLine.Clear();
         }
 
+        /// <inheritdoc />
+        public ConsoleKeyInfo ReadKey(bool intercept = false)
+        {
+            if (_keys.Count == 0)
+                throw new InvalidOperationException("No scripted keys are available. Enqueue keys before calling ReadKey().");
+
+            var key = _keys.Dequeue();
+
+            Events.Add(new ReadKeyEvent(key, intercept));
+            Log($"[ReadKey intercept={intercept}] -> Key={key.Key}, Char={FormatChar(key.KeyChar)}");
+
+            return key;
+        }
+
+        /// <inheritdoc />
         public bool KeyAvailable => _keys.Count > 0;
 
         private void Log(string message)
@@ -187,3 +199,4 @@ namespace IGLib.ConsoleAbstractions.Testing
             => c == '\0' ? "<NUL>" : c.ToString();
     }
 }
+
