@@ -1,4 +1,5 @@
-﻿namespace IGLib.ConsoleAbstractions;
+﻿
+namespace IGLib.ConsoleAbstractions;
 
 public abstract class ConsoleBase : IConsole
 {
