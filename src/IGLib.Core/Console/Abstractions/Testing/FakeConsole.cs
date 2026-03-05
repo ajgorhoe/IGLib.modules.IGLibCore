@@ -51,5 +51,18 @@ public sealed class FakeConsole // : ConsoleBase, IConsoleKeyInput
         _loggingConsole?.WriteLine($"[Write] {s}");
     }
 
+    public void WriteLine(string? value = null)
+    {
+        if (value is not null) _currentLine.Append(value);
+
+        var line = _currentLine.ToString();
+        OutputText += line + Environment.NewLine;
+
+        Events.Add(new WriteLineEvent(line));
+        _loggingConsole?.WriteLine($"[WriteLine] {line}");
+
+        _currentLine.Clear();
+    }
+
 }
 
