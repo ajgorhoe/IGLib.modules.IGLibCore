@@ -89,16 +89,35 @@ namespace IGLib.ConsoleAbstractions.Testing
         /// </remarks>
         public string OutputText { get; private set; } = string.Empty;
 
+
+        /// <summary>
+        /// Enqueues a line that will be returned by the next call to <see cref="ReadLine"/>.
+        /// </summary>
+        /// <param name="line">The line to enqueue. May be <c>null</c> to simulate end-of-input.</param>
         public void EnqueueLine(string? line) => _lines.Enqueue(line);
 
+        /// <summary>
+        /// Enqueues multiple lines that will be returned by subsequent calls to <see cref="ReadLine"/>.
+        /// </summary>
+        /// <param name="lines">The lines to enqueue.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="lines"/> is <c>null</c>.</exception>
         public void EnqueueLines(IEnumerable<string?> lines)
         {
             if (lines is null) throw new ArgumentNullException(nameof(lines));
             foreach (var line in lines) _lines.Enqueue(line);
         }
 
+        /// <summary>
+        /// Enqueues a key that will be returned by the next call to <see cref="ReadKey"/>.
+        /// </summary>
+        /// <param name="key">The key to enqueue.</param>
         public void EnqueueKey(ConsoleKeyInfo key) => _keys.Enqueue(key);
 
+        /// <summary>
+        /// Enqueues multiple keys that will be returned by subsequent calls to <see cref="ReadKey"/>.
+        /// </summary>
+        /// <param name="keys">The keys to enqueue.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="keys"/> is <c>null</c>.</exception>
         public void EnqueueKeys(IEnumerable<ConsoleKeyInfo> keys)
         {
             if (keys is null) throw new ArgumentNullException(nameof(keys));
