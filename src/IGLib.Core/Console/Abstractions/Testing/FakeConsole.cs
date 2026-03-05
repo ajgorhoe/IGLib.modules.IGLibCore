@@ -52,7 +52,7 @@ namespace IGLib.ConsoleAbstractions.Testing
     /// Note: This type is intended for unit tests and is not designed for concurrent use without external synchronization.
     /// </para>
     /// </remarks>
-    public sealed class FakeConsole : ConsoleBase, IConsoleKeyInput
+    public sealed class FakeConsole : ConsoleBase // , IConsoleKeyInput
     {
 
         private readonly Queue<string?> _lines = new();
@@ -124,6 +124,10 @@ namespace IGLib.ConsoleAbstractions.Testing
             foreach (var key in keys) _keys.Enqueue(key);
         }
 
+
+        /// <summary>
+        /// Clears the recorded <see cref="Events"/> and captured <see cref="OutputText"/>, and resets any buffered line output.
+        /// </summary>
         public void Reset()
         {
             Events.Clear();
@@ -131,6 +135,7 @@ namespace IGLib.ConsoleAbstractions.Testing
             _currentLine.Clear();
         }
 
+        /// <inheritdoc />
         public override string? ReadLine()
         {
             var value = _lines.Count > 0 ? _lines.Dequeue() : null;
@@ -151,6 +156,7 @@ namespace IGLib.ConsoleAbstractions.Testing
             Log($"[Write] {Format(s)}");
         }
 
+        /// <inheritdoc />
         public override void WriteLine(string? value = null)
         {
             if (value is not null)
@@ -165,19 +171,6 @@ namespace IGLib.ConsoleAbstractions.Testing
             Log($"[WriteLine] {Format(line)}");
 
             _currentLine.Clear();
-        }
-
-        public ConsoleKeyInfo ReadKey(bool intercept = false)
-        {
-            if (_keys.Count == 0)
-                throw new InvalidOperationException("No scripted keys are available. Enqueue keys before calling ReadKey().");
-
-            var key = _keys.Dequeue();
-
-            Events.Add(new ReadKeyEvent(key, intercept));
-            Log($"[ReadKey intercept={intercept}] -> Key={key.Key}, Char={FormatChar(key.KeyChar)}");
-
-            return key;
         }
 
         public bool KeyAvailable => _keys.Count > 0;
