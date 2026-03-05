@@ -11,3 +11,11 @@ public sealed record ReadLineEvent(string? Returned) : ConsoleEvent;
 public sealed record ReadKeyEvent(ConsoleKeyInfo Returned, bool Intercept) : ConsoleEvent;
 
 
+
+public sealed class FakeConsole // : ConsoleBase, IConsoleKeyInput
+{
+    private readonly Queue<string?> _lines = new();
+    private readonly Queue<ConsoleKeyInfo> _keys = new();
+
+}
+
