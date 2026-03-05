@@ -64,5 +64,18 @@ public sealed class FakeConsole // : ConsoleBase, IConsoleKeyInput
         _currentLine.Clear();
     }
 
+    public ConsoleKeyInfo ReadKey(bool intercept = false)
+    {
+        if (_keys.Count == 0)
+            throw new InvalidOperationException("No scripted keys available.");
+
+        var k = _keys.Dequeue();
+        Events.Add(new ReadKeyEvent(k, intercept));
+        _loggingConsole?.WriteLine($"[ReadKey intercept={intercept}] -> {k.Key} '{k.KeyChar}'");
+        return k;
+    }
+
+    public bool KeyAvailable => _keys.Count > 0;
+
 }
 
