@@ -36,18 +36,39 @@ namespace IGLib.ConsoleAbstractions.Testing
 
     public sealed class FakeConsole : ConsoleBase, IConsoleKeyInput
     {
+
         private readonly Queue<string?> _lines = new();
         private readonly Queue<ConsoleKeyInfo> _keys = new();
         private readonly StringBuilder _currentLine = new();
         private readonly IConsole? _loggingConsole;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="FakeConsole"/>.
+        /// </summary>
+        /// <param name="loggingConsole">
+        /// Optional console to which the fake will log its operations (useful for diagnosing failing tests).
+        /// The logging output does not affect <see cref="Events"/> or <see cref="OutputText"/>.
+        /// </param>
         public FakeConsole(IConsole? loggingConsole = null)
         {
             _loggingConsole = loggingConsole;
         }
 
+        /// <summary>
+        /// Gets the ordered list of recorded console interaction events.
+        /// </summary>
         public List<ConsoleEvent> Events { get; } = new();
 
+        /// <summary>
+        /// Gets the accumulated output produced by <see cref="Write(string)"/> and <see cref="WriteLine(string)"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// <see cref="Write(string)"/> appends to the current line buffer.
+        /// <see cref="WriteLine(string)"/> flushes the current line buffer (plus optional argument) into
+        /// this text and appends <see cref="Environment.NewLine"/>.
+        /// </para>
+        /// </remarks>
         public string OutputText { get; private set; } = string.Empty;
 
         public void EnqueueLine(string? line) => _lines.Enqueue(line);
