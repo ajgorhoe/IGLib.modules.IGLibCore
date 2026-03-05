@@ -4,14 +4,34 @@ using System.Text;
 
 namespace IGLib.ConsoleAbstractions.Testing
 {
+    /// <summary>
+    /// Represents a single interaction event with a console abstraction.
+    /// </summary>
     public abstract record ConsoleEvent;
 
+    /// <summary>
+    /// Event recorded when <see cref="IConsole.Write(string)"/> is called.
+    /// </summary>
+    /// <param name="Text">The text written (never <c>null</c>; <c>null</c> is normalized to empty string).</param>
     public sealed record WriteEvent(string Text) : ConsoleEvent;
 
+    /// <summary>
+    /// Event recorded when <see cref="IConsole.WriteLine(string)"/> is called.
+    /// </summary>
+    /// <param name="Text">The text written as the line content (never <c>null</c>; <c>null</c> is normalized to empty string).</param>
     public sealed record WriteLineEvent(string Text) : ConsoleEvent;
 
+    /// <summary>
+    /// Event recorded when <see cref="IConsole.ReadLine"/> is called.
+    /// </summary>
+    /// <param name="Returned">The returned line (may be <c>null</c> if scripted input is exhausted).</param>
     public sealed record ReadLineEvent(string? Returned) : ConsoleEvent;
 
+    /// <summary>
+    /// Event recorded when <see cref="IConsoleKeyInput.ReadKey(bool)"/> is called.
+    /// </summary>
+    /// <param name="Returned">The returned key info.</param>
+    /// <param name="Intercept">The value of the <c>intercept</c> argument passed to <c>ReadKey</c>.</param>
     public sealed record ReadKeyEvent(ConsoleKeyInfo Returned, bool Intercept) : ConsoleEvent;
 
     public sealed class FakeConsole : ConsoleBase, IConsoleKeyInput
