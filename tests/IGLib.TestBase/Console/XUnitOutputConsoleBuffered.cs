@@ -31,6 +31,7 @@ public sealed class XUnitOutputConsole : IConsole
     private readonly StringBuilder _buffer = new();
     private const string LineContinuationCharacter = "⏎"; // U+23CE, "Return Symbol"
 
+    /// <summary>Whether the output is line buffered or not.</summary>
     public bool IsLineBuffered { get; set; } = true;
     
     public string? ReadLine()
