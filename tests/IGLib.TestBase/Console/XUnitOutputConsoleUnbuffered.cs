@@ -9,12 +9,13 @@ namespace IGLib.Tests;
 /// appends a character that signifies that the following line should be part of the current line.</para></summary>
 public sealed class XUnitOutputConsole : IConsole
 {
-    private readonly ITestOutputHelper _output;
 
     public XUnitOutputConsole(ITestOutputHelper output)
     {
         _output = output;
     }
+
+    private readonly ITestOutputHelper _output;
 
     private const string LineContinuationCharacter = "⏎"; // U+23CE, "Return Symbol"
 
