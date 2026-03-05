@@ -2,7 +2,7 @@
 using Xunit.Abstractions;
 using IGLib.ConsoleAbstractions;
 
-namespace IGLib.Tests;
+namespace IGLib.Tests.Base;
 
 /// <summary>An <see cref="IConsole"/> implementation to be used in xUnit tests.
 /// <para>This console does not use line buffered output. Instead, the <see cref="Write(string?)"/> method 

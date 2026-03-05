@@ -2,7 +2,9 @@
 using System.Text;
 using Xunit.Abstractions;
 
-namespace IGLib.ConsoleAbstractions.Testing;
+using IGLib.ConsoleAbstractions;
+
+namespace IGLib.Tests.Base;
 
 /// <summary>An <see cref="IConsole"/> implementation that can be used in xUnit tests.
 /// <para>This console can use line buffered output mode in order to ensure the correct behavior of the 
