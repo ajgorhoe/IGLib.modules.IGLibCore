@@ -34,6 +34,24 @@ namespace IGLib.ConsoleAbstractions.Testing
     /// <param name="Intercept">The value of the <c>intercept</c> argument passed to <c>ReadKey</c>.</param>
     public sealed record ReadKeyEvent(ConsoleKeyInfo Returned, bool Intercept) : ConsoleEvent;
 
+    /// <summary>
+    /// A test double for console interaction.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// <see cref="FakeConsole"/> supports:
+    /// </para>
+    /// <list type="bullet">
+    /// <item><description>Scripted line input via <see cref="EnqueueLine(string)"/> and <see cref="EnqueueLines(IEnumerable{string})"/>.</description></item>
+    /// <item><description>Scripted key input via <see cref="EnqueueKey(ConsoleKeyInfo)"/> and <see cref="EnqueueKeys(IEnumerable{ConsoleKeyInfo})"/>.</description></item>
+    /// <item><description>Recording all interactions to <see cref="Events"/> for deterministic assertions.</description></item>
+    /// <item><description>Capturing produced output text in <see cref="OutputText"/>.</description></item>
+    /// <item><description>Optional logging/teeing to another <see cref="IConsole"/> (e.g., an xUnit adapter) via the constructor.</description></item>
+    /// </list>
+    /// <para>
+    /// Note: This type is intended for unit tests and is not designed for concurrent use without external synchronization.
+    /// </para>
+    /// </remarks>
     public sealed class FakeConsole : ConsoleBase, IConsoleKeyInput
     {
 
