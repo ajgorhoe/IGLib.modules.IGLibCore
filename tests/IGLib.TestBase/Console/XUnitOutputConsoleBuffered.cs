@@ -10,14 +10,16 @@ public sealed class XUnitOutputConsole : IConsole
     public XUnitOutputConsole(ITestOutputHelper output, bool isLineBuffered = true)
     {
         _output = output;
-        _isLineBuffered = isLineBuffered;
+        IsLineBuffered = isLineBuffered;
     }
 
     private readonly ITestOutputHelper _output;
     private readonly StringBuilder _buffer = new();
-    private readonly bool _isLineBuffered;
     private const string LineContinuationCharacter = "⏎"; // U+23CE, "Return Symbol"
 
+
+    public bool IsLineBuffered { get; set; } = true;
+    
     public string? ReadLine()
         => throw new NotSupportedException("No input support.");
 
@@ -26,7 +28,7 @@ public sealed class XUnitOutputConsole : IConsole
         if (value != null)
         {
             _buffer.Append(value);
-            if (!_isLineBuffered)
+            if (!IsLineBuffered)
             {
                 // When output is not line buffered, we don't wait and we flush the output buffer immediately.
                 // This causes the newline to be appended to the argument of Write. Therefore, we append a special

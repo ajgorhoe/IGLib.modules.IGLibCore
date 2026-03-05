@@ -7,10 +7,10 @@ namespace IGLib.Tests;
 /// <summary>An <see cref="IConsole"/> implementation to be used in xUnit tests.
 /// <para>This console does not use line buffered output. Instead, the <see cref="Write(string?)"/> method 
 /// appends a character that signifies that the following line should be part of the current line.</para></summary>
-public sealed class XUnitOutputConsole : IConsole
+public sealed class XUnitOutputConsoleUnbuffered : IConsole
 {
 
-    public XUnitOutputConsole(ITestOutputHelper output)
+    public XUnitOutputConsoleUnbuffered(ITestOutputHelper output)
     {
         _output = output;
     }
