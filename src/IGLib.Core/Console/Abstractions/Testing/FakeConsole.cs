@@ -35,5 +35,13 @@ public sealed class FakeConsole // : ConsoleBase, IConsoleKeyInput
         foreach (var k in keys) _keys.Enqueue(k);
     }
 
+    public string? ReadLine()
+    {
+        var v = _lines.Count > 0 ? _lines.Dequeue() : null;
+        Events.Add(new ReadLineEvent(v));
+        _loggingConsole?.WriteLine($"[ReadLine] -> {v ?? "<null>"}");
+        return v;
+    }
+
 }
 
