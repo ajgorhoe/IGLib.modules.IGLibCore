@@ -21,7 +21,7 @@ namespace IGLib.Tests.Base
         /// can be used to write to the test output, too. The API is of type <see cref="ITestOutputHelper"/>
         /// and is more limited than consol, but it still enables some code that uses output to Consol to be directly
         /// copied into test methods.</param>
-        public TestBase(ITestOutputHelper output, bool assignConsole = true) // : base(output)
+        public TestBase(ITestOutputHelper output, bool assignConsole = true, bool isConsoleLineBuffered = true) // : base(output)
         {
             Output = output;
             Console = output;
