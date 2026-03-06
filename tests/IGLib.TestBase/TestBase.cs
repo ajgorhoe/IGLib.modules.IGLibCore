@@ -51,13 +51,13 @@ namespace IGLib.Tests.Base
         protected string ExportPathIGLibTemporary => Path.Combine(ExportPathIGLib, "temp");
 
         /// <summary>Enables writing to tests' output. Provided by the framework (injected via constructor).</summary>
-        protected ITestOutputHelper Output { get; set; }
+        protected ITestOutputHelper Output { get; init; }
 
         /// <summary>This property makes possible to use the name Console instead of Output in
         /// test method of this class, such that code can be directly copied to console 
         /// applications while output is still visible in tests' output. Unfortunately, you 
         /// cannot use Console.Write(...) because the ITestOutputHelper does not have it.</summary>
-        protected ITestOutputHelper Console { get; set; }
+        protected ITestOutputHelper Console { get; init; } = null;
 
         private LoggerFactory LoggerFactory{ get; set; }
 
