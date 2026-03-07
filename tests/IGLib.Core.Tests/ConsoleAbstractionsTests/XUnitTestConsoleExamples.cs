@@ -17,7 +17,7 @@ namespace IGLib.Commands.Tests
 {
 
     /// <summary>Tests for generic commands (implementations of <see cref="IGenericCommand"/>).</summary>
-    public class XUnitTestConsoleTests : TestBase<XUnitTestConsoleTests>
+    public class XUnitTestConsoleExamples : TestBase<XUnitTestConsoleExamples>
     {
 
 
@@ -25,7 +25,7 @@ namespace IGLib.Commands.Tests
         /// of type <see cref="ITestOutputHelper"/>, which will be used to write on the tests' output,
         /// accessed through the base class's property <see cref="Output"/> and the property <see cref="TestBase{TestClassType}.Console"/> of type <see cref="IConsole"/>.</summary>
         /// <param name=""></param>
-        public XUnitTestConsoleTests(ITestOutputHelper output) :  base(output)  // calls base class's constructor
+        public XUnitTestConsoleExamples(ITestOutputHelper output) :  base(output)  // calls base class's constructor
         {
             // Remark: the base constructor will assign the Output and Console properties.
         }
