@@ -55,16 +55,14 @@ namespace IGLib.Tests.Base
         /// via constructor).</summary>
         protected ITestOutputHelper Output { get; init; }
 
-        /// <summary>This property makes possible to use the name Console instead of Output in
-        /// test method of this class, such that code can be directly copied to console 
-        /// applications while output is still visible in tests' output. Unfortunately, you 
-        /// cannot use Console.Write(...) because the ITestOutputHelper does not have it.</summary>
-        protected IConsole Console { get; init; } = null;
-        // protected ITestOutputHelper Console { get; init; } = null;
+        /// <summary>This property provides an <see cref="IConsole"/> object that can be used to write to the standard
+        /// output of tests in inherited classes. The object of actual type <see cref="XUnitOutputConsole"/> adapts the
+        /// raw <see cref="ITestOutputHelper"/> object accessible via the <see cref="Output"/> property.</summary>
+        protected IConsole Console { get; init; }
 
         private LoggerFactory LoggerFactory{ get; set; }
 
-        // ToDo: provide a logger!
+        // ToBeDone: provide a logger!
         //public ILogger GetLogger()
         //{
         //    throw new NotImplementedException();
