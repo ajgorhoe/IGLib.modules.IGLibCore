@@ -11,22 +11,20 @@ namespace IGLib.Tests.Base
 {
     
     /// <summary>Base class for test classes. Provides utilities such as output (via the properties 
-    /// <see cref="Output"/> and <see cref="Console"/>, which reference the same object but can be used according
-    /// to what the name emphasizes).</summary>
-    /// <typeparam name="TestClassType">Actual type of the test class, or at leastt its base class. Can be abstract.</typeparam>
+    /// <see cref="Output"/> of type <see cref="ITestOutput"/> and <see cref="Console"/> of type <see cref="IConsole"/>.</summary>
+    /// <typeparam name="TestClassType">Actual type of the test class, or at least its base class. Can be abstract.</typeparam>
     public abstract class TestBase<TestClassType>   // not needed any more: : TestBase
     {
 
-        /// <summaryConstructor of the common test classes' base class.</summary>
-        /// <param name="output">Object that provides access to tests' output by the XUnit testing test famework.</param>
-        /// <param name="assignConsole">If true then output is also assigned to Console property, such that Console
-        /// can be used to write to the test output, too. The API is of type <see cref="ITestOutputHelper"/>
-        /// and is more limited than consol, but it still enables some code that uses output to Consol to be directly
-        /// copied into test methods.</param>
-        public TestBase(ITestOutputHelper output, bool assignConsole = true, bool isConsoleLineBuffered = true) // : base(output)
+        /// <summary>Constructor of the common test classes' base class.</summary>
+        /// <param name="output">Object that provides access to tests' standard output by the XUnit testing test famework.</param>
+        /// <param name="isConsoleLineBuffered">If true then output of <see cref="Console"/> is line buffered, i.e., output 
+        /// of <see cref="IConsole.Write(string?)"/> calls will not be written until the first call to a method that adds the
+        /// newline, such as <see cref="IConsole.WriteLine(string?)"/>.</param>
+        public TestBase(ITestOutputHelper output, bool isConsoleLineBuffered = true) // : base(output)
         {
             Output = output;
-            Console = new XUnitOutputConsole(output);
+            Console = new XUnitOutputConsole(output, isConsoleLineBuffered);
             LoggerFactory = new LoggerFactory();
             LoggerFactory.AddProvider(new XUnitLoggerProvider(output));
         }
@@ -52,7 +50,9 @@ namespace IGLib.Tests.Base
 
         protected string ExportPathIGLibTemporary => Path.Combine(ExportPathIGLib, "temp");
 
-        /// <summary>Enables writing to tests' output. Provided by the framework (injected via constructor).</summary>
+        /// <summary>Enables writing to tests' standard output via its <see cref="ITestOutputHelper.WriteLine(string)"/>
+        /// and <see cref="ITestOutputHelper.WriteLine(string, object[])"/> methods. Provided by the framework (injected 
+        /// via constructor).</summary>
         protected ITestOutputHelper Output { get; init; }
 
         /// <summary>This property makes possible to use the name Console instead of Output in
