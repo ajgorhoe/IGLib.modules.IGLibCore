@@ -57,8 +57,35 @@ namespace IGLib.Tests.Base
 
         /// <summary>This property provides an <see cref="IConsole"/> object that can be used to write to the standard
         /// output of tests in inherited classes. The object of actual type <see cref="XUnitOutputConsole"/> adapts the
-        /// raw <see cref="ITestOutputHelper"/> object accessible via the <see cref="Output"/> property.</summary>
+        /// raw <see cref="ITestOutputHelper"/> object accessible via the <see cref="Output"/> property.
+        /// <para>If the actual type of this object is <see cref="XUnitOutputConsole"/> then the <see cref="IsConsoleOutputLineBuffered"/>
+        /// property can be used in order to set this console's output to line buffered (when set to true) or unbuffered (when set to false).</para></summary>
         protected IConsole Console { get; init; }
+
+        /// <summary>Gets or sets a value indicating whether the console output is line buffered for the XUnit output console.</summary>
+        /// <remarks>This property is applicable only when the console is of type <see cref="XUnitOutputConsole"/>.
+        /// Setting this property to a non-null value will throw an <see cref="InvalidOperationException"/> if the console is not of
+        /// the appropriate type. This can be verified by getting this property value: if the value is null then the above
+        /// conditions are not met, and the property cannot be set to a non-null value.</remarks>
+        protected bool? IsConsoleOutputLineBuffered
+        {
+            get
+            {
+                if (Console is XUnitOutputConsole xUnitConsole)
+                {
+                    return xUnitConsole.IsLineBuffered;
+                }
+                return null; // Not applicable for other console types
+            }
+            set
+            {
+                if (Console is XUnitOutputConsole xUnitConsole && xUnitConsole is not null && value != null)
+                {
+                    xUnitConsole.IsLineBuffered = value.Value;
+                }
+                throw new InvalidOperationException("IsConsoleOutputLineBuffered can only be set if Console is of type XUnitOutputConsole and value is not null.");
+            } 
+        }
 
         private LoggerFactory LoggerFactory{ get; set; }
 
