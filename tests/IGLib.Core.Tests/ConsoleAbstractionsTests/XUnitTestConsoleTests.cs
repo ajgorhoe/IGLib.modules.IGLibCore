@@ -27,7 +27,7 @@ namespace IGLib.Commands.Tests
         /// <param name=""></param>
         public XUnitTestConsoleTests(ITestOutputHelper output) :  base(output)  // calls base class's constructor
         {
-            // Remark: the base constructor will assign output parameter to the Output and Console property.
+            // Remark: the base constructor will assign the Output and Console properties.
         }
 
 
