@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 
+using IGLib.ConsoleAbstractions;
+
 namespace IGLib.Tests.Base
 {
     
@@ -24,7 +26,7 @@ namespace IGLib.Tests.Base
         public TestBase(ITestOutputHelper output, bool assignConsole = true, bool isConsoleLineBuffered = true) // : base(output)
         {
             Output = output;
-            Console = output;
+            Console = new XUnitOutputConsole(output);
             LoggerFactory = new LoggerFactory();
             LoggerFactory.AddProvider(new XUnitLoggerProvider(output));
         }
@@ -57,7 +59,8 @@ namespace IGLib.Tests.Base
         /// test method of this class, such that code can be directly copied to console 
         /// applications while output is still visible in tests' output. Unfortunately, you 
         /// cannot use Console.Write(...) because the ITestOutputHelper does not have it.</summary>
-        protected ITestOutputHelper Console { get; init; } = null;
+        protected IConsole Console { get; init; } = null;
+        // protected ITestOutputHelper Console { get; init; } = null;
 
         private LoggerFactory LoggerFactory{ get; set; }
 
