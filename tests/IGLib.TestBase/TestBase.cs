@@ -59,7 +59,9 @@ namespace IGLib.Tests.Base
         /// output of tests in inherited classes. The object of actual type <see cref="XUnitOutputConsole"/> adapts the
         /// raw <see cref="ITestOutputHelper"/> object accessible via the <see cref="Output"/> property.
         /// <para>If the actual type of this object is <see cref="XUnitOutputConsole"/> then the <see cref="IsConsoleOutputLineBuffered"/>
-        /// property can be used in order to set this console's output to line buffered (when set to true) or unbuffered (when set to false).</para></summary>
+        /// property can be used in order to set this console's output to line buffered (when set to true) or unbuffered (when set to false).</para>
+        /// <para>In order to use the <see cref="IConsole"/> extension methods on this properrty, include the using statement 
+        /// with the <see cref="IGLib.ConsoleAbstractions.Extensions"/> namespace.</para></summary>
         protected IConsole Console { get; init; }
 
         /// <summary>Gets or sets a value indicating whether the console output is line buffered for the XUnit output console.</summary>
