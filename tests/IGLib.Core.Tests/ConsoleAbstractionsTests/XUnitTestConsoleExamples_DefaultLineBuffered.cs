@@ -105,7 +105,7 @@ namespace IGLib.ConsoleAbstractions.Tests
     {
 
 
-        public XUnitTestConsoleExamples_UnBuffered(ITestOutputHelper output) : base(output)
+        public XUnitTestConsoleExamples_UnBuffered(ITestOutputHelper output) : base(output, isConsoleLineBuffered: true)
         {
             // Remark: the base constructor will assign the Output and Console properties.
         }
