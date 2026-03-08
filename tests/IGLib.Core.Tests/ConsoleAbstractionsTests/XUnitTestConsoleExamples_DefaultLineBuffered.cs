@@ -17,7 +17,7 @@ namespace IGLib.Commands.Tests
 {
 
     /// <summary>Tests for generic commands (implementations of <see cref="IGenericCommand"/>).</summary>
-    public class XUnitTestConsoleExamples : TestBase<XUnitTestConsoleExamples>
+    public class XUnitTestConsoleExamples_DefaultLineBuffered : TestBase<XUnitTestConsoleExamples_DefaultLineBuffered>
     {
 
 
@@ -25,13 +25,13 @@ namespace IGLib.Commands.Tests
         /// of type <see cref="ITestOutputHelper"/>, which will be used to write on the tests' output,
         /// accessed through the base class's property <see cref="Output"/> and the property <see cref="TestBase{TestClassType}.Console"/> of type <see cref="IConsole"/>.</summary>
         /// <param name=""></param>
-        public XUnitTestConsoleExamples(ITestOutputHelper output) :  base(output)  // calls base class's constructor
+        public XUnitTestConsoleExamples_DefaultLineBuffered(ITestOutputHelper output) :  base(output)  // calls base class's constructor
         {
             // Remark: the base constructor will assign the Output and Console properties.
         }
 
         [Fact]
-        void XUnitTestConsole_DefauleIsLineBuffered()
+        protected void XUnitTestConsole_DefauleIsLineBuffered()
         {
             Console.WriteLine($"This verifies the default value of the {nameof(IsConsoleOutputLineBuffered)} property.");
             Console.WriteLine($"Default value is: {IsConsoleOutputLineBuffered}");
