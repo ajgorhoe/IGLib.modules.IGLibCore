@@ -41,6 +41,20 @@ namespace IGLib.Commands.Tests
         }
 
         [Fact]
+        protected void XUnitTestConsole_ConsoleObjectIsLineBuffered()
+        {
+            Console.WriteLine($"This verifies the actual {nameof(Console)} property is line buffered.\n");
+            Console.WriteLine($"Is {nameof(Console)} null: {Console == null}");
+            Console.Should().NotBeNull(because: "PRECOND: the {nameof(Console)} property should not be null.");
+            XUnitOutputConsole console = Console as XUnitOutputConsole;
+            Console.WriteLine($"Actual type of {nameof(Console)} property: {Console.GetType().FullName}; expected: {typeof(XUnitOutputConsole).FullName}");
+            Console.WriteLine($"Is {nameof(Console)} of correct type: {console != null}");
+            console.Should().NotBeNull(because: $"PRECOND: The {nameof(Console)} property should be of type {nameof(XUnitOutputConsole)}");
+            Console.WriteLine($"Value of {nameof(Console)}'s {nameof(console.IsLineBuffered)} property: {console.IsLineBuffered}");
+            console.IsLineBuffered.Should().BeTrue(because: $"By default, the {nameof(Console)} should be line buffered.");
+        }
+
+        [Fact]
         protected void XUnitTestConsole_DefauleIsLineBuffered()
         {
             Console.WriteLine($"This verifies the default value of the {nameof(IsConsoleOutputLineBuffered)} property.\n");
