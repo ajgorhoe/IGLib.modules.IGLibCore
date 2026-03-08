@@ -14,10 +14,11 @@ using System.Linq;
 using IGLib.ConsoleAbstractions;
 using IGLib.Tests.Base;
 
-namespace IGLib.Commands.Tests
+namespace IGLib.ConsoleAbstractions.Tests
 {
 
-    /// <summary>Tests for generic commands (implementations of <see cref="IGenericCommand"/>).</summary>
+    /// <summary>Examples and tests of the <see cref="TestBase{TestClassType}.Console"/> property and its actual type <see cref="XUnitOutputConsole"/>
+    /// in the default setting where the console is line buffered.</summary>
     public class XUnitTestConsoleExamples_DefaultLineBuffered : TestBase<XUnitTestConsoleExamples_DefaultLineBuffered>
     {
 
@@ -96,6 +97,8 @@ namespace IGLib.Commands.Tests
 
         #region CommandCreation TO REMOVE
 
+#if ExtraTests
+
         [Fact]
         protected void CommandCreation_CommandsHaveDistinctIDsGrowingWithCreationTime()
         {
@@ -119,7 +122,9 @@ namespace IGLib.Commands.Tests
             cmd3.Id.Should().BeGreaterThan(cmd2.Id, because: "cmd2 was created later than cmd1 and should have greater ID.");
         }
 
-        #endregion CommandCreation
+#endif
+
+#endregion CommandCreation
 
 
     }
