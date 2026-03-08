@@ -30,6 +30,14 @@ namespace IGLib.Commands.Tests
             // Remark: the base constructor will assign the Output and Console properties.
         }
 
+        [Fact]
+        void XUnitTestConsole_DefauleIsLineBuffered()
+        {
+            Console.WriteLine($"This verifies the default value of the {nameof(IsConsoleOutputLineBuffered)} property.");
+            Console.WriteLine($"Default value is: {IsConsoleOutputLineBuffered}");
+        }
+
+
 
         #region CommandCreation TO REMOVE
 
