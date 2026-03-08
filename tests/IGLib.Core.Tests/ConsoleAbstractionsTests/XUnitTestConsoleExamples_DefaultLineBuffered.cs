@@ -43,7 +43,7 @@ namespace IGLib.Commands.Tests
         [Fact]
         protected void XUnitTestConsole_ConsoleObjectIsLineBuffered()
         {
-            Console.WriteLine($"This verifies the actual {nameof(Console)} property is line buffered.\n");
+            Console.WriteLine($"This verifies that the actual {nameof(Console)} property is line buffered.\n");
             Console.WriteLine($"Is {nameof(Console)} null: {Console == null}");
             Console.Should().NotBeNull(because: "PRECOND: the {nameof(Console)} property should not be null.");
             XUnitOutputConsole console = Console as XUnitOutputConsole;
