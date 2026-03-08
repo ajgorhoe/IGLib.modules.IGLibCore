@@ -33,10 +33,38 @@ namespace IGLib.Commands.Tests
         [Fact]
         protected void XUnitTestConsole_DefauleIsLineBuffered()
         {
-            Console.WriteLine($"This verifies the default value of the {nameof(IsConsoleOutputLineBuffered)} property.");
+            Console.WriteLine($"This verifies the default value of the {nameof(IsConsoleOutputLineBuffered)} property.\n");
             Console.WriteLine($"Default value is: {IsConsoleOutputLineBuffered}");
         }
 
+
+        [Fact]
+        protected void XUnitTestConsole_WriteLine_Works()
+        {
+            Console.WriteLine($"Demonstration of Console.WriteLin(string?):\n");
+            Console.WriteLine($"This is line 1 of text");
+            Console.WriteLine($"This is line 2 of text");
+        }
+
+
+        [Fact]
+        protected void XUnitTestConsole_Write_WorksWhenFollowedByWriteLine()
+        {
+            Console.WriteLine($"Demonstration of Console.Write(string?) when followed by WriteLine():\n");
+            Console.WriteLine($"First part.");
+            Console.WriteLine($"Second part.");
+            Console.WriteLine($"Third part.");
+            Console.WriteLine($" This is line is written after two Write() calls.");
+        }
+
+        [Fact]
+        protected void XUnitTestConsole_Write_DoesNotWorkWhenNotFollowedByWriteLine()
+        {
+            Console.WriteLine($"Demonstration of Console.Write(string?) when NOT followed by WriteLine():\n");
+            Console.WriteLine($"First part.");
+            Console.WriteLine($"Second part.");
+            Console.WriteLine($"Third part.");
+        }
 
 
         #region CommandCreation TO REMOVE
