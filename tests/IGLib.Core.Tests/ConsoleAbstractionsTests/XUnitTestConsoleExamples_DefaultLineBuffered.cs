@@ -47,6 +47,7 @@ namespace IGLib.Commands.Tests
             Console.WriteLine($"Is {nameof(Console)} null: {Console == null}");
             Console.Should().NotBeNull(because: "PRECOND: the {nameof(Console)} property should not be null.");
             XUnitOutputConsole console = Console as XUnitOutputConsole;
+            Console.WriteLine($"Declared type of {nameof(Console)} property: {typeof(IConsole)}");
             Console.WriteLine($"Actual type of {nameof(Console)} property: {Console.GetType().FullName}; expected: {typeof(XUnitOutputConsole).FullName}");
             Console.WriteLine($"Is {nameof(Console)} of correct type: {console != null}");
             console.Should().NotBeNull(because: $"PRECOND: The {nameof(Console)} property should be of type {nameof(XUnitOutputConsole)}");
