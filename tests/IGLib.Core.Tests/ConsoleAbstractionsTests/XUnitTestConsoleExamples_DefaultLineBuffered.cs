@@ -12,6 +12,7 @@ using System.Text;
 using System.Linq;
 
 using IGLib.ConsoleAbstractions;
+using IGLib.Tests.Base;
 
 namespace IGLib.Commands.Tests
 {
@@ -28,6 +29,15 @@ namespace IGLib.Commands.Tests
         public XUnitTestConsoleExamples_DefaultLineBuffered(ITestOutputHelper output) :  base(output)  // calls base class's constructor
         {
             // Remark: the base constructor will assign the Output and Console properties.
+        }
+
+        [Fact]
+        protected void XUnitTestConsole_ConsolePropertyIsOfCorrectType()
+        {
+            Console.WriteLine($"This verifies that the {nameof(Console)} property is of correct type:\n");
+            Type consoleType = Console.GetType();
+            Console.WriteLine($"Type of the {nameof(Console)} property: {consoleType.FullName}");
+            consoleType.Should().Be(typeof(XUnitOutputConsole));
         }
 
         [Fact]
