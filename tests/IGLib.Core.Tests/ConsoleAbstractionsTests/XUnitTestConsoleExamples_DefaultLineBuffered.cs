@@ -178,6 +178,7 @@ namespace IGLib.ConsoleAbstractions.Tests
             {
                 Console.WriteLine($"<Write {i}>");
             }
+            Console.WriteLine("");  // additional WriteLine() to ensure that all Write() calls are flushed to the output
             sw.Stop();
             double executionsPerSecond = (double) numWrittenLines / (sw.Elapsed.TotalSeconds);
             Console.WriteLine($"\nSpeed: {numWrittenLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({
