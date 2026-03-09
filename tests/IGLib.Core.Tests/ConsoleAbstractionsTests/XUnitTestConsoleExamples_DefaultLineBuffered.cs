@@ -152,6 +152,40 @@ namespace IGLib.ConsoleAbstractions.Tests
                 minExecutionsPerSecond} executions per second)");
         }
 
+        [Fact]
+        protected void XUnitTestConsole_SpeedTest_Write()
+        {
+            Console.WriteLine($"Testing speed of {nameof(Console)}.{nameof(IConsole.Write)}:\n");
+            int numWarmupLines = 20;
+            int numWrittenLines = 200;
+            double minExecutionsPerSecond = -10_000;  // low treshold to verify that Console.Write() is not extremely slow
+            Stopwatch sw = new();
+            // Warm up (takes the slow initial runs due to just in time compilation, cache misses, etc.):
+            Console.WriteLine($"\nWarming up by performing {numWarmupLines} Write() executions...\n");
+            sw.Start();
+            for (int i = 0; i < numWarmupLines; ++i)
+            {
+                Console.WriteLine($"<Write {i}>");
+            }
+            sw.Stop();
+            Console.WriteLine($"\nWarmup: {numWarmupLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({
+                (double) numWarmupLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
+            // Actual measurement:
+            Console.WriteLine($"\nSpeed testing by performing {numWrittenLines} WriteLine() executions...\n");
+            sw.Reset();
+            sw.Start();
+            for (int i = 0; i < numWrittenLines; ++i)
+            {
+                Console.WriteLine($"<Write {i}>");
+            }
+            sw.Stop();
+            double executionsPerSecond = (double) numWrittenLines / (sw.Elapsed.TotalSeconds);
+            Console.WriteLine($"\nSpeed: {numWrittenLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({
+                (double) numWrittenLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
+            executionsPerSecond.Should().BeGreaterThan(minExecutionsPerSecond, because: $"WriteLine should not be too slow (there should be at least {
+                minExecutionsPerSecond} executions per second)");
+        }
+
 
         #endregion Examples
 
