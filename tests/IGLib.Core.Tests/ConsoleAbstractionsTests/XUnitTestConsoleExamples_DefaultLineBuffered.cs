@@ -128,6 +128,14 @@ namespace IGLib.ConsoleAbstractions.Tests
 
 
         [Fact]
+        protected void XUnitTestConsole_ConsolePropertyIsNotNull()
+        {
+            Console.WriteLine($"This verifies that the {nameof(Console)} property is not null:\n");
+            Console.WriteLine($"Is the {nameof(Console)} property null: {Console == null}");
+            Console.Should().NotBeNull(because: "The {nameof(Console)} property should be properly initialized and should not be null.");
+        }
+
+        [Fact]
         protected void XUnitTestConsole_ConsolePropertyIsOfCorrectType()
         {
             Console.WriteLine($"This verifies that the {nameof(Console)} property is of correct type:\n");
