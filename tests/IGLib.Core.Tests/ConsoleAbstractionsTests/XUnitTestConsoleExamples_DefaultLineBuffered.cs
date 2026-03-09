@@ -131,6 +131,13 @@ namespace IGLib.ConsoleAbstractions.Tests
             // Demonstration of Console.Write(string?) when NOT followed by WriteLine(string?):
         }
 
+
+        #endregion Examples
+
+
+        
+        #region SpeedTests
+
         [Fact]
         protected void XUnitTestConsole_SpeedTest_WriteLine()
         {
@@ -147,8 +154,7 @@ namespace IGLib.ConsoleAbstractions.Tests
                 Console.WriteLine("Line No. " + i.ToString());
             }
             sw.Stop();
-            Console.WriteLine($"\nWarmup: {numWarmupLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({
-                (double) numWarmupLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
+            Console.WriteLine($"\nWarmup: {numWarmupLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({(double)numWarmupLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
             // Actual measurement:
             Console.WriteLine($"\nSpeed testing by performing {numWrittenLines} WriteLine() executions...\n");
             sw.Reset();
@@ -158,11 +164,9 @@ namespace IGLib.ConsoleAbstractions.Tests
                 Console.WriteLine("Line No. " + i.ToString());
             }
             sw.Stop();
-            double executionsPerSecond = (double) numWrittenLines / (sw.Elapsed.TotalSeconds);
-            Console.WriteLine($"\nSpeed: {numWrittenLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({
-                (double) numWrittenLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
-            executionsPerSecond.Should().BeGreaterThan(minExecutionsPerSecond, because: $"WriteLine should not be too slow (there should be at least {
-                minExecutionsPerSecond} executions per second)");
+            double executionsPerSecond = (double)numWrittenLines / (sw.Elapsed.TotalSeconds);
+            Console.WriteLine($"\nSpeed: {numWrittenLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({(double)numWrittenLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
+            executionsPerSecond.Should().BeGreaterThan(minExecutionsPerSecond, because: $"WriteLine should not be too slow (there should be at least {minExecutionsPerSecond} executions per second)");
         }
 
         [Fact]
@@ -181,8 +185,7 @@ namespace IGLib.ConsoleAbstractions.Tests
                 Console.Write($"<Write {i}>");
             }
             sw.Stop();
-            Console.WriteLine($"\nWarmup: {numWarmupLines} Write-s executed in {sw.Elapsed.TotalSeconds} s ({
-                (double) numWarmupLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
+            Console.WriteLine($"\nWarmup: {numWarmupLines} Write-s executed in {sw.Elapsed.TotalSeconds} s ({(double)numWarmupLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
             // Actual measurement:
             Console.WriteLine($"\nSpeed testing by performing {numWrittenLines} Write(...) executions...\n");
             sw.Reset();
@@ -193,16 +196,13 @@ namespace IGLib.ConsoleAbstractions.Tests
             }
             Console.WriteLine("");  // additional WriteLine() to ensure that all Write() calls are flushed to the output
             sw.Stop();
-            double executionsPerSecond = (double) numWrittenLines / (sw.Elapsed.TotalSeconds);
-            Console.WriteLine($"\nSpeed: {numWrittenLines} Write-s executed in {sw.Elapsed.TotalSeconds} s ({
-                (double) numWrittenLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
-            executionsPerSecond.Should().BeGreaterThan(minExecutionsPerSecond, because: $"Write should not be too slow (there should be at least {
-                minExecutionsPerSecond} executions per second)");
+            double executionsPerSecond = (double)numWrittenLines / (sw.Elapsed.TotalSeconds);
+            Console.WriteLine($"\nSpeed: {numWrittenLines} Write-s executed in {sw.Elapsed.TotalSeconds} s ({(double)numWrittenLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
+            executionsPerSecond.Should().BeGreaterThan(minExecutionsPerSecond, because: $"Write should not be too slow (there should be at least {minExecutionsPerSecond} executions per second)");
         }
 
 
-        #endregion Examples
-
+        #endregion SpeedTests
 
 
     }
