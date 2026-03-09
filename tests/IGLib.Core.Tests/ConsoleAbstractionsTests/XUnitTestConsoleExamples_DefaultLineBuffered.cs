@@ -306,7 +306,10 @@ namespace IGLib.ConsoleAbstractions.Tests
             // Expected output:
             // Demonstration of Console.Write(string ?) when followed by WriteLine(string?):
             // 
-            // < part 1 >< part 2 >< part 3 > This line is written after two Write() calls.
+            // < part 1 >⏎
+            // < part 2 >⏎
+            // < part 3 >⏎
+            // This line is written after two Write() calls.
         }
 
 
