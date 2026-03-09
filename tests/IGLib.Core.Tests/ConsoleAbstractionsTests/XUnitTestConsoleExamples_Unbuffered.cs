@@ -18,21 +18,24 @@ using Xunit.Abstractions;
 namespace IGLib.ConsoleAbstractions.Tests
 {
 
-    /// <summary>Examples and tests of using the <see cref="TestBase{TestClassType}.Console"/> property and its actual type <see cref="XUnitOutputConsole"/>
-    /// in the default setting where the console is line buffered.</summary>
-    public class XUnitTestConsoleExamples_DefaultLineBuffered : TestBase<XUnitTestConsoleExamples_DefaultLineBuffered>
+
+
+    /// <summary>Examples and tests of the <see cref="TestBase{TestClassType}.Console"/> property and its actual type <see cref="XUnitOutputConsole"/>
+    /// in the default setting where the console is unbuffered.</summary>
+    public class XUnitTestConsoleExamples_UnBuffered : TestBase<XUnitTestConsoleExamples_UnBuffered>
     {
 
 
         /// <summary>Calls the base constructure in such a way that the <see cref="IConsole"/> object <see cref="TestBase{TestClassType}.Console"/>
-        /// is line buffered. The <see cref="TestBase{TestClassType}.IsConsoleOutputLineBuffered"/> property will evaluate to true.</summary>
+        /// is unbuffered.</summary>
         /// <param name="output">The <see cref="ITestOutputHelper"/> object that will be accessible via the <see cref="TestBase{TestClassType}.Output"/> property,
         /// and will also be wrapped by an <see cref="XUnitOutputConsole"/> object accessible via the <see cref="TestBase{TestClassType}.Console"/>
         /// property (declared type <see cref="IConsole"/>).</param>
-        public XUnitTestConsoleExamples_DefaultLineBuffered(ITestOutputHelper output) :  base(output)  // calls base class's constructor
+        public XUnitTestConsoleExamples_UnBuffered(ITestOutputHelper output) : base(output, isConsoleLineBuffered: false)
         {
             // Remark: the base constructor will assign the Output and Console properties.
         }
+
 
         [Fact]
         protected void XUnitTestConsole_ConsolePropertyIsNotNull()
@@ -54,7 +57,7 @@ namespace IGLib.ConsoleAbstractions.Tests
         }
 
         [Fact]
-        protected void XUnitTestConsole_ConsoleObjectIsLineBuffered()
+        protected void XUnitTestConsole_ConsoleObjectIsNotLineBuffered()
         {
             Console.WriteLine($"This verifies that the actual {nameof(Console)} property is line buffered.\n");
             Console.WriteLine($"Is {nameof(Console)} null: {Console == null}");
@@ -65,21 +68,22 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.WriteLine($"Is {nameof(Console)} of correct type: {console != null}");
             console.Should().NotBeNull(because: $"PRECOND: The {nameof(Console)} property should be of type {nameof(XUnitOutputConsole)}");
             Console.WriteLine($"Value of {nameof(Console)}'s {nameof(console.IsLineBuffered)} property: {console.IsLineBuffered}");
-            console.IsLineBuffered.Should().BeTrue(because: $"By default, the {nameof(Console)} should be line buffered.");
+            console.IsLineBuffered.Should().BeFalse(because: $"In this test class, the {nameof(Console)} should NOT be line buffered.");
         }
 
         [Fact]
-        protected void XUnitTestConsole_Default_IsLineBuffered_IsTrue()
+        protected void XUnitTestConsole_Default_IsLineBuffered_IsFalse()
         {
             Console.WriteLine($"This verifies the default value of the {nameof(IsConsoleOutputLineBuffered)} property.\n");
             Console.WriteLine($"Default value is: {IsConsoleOutputLineBuffered}");
-            IsConsoleOutputLineBuffered.Should().BeTrue(because: $"With default settings, test class' {nameof(Console)} should be line buffered.");
+            IsConsoleOutputLineBuffered.Should().BeFalse(because: $"In this class, {nameof(Console)} should NOT be line buffered.");
         }
 
 
         #region Examples
 
         // This region contains tests without assertions; the expected output is described in comments and can be verified manually.
+
 
         /// <summary>Example that just writes several lines of text using the call to <see cref="IConsole.WriteLine(string?)"/>
         /// method. All output should be visible because this method immediattely flushes the buffer.</summary>
@@ -98,6 +102,7 @@ namespace IGLib.ConsoleAbstractions.Tests
             // This is line 3 of output.
         }
 
+
         /// <summary>Example that performs several calls to <see cref="IConsole.Write(string?)"/> followed by a call to
         /// <see cref="IConsole.WriteLine(string?)"/>. All output should be visible because the last call to
         /// <see cref="IConsole.WriteLine(string?)"/> should flush the internal buffer even in line buffered mode.</summary>
@@ -112,13 +117,17 @@ namespace IGLib.ConsoleAbstractions.Tests
             // Expected output:
             // Demonstration of Console.Write(string ?) when followed by WriteLine(string?):
             // 
-            // < part 1 >< part 2 >< part 3 >This line is written after several Write() calls.
+            // < part 1 >⏎
+            // < part 2 >⏎
+            // < part 3 >⏎
+            // This line is written after several Write() calls.
         }
+
 
         /// <summary>Example that performs several calls to <see cref="IConsole.Write(string?)"/> method, which are NOT followed 
         /// by a call to <see cref="IConsole.WriteLine(string?)"/>. Outputs from <see cref="IConsole.Write(string?)"/> should
-        /// NOT be VISIBLE when the test console <see cref="TestBase{TestClassType}.Console"/> is in the line buffered mode
-        /// because there is no <see cref="IConsole.WriteLine(string?)"/> after writes that would flush the output buffer.</summary>
+        /// be VISIBLE when the test console <see cref="TestBase{TestClassType}.Console"/> is in the unbuffered mode because
+        /// <see cref="IConsole.Write(string?)"/> flushes the buffer immediately in this mode.</summary>
         [Fact]
         protected void XUnitTestConsole_Example_Write_DoesNotWorkWhenNotFollowedByWriteLine()
         {
@@ -128,13 +137,17 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.Write($"<part 3>");
             // Expected output:
             // Demonstration of Console.Write(string?) when NOT followed by WriteLine(string?):
+            // 
+            // <part 1>⏎
+            // <part 2>⏎
+            // <part 3>⏎
         }
 
 
         #endregion Examples
 
 
-        
+
         #region SpeedTests
 
         [Fact]
@@ -205,6 +218,11 @@ namespace IGLib.ConsoleAbstractions.Tests
 
 
     }
+
+
+
+
+
 
 
 
