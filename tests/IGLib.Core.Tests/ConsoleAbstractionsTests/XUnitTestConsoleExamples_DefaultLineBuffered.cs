@@ -105,7 +105,10 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.Write($"<part 2>");
             Console.Write($"<part 3>");
             Console.WriteLine($"This line is written after two Write() calls.");
-            // Expected output is WRONG. ToBeDone: correct the defect.
+            // Expected output:
+            // Demonstration of Console.Write(string ?) when followed by WriteLine(string?):
+            // 
+            // < part 1 >< part 2 >< part 3 > This line is written after two Write() calls.
         }
 
         [Fact]
@@ -115,7 +118,8 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.Write($"<part 1>");
             Console.Write($"<part 2>");
             Console.Write($"<part 3>");
-            // Expected output is WRONG. ToBeDone: correct the defect.
+            // Expected output:
+            // Demonstration of Console.Write(string?) when NOT followed by WriteLine(string?):
         }
 
         [Fact]
