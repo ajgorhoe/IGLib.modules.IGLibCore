@@ -274,7 +274,26 @@ namespace IGLib.ConsoleAbstractions.Tests
         // This region contains tests without assertions; the expected output is described in comments and can be verified manually.
 
 
+        /// <summary>Example that just writes several lines of text using the call to <see cref="IConsole.WriteLine(string?)"/>
+        /// method. All output should be visible because this method immediattely flushes the buffer.</summary>
+        [Fact]
+        protected void XUnitTestConsole_Example_WriteLine_Works()
+        {
+            Console.WriteLine($"Demonstration of Console.WriteLin(string?):\n");
+            Console.WriteLine($"This is line 1 of output.");
+            Console.WriteLine($"This is line 2 of output.");
+            Console.WriteLine($"This is line 3 of output.");
+            // Expected output:
+            // Demonstration of Console.WriteLin(string ?):
+            // 
+            // This is line 1 of output.
+            // This is line 2 of output.
+            // This is line 3 of output.
+        }
+
+
         #endregion Examples
+
 
     }
 
