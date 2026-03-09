@@ -269,6 +269,12 @@ namespace IGLib.ConsoleAbstractions.Tests
         }
 
 
+        #region Examples
+
+        // This region contains tests without assertions; the expected output is described in comments and can be verified manually.
+
+
+        #endregion Examples
 
     }
 
