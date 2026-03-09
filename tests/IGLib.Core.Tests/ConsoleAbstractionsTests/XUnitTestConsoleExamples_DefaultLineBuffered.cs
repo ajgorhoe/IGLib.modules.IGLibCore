@@ -13,6 +13,7 @@ using System.Linq;
 
 using IGLib.ConsoleAbstractions;
 using IGLib.Tests.Base;
+using Castle.Core.Logging;
 
 namespace IGLib.ConsoleAbstractions.Tests
 {
@@ -31,6 +32,14 @@ namespace IGLib.ConsoleAbstractions.Tests
         public XUnitTestConsoleExamples_DefaultLineBuffered(ITestOutputHelper output) :  base(output)  // calls base class's constructor
         {
             // Remark: the base constructor will assign the Output and Console properties.
+        }
+
+        [Fact]
+        protected void XUnitTestConsole_ConsolePropertyIsNotNull()
+        {
+            Console.WriteLine($"This verifies that the {nameof(Console)} property is not null:\n");
+            Console.WriteLine($"Is the {nameof(Console)} property null: {Console == null}");
+            Console.Should().NotBeNull(because: "The {nameof(Console)} property should be properly initialized and should not be null.");
         }
 
         [Fact]
