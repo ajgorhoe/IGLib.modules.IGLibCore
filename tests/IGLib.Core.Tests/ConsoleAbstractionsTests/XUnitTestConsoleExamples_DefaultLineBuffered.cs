@@ -17,16 +17,17 @@ using IGLib.Tests.Base;
 namespace IGLib.ConsoleAbstractions.Tests
 {
 
-    /// <summary>Examples and tests of the <see cref="TestBase{TestClassType}.Console"/> property and its actual type <see cref="XUnitOutputConsole"/>
+    /// <summary>Examples and tests of using the <see cref="TestBase{TestClassType}.Console"/> property and its actual type <see cref="XUnitOutputConsole"/>
     /// in the default setting where the console is line buffered.</summary>
     public class XUnitTestConsoleExamples_DefaultLineBuffered : TestBase<XUnitTestConsoleExamples_DefaultLineBuffered>
     {
 
 
-        /// <summary>This constructor, when called by the test framework, will bring in an object 
-        /// of type <see cref="ITestOutputHelper"/>, which will be used to write on the tests' output,
-        /// accessed through the base class's property <see cref="Output"/> and the property <see cref="TestBase{TestClassType}.Console"/> of type <see cref="IConsole"/>.</summary>
-        /// <param name=""></param>
+        /// <summary>Calls the base constructure in such a way that the <see cref="IConsole"/> object <see cref="TestBase{TestClassType}.Console"/>
+        /// is line buffered. The <see cref="TestBase{TestClassType}.IsConsoleOutputLineBuffered"/> property will evaluate to true.</summary>
+        /// <param name="output">The <see cref="ITestOutputHelper"/> object that will be accessible via the <see cref="TestBase{TestClassType}.Output"/> property,
+        /// and will also be wrapped by an <see cref="XUnitOutputConsole"/> object accessible via the <see cref="TestBase{TestClassType}.Console"/>
+        /// property (declared type <see cref="IConsole"/>).</param>
         public XUnitTestConsoleExamples_DefaultLineBuffered(ITestOutputHelper output) :  base(output)  // calls base class's constructor
         {
             // Remark: the base constructor will assign the Output and Console properties.
@@ -100,12 +101,17 @@ namespace IGLib.ConsoleAbstractions.Tests
 
 
     /// <summary>Examples and tests of the <see cref="TestBase{TestClassType}.Console"/> property and its actual type <see cref="XUnitOutputConsole"/>
-    /// in the default setting where the console is line buffered.</summary>
+    /// in the default setting where the console is unbuffered.</summary>
     public class XUnitTestConsoleExamples_UnBuffered : TestBase<XUnitTestConsoleExamples_UnBuffered>
     {
 
 
-        public XUnitTestConsoleExamples_UnBuffered(ITestOutputHelper output) : base(output, isConsoleLineBuffered: true)
+        /// <summary>Calls the base constructure in such a way that the <see cref="IConsole"/> object <see cref="TestBase{TestClassType}.Console"/>
+        /// is unbuffered.</summary>
+        /// <param name="output">The <see cref="ITestOutputHelper"/> object that will be accessible via the <see cref="TestBase{TestClassType}.Output"/> property,
+        /// and will also be wrapped by an <see cref="XUnitOutputConsole"/> object accessible via the <see cref="TestBase{TestClassType}.Console"/>
+        /// property (declared type <see cref="IConsole"/>).</param>
+        public XUnitTestConsoleExamples_UnBuffered(ITestOutputHelper output) : base(output, isConsoleLineBuffered: false)
         {
             // Remark: the base constructor will assign the Output and Console properties.
         }
