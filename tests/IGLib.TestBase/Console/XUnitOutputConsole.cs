@@ -56,9 +56,22 @@ public sealed class XUnitOutputConsole : IConsole
 
     public void WriteLine(string? value = null)
     {
-        if (value is not null) _buffer.Append(value);
-        _output.WriteLine(_buffer.ToString());
-        _buffer.Clear();
+        if (value is not null)
+        {
+            _buffer.Append(value);
+        }
+        try
+        {
+            _output.WriteLine(_buffer.ToString());
+        }
+        catch
+        {
+            throw;
+        }
+        finally
+        {
+            _buffer.Clear();
+        }
     }
 
     // Optional: flush on dispose / final assertion
