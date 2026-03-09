@@ -99,21 +99,21 @@ namespace IGLib.ConsoleAbstractions.Tests
         [Fact]
         protected void XUnitTestConsole_Write_WorksWhenFollowedByWriteLine()
         {
-            Console.WriteLine($"Demonstration of Console.Write(string?) when followed by WriteLine():\n");
-            Console.WriteLine($"First part.");
-            Console.WriteLine($"Second part.");
-            Console.WriteLine($"Third part.");
-            Console.WriteLine($" This is line is written after two Write() calls.");
+            Console.WriteLine($"Demonstration of Console.Write(string?) when followed by WriteLine(string?):\n");
+            Console.Write($"<part 1>");
+            Console.Write($"<part 2>");
+            Console.Write($"<part 3>");
+            Console.WriteLine($"This line is written after two Write() calls.");
             // Expected output is WRONG. ToBeDone: correct the defect.
         }
 
         [Fact]
         protected void XUnitTestConsole_Write_DoesNotWorkWhenNotFollowedByWriteLine()
         {
-            Console.WriteLine($"Demonstration of Console.Write(string?) when NOT followed by WriteLine():\n");
-            Console.WriteLine($"First part.");
-            Console.WriteLine($"Second part.");
-            Console.WriteLine($"Third part.");
+            Console.WriteLine($"Demonstration of Console.Write(string?) when NOT followed by WriteLine(string?):\n");
+            Console.Write($"<part 1>");
+            Console.Write($"<part 2>");
+            Console.Write($"<part 3>");
             // Expected output is WRONG. ToBeDone: correct the defect.
         }
 
