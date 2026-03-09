@@ -313,6 +313,26 @@ namespace IGLib.ConsoleAbstractions.Tests
         }
 
 
+        /// <summary>Example that performs several calls to <see cref="IConsole.Write(string?)"/> method, which are NOT followed 
+        /// by a call to <see cref="IConsole.WriteLine(string?)"/>. Outputs from <see cref="IConsole.Write(string?)"/> should
+        /// be VISIBLE when the test console <see cref="TestBase{TestClassType}.Console"/> is in the unbuffered mode because
+        /// <see cref="IConsole.Write(string?)"/> flushes the buffer immediately in this mode.</summary>
+        [Fact]
+        protected void XUnitTestConsole_Example_Write_DoesNotWorkWhenNotFollowedByWriteLine()
+        {
+            Console.WriteLine($"Demonstration of Console.Write(string?) when NOT followed by WriteLine(string?):\n");
+            Console.Write($"<part 1>");
+            Console.Write($"<part 2>");
+            Console.Write($"<part 3>");
+            // Expected output:
+            // Demonstration of Console.Write(string?) when NOT followed by WriteLine(string?):
+            // 
+            // <part 1>⏎
+            // <part 2>⏎
+            // <part 3>⏎
+        }
+
+
         #endregion Examples
 
 
