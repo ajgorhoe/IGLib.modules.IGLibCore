@@ -76,6 +76,11 @@ namespace IGLib.ConsoleAbstractions.Tests
             IsConsoleOutputLineBuffered.Should().BeTrue(because: $"With default settings, test class' {nameof(Console)} should be line buffered.");
         }
 
+
+        #region Examples
+
+        // This region contains tests without assertions; the expected output is described in comments and can be verified manually.
+
         /// <summary>Example that just writes two lines of text.</summary>
         [Fact]
         protected void XUnitTestConsole_WriteLine_Works()
@@ -99,6 +104,7 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.WriteLine($"Second part.");
             Console.WriteLine($"Third part.");
             Console.WriteLine($" This is line is written after two Write() calls.");
+            // Expected output is WRONG. ToBeDone: correct the defect.
         }
 
         [Fact]
@@ -108,7 +114,12 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.WriteLine($"First part.");
             Console.WriteLine($"Second part.");
             Console.WriteLine($"Third part.");
+            // Expected output is WRONG. ToBeDone: correct the defect.
         }
+
+
+        #endregion Examples
+
 
 
     }
