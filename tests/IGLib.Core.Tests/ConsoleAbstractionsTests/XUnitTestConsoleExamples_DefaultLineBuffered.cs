@@ -82,23 +82,28 @@ namespace IGLib.ConsoleAbstractions.Tests
 
         // This region contains tests without assertions; the expected output is described in comments and can be verified manually.
 
-        /// <summary>Example that just writes two lines of text.</summary>
+        /// <summary>Example that just writes several lines of text using the call to <see cref="IConsole.WriteLine(string?)"/>
+        /// method. All output should be visible because this method immediattely flushes the buffer.</summary>
         [Fact]
-        protected void XUnitTestConsole_WriteLine_Works()
+        protected void XUnitTestConsole_Example_WriteLine_Works()
         {
             Console.WriteLine($"Demonstration of Console.WriteLin(string?):\n");
-            Console.WriteLine($"This is line 1 of text");
-            Console.WriteLine($"This is line 2 of text");
+            Console.WriteLine($"This is line 1 of output.");
+            Console.WriteLine($"This is line 2 of output.");
+            Console.WriteLine($"This is line 3 of output.");
             // Expected output:
             // Demonstration of Console.WriteLin(string ?):
             // 
-            // This is line 1 of text
-            // This is line 2 of text
+            // This is line 1 of output.
+            // This is line 2 of output.
+            // This is line 3 of output.
         }
 
-
+        /// <summary>Example that performs several calls to <see cref="IConsole.Write(string?)"/> followed by a call to
+        /// <see cref="IConsole.WriteLine(string?)"/>. All output should be visible because the last call to
+        /// <see cref="IConsole.WriteLine(string?)"/> should flush the internal buffer even in line buffered mode.</summary>
         [Fact]
-        protected void XUnitTestConsole_Write_WorksWhenFollowedByWriteLine()
+        protected void XUnitTestConsole_Example_Write_WorksWhenFollowedByWriteLine()
         {
             Console.WriteLine($"Demonstration of Console.Write(string?) when followed by WriteLine(string?):\n");
             Console.Write($"<part 1>");
@@ -111,8 +116,12 @@ namespace IGLib.ConsoleAbstractions.Tests
             // < part 1 >< part 2 >< part 3 > This line is written after two Write() calls.
         }
 
+        /// <summary>Example that performs several calls to <see cref="IConsole.Write(string?)"/> method, which are NOT followed 
+        /// by a call to <see cref="IConsole.WriteLine(string?)"/>. Outputs from <see cref="IConsole.Write(string?)"/> should
+        /// NOT be VISIBLE when the test console <see cref="TestBase{TestClassType}.Console"/> is in the line buffered mode
+        /// because there is no <see cref="IConsole.WriteLine(string?)"/> after writes that would flush the output buffer.</summary>
         [Fact]
-        protected void XUnitTestConsole_Write_DoesNotWorkWhenNotFollowedByWriteLine()
+        protected void XUnitTestConsole_Example_Write_DoesNotWorkWhenNotFollowedByWriteLine()
         {
             Console.WriteLine($"Demonstration of Console.Write(string?) when NOT followed by WriteLine(string?):\n");
             Console.Write($"<part 1>");
