@@ -69,10 +69,11 @@ namespace IGLib.ConsoleAbstractions.Tests
         }
 
         [Fact]
-        protected void XUnitTestConsole_DefauleIsLineBuffered()
+        protected void XUnitTestConsole_Default_IsLineBuffered_IsTrue()
         {
             Console.WriteLine($"This verifies the default value of the {nameof(IsConsoleOutputLineBuffered)} property.\n");
             Console.WriteLine($"Default value is: {IsConsoleOutputLineBuffered}");
+            IsConsoleOutputLineBuffered.Should().BeTrue(because: $"With default settings, test class' {nameof(Console)} should be line buffered.");
         }
 
 
