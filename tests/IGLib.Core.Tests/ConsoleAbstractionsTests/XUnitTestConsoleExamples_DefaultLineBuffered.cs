@@ -117,6 +117,19 @@ namespace IGLib.ConsoleAbstractions.Tests
         }
 
 
+        [Fact]
+        protected void XUnitTestConsole_ConsolePropertyIsOfCorrectType()
+        {
+            Console.WriteLine($"This verifies that the {nameof(Console)} property is of correct type:\n");
+            Type expectedConsoleType = typeof(XUnitOutputConsole);
+            Console.Should().NotBeNull(because: "PRECOND: the {nameof(Console)} property should not be null.");
+            Type consoleType = Console.GetType();
+            Console.WriteLine($"Type of the {nameof(Console)} property: {consoleType.FullName};\n  expected: {expectedConsoleType.FullName}");
+            consoleType.Should().Be(typeof(XUnitOutputConsole));
+        }
+
+
+
     }
 
 
