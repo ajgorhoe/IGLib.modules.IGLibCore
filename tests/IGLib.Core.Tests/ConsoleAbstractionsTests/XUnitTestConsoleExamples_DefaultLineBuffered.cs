@@ -302,14 +302,14 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.Write($"<part 1>");
             Console.Write($"<part 2>");
             Console.Write($"<part 3>");
-            Console.WriteLine($"This line is written after two Write() calls.");
+            Console.WriteLine($"This line is written after several Write() calls.");
             // Expected output:
             // Demonstration of Console.Write(string ?) when followed by WriteLine(string?):
             // 
             // < part 1 >⏎
             // < part 2 >⏎
             // < part 3 >⏎
-            // This line is written after two Write() calls.
+            // This line is written after several Write() calls.
         }
 
 
