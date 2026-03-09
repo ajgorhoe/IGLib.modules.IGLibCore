@@ -1,19 +1,19 @@
 ﻿
 #nullable disable
 
-using Xunit;
+using Castle.Core.Logging;
 using FluentAssertions;
-using Xunit.Abstractions;
+using IGLib.Commands.Tests;
+using IGLib.ConsoleAbstractions;
+using IGLib.ConsoleAbstractions.Extensions;
+using IGLib.Tests.Base;
+using IGLib.Tests.Base;
 using System;
 using System.Collections.Generic;
-using IGLib.Tests.Base;
-using IGLib.Commands.Tests;
-using System.Text;
 using System.Linq;
-
-using IGLib.ConsoleAbstractions;
-using IGLib.Tests.Base;
-using Castle.Core.Logging;
+using System.Text;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace IGLib.ConsoleAbstractions.Tests
 {
@@ -76,12 +76,18 @@ namespace IGLib.ConsoleAbstractions.Tests
             IsConsoleOutputLineBuffered.Should().BeTrue(because: $"With default settings, test class' {nameof(Console)} should be line buffered.");
         }
 
+        /// <summary>Example that just writes two lines of text.</summary>
         [Fact]
         protected void XUnitTestConsole_WriteLine_Works()
         {
             Console.WriteLine($"Demonstration of Console.WriteLin(string?):\n");
             Console.WriteLine($"This is line 1 of text");
             Console.WriteLine($"This is line 2 of text");
+            // Expected output:
+            // Demonstration of Console.WriteLin(string ?):
+            // 
+            // This is line 1 of text
+            // This is line 2 of text
         }
 
 
