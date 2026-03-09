@@ -10,6 +10,7 @@ using IGLib.Tests.Base;
 using IGLib.Tests.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Xunit;
@@ -115,6 +116,36 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.Write($"<part 2>");
             Console.Write($"<part 3>");
             // Expected output is WRONG. ToBeDone: correct the defect.
+        }
+
+        [Fact]
+        protected void XUnitTestConsole_SpeedTest_WriteLine()
+        {
+            Console.WriteLine($"Testing speed of {nameof(Console)}.{nameof(IConsole.WriteLine)}:\n");
+            int numWarmupLines = 100;
+            int numWrittenLines = 1000;
+            Stopwatch sw = new();
+            // Warm up (takes the slow initial runs due to just in time compilation, cache misses, etc.):
+            Console.WriteLine($"\nWarming up by performing {numWarmupLines} WriteLine() executions...\n");
+            sw.Start();
+            for (int i = 0; i < numWarmupLines; ++i)
+            {
+                Console.WriteLine("Line No. " + i.ToString());
+            }
+            sw.Stop();
+            Console.WriteLine($"\nWarmup: {numWarmupLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({
+                (double) numWarmupLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
+            // Actual measurement:
+            Console.WriteLine($"\nSpeed testing by performing {numWrittenLines} WriteLine() executions...\n");
+            sw.Reset();
+            sw.Start();
+            for (int i = 0; i < numWrittenLines; ++i)
+            {
+                Console.WriteLine("Line No. " + i.ToString());
+            }
+            sw.Stop();
+            Console.WriteLine($"\nSpeed: {numWrittenLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({
+                (double)numWrittenLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
         }
 
 
