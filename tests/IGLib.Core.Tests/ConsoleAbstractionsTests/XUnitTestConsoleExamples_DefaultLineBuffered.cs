@@ -292,6 +292,24 @@ namespace IGLib.ConsoleAbstractions.Tests
         }
 
 
+        /// <summary>Example that performs several calls to <see cref="IConsole.Write(string?)"/> followed by a call to
+        /// <see cref="IConsole.WriteLine(string?)"/>. All output should be visible because the last call to
+        /// <see cref="IConsole.WriteLine(string?)"/> should flush the internal buffer even in line buffered mode.</summary>
+        [Fact]
+        protected void XUnitTestConsole_Example_Write_WorksWhenFollowedByWriteLine()
+        {
+            Console.WriteLine($"Demonstration of Console.Write(string?) when followed by WriteLine(string?):\n");
+            Console.Write($"<part 1>");
+            Console.Write($"<part 2>");
+            Console.Write($"<part 3>");
+            Console.WriteLine($"This line is written after two Write() calls.");
+            // Expected output:
+            // Demonstration of Console.Write(string ?) when followed by WriteLine(string?):
+            // 
+            // < part 1 >< part 2 >< part 3 > This line is written after two Write() calls.
+        }
+
+
         #endregion Examples
 
 
