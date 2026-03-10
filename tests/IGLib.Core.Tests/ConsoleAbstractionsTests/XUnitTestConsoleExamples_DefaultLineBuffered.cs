@@ -51,11 +51,10 @@ namespace IGLib.ConsoleAbstractions.Tests
         protected void XUnitTestConsole_ConsolePropertyIsOfCorrectType()
         {
             Console.WriteLine($"This verifies that the {nameof(Console)} property is of correct type:\n");
-            Type expectedConsoleType = typeof(XUnitOutputConsole);
             Console.Should().NotBeNull(because: "PRECOND: the {nameof(Console)} property should not be null.");
             Type consoleType = Console.GetType();
-            Console.WriteLine($"Type of the {nameof(Console)} property: {consoleType.FullName};\n  expected: {expectedConsoleType.FullName}");
-            consoleType.Should().Be(typeof(XUnitOutputConsole));
+            Console.WriteLine($"Type of the {nameof(Console)} property: {consoleType.FullName};\n  expected: {ExpectedConsoleType.FullName}");
+            consoleType.Should().Be(ExpectedConsoleType);
         }
 
         [Fact]
@@ -66,7 +65,7 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.Should().NotBeNull(because: "PRECOND: the {nameof(Console)} property should not be null.");
             XUnitOutputConsole console = Console as XUnitOutputConsole;
             Console.WriteLine($"Declared type of {nameof(Console)} property: {typeof(IConsole)}");
-            Console.WriteLine($"Actual type of {nameof(Console)} property: {Console.GetType().FullName};\n  expected: {typeof(XUnitOutputConsole).FullName}");
+            Console.WriteLine($"Actual type of {nameof(Console)} property: {Console.GetType().FullName};\n  expected: {ExpectedConsoleType.FullName}");
             Console.WriteLine($"Is {nameof(Console)} of correct type: {console != null}");
             console.Should().NotBeNull(because: $"PRECOND: The {nameof(Console)} property should be of type {nameof(XUnitOutputConsole)}");
             Console.WriteLine($"Value of {nameof(Console)}'s {nameof(console.IsLineBuffered)} property: {console.IsLineBuffered}");
