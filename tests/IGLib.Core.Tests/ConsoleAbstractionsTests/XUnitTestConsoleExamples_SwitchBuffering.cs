@@ -155,6 +155,36 @@ namespace IGLib.ConsoleAbstractions.Tests
             }
         }
 
+        [Fact]
+        protected void XUnitTestConsole_SwitchUnBufferedConsoleViaConsolePropertyWorksCorrectly()
+        {
+            Console.WriteLine($"Testing switch to unbuffered test {nameof(Console)} via test console's switch:\n");
+            bool? isLineBufferedInitial = IsConsoleOutputLineBuffered;
+            Console.WriteLine($"Is test's {nameof(Console)} currently line buffered: {isLineBufferedInitial}");
+            // Check some basic pre-conditions:
+            Console.WriteLine($"Is {nameof(Console)} null: {Console == null}");
+            Console.Should().NotBeNull(because: "PRECOND: the {nameof(Console)} property should be initilized and not be nulll");
+            Console.WriteLine($"Actual type of the {nameof(Console)} property: {Console.GetType().FullName}");
+            Console.Should().BeOfType(ExpectedConsoleType, because: $"PRECOND: the {nameof(Console)} property should be of type {ExpectedConsoleType.FullName}");
+            try
+            {
+                // Set the console to unbuffered mode:
+                XUnitOutputConsole console = Console as XUnitOutputConsole;
+                Console.WriteLine($"Switching console to unbuffered mode via class's {nameof(IsConsoleOutputLineBuffered)} switch...");
+                IsConsoleOutputLineBuffered = false;
+                Console.WriteLine("After the switch:");
+                Console.WriteLine($"The value of {nameof(IsConsoleOutputLineBuffered)} property: {IsConsoleOutputLineBuffered}");
+                IsConsoleOutputLineBuffered.Should().BeFalse(because: $"after switching to unbuffered mode, the {IsConsoleOutputLineBuffered} property should be false");
+                Console.WriteLine($"The value of {nameof(Console)}.{nameof(console.IsLineBuffered)} property: {console.IsLineBuffered}");
+                console.IsLineBuffered.Should().BeFalse(because: $"the value of the {nameof(console.IsLineBuffered)} propety on {nameof(Console)} should be the same as the value of {nameof(IsConsoleOutputLineBuffered)} property on the test class");
+            }
+            finally
+            {
+                // restore the initial value of IsConsoleOutputLineBuffered:
+                IsConsoleOutputLineBuffered = isLineBufferedInitial;
+            }
+        }
+
 
 
 #if false
