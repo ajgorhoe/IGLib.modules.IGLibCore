@@ -74,10 +74,10 @@ namespace IGLib.ConsoleAbstractions.Tests
             try
             {
                 // Set the console line buffered mode:
-                Console.WriteLine($"Switching console to line buffered mode via class's {nameof(IsConsoleOutputLineBuffered)} switch...");
-                Console.WriteLine("After the switch:");
-                IsConsoleOutputLineBuffered = true;
                 XUnitOutputConsole console = Console as XUnitOutputConsole;
+                Console.WriteLine($"Switching console to line buffered mode via class's {nameof(IsConsoleOutputLineBuffered)} switch...");
+                IsConsoleOutputLineBuffered = true;
+                Console.WriteLine("After the switch:");
                 Console.WriteLine($"The value of {nameof(IsConsoleOutputLineBuffered)} property: {IsConsoleOutputLineBuffered}");
                 IsConsoleOutputLineBuffered.Should().BeTrue(because: $"after switching to unbuffered mode, the {
                     IsConsoleOutputLineBuffered} property should be false");
@@ -105,11 +105,11 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.Should().BeOfType(ExpectedConsoleType, because: $"PRECOND: the {nameof(Console)} property should be of type {ExpectedConsoleType.FullName}");
             try
             {
-                // Set the console line buffered mode:
-                Console.WriteLine($"Switching console to unbuffered mode via class's {nameof(IsConsoleOutputLineBuffered)} switch...");
-                Console.WriteLine("After the switch:");
-                IsConsoleOutputLineBuffered = false;
+                // Set the console to unbuffered mode:
                 XUnitOutputConsole console = Console as XUnitOutputConsole;
+                Console.WriteLine($"Switching console to unbuffered mode via class's {nameof(IsConsoleOutputLineBuffered)} switch...");
+                IsConsoleOutputLineBuffered = false;
+                Console.WriteLine("After the switch:");
                 Console.WriteLine($"The value of {nameof(IsConsoleOutputLineBuffered)} property: {IsConsoleOutputLineBuffered}");
                 IsConsoleOutputLineBuffered.Should().BeFalse(because: $"after switching to unbuffered mode, the {
                     IsConsoleOutputLineBuffered} property should be false");
