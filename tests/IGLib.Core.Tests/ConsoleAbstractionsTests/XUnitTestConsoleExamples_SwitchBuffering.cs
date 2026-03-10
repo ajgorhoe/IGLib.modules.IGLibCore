@@ -170,13 +170,15 @@ namespace IGLib.ConsoleAbstractions.Tests
             {
                 // Set the console to unbuffered mode:
                 XUnitOutputConsole console = Console as XUnitOutputConsole;
-                Console.WriteLine($"Switching console to unbuffered mode via class's {nameof(IsConsoleOutputLineBuffered)} switch...");
-                IsConsoleOutputLineBuffered = false;
+                Console.WriteLine($"\nSwitching console to unbuffered mode via {nameof(Console)}'s {nameof(console.IsLineBuffered)} switch...");
+                console.IsLineBuffered = false;
                 Console.WriteLine("After the switch:");
                 Console.WriteLine($"The value of {nameof(IsConsoleOutputLineBuffered)} property: {IsConsoleOutputLineBuffered}");
-                IsConsoleOutputLineBuffered.Should().BeFalse(because: $"after switching to unbuffered mode, the {IsConsoleOutputLineBuffered} property should be false");
+                IsConsoleOutputLineBuffered.Should().BeFalse(because: $"after switching to unbuffered mode, the {
+                    IsConsoleOutputLineBuffered} property should be false");
                 Console.WriteLine($"The value of {nameof(Console)}.{nameof(console.IsLineBuffered)} property: {console.IsLineBuffered}");
-                console.IsLineBuffered.Should().BeFalse(because: $"the value of the {nameof(console.IsLineBuffered)} propety on {nameof(Console)} should be the same as the value of {nameof(IsConsoleOutputLineBuffered)} property on the test class");
+                console.IsLineBuffered.Should().BeFalse(because: $"the value of the {nameof(console.IsLineBuffered)} propety on {
+                    nameof(Console)} should be the same as the value of {nameof(IsConsoleOutputLineBuffered)} property on the test class");
             }
             finally
             {
@@ -186,150 +188,7 @@ namespace IGLib.ConsoleAbstractions.Tests
         }
 
 
-
-#if false
-
-
-        [Fact]
-        protected void XUnitTestConsole_Default_IsLineBuffered_IsTrue()
-        {
-            Console.WriteLine($"This verifies the default value of the {nameof(IsConsoleOutputLineBuffered)} property.\n");
-            Console.WriteLine($"Default value is: {IsConsoleOutputLineBuffered}");
-            IsConsoleOutputLineBuffered.Should().BeTrue(because: $"With default settings, test class' {nameof(Console)} should be line buffered.");
-        }
-
-
-        #region Examples
-
-        // This region contains tests without assertions; the expected output is described in comments and can be verified manually.
-
-        /// <summary>Example that just writes several lines of text using the call to <see cref="IConsole.WriteLine(string?)"/>
-        /// method. All output should be visible because this method immediattely flushes the buffer.</summary>
-        [Fact]
-        protected void XUnitTestConsole_Example_WriteLine_Works()
-        {
-            Console.WriteLine($"Demonstration of Console.WriteLin(string?):\n");
-            Console.WriteLine($"This is line 1 of output.");
-            Console.WriteLine($"This is line 2 of output.");
-            Console.WriteLine($"This is line 3 of output.");
-            // Expected output:
-            // Demonstration of Console.WriteLin(string ?):
-            // 
-            // This is line 1 of output.
-            // This is line 2 of output.
-            // This is line 3 of output.
-        }
-
-        /// <summary>Example that performs several calls to <see cref="IConsole.Write(string?)"/> followed by a call to
-        /// <see cref="IConsole.WriteLine(string?)"/>. All output should be visible because the last call to
-        /// <see cref="IConsole.WriteLine(string?)"/> should flush the internal buffer even in line buffered mode.</summary>
-        [Fact]
-        protected void XUnitTestConsole_Example_Write_WorksWhenFollowedByWriteLine()
-        {
-            Console.WriteLine($"Demonstration of Console.Write(string?) when followed by WriteLine(string?):\n");
-            Console.Write($"<part 1>");
-            Console.Write($"<part 2>");
-            Console.Write($"<part 3>");
-            Console.WriteLine($"This line is written after several Write() calls.");
-            // Expected output:
-            // Demonstration of Console.Write(string ?) when followed by WriteLine(string?):
-            // 
-            // < part 1 >< part 2 >< part 3 >This line is written after several Write() calls.
-        }
-
-        /// <summary>Example that performs several calls to <see cref="IConsole.Write(string?)"/> method, which are NOT followed 
-        /// by a call to <see cref="IConsole.WriteLine(string?)"/>. Outputs from <see cref="IConsole.Write(string?)"/> should
-        /// NOT be VISIBLE when the test console <see cref="TestBase{TestClassType}.Console"/> is in the line buffered mode
-        /// because there is no <see cref="IConsole.WriteLine(string?)"/> after writes that would flush the output buffer.</summary>
-        [Fact]
-        protected void XUnitTestConsole_Example_Write_DoesNotWorkWhenNotFollowedByWriteLine()
-        {
-            Console.WriteLine($"Demonstration of Console.Write(string?) when NOT followed by WriteLine(string?):\n");
-            Console.Write($"<part 1>");
-            Console.Write($"<part 2>");
-            Console.Write($"<part 3>");
-            // Expected output:
-            // Demonstration of Console.Write(string?) when NOT followed by WriteLine(string?):
-        }
-
-
-        #endregion Examples
-
-
-        
-        #region SpeedTests
-
-        [Fact]
-        protected void XUnitTestConsole_SpeedTest_WriteLine()
-        {
-            Console.WriteLine($"Testing speed of {nameof(Console)}.{nameof(IConsole.WriteLine)}:\n");
-            int numWarmupLines = 20;
-            int numWrittenLines = 200;
-            double minExecutionsPerSecond = -10_000;  // low treshold to verify that Console.WriteLine() is not extremely slow
-            Stopwatch sw = new();
-            // Warm up (takes the slow initial runs due to just in time compilation, cache misses, etc.):
-            Console.WriteLine($"\nWarming up by performing {numWarmupLines} WriteLine() executions...\n");
-            sw.Start();
-            for (int i = 0; i < numWarmupLines; ++i)
-            {
-                Console.WriteLine("Line No. " + i.ToString());
-            }
-            sw.Stop();
-            Console.WriteLine($"\nWarmup: {numWarmupLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({(double)numWarmupLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
-            // Actual measurement:
-            Console.WriteLine($"\nSpeed testing by performing {numWrittenLines} WriteLine() executions...\n");
-            sw.Reset();
-            sw.Start();
-            for (int i = 0; i < numWrittenLines; ++i)
-            {
-                Console.WriteLine("Line No. " + i.ToString());
-            }
-            sw.Stop();
-            double executionsPerSecond = (double)numWrittenLines / (sw.Elapsed.TotalSeconds);
-            Console.WriteLine($"\nSpeed: {numWrittenLines} WriteLine-s executed in {sw.Elapsed.TotalSeconds} s ({(double)numWrittenLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
-            executionsPerSecond.Should().BeGreaterThan(minExecutionsPerSecond, because: $"WriteLine should not be too slow (there should be at least {minExecutionsPerSecond} executions per second)");
-        }
-
-        [Fact]
-        protected void XUnitTestConsole_SpeedTest_Write()
-        {
-            Console.WriteLine($"Testing speed of {nameof(Console)}.{nameof(IConsole.Write)}:\n");
-            int numWarmupLines = 20;
-            int numWrittenLines = 200;
-            double minExecutionsPerSecond = -10_000;  // low treshold to verify that Console.Write() is not extremely slow
-            Stopwatch sw = new();
-            // Warm up (takes the slow initial runs due to just in time compilation, cache misses, etc.):
-            Console.WriteLine($"\nWarming up by performing {numWarmupLines} Write(...) executions...\n");
-            sw.Start();
-            for (int i = 0; i < numWarmupLines; ++i)
-            {
-                Console.Write($"<Write {i}>");
-            }
-            sw.Stop();
-            Console.WriteLine($"\nWarmup: {numWarmupLines} Write-s executed in {sw.Elapsed.TotalSeconds} s ({(double)numWarmupLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
-            // Actual measurement:
-            Console.WriteLine($"\nSpeed testing by performing {numWrittenLines} Write(...) executions...\n");
-            sw.Reset();
-            sw.Start();
-            for (int i = 0; i < numWrittenLines; ++i)
-            {
-                Console.WriteLine($"<Write {i}>");
-            }
-            Console.WriteLine("");  // additional WriteLine() to ensure that all Write() calls are flushed to the output
-            sw.Stop();
-            double executionsPerSecond = (double)numWrittenLines / (sw.Elapsed.TotalSeconds);
-            Console.WriteLine($"\nSpeed: {numWrittenLines} Write-s executed in {sw.Elapsed.TotalSeconds} s ({(double)numWrittenLines / (sw.Elapsed.TotalSeconds * 1e6)} M/s)");
-            executionsPerSecond.Should().BeGreaterThan(minExecutionsPerSecond, because: $"Write should not be too slow (there should be at least {minExecutionsPerSecond} executions per second)");
-        }
-
-
-        #endregion SpeedTests
-
-#endif
-
     }
-
-
 
 }
 
