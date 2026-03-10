@@ -35,6 +35,10 @@ namespace IGLib.ConsoleAbstractions.Tests
             // Remark: the base constructor will assign the Output and Console properties.
         }
 
+        /// <summary>Expected actual type of the <see cref="TestBase{TestClassType}.Console"/> property.</summary>
+        public static Type ExpectedConsoleType => XUnitTestConsoleExamples_DefaultLineBuffered.ExpectedConsoleType;
+
+
         /// <summary>Basic precondition test - <see cref="TestBase{TestClassType}"/> is not null.</summary>
         [Fact]
         protected void XUnitTestConsole_ConsolePropertyIsNotNull()
@@ -58,12 +62,16 @@ namespace IGLib.ConsoleAbstractions.Tests
 
 
         //[Fact]
-        protected void XUnitTestConsole_AfterSwitchToLineBuffered_ConsoleObjectIsLineBuffered()
+        protected void XUnitTestConsole_SwitchToLineBufferedConsoleWorksCorrectly()
         {
+            Console.WriteLine($"Testing switch to line buffered console:");
             bool? isLineBufferedInitial = IsConsoleOutputLineBuffered;
+            Console.WriteLine($"Is currently line buffered: {isLineBufferedInitial}");
+            // Check some basic pre-conditions:
+            Console.WriteLine($"Is Console null: {Console == null}");
             try
             {
-                //
+                Console.WriteLine($"Test: setting console to line buffered mode");
                 // Set the console line buffered mode:
                 IsConsoleOutputLineBuffered = true;
                 Console.WriteLine($"This verifies that the actual {nameof(Console)} property is line buffered.\n");

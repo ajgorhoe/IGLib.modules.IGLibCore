@@ -36,6 +36,9 @@ namespace IGLib.ConsoleAbstractions.Tests
             // Remark: the base constructor will assign the Output and Console properties.
         }
 
+        /// <summary>Expected actual type of the <see cref="TestBase{TestClassType}.Console"/> property.</summary>
+        public static Type ExpectedConsoleType => XUnitTestConsoleExamples_DefaultLineBuffered.ExpectedConsoleType;
+
 
         [Fact]
         protected void XUnitTestConsole_ConsolePropertyIsNotNull()
