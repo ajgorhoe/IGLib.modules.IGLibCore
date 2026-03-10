@@ -84,8 +84,10 @@ namespace IGLib.Tests.Base
                 if (Console is XUnitOutputConsole xUnitConsole && xUnitConsole is not null && value != null)
                 {
                     xUnitConsole.IsLineBuffered = value.Value;
+                    return;
                 }
-                throw new InvalidOperationException("IsConsoleOutputLineBuffered can only be set if Console is of type XUnitOutputConsole and value is not null.");
+                throw new InvalidOperationException($"The {nameof(IsConsoleOutputLineBuffered)} property can only be set if {
+                    nameof(Console)} is of type {typeof(XUnitOutputConsole).Name} and value is not null.");
             } 
         }
 

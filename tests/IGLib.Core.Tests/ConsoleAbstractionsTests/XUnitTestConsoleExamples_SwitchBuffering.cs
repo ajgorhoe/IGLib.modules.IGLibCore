@@ -60,33 +60,28 @@ namespace IGLib.ConsoleAbstractions.Tests
         }
 
 
-        //[Fact]
+        [Fact]
         protected void XUnitTestConsole_SwitchToLineBufferedConsoleWorksCorrectly()
         {
-            Console.WriteLine($"Testing switch to line buffered console:");
+            Console.WriteLine($"Testing switch to line buffered {nameof(Console)} via test class's switch:");
             bool? isLineBufferedInitial = IsConsoleOutputLineBuffered;
             Console.WriteLine($"Is currently line buffered: {isLineBufferedInitial}");
             // Check some basic pre-conditions:
-            Console.WriteLine($"Is Console null: {Console == null}");
+            Console.WriteLine($"Is {nameof(Console)} null: {Console == null}");
+            Console.Should().NotBeNull(because: "PRECOND: the {nameof(Console)} property should be initilized and not be nulll");
+            Console.WriteLine($"Actual type of the {{nameof(Console)}} property: {Console.GetType().FullName}");
+            Console.Should().BeOfType(ExpectedConsoleType, because: $"PRECOND: the {nameof(Console)} property should be of type {ExpectedConsoleType.FullName}");
             try
             {
-                Console.WriteLine($"Test: setting console to line buffered mode");
-                // Set the console line buffered mode:
-                IsConsoleOutputLineBuffered = true;
-                Console.WriteLine($"This verifies that the actual {nameof(Console)} property is line buffered.\n");
-                Console.WriteLine($"Is {nameof(Console)} null: {Console == null}");
-                Console.Should().NotBeNull(because: "PRECOND: the {nameof(Console)} property should not be null.");
-                XUnitOutputConsole console = Console as XUnitOutputConsole;
-                Console.WriteLine($"Declared type of {nameof(Console)} property: {typeof(IConsole)}");
-                Console.WriteLine($"Actual type of {nameof(Console)} property: {Console.GetType().FullName};\n  expected: {ExpectedConsoleType.FullName}");
-                Console.WriteLine($"Is {nameof(Console)} of correct type: {console != null}");
-                console.Should().NotBeNull(because: $"PRECOND: The {nameof(Console)} property should be of type {nameof(XUnitOutputConsole)}");
-                Console.WriteLine($"Value of {nameof(Console)}'s {nameof(console.IsLineBuffered)} property: {console.IsLineBuffered}");
-                console.IsLineBuffered.Should().BeTrue(because: $"By default, the {nameof(Console)} should be line buffered.");
-            }
-            catch
-            {
-                throw;
+                //// Set the console line buffered mode:
+                //Console.WriteLine($"Switching console to line buffered mode via class switch...");
+                //IsConsoleOutputLineBuffered = true;
+                //XUnitOutputConsole console = Console as XUnitOutputConsole;
+                //Console.WriteLine($"The value of {nameof(IsConsoleOutputLineBuffered)} property: {IsConsoleOutputLineBuffered}");
+                //IsConsoleOutputLineBuffered.Should().BeTrue(because: $"after switching to line buffered mode, the  should be truee");
+                //Console.WriteLine($"The value of {nameof(Console)}.{nameof(console.IsLineBuffered)} property: {console.IsLineBuffered}");
+                //console.IsLineBuffered.Should().BeTrue(because: $"the value of the {nameof(console.IsLineBuffered)} propety on {
+                //    nameof(Console)} should be the same as the value of {nameof(IsConsoleOutputLineBuffered)} property on the test class");
             }
             finally
             {
