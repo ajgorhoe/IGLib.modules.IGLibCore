@@ -81,7 +81,8 @@ namespace IGLib.ConsoleAbstractions.Tests
                 Console.WriteLine($"The value of {nameof(IsConsoleOutputLineBuffered)} property: {IsConsoleOutputLineBuffered}");
                 IsConsoleOutputLineBuffered.Should().BeTrue(because: $"after switching to line buffered mode, the  should be truee");
                 Console.WriteLine($"The value of {nameof(Console)}.{nameof(console.IsLineBuffered)} property: {console.IsLineBuffered}");
-                console.IsLineBuffered.Should().BeTrue(because: $"the value of the {nameof(console.IsLineBuffered)} propety on {nameof(Console)} should be the same as the value of {nameof(IsConsoleOutputLineBuffered)} property on the test class");
+                console.IsLineBuffered.Should().BeTrue(because: $"the value of the {nameof(console.IsLineBuffered)} propety on {
+                    nameof(Console)} should be the same as the value of {nameof(IsConsoleOutputLineBuffered)} property on the test class");
             }
             finally
             {
@@ -103,15 +104,17 @@ namespace IGLib.ConsoleAbstractions.Tests
             Console.Should().BeOfType(ExpectedConsoleType, because: $"PRECOND: the {nameof(Console)} property should be of type {ExpectedConsoleType.FullName}");
             try
             {
-                //// Set the console line buffered mode:
-                //Console.WriteLine($"Switching console to line buffered mode via class's {nameof(IsConsoleOutputLineBuffered)} switch...");
-                //Console.WriteLine("After the switch:");
-                //IsConsoleOutputLineBuffered = true;
-                //XUnitOutputConsole console = Console as XUnitOutputConsole;
-                //Console.WriteLine($"The value of {nameof(IsConsoleOutputLineBuffered)} property: {IsConsoleOutputLineBuffered}");
-                //IsConsoleOutputLineBuffered.Should().BeTrue(because: $"after switching to line buffered mode, the  should be truee");
-                //Console.WriteLine($"The value of {nameof(Console)}.{nameof(console.IsLineBuffered)} property: {console.IsLineBuffered}");
-                //console.IsLineBuffered.Should().BeTrue(because: $"the value of the {nameof(console.IsLineBuffered)} propety on {nameof(Console)} should be the same as the value of {nameof(IsConsoleOutputLineBuffered)} property on the test class");
+                // Set the console line buffered mode:
+                Console.WriteLine($"Switching console to unbuffered mode via class's {nameof(IsConsoleOutputLineBuffered)} switch...");
+                Console.WriteLine("After the switch:");
+                IsConsoleOutputLineBuffered = false;
+                XUnitOutputConsole console = Console as XUnitOutputConsole;
+                Console.WriteLine($"The value of {nameof(IsConsoleOutputLineBuffered)} property: {IsConsoleOutputLineBuffered}");
+                IsConsoleOutputLineBuffered.Should().BeFalse(because: $"after switching to unbuffered mode, the {
+                    IsConsoleOutputLineBuffered} property should be false");
+                Console.WriteLine($"The value of {nameof(Console)}.{nameof(console.IsLineBuffered)} property: {console.IsLineBuffered}");
+                console.IsLineBuffered.Should().BeFalse(because: $"the value of the {nameof(console.IsLineBuffered)} propety on {
+                    nameof(Console)} should be the same as the value of {nameof(IsConsoleOutputLineBuffered)} property on the test class");
             }
             finally
             {
