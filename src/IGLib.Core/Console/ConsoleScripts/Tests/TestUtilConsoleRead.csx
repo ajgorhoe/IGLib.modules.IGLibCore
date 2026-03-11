@@ -38,6 +38,9 @@ void TestReadDouble(double value = 0.0)
 
 
 /*
+How to run test examples:
+
+#load "TestUtilConsoleRead.csx"
 
 TestReadBool(false);
 
