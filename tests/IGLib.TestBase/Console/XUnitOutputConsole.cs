@@ -19,7 +19,8 @@ namespace IGLib.Tests.Base;
 /// called after <see cref="Write(string?)"/>.</para>
 /// <para>If output is line buffered, one can use the <see cref="Flush"/> method or an empty <see cref="WriteLine(string?)"/>
 /// at the end of a test or in finally block, in orderr to ensure that all outputts of <see cref="Write(string?)"/>
-/// are visible in test's output.</para></summary>
+/// are visible in test's output.</para>
+/// <para>The <see cref="IConsole.ReadLine"/> is not implemented and its calls will throw <see cref="NotSupportedException"/>.</para></summary>
 public sealed class XUnitOutputConsole : IConsole
 {
 
@@ -35,9 +36,13 @@ public sealed class XUnitOutputConsole : IConsole
 
     /// <summary>Whether the output is line buffered or not.</summary>
     public bool IsLineBuffered { get; set; } = true;
-    
+
+    /// <summary>The <see cref="ReadLine"/> method cannot be implemented by using the <see cref="ITestOutputHelper"/> 
+    /// injected in xUnit tests, therefore this method throws an exception if called.</summary>
+    /// <exception cref="NotSupportedException">Thrown if the method is accidentially called, since the <see cref="ReadLine"/>
+    /// method cannot be implemented by using the <see cref="ITestOutputHelper"/>  injected in xUnit tests.</exception>
     public string? ReadLine()
-        => throw new NotSupportedException("No input support.");
+        => throw new NotSupportedException("Input is not supported in xUnit tests.");
 
     public void Write(string? value)
     {
