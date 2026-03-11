@@ -14,24 +14,25 @@ using System;
 using IGLib.ConsoleAbstractions;
 using static IGLib.ConsoleAbstractions.ConsoleUtilities;
 
-
 // Reading values from console:
 
 void TestReadBool(bool value = true)
 {
+    var initialValue = value;
     Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
     Console.Write($"Insert a number of type {value.GetType().Name} (? for help, <Enter> to keep {value}): ");
     bool wasRead = ConsoleUtilities.Read(ref value);
-    Console.WriteLine($"\nInitial value: {value}; was provided: {wasRead}; new value: {value}\n");
+    Console.WriteLine($"\nInitial value: {initialValue}; was provided: {wasRead}; new value: {value}\n");
 }
 
 
 void TestReadDouble(double value = 0.0)
 {
+    var initialValue = value;
     Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
     Console.Write($"Insert a number of type {value.GetType().Name} (? for help, <Enter> to keep {value}): ");
     bool wasRead = ConsoleUtilities.Read(ref value);
-    Console.WriteLine($"\nInitial value: {value}; was provided: {wasRead}; new value: {value}\n");
+    Console.WriteLine($"\nInitial value: {initialValue}; was provided: {wasRead}; new value: {value}\n");
 }
 
 
