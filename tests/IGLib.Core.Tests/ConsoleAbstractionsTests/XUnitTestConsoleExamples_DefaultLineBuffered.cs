@@ -20,6 +20,7 @@ namespace IGLib.ConsoleAbstractions.Tests
 
     /// <summary>Tests and examples of using the <see cref="TestBase{TestClassType}.Console"/> property and its actual type <see cref="XUnitOutputConsole"/>
     /// in the default setting where the console is line buffered.</summary>
+    /// <remarks>See also the <see cref="XUnitOutputConsole"/> documentation and remarks.</remarks>
     public class XUnitTestConsoleExamples_DefaultLineBuffered : TestBase<XUnitTestConsoleExamples_DefaultLineBuffered>
     {
 
