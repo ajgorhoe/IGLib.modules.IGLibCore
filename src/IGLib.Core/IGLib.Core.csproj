@@ -80,7 +80,7 @@
 		<None Include="Console/ConsoleScripts/**/*.cs;Console/ConsoleScripts/**/*.csx">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 
-			<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<Link>Console/ConsoleScripts/%(RecursiveDir)%(Filename)%(Extension)</Link>
 
 		</None>
 	</ItemGroup>	
