@@ -18,7 +18,7 @@ using Xunit.Abstractions;
 namespace IGLib.ConsoleAbstractions.Tests
 {
 
-    /// <summary>Examples and tests of using the <see cref="TestBase{TestClassType}.Console"/> property and its actual type <see cref="XUnitOutputConsole"/>
+    /// <summary>Tests and examples of using the <see cref="TestBase{TestClassType}.Console"/> property and its actual type <see cref="XUnitOutputConsole"/>
     /// in the default setting where the console is line buffered.</summary>
     public class XUnitTestConsoleExamples_DefaultLineBuffered : TestBase<XUnitTestConsoleExamples_DefaultLineBuffered>
     {
