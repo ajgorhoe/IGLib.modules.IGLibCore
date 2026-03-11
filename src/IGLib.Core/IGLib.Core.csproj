@@ -85,23 +85,4 @@
 		</None>
 	</ItemGroup>	
 	
-	<!-- Console scripts (for testing console utilities and understanding how System.Console works): -->
-	<!--
-	<ItemGroup>
-		<Compile Remove="Console\ConsoleScripts\**\*.cs" />
-		<None Include="Console\ConsoleScripts\**\*" />
-	</ItemGroup>
-	-->
-	
-	<ItemGroup>
-		<!-- Copy all C# scripts in Console/ConsoleScripts/Tests/ to the output directory: -->
-			<!-- Copy directly to output dir. rather than to nested directory -->
-			<!--
-		<None Update="Console/ConsoleScripts/Tests/*.csx">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Link>%(Filename)%(Extension)</Link>
-		</None>
-			-->
-	</ItemGroup>
-
 </Project>
