@@ -4,6 +4,10 @@ namespace IGLib.ConsoleAbstractions;
 
 /// <summary>A composed full console (aggregator class) composed of individual capability implementations.
 /// Delegates methods of <see cref="IFullConsole"/> to individual parts.</summary>
+/// <remarks>The API of <see cref="IConsole"/>  and other console abstractions is rather limited. In order 
+/// to use additional overlodes as available in the <see cref="System.Console"/> class, include the extension 
+/// methods for console abstraction interfaces by addinng the corresponding namespace via:</para>
+/// <para>using IGLib.ConsoleAbstractions.Extensions;</para></remarks>
 public sealed class ComposedConsole : IFullConsole
 {
     public ComposedConsole(
