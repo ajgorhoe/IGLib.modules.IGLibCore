@@ -30,6 +30,15 @@ namespace IGLib.Tests.Base;
 public sealed class XUnitOutputConsole : IConsole
 {
 
+    /// <summary>Constructor.</summary>
+    /// <param name="output">The <see cref="ITestOutputHelper"/> object that is used to write to the xUnit test's 
+    /// standard output. This object is normally injected by the framework via test class' constructor. If the
+    /// <see cref="TestBase{TestClassType}"/> is used as base class of the test class and its constructor is
+    /// called by test class's constructor then the <see cref="XUnitOutputConsole"/> object is automatically
+    /// created with the <see cref="ITestOutputHelper"/> object injected, and it is assigned to the 
+    /// <see cref="TestBase{TestClassType}.Console"/> property.</param>
+    /// <param name="isLineBuffered">Specifies whether the current object is line buffered or not. Default is true,
+    /// and this can later be changed or queried via the <see cref="IsLineBuffered"/> property.</param>
     public XUnitOutputConsole(ITestOutputHelper output, bool isLineBuffered = true)
     {
         _output = output;
@@ -50,6 +59,7 @@ public sealed class XUnitOutputConsole : IConsole
     public string? ReadLine()
         => throw new NotSupportedException("Input is not supported in xUnit tests.");
 
+    /// <inheritdoc/>
     public void Write(string? value)
     {
         if (value != null)
@@ -65,6 +75,7 @@ public sealed class XUnitOutputConsole : IConsole
         }
     }
 
+    /// <inheritdoc/>
     public void WriteLine(string? value = null)
     {
         if (value is not null)
@@ -85,7 +96,9 @@ public sealed class XUnitOutputConsole : IConsole
         }
     }
 
-    // Optional: flush on dispose / final assertion
+    /// <summary>Manually flushes the output buffer. All eveentual pending text from the <see cref="Write(string?)"/> 
+    /// calls is written to the xUnit test's output. This also adds an extra newline to the xUnit test's output (due 
+    /// to limitations of the <see cref="ITestOutputHelper"/>) if the buffer is not empty.</summary>
     public void Flush()
     {
         if (_buffer.Length > 0)
