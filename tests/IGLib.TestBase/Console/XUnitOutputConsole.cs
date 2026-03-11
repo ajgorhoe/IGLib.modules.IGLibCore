@@ -21,6 +21,12 @@ namespace IGLib.Tests.Base;
 /// at the end of a test or in finally block, in orderr to ensure that all outputts of <see cref="Write(string?)"/>
 /// are visible in test's output.</para>
 /// <para>The <see cref="IConsole.ReadLine"/> is not implemented and its calls will throw <see cref="NotSupportedException"/>.</para></summary>
+/// <remarks>This implementation of the <see cref="IConsole"/> interface is used to bring the interface's API to
+/// xUnit tests (except the <see cref="ReadLine"/> method, which throws a <see cref="NotSupportedException"/>).
+/// <para>In order TO USE this implementation in xUnit tests, inherit the xUnit test class from <see cref="TestBase{TestClassType}"/>, and
+/// make its construcor depend on <see cref="ITestOutputHelper"/> (to be injected by the test framework) and call the base class' constructor,
+/// passing it the <see cref="ITestOutputHelper"/> parameter. the object of this type is accessible through the <see cref="TestBase{TestClassType}.Console"/>
+/// property.</para></remarks>
 public sealed class XUnitOutputConsole : IConsole
 {
 
