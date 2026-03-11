@@ -7,13 +7,15 @@ namespace IGLib.ConsoleAbstractions
 {
 
     /// <summary>Adapter for the <see cref="System.Console"/> class. Implements the <see cref="IFullConsole"/> 
-    /// interface by forwarding all the operations to the usual <see cref="System.Console"/> static class.</summary>
+    /// interface by forwarding all the operations to the usual <see cref="System.Console"/> static class.
+    /// <para>This includes the static <see cref="GlobalConsole"/> property, to ensure that the <see cref="System.Console"/>
+    /// is always available via this console abstraction.</para></summary>
     public sealed class SystemConsole : IFullConsole
     {
 
-        // Global System console, named simply Global:
+        // Global System console, named simply GlobalConsole:
 
-        protected static Lazy<SystemConsole> _global = new Lazy<SystemConsole>(() => new SystemConsole());
+        private static Lazy<SystemConsole> _global = new Lazy<SystemConsole>(() => new SystemConsole());
 
         /// <summary>Global lazily initialized instance of <see cref="GlobalConsole"/>.</summary>
         public static SystemConsole GlobalConsole => _global.Value;

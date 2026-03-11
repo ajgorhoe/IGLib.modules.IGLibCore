@@ -27,7 +27,10 @@ namespace IGLib.Tests.Base;
 /// <para>In order TO USE this implementation in xUnit tests, inherit the xUnit test class from <see cref="TestBase{TestClassType}"/>, and
 /// make its construcor depend on <see cref="ITestOutputHelper"/> (to be injected by the test framework) and call the base class' constructor,
 /// passing it the <see cref="ITestOutputHelper"/> parameter. the object of this type is accessible through the <see cref="TestBase{TestClassType}.Console"/>
-/// property.</para></remarks>
+/// property.</para>
+/// <para>The API of <see cref="IConsole"/> is rather limited. In order to use additional overlodes of the Write and 
+/// WriteLine methods, include the extension methods for this interface by addinng the corresponding namespace via:</para>
+/// <para>using IGLib.ConsoleAbstractions.Extensions;</para></remarks>
 public sealed class XUnitOutputConsole : IConsole
 {
 
