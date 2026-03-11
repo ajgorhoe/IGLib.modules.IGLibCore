@@ -72,6 +72,19 @@
 	</ItemGroup>
 
 	<!-- Exclude directories from builds: -->
+
+	<ItemGroup>
+		<!-- Exclude all files recurdivel contained in onsole/ConsoleScripts/ from compilation:  -->
+		<Compile Remove="Console/ConsoleScripts/**" />
+
+		<None Include="Console/ConsoleScripts/**/*.cs;Console/ConsoleScripts/**/*.csx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+
+			<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+
+		</None>
+	</ItemGroup>	
+	
 	<!-- Console scripts (for testing console utilities and understanding how System.Console works): -->
 	<!--
 	<ItemGroup>
@@ -82,13 +95,13 @@
 	
 	<ItemGroup>
 		<!-- Copy all C# scripts in Console/ConsoleScripts/Tests/ to the output directory: -->
-		<None Update="Console/ConsoleScripts/Tests/*.csx">
 			<!-- Copy directly to output dir. rather than to nested directory -->
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<!--
+		<None Update="Console/ConsoleScripts/Tests/*.csx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Link>%(Filename)%(Extension)</Link>
-			-->
 		</None>
+			-->
 	</ItemGroup>
 
 </Project>
