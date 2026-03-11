@@ -21,7 +21,7 @@ namespace IGLib.ConsoleAbstractions
 
         private static Lazy<SystemConsole> _global = new Lazy<SystemConsole>(() => new SystemConsole());
 
-        /// <summary>Global lazily initialized instance of <see cref="GlobalConsole"/>.</summary>
+        /// <summary>Global lazily initialized instance of <see cref="SystemConsole"/>.</summary>
         public static SystemConsole GlobalConsole => _global.Value;
 
 
