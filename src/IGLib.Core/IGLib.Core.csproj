@@ -71,17 +71,17 @@
 		<PackageReference Include="System.Text.Json" Version="10.0.0" />
 	</ItemGroup>
 
-	<!-- Exclude directories from builds: -->
-
+	<!-- Exclude script files from builds: -->
 	<ItemGroup>
 		<!-- Exclude all files recurdivel contained in onsole/ConsoleScripts/ from compilation:  -->
 		<Compile Remove="Console/ConsoleScripts/**" />
-
-		<None Include="Console/ConsoleScripts/**/*.cs;Console/ConsoleScripts/**/*.csx">
+		<!-- Copy scripts and one-file applications to output directory for manual testing: -->
+		<None Include="Console/ConsoleScripts/**/*.cs;Console/ConsoleScripts/**/*.csx;Console/ConsoleScripts/**/*.*">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-
+			<!-- Keep file links visible in project structure (e.g. in Solution Explorer) at original locations: -->
 			<Link>Console/ConsoleScripts/%(RecursiveDir)%(Filename)%(Extension)</Link>
-
+			<!-- Separately specify locations at which files are copied to the output directory: -->
+			<TargetPath>%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
 		</None>
 	</ItemGroup>	
 	
