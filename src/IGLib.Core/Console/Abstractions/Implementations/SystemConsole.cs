@@ -10,6 +10,10 @@ namespace IGLib.ConsoleAbstractions
     /// interface by forwarding all the operations to the usual <see cref="System.Console"/> static class.
     /// <para>This includes the static <see cref="GlobalConsole"/> property, to ensure that the <see cref="System.Console"/>
     /// is always available via this console abstraction.</para></summary>
+    /// <remarks>The API of <see cref="IConsole"/>  and other console abstractions is rather limited. In order 
+    /// to use additional overlodes as available in the <see cref="System.Console"/> class, , include the extension 
+    /// methods for console abstraction interfaces by addinng the corresponding namespace via:</para>
+    /// <para>using IGLib.ConsoleAbstractions.Extensions;</para></remarks>
     public sealed class SystemConsole : IFullConsole
     {
 
