@@ -300,24 +300,8 @@ namespace IGLib.ConsoleAbstractions
 
         #region PasswordUtilities
 
+        #region OlderUtilities
 
-        [Obsolete("Do not use this in production as storing passwords in strings is not secure.")]
-        public static string ReadPasswordToString(char displayChar = '*', bool repeatForValidation = false,
-            string insertionPrompt = "", string validationPrompt = "", string validationNotEqualPrompt = "")
-        {
-            List<char> pwd = new List<char>();
-
-            pwd = ReadPassword(displayChar, repeatForValidation, insertionPrompt, validationPrompt,
-                validationNotEqualPrompt);
-
-            string ret = "";
-            if (pwd != null)
-            { 
-                ret = new string([.. pwd]);
-                OverWrite(pwd);
-            }
-            return ret;
-        }
 
         public static List<char> ReadPassword(char displayChar = '*', bool repeatForValidation = true,
             string insertionPrompt = "", string validationPrompt = "", string validationNotEqualPrompt = "")
@@ -386,8 +370,6 @@ namespace IGLib.ConsoleAbstractions
         }
 
 
-
-
         public static StringBuilder ReadPasswordStringBuilder(char displayChar = '*', bool repeatForValidation = true, 
             string insertionPrompt = "Insert the password: ", 
             string validationPrompt = "Insert the password again: ")
@@ -451,6 +433,29 @@ namespace IGLib.ConsoleAbstractions
 
             return password;
         }
+
+
+        [Obsolete("Do not use this method as storing passwords in strings is not secure.")]
+        public static string ReadPasswordToString(char displayChar = '*', bool repeatForValidation = false,
+            string insertionPrompt = "", string validationPrompt = "", string validationNotEqualPrompt = "")
+        {
+            List<char> pwd = new List<char>();
+
+            pwd = ReadPassword(displayChar, repeatForValidation, insertionPrompt, validationPrompt,
+                validationNotEqualPrompt);
+
+            string ret = "";
+            if (pwd != null)
+            { 
+                ret = new string([.. pwd]);
+                OverWrite(pwd);
+            }
+            return ret;
+        }
+
+
+        #endregion OlderUtilities
+
 
 
         #endregion PasswordUtilities
