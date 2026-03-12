@@ -231,7 +231,7 @@ namespace IGLib.ConsoleAbstractions
 
 
         /// <summary>Calls <see cref="Read(IConsole, ref NumericType, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
-        internal static bool Read<NumericType>(ref NumericType value, IFormatProvider? formatProvider = null)
+        public static bool Read<NumericType>(ref NumericType value, IFormatProvider? formatProvider = null)
             where NumericType : struct, IConvertible
         {
             return Read(GlobalConsole, ref value, formatProvider);
