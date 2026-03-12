@@ -303,7 +303,7 @@ namespace IGLib.ConsoleAbstractions
         #region OlderUtilities
 
 
-        public static List<char> ReadPassword(char displayChar = '*', bool repeatForValidation = true,
+        public static List<char> ReadPasswordOld(char displayChar = '*', bool repeatForValidation = true,
             string insertionPrompt = "", string validationPrompt = "", string validationNotEqualPrompt = "")
         {
             const string defaultInsertionPrompt = "Insert the password: ";
@@ -370,7 +370,7 @@ namespace IGLib.ConsoleAbstractions
         }
 
 
-        public static StringBuilder ReadPasswordStringBuilder(char displayChar = '*', bool repeatForValidation = true, 
+        public static StringBuilder ReadPasswordStringBuilderOld(char displayChar = '*', bool repeatForValidation = true, 
             string insertionPrompt = "Insert the password: ", 
             string validationPrompt = "Insert the password again: ")
         {
@@ -436,12 +436,12 @@ namespace IGLib.ConsoleAbstractions
 
 
         [Obsolete("Do not use this method as storing passwords in strings is not secure.")]
-        public static string ReadPasswordToString(char displayChar = '*', bool repeatForValidation = false,
+        public static string ReadPasswordToStringOld(char displayChar = '*', bool repeatForValidation = false,
             string insertionPrompt = "", string validationPrompt = "", string validationNotEqualPrompt = "")
         {
             List<char> pwd = new List<char>();
 
-            pwd = ReadPassword(displayChar, repeatForValidation, insertionPrompt, validationPrompt,
+            pwd = ReadPasswordOld(displayChar, repeatForValidation, insertionPrompt, validationPrompt,
                 validationNotEqualPrompt);
 
             string ret = "";
