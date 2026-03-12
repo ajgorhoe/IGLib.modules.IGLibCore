@@ -25,8 +25,17 @@ void TestReadBool(bool value = true)
     Console.WriteLine($"\nInitial value: {initialValue}; was provided: {wasRead}; new value: {value}\n");
 }
 
+void TestReadLong(long value = 987)
+{
+    var initialValue = value;
+    Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
+    Console.Write($"Insert a number of type {value.GetType().Name} (? for help, <Enter> to keep {value}): ");
+    bool wasRead = ConsoleUtilities.Read(ref value);
+    Console.WriteLine($"\nInitial value: {initialValue}; was provided: {wasRead}; new value: {value}\n");
+}
 
-void TestReadDouble(double value = 0.0)
+
+void TestReadDouble(double value = 4.5)
 {
     var initialValue = value;
     Console.WriteLine($"\nTest - reading a value of type {value.GetType().Name}:\n");
