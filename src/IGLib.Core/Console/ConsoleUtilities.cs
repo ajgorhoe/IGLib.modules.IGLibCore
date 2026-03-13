@@ -304,7 +304,7 @@ namespace IGLib.ConsoleAbstractions
 
         /// <summary>Reads a password inseted by the user via console in a secure-ish way.</summary>
         /// <returns></returns>
-        public static char[] ReadPasswordChars(IConsoleWithKeyInput console)
+        public static char[] ReadPasswordChars(IConsoleWithKeyInput console, char? displayChar = '*')
         {
             var buffer = new List<char>(40);
 
@@ -326,7 +326,8 @@ namespace IGLib.ConsoleAbstractions
                 }
 
                 buffer.Add(key.KeyChar);
-                console.Write('*');
+                if (displayChar != null)
+                { console.Write(displayChar.Value); }
             }
             // Convert to array:
             char[] result = buffer.ToArray();
