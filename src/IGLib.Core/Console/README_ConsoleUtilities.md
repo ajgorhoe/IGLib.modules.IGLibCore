@@ -85,3 +85,30 @@ These structures allow the program to **explicitly overwrite the memory containi
 
 This reduces the risk of passwords lingering in memory.
 
+### Why `SecureString` Is No Longer Recommended
+
+In older versions of .NET, the `SecureString` class was intended to address password security concerns.
+
+`SecureString` attempted to:
+
+* Encrypt the password in memory
+* Allow controlled disposal
+* Reduce plaintext exposure
+
+However, modern .NET guidance discourages using `SecureString` for new development.
+
+##### Reasons:
+
+1. **Limited real security benefit**
+
+   Secrets often need to be converted back to plaintext to be used (e.g., authentication APIs).
+
+2. **Platform differences**
+
+   Some platforms cannot reliably protect the memory in the intended way.
+
+3. **Added complexity**
+
+   The API introduces complexity without providing meaningful security improvements.
+
+Because of these issues, Microsoft recommends **using normal memory buffers but minimizing secret lifetime and clearing memory explicitly**.
