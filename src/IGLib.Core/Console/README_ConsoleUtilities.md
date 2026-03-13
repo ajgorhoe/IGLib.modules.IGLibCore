@@ -106,3 +106,59 @@ However, modern .NET guidance **discourages using `SecureString`** for new devel
    The API introduces complexity without providing meaningful security improvements.
 
 Because of these issues, it is recommended to **use normal memory buffers but minimize secret lifetime and clear memory explicitly**.
+
+### Recommended Password Reading Method
+
+A practical and safe implementation uses a `List<char>` as a dynamically sized buffer.
+
+Advantages:
+
+* avoids difficult buffer size decisions
+* supports editing (backspace)
+* allows explicit wiping of memory
+
+Example implementation (simple):
+
+~~~csharp
+using System;
+using System.Collections.Generic;
+
+static char[] ReadPasswordChars()
+{
+    var buffer = new List<char>(40);
+    while (true)
+    {
+        var key = Console.ReadKey(intercept: true);
+
+        if (key.Key == ConsoleKey.Enter)
+        {
+            Console.WriteLine();
+            break;
+        }
+        if (key.Key == ConsoleKey.Backspace && buffer.Count > 0)
+        {
+            buffer[buffer.Count - 1] = '\0';
+            buffer.RemoveAt(buffer.Count - 1);
+            Console.Write("\b \b");
+            continue;
+        }
+        buffer.Add(key.KeyChar);
+        Console.Write('*');
+    }
+    char[] result = buffer.ToArray();
+    // wipe temporary storage
+    for (int i = 0; i < buffer.Count; i++)
+        buffer[i] = '\0';
+    buffer.Clear();
+    return result;
+}
+~~~
+
+This implementation:
+
+* prevents console echo
+* supports backspace editing
+* minimizes intermediate memory exposure
+* clears temporary buffers before returning
+
+The actual implementation in the `ConsoleUtilities` class provides some additional improvements.
