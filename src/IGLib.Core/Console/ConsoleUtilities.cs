@@ -47,7 +47,7 @@ namespace IGLib.ConsoleAbstractions
         }
 
         public static bool AreEqual<T>(IList<T> l1, IList<T> l2)
-            where T: IEquatable<T>
+            where T : IEquatable<T>
         {
             if (l1 == null || l2 == null)
             {
@@ -140,7 +140,7 @@ namespace IGLib.ConsoleAbstractions
                     Console.WriteLine($"  non-boolean string to show current value,");
                     Console.WriteLine($"  <Enter> to keep the current value ({value}),");
                     Console.WriteLine($"  [{string.Join(", ", BooleanFalseStrings)}] for False),");
-                    Console.WriteLine($"  [{string.Join(", ", BooleanTrueStrings)}] for True ({(IsBooleanStringsCaseSensitive? "case sensitive" : "not case sensitive")}),");
+                    Console.WriteLine($"  [{string.Join(", ", BooleanTrueStrings)}] for True ({(IsBooleanStringsCaseSensitive ? "case sensitive" : "not case sensitive")}),");
                     if (IsBooleanAnyIntegerAccepted)
                     {
                         Console.WriteLine($"  0 for False, any other integer value for True.\n");
@@ -220,7 +220,7 @@ namespace IGLib.ConsoleAbstractions
                     Console.WriteLine($"Insert a number of type {value.GetType().Name}, ? for help.");
                 }
                 Console.WriteLine("  Current value: " + value.ToString());
-                Console.Write(    "  New value:     ");
+                Console.Write("  New value:     ");
             } while (!string.IsNullOrEmpty(userInput));
             return valueProvided;
         }
@@ -285,7 +285,7 @@ namespace IGLib.ConsoleAbstractions
                     Console.WriteLine($"Insert a number of type {value.GetType().Name}, ? for help.");
                 }
                 Console.WriteLine("  Current value: " + value.ToString());
-                Console.Write(    "  New value:     ");
+                Console.Write("  New value:     ");
             } while (!string.IsNullOrEmpty(userInput));
             return valueProvided;
         }
@@ -300,11 +300,52 @@ namespace IGLib.ConsoleAbstractions
 
         #region PasswordUtilities
 
+
+        /// <summary>Reads a password inseted by the user via console in a secure-ish way.</summary>
+        /// <returns></returns>
+        public static char[] ReadPasswordChars()
+        {
+            var buffer = new List<char>(40);
+
+            while (true)
+            {
+                var key = Console.ReadKey(intercept: true);
+
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    break;
+                }
+
+                if (key.Key == ConsoleKey.Backspace && buffer.Count > 0)
+                {
+                    buffer.RemoveAt(buffer.Count - 1);
+                    Console.Write("\b \b");
+                    continue;
+                }
+
+                buffer.Add(key.KeyChar);
+                Console.Write('*');
+            }
+
+            char[] result = buffer.ToArray();
+
+            // wipe temporary storage (slightly improved security)
+            for (int i = 0; i < buffer.Count; i++)
+                buffer[i] = '\0';
+
+            buffer.Clear();
+
+            return result;
+        }
+
+
+
         #region OlderUtilities
 
 
         public static List<char> ReadPasswordOld(char displayChar = '*', bool repeatForValidation = true,
-            string insertionPrompt = "", string validationPrompt = "", string validationNotEqualPrompt = "")
+                string insertionPrompt = "", string validationPrompt = "", string validationNotEqualPrompt = "")
         {
             const string defaultInsertionPrompt = "Insert the password: ";
             const string defaultValidationPrompt = "Insert the password again: ";
@@ -370,8 +411,8 @@ namespace IGLib.ConsoleAbstractions
         }
 
 
-        public static StringBuilder ReadPasswordStringBuilderOld(char displayChar = '*', bool repeatForValidation = true, 
-            string insertionPrompt = "Insert the password: ", 
+        public static StringBuilder ReadPasswordStringBuilderOld(char displayChar = '*', bool repeatForValidation = true,
+            string insertionPrompt = "Insert the password: ",
             string validationPrompt = "Insert the password again: ")
         {
             var password = new StringBuilder();
@@ -446,7 +487,7 @@ namespace IGLib.ConsoleAbstractions
 
             string ret = "";
             if (pwd != null)
-            { 
+            {
                 ret = new string([.. pwd]);
                 OverWrite(pwd);
             }
