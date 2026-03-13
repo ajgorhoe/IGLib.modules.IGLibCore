@@ -95,9 +95,7 @@ In older versions of .NET, the `SecureString` class was intended to address pass
 * Allow controlled disposal
 * Reduce plaintext exposure
 
-However, modern .NET guidance discourages using `SecureString` for new development.
-
-##### Reasons:
+However, modern .NET guidance **discourages using `SecureString`** for new development for the following reasons:
 
 1. **Limited real security benefit**
 
