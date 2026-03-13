@@ -27,3 +27,7 @@ If you ned libraries for rendering advanced console UI or other advanced console
 * [Spectre.Console](https://github.com/spectreconsole/spectre.console) - another library for advanced GUIs using console
 * [A list of console libraries for .NET](https://github.com/goblinfactory/konsole?tab=readme-ov-file#other-net-console-libraries)
 
+## Remarks on Reading Passwords form Console
+
+
+
