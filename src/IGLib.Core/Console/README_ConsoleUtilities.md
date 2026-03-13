@@ -30,5 +30,23 @@ If you ned libraries for rendering advanced console UI or other advanced console
 
 ## Remarks on Reading Passwords form Console
 
-The `ConsoleUtilities` class also contains some utilities for reading passwords from console (including using console abstractions). This Section contains some common considerations for reading secrets such as passwords from Console-like devices.
+The `ConsoleUtilities` class also contains some utilities for reading passwords from console (including using console abstractions). Below is a **summary** of some key points about **securely reading passwords from the console in .NET**, including a simplified implementation and use.
 
+### Securely Reading Passwords from the Console in .NET
+
+Reading passwords from a console application requires special care to prevent accidental disclosure. Two main aspects must be considered:
+
+1. **Preventing the password from being visible during input**
+2. **Avoiding insecure storage of the password in memory**
+
+### Preventing Password Echo on the Console
+
+The standard `Console.ReadLine()` method echoes characters as the user types them, which is unsuitable for passwords. Instead, passwords should be read using:
+
+~~~csharp
+Console.ReadKey(intercept: true)
+~~~
+
+The `intercept: true` parameter ensures the pressed key **is not printed to the console**.
+
+Optionally, a masking character (e.g., `*`) may be printed to indicate input progress.
