@@ -184,4 +184,20 @@ finally
 
 This step is essential to ensure the password **does not remain in memory longer than necessary**.
 
+### Summary of Best Practices
+
+When reading passwords from the console:
+
+* Do **not use** `Console.ReadLine()`
+* **Use** `Console.ReadKey(intercept: true)` to prevent echo
+* Avoid storing passwords in `string`
+* Prefer mutable buffers (`char[]`, `List<char>`)
+* Wipe temporary buffers after use
+* Always **clear the password array once it has been used**
+* Do not rely on `SecureString` for new development
+
+The main security principle is:
+
+> **Minimize the number of password copies in memory and minimize their lifetime.**
+
 ---
