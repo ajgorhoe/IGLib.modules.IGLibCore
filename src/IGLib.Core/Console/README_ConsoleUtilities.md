@@ -161,4 +161,27 @@ This implementation:
 * minimizes intermediate memory exposure
 * clears temporary buffers before returning
 
-The actual implementation in the `ConsoleUtilities` class provides some additional improvements.
+The actual implementations in the `ConsoleUtilities` class provide some additional improvements, and one implementation works with console abstraction, which makes it suitable for unit testing.
+
+### Critical Step: Clearing the Password After Use
+
+The returned `char[]` still contains the plaintext password.
+Therefore, **the caller must clear the array once the password is no longer needed**.
+
+Example usage:
+
+~~~csharp
+char[] password = ReadPasswordChars();
+try
+{
+    Authenticate(password);
+}
+finally
+{
+    Array.Clear(password);
+}
+~~~
+
+This step is essential to ensure the password **does not remain in memory longer than necessary**.
+
+---
