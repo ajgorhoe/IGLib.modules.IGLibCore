@@ -301,8 +301,9 @@ namespace IGLib.ConsoleAbstractions
 
 
         /// <summary>Reads a password inseted by the user via console in a secure-ish way.</summary>
+        /// 
         /// <returns></returns>
-        public static char[] ReadPasswordChars(IConsoleWithKeyInput console, char mask = '*')
+        public static char[] ReadPasswordChars(IConsoleWithKeyInput console, char displayChar = '*')
         {
             var buffer = new List<char>(40);
 
@@ -337,7 +338,7 @@ namespace IGLib.ConsoleAbstractions
                                 buffer[buffer.Count - 1] = '\0';  // overwrite the last character for security
                                 buffer.RemoveAt(buffer.Count - 1);
 
-                                if (mask != '\0')
+                                if (displayChar != '\0')
                                     Console.Write("\b \b");
                             }
                             break;
@@ -368,8 +369,8 @@ namespace IGLib.ConsoleAbstractions
                             {
                                 buffer.Add(c);
 
-                                if (mask != '\0')
-                                    Console.Write(mask);
+                                if (displayChar != '\0')
+                                    Console.Write(displayChar);
                             }
                             break;
                     }
