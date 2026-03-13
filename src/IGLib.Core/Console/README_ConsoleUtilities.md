@@ -81,15 +81,11 @@ A better approach is to store passwords in a **mutable buffer**, such as:
 * `List<char>`
 * `Span<char>`
 
-These structures allow the program to **explicitly overwrite the memory containing the password** once it is no longer needed.
-
-This reduces the risk of passwords lingering in memory.
+These structures allow the program to **explicitly overwrite the memory containing the password** once it is no longer needed. This reduces the risk of passwords lingering in memory.
 
 ### Why `SecureString` Is No Longer Recommended
 
-In older versions of .NET, the `SecureString` class was intended to address password security concerns.
-
-`SecureString` attempted to:
+In older versions of .NET, the `SecureString` class was intended to address password security concerns. It attempted to:
 
 * Encrypt the password in memory
 * Allow controlled disposal
@@ -109,4 +105,4 @@ However, modern .NET guidance **discourages using `SecureString`** for new devel
 
    The API introduces complexity without providing meaningful security improvements.
 
-Because of these issues, Microsoft recommends **using normal memory buffers but minimizing secret lifetime and clearing memory explicitly**.
+Because of these issues, it is recommended to **use normal memory buffers but minimize secret lifetime and clear memory explicitly**.
