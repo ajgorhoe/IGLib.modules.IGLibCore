@@ -310,29 +310,30 @@ namespace IGLib.ConsoleAbstractions
         {
             var buffer = new List<char>(40);
 
-            ConsoleCancelEventHandler? cancelHandler = null;
+            // ConsoleCancelEventHandler? cancelHandler = null;
 
             try
             {
-                // Handle Ctrl+C safely
-                cancelHandler = (sender, e) =>
-                {
-                    e.Cancel = true;                 // prevent process termination
-                    ClearBuffer(buffer);
-                    Console.WriteLine();
-                    throw new OperationCanceledException("Password entry cancelled.");
-                };
-
-                Console.CancelKeyPress += cancelHandler;
+                
+                //// The handler below only makes sens for System.Condole:
+                //// Handle Ctrl+C safely
+                //cancelHandler = (sender, e) =>
+                //{
+                //    e.Cancel = true;                 // prevent process termination
+                //    ClearBuffer(buffer);
+                //    console.WriteLine();
+                //    throw new OperationCanceledException("Password entry cancelled.");
+                //};
+                //Console.CancelKeyPress += cancelHandler;
 
                 while (true)
                 {
-                    var key = Console.ReadKey(intercept: true);
+                    var key = console.ReadKey(intercept: true);
 
                     switch (key.Key)
                     {
                         case ConsoleKey.Enter:
-                            Console.WriteLine();
+                            console.WriteLine();
                             return FinalizePassword(buffer);
 
                         case ConsoleKey.Backspace:
@@ -342,14 +343,23 @@ namespace IGLib.ConsoleAbstractions
                                 buffer.RemoveAt(buffer.Count - 1);
 
                                 if (displayChar != '\0')
-                                    Console.Write("\b \b");
+                                    console.Write("\b \b");
                             }
                             break;
 
                         case ConsoleKey.Escape:
+                            if (displayChar != '\0')
+                            {
+                                for (int i = 0; i < buffer.Count; ++i)
+                                {
+                                    console.Write("\b \b");
+                                }
+                            }
                             ClearBuffer(buffer);
-                            Console.WriteLine();
-                            throw new OperationCanceledException("Password entry cancelled.");
+                            break;
+                            //Console.WriteLine(" <<Input Cancelled!>>");
+                            //return FinalizePassword(buffer);
+                            // throw new OperationCanceledException("Password entry cancelled.");
 
                         // ignore navigation and modifier keys
                         case ConsoleKey.LeftArrow:
@@ -373,7 +383,7 @@ namespace IGLib.ConsoleAbstractions
                                 buffer.Add(c);
 
                                 if (displayChar != '\0')
-                                    Console.Write(displayChar);
+                                    console.Write(displayChar);
                             }
                             break;
                     }
@@ -381,8 +391,8 @@ namespace IGLib.ConsoleAbstractions
             }
             finally
             {
-                if (cancelHandler != null)
-                    Console.CancelKeyPress -= cancelHandler;
+                //if (cancelHandler != null)
+                //    Console.CancelKeyPress -= cancelHandler;
             }
         }
 
@@ -397,7 +407,6 @@ namespace IGLib.ConsoleAbstractions
         {
             for (int i = 0; i < buffer.Count; i++)
                 buffer[i] = '\0';
-
             buffer.Clear();
         }
 
