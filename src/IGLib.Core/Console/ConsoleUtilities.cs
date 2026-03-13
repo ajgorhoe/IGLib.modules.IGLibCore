@@ -301,8 +301,11 @@ namespace IGLib.ConsoleAbstractions
 
 
         /// <summary>Reads a password inseted by the user via console in a secure-ish way.</summary>
-        /// 
-        /// <returns></returns>
+        /// <param name="console">Console object (abatracted) from which the password is read.</param>
+        /// <param name="displayChar">Character to display for each entered character. Set to '\0' to not display anything.
+        /// Defaults to asterisk ('*').</param>
+        /// <returns>Charracter array containing the password inserted by the user.
+        /// <para>IMPORTANT: after the returned array is used, clear it by calling <see cref="Array.Clear(Array)"/> on it.</para></returns>
         public static char[] ReadPasswordChars(IConsoleWithKeyInput console, char displayChar = '*')
         {
             var buffer = new List<char>(40);
