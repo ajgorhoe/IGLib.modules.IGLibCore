@@ -29,5 +29,5 @@ If you ned libraries for rendering advanced console UI or other advanced console
 
 ## Remarks on Reading Passwords form Console
 
-
+The `ConsoleUtilities` class also contains some utilities for reading passwords from console (including using console abstractions). This Section contains some common considerations for reading secrets such as passwords from Console-like devices.
 
