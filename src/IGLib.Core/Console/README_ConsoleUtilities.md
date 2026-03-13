@@ -50,3 +50,27 @@ Console.ReadKey(intercept: true)
 The `intercept: true` parameter ensures the pressed key **is not printed to the console**.
 
 Optionally, a masking character (e.g., `*`) may be printed to indicate input progress.
+
+### Why Storing Passwords in `string` Is Unsafe
+
+In .NET, `string` objects are **immutable**, which introduces several security issues when storing sensitive information in them:
+
+##### Problems with `string`
+
+1. **Immutable memory**
+
+   Once a `string` is created, its contents cannot be modified.
+
+2. **Cannot be cleared**
+
+   The password remains in memory until the garbage collector reclaims the object.
+
+3. **Possible additional copies**
+
+   During execution, the runtime may create additional copies of the string.
+
+4. **Memory dump exposure**
+
+   If the process memory is dumped (e.g., debugging, crash dumps), the plaintext password may appear.
+
+Because of these properties, storing sensitive secrets in a `string` increases the likelihood that the password remains in memory longer than necessary.
