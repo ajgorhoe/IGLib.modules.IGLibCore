@@ -74,3 +74,16 @@ In .NET, `string` objects are **immutable**, which introduces several security i
    If the process memory is dumped (e.g., debugging, crash dumps), the plaintext password may appear.
 
 Because of these properties, storing sensitive secrets in a `string` increases the likelihood that the password remains in memory longer than necessary.
+
+### Preferred Alternative: Mutable Character Buffers
+
+A better approach is to store passwords in a **mutable buffer**, such as:
+
+* `char[]`
+* `List<char>`
+* `Span<char>`
+
+These structures allow the program to **explicitly overwrite the memory containing the password** once it is no longer needed.
+
+This reduces the risk of passwords lingering in memory.
+
