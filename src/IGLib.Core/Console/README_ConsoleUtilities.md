@@ -55,8 +55,6 @@ Optionally, a masking character (e.g., `*`) may be printed to indicate input pro
 
 In .NET, `string` objects are **immutable**, which introduces several security issues when storing sensitive information in them:
 
-##### Problems with `string`
-
 1. **Immutable memory**
 
    Once a `string` is created, its contents cannot be modified.
