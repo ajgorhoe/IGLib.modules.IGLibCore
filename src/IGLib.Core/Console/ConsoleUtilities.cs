@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 
 using static IGLib.ParsingUtils;
+using IGLib.ConsoleAbstractions.Extensions;
 
 
 using static IGLib.ConsoleAbstractions.SystemConsole;
@@ -303,7 +304,7 @@ namespace IGLib.ConsoleAbstractions
 
         /// <summary>Reads a password inseted by the user via console in a secure-ish way.</summary>
         /// <returns></returns>
-        public static char[] ReadPasswordChars()
+        public static char[] ReadPasswordChars(IConsole console)
         {
             var buffer = new List<char>(40);
 
@@ -325,7 +326,7 @@ namespace IGLib.ConsoleAbstractions
                 }
 
                 buffer.Add(key.KeyChar);
-                Console.Write('*');
+                console.Write('*');
             }
 
             char[] result = buffer.ToArray();
