@@ -304,39 +304,36 @@ namespace IGLib.ConsoleAbstractions
 
         /// <summary>Reads a password inseted by the user via console in a secure-ish way.</summary>
         /// <returns></returns>
-        public static char[] ReadPasswordChars(IConsole console)
+        public static char[] ReadPasswordChars(IConsoleWithKeyInput console)
         {
             var buffer = new List<char>(40);
 
             while (true)
             {
-                var key = Console.ReadKey(intercept: true);
+                var key = console.ReadKey(intercept: true);
 
                 if (key.Key == ConsoleKey.Enter)
                 {
-                    Console.WriteLine();
+                    console.WriteLine();
                     break;
                 }
 
                 if (key.Key == ConsoleKey.Backspace && buffer.Count > 0)
                 {
                     buffer.RemoveAt(buffer.Count - 1);
-                    Console.Write("\b \b");
+                    console.Write("\b \b");
                     continue;
                 }
 
                 buffer.Add(key.KeyChar);
                 console.Write('*');
             }
-
+            // Convert to array:
             char[] result = buffer.ToArray();
-
             // wipe temporary storage (slightly improved security)
             for (int i = 0; i < buffer.Count; i++)
                 buffer[i] = '\0';
-
             buffer.Clear();
-
             return result;
         }
 
