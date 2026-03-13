@@ -13,7 +13,8 @@ See also:
 **Contents**:
 
 * [Details on Provided Utilities](#details-on-provided-utilities)
-* [Where to Find Advanced Console UI and Other Libraries](#where-to-find-advanced-console-ui-and-other-libraries) - explains what this library does not provide and provides links to places where such functionality can be found 
+* [Where to Find Advanced Console UI and Other Libraries](#where-to-find-advanced-console-ui-and-other-libraries) - explains what this library does not provide and provides links to places where such functionality can be found
+* [Remarks on Reading Passwords form Console](#remarks-on-reading-passwords-form-console)
 
 ## Details on Provided Utilities
 
