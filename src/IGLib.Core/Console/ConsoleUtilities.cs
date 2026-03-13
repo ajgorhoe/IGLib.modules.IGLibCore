@@ -1,18 +1,16 @@
 
 
+using IGLib.ConsoleAbstractions.Extensions;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
-using System.Globalization;
-
-using static IGLib.ParsingUtils;
-using IGLib.ConsoleAbstractions.Extensions;
-
-
+using System.Threading.Tasks;
 using static IGLib.ConsoleAbstractions.SystemConsole;
+using static IGLib.ParsingUtils;
 using MyConsole = IGLib.ConsoleAbstractions.SystemConsole;
-using System.ComponentModel;
 
 
 namespace IGLib.ConsoleAbstractions
@@ -304,38 +302,99 @@ namespace IGLib.ConsoleAbstractions
 
         /// <summary>Reads a password inseted by the user via console in a secure-ish way.</summary>
         /// <returns></returns>
-        public static char[] ReadPasswordChars(IConsoleWithKeyInput console, char? displayChar = '*')
+        public static char[] ReadPasswordChars(IConsoleWithKeyInput console, char mask = '*')
         {
             var buffer = new List<char>(40);
 
-            while (true)
+            ConsoleCancelEventHandler? cancelHandler = null;
+
+            try
             {
-                var key = console.ReadKey(intercept: true);
-
-                if (key.Key == ConsoleKey.Enter)
+                // Handle Ctrl+C safely
+                cancelHandler = (sender, e) =>
                 {
-                    console.WriteLine();
-                    break;
-                }
+                    e.Cancel = true;                 // prevent process termination
+                    ClearBuffer(buffer);
+                    Console.WriteLine();
+                    throw new OperationCanceledException("Password entry cancelled.");
+                };
 
-                if (key.Key == ConsoleKey.Backspace && buffer.Count > 0)
+                Console.CancelKeyPress += cancelHandler;
+
+                while (true)
                 {
-                    buffer.RemoveAt(buffer.Count - 1);
-                    console.Write("\b \b");
-                    continue;
-                }
+                    var key = Console.ReadKey(intercept: true);
 
-                buffer.Add(key.KeyChar);
-                if (displayChar != null)
-                { console.Write(displayChar.Value); }
+                    switch (key.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            Console.WriteLine();
+                            return FinalizePassword(buffer);
+
+                        case ConsoleKey.Backspace:
+                            if (buffer.Count > 0)
+                            {
+                                buffer[buffer.Count - 1] = '\0';  // overwrite the last character for security
+                                buffer.RemoveAt(buffer.Count - 1);
+
+                                if (mask != '\0')
+                                    Console.Write("\b \b");
+                            }
+                            break;
+
+                        case ConsoleKey.Escape:
+                            ClearBuffer(buffer);
+                            Console.WriteLine();
+                            throw new OperationCanceledException("Password entry cancelled.");
+
+                        // ignore navigation and modifier keys
+                        case ConsoleKey.LeftArrow:
+                        case ConsoleKey.RightArrow:
+                        case ConsoleKey.UpArrow:
+                        case ConsoleKey.DownArrow:
+                        case ConsoleKey.Home:
+                        case ConsoleKey.End:
+                        case ConsoleKey.PageUp:
+                        case ConsoleKey.PageDown:
+                        case ConsoleKey.Insert:
+                        case ConsoleKey.Delete:
+                        case ConsoleKey.Tab:
+                            break;
+
+                        default:
+                            char c = key.KeyChar;
+
+                            if (!char.IsControl(c))
+                            {
+                                buffer.Add(c);
+
+                                if (mask != '\0')
+                                    Console.Write(mask);
+                            }
+                            break;
+                    }
+                }
             }
-            // Convert to array:
+            finally
+            {
+                if (cancelHandler != null)
+                    Console.CancelKeyPress -= cancelHandler;
+            }
+        }
+
+        private static char[] FinalizePassword(List<char> buffer)
+        {
             char[] result = buffer.ToArray();
-            // wipe temporary storage (slightly improved security)
+            ClearBuffer(buffer);
+            return result;
+        }
+
+        private static void ClearBuffer(List<char> buffer)
+        {
             for (int i = 0; i < buffer.Count; i++)
                 buffer[i] = '\0';
+
             buffer.Clear();
-            return result;
         }
 
 
