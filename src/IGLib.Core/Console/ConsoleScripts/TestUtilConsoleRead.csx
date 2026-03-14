@@ -14,6 +14,8 @@ using System;
 using IGLib.ConsoleAbstractions;
 using static IGLib.ConsoleAbstractions.ConsoleUtilities;
 
+public string cd { get { return Directory.GetCurrentDirectory(); } set { Directory.SetCurrentDirectory(value); } }
+
 #region RedIconvertibleValues
 
 // Reading values from console:
