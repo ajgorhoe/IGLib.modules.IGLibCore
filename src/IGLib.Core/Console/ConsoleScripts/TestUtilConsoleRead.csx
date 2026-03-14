@@ -78,6 +78,10 @@ TestReadLong(22);
 
 TestReadDouble(2.3);
 
+// ***************
+
+TestReadPasswordChars();
+TestReadPasswordChars(`\0`);
 
 
 
