@@ -8,7 +8,7 @@
 //   dotnet tool update -g dotnet-script
 
 // Reference the library:
-#r "../IGLib.Core.dll"
+#r "./IGLib.Core.dll"
 
 using System;
 using IGLib.ConsoleAbstractions;
