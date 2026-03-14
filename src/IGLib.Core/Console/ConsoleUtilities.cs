@@ -302,7 +302,9 @@ namespace IGLib.ConsoleAbstractions
 
         /// <summary>Reads a password inserted by the user via the <see cref="System.Console"/> in a secure-ish way.
         /// <para>This method is similar to <see cref="ReadPasswordChars(char)"/>, except that it implments some additional
-        /// behavior that can be implemented on the classic contole, the <see cref="System.Console"/>.</para></summary>
+        /// behavior that can be implemented on the classic contole, the <see cref="System.Console"/>.</para>
+        /// <para>Specifics adaptes for the <see cref="System.Console"/> include registration and deregistration of the
+        /// event handler for cancellation.</para></summary>
         public static char[] ReadPasswordSystemConsole(char displayChar = '*')
         {
             var buffer = new List<char>(40);
