@@ -14,6 +14,8 @@ using System;
 using IGLib.ConsoleAbstractions;
 using static IGLib.ConsoleAbstractions.ConsoleUtilities;
 
+#region RedIconvertibleValues
+
 // Reading values from console:
 
 void TestReadBool(bool value = true)
@@ -43,6 +45,14 @@ void TestReadDouble(double value = 4.5)
     bool wasRead = ConsoleUtilities.Read(ref value);
     Console.WriteLine($"\nInitial value: {initialValue}; was provided: {wasRead}; new value: {value}\n");
 }
+
+#endregion ReadIconvertibleValues
+
+
+#region ReadPasswords
+
+
+#endregion ReadPasswords
 
 
 

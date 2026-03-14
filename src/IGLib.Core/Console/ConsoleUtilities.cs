@@ -305,7 +305,7 @@ namespace IGLib.ConsoleAbstractions
         /// behavior that can be implemented on the classic contole, the <see cref="System.Console"/>.</para>
         /// <para>Specifics adaptes for the <see cref="System.Console"/> include registration and deregistration of the
         /// event handler for cancellation.</para></summary>
-        public static char[] ReadPasswordSystemConsole(char displayChar = '*')
+        public static char[] ReadPasswordCharsFromSystemConsole(char displayChar = '*')
         {
             var buffer = new List<char>(40);
 
@@ -403,22 +403,8 @@ namespace IGLib.ConsoleAbstractions
         {
             var buffer = new List<char>(40);
 
-            // ConsoleCancelEventHandler? cancelHandler = null;
-
             try
             {
-                
-                //// The handler below only makes sens for System.Condole:
-                //// Handle Ctrl+C safely
-                //cancelHandler = (sender, e) =>
-                //{
-                //    e.Cancel = true;                 // prevent process termination
-                //    ClearBuffer(buffer);
-                //    console.WriteLine();
-                //    throw new OperationCanceledException("Password entry cancelled.");
-                //};
-                //Console.CancelKeyPress += cancelHandler;
-
                 while (true)
                 {
                     var key = console.ReadKey(intercept: true);
@@ -441,6 +427,7 @@ namespace IGLib.ConsoleAbstractions
                             break;
 
                         case ConsoleKey.Escape:
+                            // 
                             if (displayChar != '\0')
                             {
                                 for (int i = 0; i < buffer.Count; ++i)
@@ -448,11 +435,9 @@ namespace IGLib.ConsoleAbstractions
                                     console.Write("\b \b");
                                 }
                             }
+                            // 
                             ClearBuffer(buffer);
                             break;
-                            //Console.WriteLine(" <<Input Cancelled!>>");
-                            //return FinalizePassword(buffer);
-                            // throw new OperationCanceledException("Password entry cancelled.");
 
                         // ignore navigation and modifier keys
                         case ConsoleKey.LeftArrow:
