@@ -300,6 +300,9 @@ namespace IGLib.ConsoleAbstractions
         #region PasswordUtilities
 
 
+        /// <summary>Reads a password inserted by the user via the <see cref="System.Console"/> in a secure-ish way.
+        /// <para>This method is similar to <see cref="ReadPasswordChars(char)"/>, except that it implments some additional
+        /// behavior that can be implemented on the classic contole, the <see cref="System.Console"/>.</para></summary>
         public static char[] ReadPasswordSystemConsole(char displayChar = '*')
         {
             var buffer = new List<char>(40);
@@ -382,7 +385,7 @@ namespace IGLib.ConsoleAbstractions
 
 
         /// <summary>Reads a password inserted by the user via the global console <see cref="GlobalConsole"/> in a secure-ish way.
-        /// <para>This method just calls thr <see cref="ReadPasswordChars(char)"/> on the <see cref="GlobalConsole"/>.</para></summary>
+        /// <para>This method just calls the <see cref="ReadPasswordChars(char)"/> on the <see cref="GlobalConsole"/>.</para></summary>
         public static char[] ReadPasswordChars(char displayChar = '*')
         {
             return ReadPasswordChars(GlobalConsole, displayChar = '*');
