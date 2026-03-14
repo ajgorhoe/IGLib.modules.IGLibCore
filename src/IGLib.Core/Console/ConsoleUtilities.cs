@@ -402,7 +402,7 @@ namespace IGLib.ConsoleAbstractions
         /// behavior that can be implemented on the classic console, the <see cref="System.Console"/>.</para>
         /// <para>Specifics adaptes for the <see cref="System.Console"/> include registration and deregistration of the
         /// event handler for cancellation.</para></summary>
-        public static char[] ReadPasswordCharsFromSystemConsole(char displayChar = '*')
+        public static char[] ReadPasswordCharsBySystemConsole(char displayChar = '*')
         {
             var buffer = new List<char>(40);
 
