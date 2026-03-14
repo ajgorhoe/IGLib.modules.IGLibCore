@@ -200,7 +200,7 @@ namespace IGLib.ConsoleAbstractions
                     Console.WriteLine("    = " + value.ToString());
                     return false;
                 }
-                valueProvided = double.TryParse(userInput, NumberStyles.Integer, Global.DefaultFormatProvider, out value);
+                valueProvided = double.TryParse(userInput, NumberStyles.Number, Global.DefaultFormatProvider, out value);
                 if (valueProvided)
                 {
                     // A valid value has been provided by user; return
