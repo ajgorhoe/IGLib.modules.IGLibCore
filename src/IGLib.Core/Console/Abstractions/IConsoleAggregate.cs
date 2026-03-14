@@ -11,7 +11,7 @@ namespace IGLib.ConsoleAbstractions
     public interface IConsoleWithKeyInput : IConsole, IConsoleKeyInput
     {  }
 
-    public interface IStreamConsole : IConsole, IConsoleStreams
+    public interface IConsoleWithStreams : IConsole, IConsoleStreams
     {  }
 
     /// <summary>Full console interface, supplements the basic <see cref="IConsole"/> with capability

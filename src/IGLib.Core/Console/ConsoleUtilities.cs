@@ -380,21 +380,11 @@ namespace IGLib.ConsoleAbstractions
             }
         }
 
-        //private static char[] FinalizePassword(List<char> buffer)
-        //{
-        //    char[] result = buffer.ToArray();
-        //    ClearBuffer(buffer);
-        //    return result;
-        //}
 
-        //private static void ClearBuffer(List<char> buffer)
-        //{
-        //    for (int i = 0; i < buffer.Count; i++)
-        //        buffer[i] = '\0';
-
-        //    buffer.Clear();
-        //}
-
+        public static char[] ReadPasswordChars(char displayChar = '*')
+        {
+            return ReadPasswordChars(GlobalConsole, displayChar = '*');
+        }
 
         /// <summary>Reads a password inseted by the user via console in a secure-ish way.</summary>
         /// <param name="console">Console object (abatracted) from which the password is read.</param>

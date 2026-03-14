@@ -14,7 +14,8 @@ namespace IGLib.ConsoleAbstractions
     /// to use additional overlodes as available in the <see cref="System.Console"/> class, include the extension 
     /// methods for console abstraction interfaces by addinng the corresponding namespace via:</para>
     /// <para>using IGLib.ConsoleAbstractions.Extensions;</para></remarks>
-    public sealed class SystemConsole : IFullConsole
+    public sealed class SystemConsole : IFullConsole, 
+        IConsoleWithKeyInput
     {
 
         // Global System console, named simply GlobalConsole:
