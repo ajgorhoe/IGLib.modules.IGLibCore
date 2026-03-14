@@ -381,12 +381,14 @@ namespace IGLib.ConsoleAbstractions
         }
 
 
+        /// <summary>Reads a password inserted by the user via the global console <see cref="GlobalConsole"/> in a secure-ish way.
+        /// <para>This method just calls thr <see cref="ReadPasswordChars(char)"/> on the <see cref="GlobalConsole"/>.</para></summary>
         public static char[] ReadPasswordChars(char displayChar = '*')
         {
             return ReadPasswordChars(GlobalConsole, displayChar = '*');
         }
 
-        /// <summary>Reads a password inseted by the user via console in a secure-ish way.</summary>
+        /// <summary>Reads a password inserted by the user via console in a secure-ish way.</summary>
         /// <param name="console">Console object (abatracted) from which the password is read.</param>
         /// <param name="displayChar">Character to display for each entered character. Set to '\0' to not display anything.
         /// Defaults to asterisk ('*').</param>
