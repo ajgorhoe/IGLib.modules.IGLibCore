@@ -52,6 +52,15 @@ void TestReadDouble(double value = 4.5)
 #region ReadPasswords
 
 
+void TestReadPasswordChars(char displayChar = '*')
+{
+    Console.WriteLine($"\nTest - basic reading of password from console:\n");
+    Console.Write($"Insert a password (<Enter> to confirm, <Backspace> to remove a char, <Esc> to clear inserted chars): ");
+    char[] pwd = ConsoleUtilities.ReadPasswordChars(displayChar);
+    Console.WriteLine($"\nIRead password: {new string(pwd)}\n");
+}
+
+
 #endregion ReadPasswords
 
 
