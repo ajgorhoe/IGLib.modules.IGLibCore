@@ -226,9 +226,6 @@ namespace IGLib.ConsoleAbstractions
 
 
 
-
-
-
         /// <summary>Calls <see cref="Read(IConsole, ref NumericType, IFormatProvider?)"/> on <see cref="GlobalConsole"/>.</summary>
         public static bool Read<NumericType>(ref NumericType value, IFormatProvider? formatProvider = null)
             where NumericType : struct, IConvertible
@@ -291,8 +288,6 @@ namespace IGLib.ConsoleAbstractions
 
 
 
-
-
         #endregion ReadValues
 
 
@@ -300,9 +295,111 @@ namespace IGLib.ConsoleAbstractions
         #region PasswordUtilities
 
 
+
+        /// <summary>Reads a password inserted by the user via the global console <see cref="GlobalConsole"/> in a secure-ish way.
+        /// <para>This method just calls the <see cref="ReadPasswordChars(char)"/> on the <see cref="GlobalConsole"/>.</para></summary>
+        public static char[] ReadPasswordChars(char displayChar = '*')
+        {
+            return ReadPasswordChars(GlobalConsole, displayChar = '*');
+        }
+
+        /// <summary>Reads a password inserted by the user via console in a secure-ish way, and returns the password read as a 
+        /// character array.
+        /// <para>Security:</para>
+        /// <para>* Characters are not displayed as user types in the password. Instead, either a substitue character (<paramref name="displayChar"/>)
+        /// is displayed for each character, or nothing is displayed (if parameter equals '\0').</para>
+        /// <para>  * Password is read character by character usinf <see cref="IConsoleKeyInput.ReadKey(bool)"/> with intercept parameter
+        /// set to true.</para>
+        /// <para>  * Make sure that the implementation of <see cref="IConsoleWithKeyInput"/> that you are using actually respects not
+        /// not echoing characters input by the user.</para>
+        /// <para>* Mutual buffer is used internally to store the input password, converted to character array.</para>
+        /// <para>* The content of internal buffer that stores inserted password is cleared character by character before return.</para>
+        /// <para>* However,  the caller is responsible for also clearing the returned character array after the password has been used, 
+        /// e.g. by calling <see cref="Array.Clear(Array)"/>.</para>
+        /// <para>IMPORTANT: for security reasons, clear contents of the returned array immediately after it is not needed
+        /// any more, using <see cref="Array.Clear(Array)"/>.</para></summary>
+        /// <param name="console">Console object (abatracted) from which the password is read.</param>
+        /// <param name="displayChar">Character to display for each entered character. Set to '\0' to not display anything.
+        /// Defaults to asterisk ('*').</param>
+        /// <returns>Charracter array containing the password inserted by the user.
+        /// <para>IMPORTANT: after the returned array is used, clear it by calling <see cref="Array.Clear(Array)"/> on it.</para></returns>
+        public static char[] ReadPasswordChars(IConsoleWithKeyInput console, char displayChar = '*')
+        {
+            var buffer = new List<char>(40);
+
+            try
+            {
+                while (true)
+                {
+                    var key = console.ReadKey(intercept: true);
+
+                    switch (key.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            console.WriteLine();
+                            return FinalizePassword(buffer);
+
+                        case ConsoleKey.Backspace:
+                            if (buffer.Count > 0)
+                            {
+                                buffer[buffer.Count - 1] = '\0';  // overwrite the last character for security
+                                buffer.RemoveAt(buffer.Count - 1);
+                                if (displayChar != '\0')
+                                    console.Write("\b \b");
+                            }
+                            break;
+
+                        case ConsoleKey.Escape:
+                            // Escape removes the current input, but it does not cancel the whole process;
+                            // User can start over, or press <Enter> to leave with an empty password.
+                            int bufferCount = buffer.Count;
+                            for (int i = 0; i < bufferCount; ++i)
+                            {
+                                buffer[buffer.Count - 1] = '\0';  // overwrite the last character for security
+                                buffer.RemoveAt(buffer.Count - 1);
+                                if (displayChar != '\0')
+                                    console.Write("\b \b");
+                            }
+                            break;
+
+                        // ignore navigation and modifier keys
+                        case ConsoleKey.LeftArrow:
+                        case ConsoleKey.RightArrow:
+                        case ConsoleKey.UpArrow:
+                        case ConsoleKey.DownArrow:
+                        case ConsoleKey.Home:
+                        case ConsoleKey.End:
+                        case ConsoleKey.PageUp:
+                        case ConsoleKey.PageDown:
+                        case ConsoleKey.Insert:
+                        case ConsoleKey.Delete:
+                        case ConsoleKey.Tab:
+                            break;
+
+                        default:
+                            char c = key.KeyChar;
+
+                            if (!char.IsControl(c))
+                            {
+                                buffer.Add(c);
+
+                                if (displayChar != '\0')
+                                    console.Write(displayChar);
+                            }
+                            break;
+                    }
+                }
+            }
+            finally
+            {
+                //if (cancelHandler != null)
+                //    Console.CancelKeyPress -= cancelHandler;
+            }
+        }
+
         /// <summary>Reads a password inserted by the user via the <see cref="System.Console"/> in a secure-ish way.
         /// <para>This method is similar to <see cref="ReadPasswordChars(char)"/>, except that it implments some additional
-        /// behavior that can be implemented on the classic contole, the <see cref="System.Console"/>.</para>
+        /// behavior that can be implemented on the classic console, the <see cref="System.Console"/>.</para>
         /// <para>Specifics adaptes for the <see cref="System.Console"/> include registration and deregistration of the
         /// event handler for cancellation.</para></summary>
         public static char[] ReadPasswordCharsFromSystemConsole(char displayChar = '*')
@@ -384,94 +481,6 @@ namespace IGLib.ConsoleAbstractions
             {
                 if (cancelHandler != null)
                     Console.CancelKeyPress -= cancelHandler;
-            }
-        }
-
-
-        /// <summary>Reads a password inserted by the user via the global console <see cref="GlobalConsole"/> in a secure-ish way.
-        /// <para>This method just calls the <see cref="ReadPasswordChars(char)"/> on the <see cref="GlobalConsole"/>.</para></summary>
-        public static char[] ReadPasswordChars(char displayChar = '*')
-        {
-            return ReadPasswordChars(GlobalConsole, displayChar = '*');
-        }
-
-        /// <summary>Reads a password inserted by the user via console in a secure-ish way.</summary>
-        /// <param name="console">Console object (abatracted) from which the password is read.</param>
-        /// <param name="displayChar">Character to display for each entered character. Set to '\0' to not display anything.
-        /// Defaults to asterisk ('*').</param>
-        /// <returns>Charracter array containing the password inserted by the user.
-        /// <para>IMPORTANT: after the returned array is used, clear it by calling <see cref="Array.Clear(Array)"/> on it.</para></returns>
-        public static char[] ReadPasswordChars(IConsoleWithKeyInput console, char displayChar = '*')
-        {
-            var buffer = new List<char>(40);
-
-            try
-            {
-                while (true)
-                {
-                    var key = console.ReadKey(intercept: true);
-
-                    switch (key.Key)
-                    {
-                        case ConsoleKey.Enter:
-                            console.WriteLine();
-                            return FinalizePassword(buffer);
-
-                        case ConsoleKey.Backspace:
-                            if (buffer.Count > 0)
-                            {
-                                buffer[buffer.Count - 1] = '\0';  // overwrite the last character for security
-                                buffer.RemoveAt(buffer.Count - 1);
-                                if (displayChar != '\0')
-                                    console.Write("\b \b");
-                            }
-                            break;
-
-                        case ConsoleKey.Escape:
-                            // Escape removes the current input, but it does not cancel the whole process;
-                            // User can start over, or press <Enter> to leave with an empty password.
-                            int bufferCount = buffer.Count;
-                            for (int i = 0; i < bufferCount; ++i)
-                            {
-                                buffer[buffer.Count - 1] = '\0';  // overwrite the last character for security
-                                buffer.RemoveAt(buffer.Count - 1);
-                                if (displayChar != '\0')
-                                    console.Write("\b \b");
-                            }
-                            break;
-
-                        // ignore navigation and modifier keys
-                        case ConsoleKey.LeftArrow:
-                        case ConsoleKey.RightArrow:
-                        case ConsoleKey.UpArrow:
-                        case ConsoleKey.DownArrow:
-                        case ConsoleKey.Home:
-                        case ConsoleKey.End:
-                        case ConsoleKey.PageUp:
-                        case ConsoleKey.PageDown:
-                        case ConsoleKey.Insert:
-                        case ConsoleKey.Delete:
-                        case ConsoleKey.Tab:
-                            break;
-
-                        default:
-                            char c = key.KeyChar;
-
-                            if (!char.IsControl(c))
-                            {
-                                buffer.Add(c);
-
-                                if (displayChar != '\0')
-                                    console.Write(displayChar);
-                            }
-                            break;
-                    }
-                }
-            }
-            finally
-            {
-                //if (cancelHandler != null)
-                //    Console.CancelKeyPress -= cancelHandler;
             }
         }
 
