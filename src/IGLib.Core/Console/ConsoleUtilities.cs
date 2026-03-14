@@ -300,6 +300,102 @@ namespace IGLib.ConsoleAbstractions
         #region PasswordUtilities
 
 
+        public static char[] ReadPasswordSystemConsole(char displayChar = '*')
+        {
+            var buffer = new List<char>(40);
+
+            ConsoleCancelEventHandler? cancelHandler = null;
+
+            try
+            {
+                // Handle Ctrl+C safely
+                cancelHandler = (sender, e) =>
+                {
+                    e.Cancel = true;                 // prevent process termination
+                    ClearBuffer(buffer);
+                    Console.WriteLine();
+                    throw new OperationCanceledException("Password entry cancelled.");
+                };
+
+                Console.CancelKeyPress += cancelHandler;
+
+                while (true)
+                {
+                    var key = Console.ReadKey(intercept: true);
+
+                    switch (key.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            Console.WriteLine();
+                            return FinalizePassword(buffer);
+
+                        case ConsoleKey.Backspace:
+                            if (buffer.Count > 0)
+                            {
+                                buffer[buffer.Count - 1] = '\0';
+                                buffer.RemoveAt(buffer.Count - 1);
+
+                                if (displayChar != '\0')
+                                    Console.Write("\b \b");
+                            }
+                            break;
+
+                        case ConsoleKey.Escape:
+                            ClearBuffer(buffer);
+                            Console.WriteLine();
+                            throw new OperationCanceledException("Password entry cancelled.");
+
+                        // ignore navigation and modifier keys
+                        case ConsoleKey.LeftArrow:
+                        case ConsoleKey.RightArrow:
+                        case ConsoleKey.UpArrow:
+                        case ConsoleKey.DownArrow:
+                        case ConsoleKey.Home:
+                        case ConsoleKey.End:
+                        case ConsoleKey.PageUp:
+                        case ConsoleKey.PageDown:
+                        case ConsoleKey.Insert:
+                        case ConsoleKey.Delete:
+                        case ConsoleKey.Tab:
+                            break;
+
+                        default:
+                            char c = key.KeyChar;
+
+                            if (!char.IsControl(c))
+                            {
+                                buffer.Add(c);
+
+                                if (displayChar != '\0')
+                                    Console.Write(displayChar);
+                            }
+                            break;
+                    }
+                }
+            }
+            finally
+            {
+                if (cancelHandler != null)
+                    Console.CancelKeyPress -= cancelHandler;
+            }
+        }
+
+        //private static char[] FinalizePassword(List<char> buffer)
+        //{
+        //    char[] result = buffer.ToArray();
+        //    ClearBuffer(buffer);
+        //    return result;
+        //}
+
+        //private static void ClearBuffer(List<char> buffer)
+        //{
+        //    for (int i = 0; i < buffer.Count; i++)
+        //        buffer[i] = '\0';
+
+        //    buffer.Clear();
+        //}
+
+
         /// <summary>Reads a password inseted by the user via console in a secure-ish way.</summary>
         /// <param name="console">Console object (abatracted) from which the password is read.</param>
         /// <param name="displayChar">Character to display for each entered character. Set to '\0' to not display anything.
