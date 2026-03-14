@@ -348,7 +348,9 @@ namespace IGLib.ConsoleAbstractions
                         case ConsoleKey.Escape:
                             ClearBuffer(buffer);
                             Console.WriteLine();
-                            throw new OperationCanceledException("Password entry cancelled.");
+                            // Alternative might be this: throw new OperationCanceledException("Password entry cancelled.");
+                            Console.WriteLine(" << Cancelled. >>");
+                            return FinalizePassword(buffer);
 
                         // ignore navigation and modifier keys
                         case ConsoleKey.LeftArrow:
