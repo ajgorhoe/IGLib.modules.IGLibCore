@@ -420,23 +420,22 @@ namespace IGLib.ConsoleAbstractions
                             {
                                 buffer[buffer.Count - 1] = '\0';  // overwrite the last character for security
                                 buffer.RemoveAt(buffer.Count - 1);
-
                                 if (displayChar != '\0')
                                     console.Write("\b \b");
                             }
                             break;
 
                         case ConsoleKey.Escape:
-                            // 
-                            if (displayChar != '\0')
+                            // Escape removes the current input, but it does not cancel the whole process;
+                            // User can start over, or press <Enter> to leave with an empty password.
+                            int bufferCount = buffer.Count;
+                            for (int i = 0; i < bufferCount; ++i)
                             {
-                                for (int i = 0; i < buffer.Count; ++i)
-                                {
+                                buffer[buffer.Count - 1] = '\0';  // overwrite the last character for security
+                                buffer.RemoveAt(buffer.Count - 1);
+                                if (displayChar != '\0')
                                     console.Write("\b \b");
-                                }
                             }
-                            // 
-                            ClearBuffer(buffer);
                             break;
 
                         // ignore navigation and modifier keys
