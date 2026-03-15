@@ -91,8 +91,8 @@ TestReadDouble(2.3);
 TestReadPasswordChars();
 TestReadPasswordChars(`\0`);
 
-TestReadPasswordChars();
-TestReadPasswordChars(`\0`);
+TestReadPasswordCharsBySystemConsole();
+TestReadPasswordCharsBySystemConsole(`\0`);
 
 
 
