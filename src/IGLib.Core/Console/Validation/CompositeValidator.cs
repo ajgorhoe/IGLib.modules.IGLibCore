@@ -12,7 +12,7 @@ namespace IGLib
 
         public CompositeValidator(IEnumerable<IValidator<T>> validators)
         {
-            
+            throw new NotImplementedException();
         }
 
 
