@@ -19,7 +19,6 @@ namespace IGLib
 
         public void Validate(T value, ValidationResults results)
         {
-            throw new NotImplementedException();
             // ArgumentNullException.ThrowIfNull(results);
 
             foreach (var validator in _validators)
