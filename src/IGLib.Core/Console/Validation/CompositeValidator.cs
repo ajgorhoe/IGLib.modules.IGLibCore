@@ -10,6 +10,13 @@ namespace IGLib
     {
         private readonly IReadOnlyList<IValidator<T>> _validators;
 
+        public CompositeValidator(IEnumerable<IValidator<T>> validators)
+        {
+            
+        }
+
+
+
     }
 
 }
