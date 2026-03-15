@@ -13,6 +13,8 @@ namespace IGLib
         public CompositeValidator(IEnumerable<IValidator<T>> validators)
         {
             throw new NotImplementedException();
+            _validators = validators?.ToList()
+                ?? throw new ArgumentNullException(nameof(validators));
         }
 
 
