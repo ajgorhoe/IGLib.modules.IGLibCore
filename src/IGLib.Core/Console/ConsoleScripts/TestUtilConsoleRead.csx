@@ -59,7 +59,7 @@ void TestReadPasswordChars(char displayChar = '*')
     Console.WriteLine($"\nTest - basic reading of password from console:\n");
     Console.Write($"Insert a password (<Enter> to confirm, <Backspace> to remove a char, <Esc> to clear inserted chars): ");
     char[] pwd = ConsoleUtilities.ReadPasswordChars(displayChar);
-    Console.WriteLine($"\nIRead password: {new string(pwd)}\n");
+    Console.WriteLine($"\nRead password: \"{new string(pwd)}\"\n");
 }
 
 void TestReadPasswordCharsBySystemConsole(char displayChar = '*')
@@ -67,7 +67,7 @@ void TestReadPasswordCharsBySystemConsole(char displayChar = '*')
     Console.WriteLine($"\nTest - basic reading of password from System.Console:\n");
     Console.Write($"Insert a password (<Enter> to confirm, <Backspace> to remove a char, <Esc> to clear inserted chars): ");
     char[] pwd = ConsoleUtilities.ReadPasswordCharsBySystemConsole(displayChar);
-    Console.WriteLine($"\nIRead password: {new string(pwd)}\n");
+    Console.WriteLine($"\nRead password: \"{new string(pwd)}\"\n");
 }
 
 
