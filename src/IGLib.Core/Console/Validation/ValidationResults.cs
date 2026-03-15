@@ -94,5 +94,12 @@ namespace IGLib
     /// <remarks>This class is not thread safe. It is not excepted that a single validation would be handled by multiple threads.</remarks>
     public class ValidationResults<T> : ValidationResults
     {
+        public ValidationResults(T value)
+        {
+            Value = value;
+        }
+
+        public T Value { get; }
     }
+
 }
