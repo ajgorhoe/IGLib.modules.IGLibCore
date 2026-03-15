@@ -14,14 +14,14 @@ namespace IGLib
         public CompositeValidator(IEnumerable<IValidator<T>> validators)
         {
             _validators = validators?.ToList()
-                ?? throw new ArgumentNullException(nameof(validators));
+                ?? throw new ArgumentNullException(nameof(validators), "Collection of contained validators may not be null.");
         }
 
         public void Validate(T value, ValidationResults results)
         {
             if (results == null)
             {
-                throw new ArgumentNullException(nameof(results));
+                throw new ArgumentNullException(nameof(results), "Object to store validation results on may not be null.");
             }
             foreach (var validator in _validators)
             {
