@@ -345,7 +345,7 @@ namespace IGLib.ConsoleAbstractions
                                 buffer[buffer.Count - 1] = '\0';  // overwrite the last character for security
                                 buffer.RemoveAt(buffer.Count - 1);
                                 if (displayChar != '\0')
-                                    console.Write("\b \b");
+                                    console.Write("\b \b"); // move back, overwrite with space, move back again
                             }
                             break;
 
@@ -358,7 +358,7 @@ namespace IGLib.ConsoleAbstractions
                                 buffer[buffer.Count - 1] = '\0';  // overwrite the last character for security
                                 buffer.RemoveAt(buffer.Count - 1);
                                 if (displayChar != '\0')
-                                    console.Write("\b \b");
+                                    console.Write("\b \b");  // writing backspace removes the previous character
                             }
                             break;
 
@@ -438,7 +438,7 @@ namespace IGLib.ConsoleAbstractions
                                 buffer.RemoveAt(buffer.Count - 1);
 
                                 if (displayChar != '\0')
-                                    Console.Write("\b \b");
+                                    Console.Write("\b \b"); // move back, overwrite with space, move back again
                             }
                             break;
 
