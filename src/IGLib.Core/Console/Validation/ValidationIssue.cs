@@ -5,11 +5,30 @@ using System.Text;
 namespace IGLib
 {
 
-    public enum ValidationSeverity
+    /// <summary>Contains information on a specific issue found during validation of a certain value.</summary>
+    public sealed class ValidationIssue
     {
-        Warning = 1,
-        Error = 2
-    }
+        public ValidationIssue(ValidationSeverity severity, string message, Exception? exception = null)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                if (message is null)
+                    throw new ArgumentNullException(nameof(message));
+                throw new ArgumentException("Validation message must not be empty or whitespace.", nameof(message));
+            }
 
+            Severity = severity;
+            Message = message;
+            Exception = exception;
+        }
+
+        public ValidationSeverity Severity { get; }
+
+        public string Message { get; }
+
+        public Exception? Exception { get; }
+
+        public override string ToString() => $"{Severity}: {Message}";
+    }
 
 }
