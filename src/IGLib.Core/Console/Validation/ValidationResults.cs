@@ -10,7 +10,7 @@ namespace IGLib
 
     /// <summary>Stores results of validation of a value of an object, usually provided externally (via user input, input/output,
     /// via remote system, etc.).</summary>
-    public class ValidationResult
+    public class ValidationResults
     {
         private readonly List<ValidationIssue> _issues = new();
 
@@ -43,13 +43,13 @@ namespace IGLib
         public virtual void AddWarning(string message, Exception? exception = null) =>
             AddIssue(new ValidationIssue(ValidationSeverity.Warning, message, exception));
 
-        public virtual void Merge(ValidationResult other)
+        public virtual void Merge(ValidationResults other)
         {
             if (other == null)
             {
                 throw new ArgumentNullException(nameof(other), "Validation results to be merged into current results may not be null.");
             }
-            _issues.AddRange(other._issues);
+            _issues.AddRange(other.Issues);
         }
 
         public virtual void Clear() => _issues.Clear();
@@ -92,7 +92,7 @@ namespace IGLib
     /// via remote system, etc.).</summary>
     /// <typeparam name="ValidatedType">Type of the object for which validation results are provided.</typeparam>
     /// <remarks>This class is not thread safe. It is not excepted that a single validation would be handled by multiple threads.</remarks>
-    public class ValidationResults<ValidatedType> : ValidationResults
-    {  }
-
+    public class ValidationResults<T> : ValidationResults
+    {
+    }
 }
