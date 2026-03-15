@@ -99,7 +99,7 @@ namespace IGLib
             Value = value;
         }
 
-        public T Value { get; }
+        public T? Value { get; }
     }
 
 }
