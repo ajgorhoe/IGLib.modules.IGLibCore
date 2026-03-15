@@ -17,6 +17,10 @@ namespace IGLib
                 ?? throw new ArgumentNullException(nameof(validators));
         }
 
+        public void Validate(T value, ValidationResults results)
+        {
+            throw new NotImplementedException();
+        }
 
 
     }
