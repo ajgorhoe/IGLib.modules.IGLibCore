@@ -8,7 +8,7 @@ namespace IGLib
 
     public sealed class CompositeValidator<T> // : IValidator<T>
     {
-
+        private readonly IReadOnlyList<IValidator<T>> _validators;
 
     }
 
