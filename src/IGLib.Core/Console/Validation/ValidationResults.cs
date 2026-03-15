@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace IGLib
 {
     
-    /// <summary>Stores results of validation of an object provided externally (via user input, input/output,
+    /// <summary>Stores results of validation of a value of an object, usually provided externally (via user input, input/output,
     /// via remote system, etc.).</summary>
-    /// <typeparam name="ValidatedType">Type of the object for which validation results are provided.</typeparam>
-    /// <remarks>This class is not thread safe. It is not excepted that a single validation would be handled by multiple threads.</remarks>
-    public class ValidationResults<ValidatedType>
+    public class ValidationResults
     {
 
         public virtual bool IsValid
@@ -80,8 +79,11 @@ namespace IGLib
 
     }
 
-    /// <summary>Validation results for string objects.</summary>
-    public class StringValidationResults: ValidationResults<string>
+    /// <summary>Stores results of validation of an object provided externally (via user input, input/output,
+    /// via remote system, etc.).</summary>
+    /// <typeparam name="ValidatedType">Type of the object for which validation results are provided.</typeparam>
+    /// <remarks>This class is not thread safe. It is not excepted that a single validation would be handled by multiple threads.</remarks>
+    public class ValidationResults<ValidatedType> : ValidationResults
     {  }
 
 }
