@@ -9,7 +9,7 @@ namespace IGLib
 
     public class ParsableStringValidator<TTarget> : IValidator<string>
     {
-        private static readonly IStringParser<TTarget> Parser = StringParserProvider.GetParser<TTarget>();
+        private static readonly IStringParser<TTarget> Parser; // = StringParserProvider.GetParser<TTarget>();
 
         public ParsableStringValidator(string? errorMessage = null)
         {
