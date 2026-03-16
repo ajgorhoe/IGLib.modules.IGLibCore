@@ -9,7 +9,8 @@ namespace IGLib
 {
 
     /// <summary>The interface implemented by the <see cref="ValidationResult"/> class. It contains a very
-    /// reduced API from that class.</summary>
+    /// reduced API from that class, by <see cref="IValidatableObject"/> to file a validation issue
+    /// discovered during validation.</summary>
     public interface IValidationIssueSink
     {
         void AddIssue(ValidationIssue issue);
