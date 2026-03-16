@@ -58,7 +58,7 @@ namespace IGLib
             _issues.AddRange(other.Issues);
         }
 
-        public virtual void Clear() => _issues.Clear();
+        public virtual void Reset() => _issues.Clear();
 
         public virtual string? GetMessagesString(ValidationSeverity severity, string separator)
         {
@@ -117,9 +117,15 @@ namespace IGLib
 
         public T? ValidatedValue { get; private set; }
 
+        public override void Reset()
+        {
+            Reset(default);
+
+        }
+
         public virtual void Reset(T? validatedValue)
         {
-            Clear();
+            base.Reset();
             ValidatedValue = validatedValue;
         }
     }
