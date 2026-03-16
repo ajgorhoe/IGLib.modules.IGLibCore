@@ -11,14 +11,13 @@ namespace IGLib
     public static class StringParserProvider
     {
 
-        public static IStringParser<T> GetParser<T>()
+        public static IStringParser<T> GetParser<T>(IFormatProvider? formatProvider = null)
         {
             Type type = typeof(T);
 
 
 
             throw new NotSupportedException($"Type {type.FullName} is not supported.");
-
         }
 
 
