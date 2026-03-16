@@ -10,7 +10,7 @@ namespace IGLib
 
     /// <summary>Stores results of validation of a value of an object, usually provided externally (via user input, input/output,
     /// via remote system, etc.).</summary>
-    public class ValidationResults
+    public class ValidationResults : IValidationIssueSink
     {
         private readonly List<ValidationIssue> _issues = new();
 
