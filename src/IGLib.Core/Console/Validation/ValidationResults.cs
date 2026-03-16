@@ -103,13 +103,13 @@ namespace IGLib
     public class ValidationResults<T> : ValidationResults
     {
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary>Default constructor. It does not set the <see cref="ValidatedValue"/>, and the value
+        /// can be set later by calling <see cref="Reset(T?)"/>.</summary>
         public ValidationResults()
-        {
-        }
+        { }
 
+        /// <summary>Constructor used also to set (store) the value to be validated.</summary>
+        /// <param name="validatedValue">Value to be validated, stored to <see cref="ValidatedValue"/>.</param>
         public ValidationResults(T? validatedValue)
         {
             ValidatedValue = validatedValue;
