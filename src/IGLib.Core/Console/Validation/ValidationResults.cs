@@ -8,8 +8,14 @@ using System.Text;
 namespace IGLib
 {
 
-    /// <summary>Stores results of validation of a value of an object, usually provided externally (via user input, input/output,
-    /// via remote system, etc.).</summary>
+    /// <summary>Stores results of validation of a value of a single object, usually provided externally 
+    /// (throuh user input via console or GUI, from input devices, from remote system, etc.).</summary>
+    /// <remarks>This class is not thread safe. It is not excepted that a single validation would be 
+    /// handled by multiple threads.
+    /// <para>The class is designed to be used by validators (interface <see cref="IValidator{T}"/>)
+    /// to store reults of their validation.</para>
+    /// <para>Class can be reused for successive validations. Cal the <see cref="Clear"/> method before
+    /// each reuse.</para></remarks>
     public class ValidationResults : IValidationIssueSink
     {
         private readonly List<ValidationIssue> _issues = new();
@@ -88,12 +94,18 @@ namespace IGLib
         }
     }
 
-    /// <summary>Stores results of validation of an object provided externally (via user input, input/output,
-    /// via remote system, etc.).</summary>
-    /// <typeparam name="ValidatedType">Type of the object for which validation results are provided.</typeparam>
-    /// <remarks>This class is not thread safe. It is not excepted that a single validation would be handled by multiple threads.</remarks>
+    /// <summary>Stores results of validation of an object.
+    /// <para>This class inherits from the non-generic <see cref="ValidationResult"/> and adds the 
+    /// <see cref="ValidatedValue"/> property to optionally store the value whose validation results
+    /// are stored. See documentation of this class for more information on usage and behavior.</para></summary>
+    /// <typeparam name="ValidatedType">Type of the object for which validation results are stored.</typeparam>
+    /// <remarks></remarks>
     public class ValidationResults<T> : ValidationResults
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
         public ValidationResults()
         {
         }
