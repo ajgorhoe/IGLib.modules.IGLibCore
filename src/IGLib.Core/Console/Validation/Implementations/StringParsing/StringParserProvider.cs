@@ -17,8 +17,11 @@ namespace IGLib
             IFormatProvider provider = formatProvider ?? CultureInfo.CurrentCulture;
 
 
-            throw new NotImplementedException();
-            // throw new NotSupportedException($"Type {type.FullName} is not supported.");
+
+
+
+            throw new NotSupportedException(
+                $"No built-in string parser is available for target type '{targetType.FullName}'.");
         }
 
 
