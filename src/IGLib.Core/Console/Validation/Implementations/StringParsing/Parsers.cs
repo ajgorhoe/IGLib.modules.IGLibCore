@@ -123,4 +123,18 @@ internal sealed class UInt32StringParser : IStringParser<uint>
 }
 
 
+internal sealed class Int64StringParser : IStringParser<long>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public Int64StringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out long value)
+    {
+        return long.TryParse(text, NumberStyles.Integer, _formatProvider, out value);
+    }
+}
 
