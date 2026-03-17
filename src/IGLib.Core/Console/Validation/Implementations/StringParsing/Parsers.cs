@@ -94,4 +94,13 @@ namespace IGLib
     }
 
 
+    internal sealed class GuidStringParser : IStringParser<Guid>
+    {
+        public bool TryParse(string text, out Guid value) =>
+            Guid.TryParse(text, out value);
+    }
+
+
+
+
 }
