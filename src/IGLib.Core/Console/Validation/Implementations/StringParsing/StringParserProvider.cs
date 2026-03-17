@@ -32,6 +32,10 @@ namespace IGLib
             //if (targetType == typeof(byte))
             //    return new ByteStringParser(formatProvider);
 
+            //if (targetType == typeof(byte))
+            //    return new SByteStringParser(formatProvider);
+
+
 
 
             if (targetType == typeof(decimal))
