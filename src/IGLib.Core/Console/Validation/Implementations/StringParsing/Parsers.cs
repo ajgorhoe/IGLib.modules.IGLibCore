@@ -7,6 +7,15 @@ using System.Text;
 namespace IGLib
 {
 
+    internal sealed class IdentityStringParser : IStringParser<string>
+    {
+        public bool TryParse(string text, out string value)
+        {
+            value = text;
+            return true;
+        }
+    }
+
     internal sealed class BooleanStringParser : IStringParser<bool>
     {
         public bool TryParse(string text, out bool value) =>
