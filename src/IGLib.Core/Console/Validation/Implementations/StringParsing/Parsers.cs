@@ -27,4 +27,22 @@ internal sealed class BooleanStringParser : IStringParser<bool>
 }
 
 
+internal sealed class ByteStringParser : IStringParser<byte>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public ByteStringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out byte value)
+    {
+        return byte.TryParse(text, NumberStyles.Integer, _formatProvider, out value);
+    }
+}
+
+
+
+
 
