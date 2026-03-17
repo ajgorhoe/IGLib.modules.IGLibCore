@@ -29,6 +29,9 @@ namespace IGLib
             if (targetType == typeof(int))
                 return new Int32StringParser(formatProvider);
 
+            if (targetType == typeof(decimal))
+                return new DecimalStringParser(formatProvider);
+
 
 
             throw new NotSupportedException(
