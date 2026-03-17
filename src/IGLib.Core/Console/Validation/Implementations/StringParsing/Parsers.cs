@@ -107,6 +107,20 @@ internal sealed class Int32StringParser : IStringParser<int>
 }
 
 
+internal sealed class UInt32StringParser : IStringParser<uint>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public UInt32StringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out uint value)
+    {
+        return uint.TryParse(text, NumberStyles.Integer, _formatProvider, out value);
+    }
+}
 
 
 
