@@ -75,6 +75,20 @@ internal sealed class Int16StringParser : IStringParser<short>
 }
 
 
+internal sealed class UInt16StringParser : IStringParser<ushort>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public UInt16StringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out ushort value)
+    {
+        return ushort.TryParse(text, NumberStyles.Integer, _formatProvider, out value);
+    }
+}
 
 
 
