@@ -91,6 +91,22 @@ internal sealed class UInt16StringParser : IStringParser<ushort>
 }
 
 
+internal sealed class Int32StringParser : IStringParser<int>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public Int32StringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out int value)
+    {
+        return int.TryParse(text, NumberStyles.Integer, _formatProvider, out value);
+    }
+}
+
+
 
 
 
