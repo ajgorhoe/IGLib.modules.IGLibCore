@@ -1,52 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 
-namespace IGLib
+namespace IGLib;
+
+internal static class StringParserProvider
 {
-
-
-    internal static class StringParserProvider
+    public static IStringParser<T> GetParser<T>(IFormatProvider formatProvider = null)
     {
-        public static IStringParser<T> GetParser<T>(IFormatProvider? formatProvider = null)
-        {
-            object parser = GetParser(typeof(T), formatProvider ?? CultureInfo.CurrentCulture);
+        object parser = GetParser(typeof(T), formatProvider ?? CultureInfo.CurrentCulture);
 
-            return (IStringParser<T>)parser;
-        }
+        if (parser is IStringParser<T> typedParser)
+            return typedParser;
 
-        private static object GetParser(Type targetType, IFormatProvider formatProvider)
-        {
-            if (targetType == typeof(string))
-                return new IdentityStringParser();
-
-            if (targetType == typeof(bool))
-                return new BooleanStringParser();
-
-            if (targetType == typeof(int))
-                return new Int32StringParser(formatProvider);
-
-            //if (targetType == typeof(byte))
-            //    return new ByteStringParser(formatProvider);
-
-            //if (targetType == typeof(byte))
-            //    return new SByteStringParser(formatProvider);
-
-
-
-
-            if (targetType == typeof(decimal))
-                return new DecimalStringParser(formatProvider);
-
-
-
-            throw new NotSupportedException(
-                $"No built-in string parser is available for target type '{targetType.FullName}'.");
-        }
-
+        throw new InvalidOperationException(
+            $"Internal parser provider error: parser for type '{typeof(T).FullName}' " +
+            $"has incompatible runtime type '{parser.GetType().FullName}'.");
     }
 
+    private static object GetParser(Type targetType, IFormatProvider formatProvider)
+    {
+        if (targetType == typeof(string))
+            return new IdentityStringParser();
+
+        if (targetType == typeof(bool))
+            return new BooleanStringParser();
+
+        throw new NotSupportedException(
+            $"No built-in string parser is available for target type '{targetType.FullName}'.");
+    }
 }
