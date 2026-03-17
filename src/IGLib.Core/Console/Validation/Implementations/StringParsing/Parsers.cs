@@ -75,4 +75,23 @@ namespace IGLib
     }
 
 
+
+    internal sealed class DateTimeStringParser : IStringParser<DateTime>
+    {
+        private readonly IFormatProvider _formatProvider;
+
+        public DateTimeStringParser(IFormatProvider formatProvider)
+        {
+            _formatProvider = formatProvider;
+        }
+
+        public bool TryParse(string text, out DateTime value) =>
+            DateTime.TryParse(
+                text,
+                _formatProvider,
+                DateTimeStyles.None,
+                out value);
+    }
+
+
 }
