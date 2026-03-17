@@ -59,5 +59,24 @@ internal sealed class SByteStringParser : IStringParser<sbyte>
 }
 
 
+internal sealed class Int16StringParser : IStringParser<short>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public Int16StringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out short value)
+    {
+        return short.TryParse(text, NumberStyles.Integer, _formatProvider, out value);
+    }
+}
+
+
+
+
+
 
 
