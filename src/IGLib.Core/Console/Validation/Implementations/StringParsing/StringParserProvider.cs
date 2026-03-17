@@ -23,6 +23,9 @@ namespace IGLib
             if (targetType == typeof(string))
                 return new IdentityStringParser();
 
+            if (targetType == typeof(bool))
+                return new BooleanStringParser();
+
 
 
             throw new NotSupportedException(
