@@ -154,8 +154,44 @@ internal sealed class UInt64StringParser : IStringParser<ulong>
 }
 
 
+internal sealed class SingleStringParser : IStringParser<float>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public SingleStringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out float value)
+    {
+        return float.TryParse(
+            text,
+            NumberStyles.Float | NumberStyles.AllowThousands,
+            _formatProvider,
+            out value);
+    }
+}
 
 
+internal sealed class DoubleStringParser : IStringParser<double>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public DoubleStringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out double value)
+    {
+        return double.TryParse(
+            text,
+            NumberStyles.Float | NumberStyles.AllowThousands,
+            _formatProvider,
+            out value);
+    }
+}
 
 
 
