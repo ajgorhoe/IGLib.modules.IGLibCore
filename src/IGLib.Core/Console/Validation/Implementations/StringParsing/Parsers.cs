@@ -8,6 +8,7 @@ using System.Text;
 namespace IGLib
 {
 
+    /// <summary>Dummy identity parser - just returns the original string when parsing a string value from a string.</summary>
     internal sealed class IdentityStringParser : IStringParser<string>
     {
         public bool TryParse(string text, out string value)
@@ -17,6 +18,7 @@ namespace IGLib
         }
     }
 
+    /// <summary>Parses boolean from a striring.</summary>
     internal sealed class BooleanStringParser : IStringParser<bool>
     {
         public bool TryParse(string text, out bool value) =>
