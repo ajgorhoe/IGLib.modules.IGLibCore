@@ -20,9 +20,13 @@ namespace IGLib
 
         private static object GetParser(Type targetType, IFormatProvider formatProvider)
         {
+            if (targetType == typeof(string))
+                return new IdentityStringParser();
 
-            throw new NotImplementedException();
 
+
+            throw new NotSupportedException(
+                $"No built-in string parser is available for target type '{targetType.FullName}'.");
         }
 
     }
