@@ -57,6 +57,22 @@ namespace IGLib
     }
 
 
+    internal sealed class DoubleStringParser : IStringParser<double>
+    {
+        private readonly IFormatProvider _formatProvider;
+
+        public DoubleStringParser(IFormatProvider formatProvider)
+        {
+            _formatProvider = formatProvider;
+        }
+
+        public bool TryParse(string text, out double value) =>
+            double.TryParse(
+                text,
+                NumberStyles.Float | NumberStyles.AllowThousands,
+                _formatProvider,
+                out value);
+    }
 
 
 }
