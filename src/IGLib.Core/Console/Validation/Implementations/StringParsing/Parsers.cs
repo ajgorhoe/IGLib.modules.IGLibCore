@@ -43,6 +43,21 @@ internal sealed class ByteStringParser : IStringParser<byte>
 }
 
 
+internal sealed class SByteStringParser : IStringParser<sbyte>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public SByteStringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out sbyte value)
+    {
+        return sbyte.TryParse(text, NumberStyles.Integer, _formatProvider, out value);
+    }
+}
+
 
 
 
