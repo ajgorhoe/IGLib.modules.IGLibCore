@@ -26,6 +26,9 @@ namespace IGLib
             if (targetType == typeof(bool))
                 return new BooleanStringParser();
 
+            if (targetType == typeof(int))
+                return new Int32StringParser(formatProvider);
+
 
 
             throw new NotSupportedException(
