@@ -38,4 +38,25 @@ namespace IGLib
     }
 
 
+
+    internal sealed class DecimalStringParser : IStringParser<decimal>
+    {
+        private readonly IFormatProvider _formatProvider;
+
+        public DecimalStringParser(IFormatProvider formatProvider)
+        {
+            _formatProvider = formatProvider;
+        }
+
+        public bool TryParse(string text, out decimal value) =>
+            decimal.TryParse(
+                text,
+                NumberStyles.Number,
+                _formatProvider,
+                out value);
+    }
+
+
+
+
 }
