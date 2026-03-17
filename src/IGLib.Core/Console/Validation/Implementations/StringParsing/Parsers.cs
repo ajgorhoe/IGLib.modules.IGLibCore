@@ -138,3 +138,17 @@ internal sealed class Int64StringParser : IStringParser<long>
     }
 }
 
+internal sealed class UInt64StringParser : IStringParser<ulong>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public UInt64StringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out ulong value)
+    {
+        return ulong.TryParse(text, NumberStyles.Integer, _formatProvider, out value);
+    }
+}
