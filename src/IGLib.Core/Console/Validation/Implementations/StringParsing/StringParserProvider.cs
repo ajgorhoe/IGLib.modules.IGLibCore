@@ -29,6 +29,11 @@ namespace IGLib
             if (targetType == typeof(int))
                 return new Int32StringParser(formatProvider);
 
+            //if (targetType == typeof(byte))
+            //    return new ByteStringParser(formatProvider);
+
+
+
             if (targetType == typeof(decimal))
                 return new DecimalStringParser(formatProvider);
 
