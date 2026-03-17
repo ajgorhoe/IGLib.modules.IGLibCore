@@ -101,6 +101,20 @@ namespace IGLib
     }
 
 
+    internal sealed class TimeSpanStringParser : IStringParser<TimeSpan>
+    {
+        private readonly IFormatProvider _formatProvider;
+
+        public TimeSpanStringParser(IFormatProvider formatProvider)
+        {
+            _formatProvider = formatProvider;
+        }
+
+        public bool TryParse(string text, out TimeSpan value) =>
+            TimeSpan.TryParse(text, _formatProvider, out value);
+    }
+
+
 
 
 }
