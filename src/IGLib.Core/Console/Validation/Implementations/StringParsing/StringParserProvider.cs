@@ -13,17 +13,17 @@ namespace IGLib
     {
         public static IStringParser<T> GetParser<T>(IFormatProvider? formatProvider = null)
         {
-            Type targetType = typeof(T);
-            IFormatProvider provider = formatProvider ?? CultureInfo.CurrentCulture;
+            object parser = GetParser(typeof(T), formatProvider ?? CultureInfo.CurrentCulture);
 
-
-
-
-
-            throw new NotSupportedException(
-                $"No built-in string parser is available for target type '{targetType.FullName}'.");
+            return (IStringParser<T>)parser;
         }
 
+        private static object GetParser(Type targetType, IFormatProvider formatProvider)
+        {
+
+            throw new NotImplementedException();
+
+        }
 
     }
 
