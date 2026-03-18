@@ -28,6 +28,9 @@ internal static class StringParserProvider
         if (targetType == typeof(byte))
             return new ByteStringParser(formatProvider);
 
+        if (targetType == typeof(sbyte))
+            return new SByteStringParser(formatProvider);
+
 
 
 
