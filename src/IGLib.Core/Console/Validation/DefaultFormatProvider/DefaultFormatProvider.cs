@@ -16,6 +16,15 @@ public class DefaultFormatProviderSelector
     public static IDefaultFormatProviderSelector Global { get; private set; }
         = new DefaultFormatProviderSelectorInvariantCulture();
 
+    public static void SetGlobal(IDefaultFormatProviderSelector selector) 
+    {
+        if (selector == null)
+        {
+            throw new ArgumentNullException(nameof(selector), "The global selector of default format provider cannot be set to null.");
+        }
+        Global = selector;
+    }
+
     /// <summary>Returns the appropriate <see cref="IFormatProvider"/> according to the specified (suggested)
     /// <paramref name="specifiedFormatProvider"/> (that can be null) and the specified <paramref name="defaultSelector"/>,
     /// which provides the default <see cref="IFormatProvider"/> when the <paramref name="specifiedFormatProvider"/>
