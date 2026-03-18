@@ -5,7 +5,7 @@ namespace IGLib;
 
 internal static class StringParserProvider
 {
-    public static IStringParser<T> GetParser<T>(IFormatProvider formatProvider = null)
+    public static IStringParser<T> GetParser<T>(IFormatProvider? formatProvider = null)
     {
         object parser = GetParser(typeof(T), formatProvider ?? CultureInfo.CurrentCulture);
 
