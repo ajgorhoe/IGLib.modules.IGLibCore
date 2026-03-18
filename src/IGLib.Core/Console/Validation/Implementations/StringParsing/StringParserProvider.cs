@@ -34,6 +34,9 @@ internal static class StringParserProvider
         if (targetType == typeof(short))
             return new Int16StringParser(formatProvider);
 
+        if (targetType == typeof(ushort))
+            return new UInt16StringParser(formatProvider);
+
 
 
 
