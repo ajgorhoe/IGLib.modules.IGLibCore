@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+﻿
+using System;
 
 namespace IGLib
 {
@@ -22,7 +19,9 @@ namespace IGLib
     public interface IDefaultFormatProviderSelector
     {
 
-        IFormatProvider DefaulltFormatProvider { get; }
+        /// <summary>Returns the <see cref="IFormatProvider"/> object that should be used as default,
+        /// when the <see cref="IFormatProvider"/> is not proveded for a specific purpose.</summary>
+        IFormatProvider DefaultFormatProvider { get; }
 
     }
 
