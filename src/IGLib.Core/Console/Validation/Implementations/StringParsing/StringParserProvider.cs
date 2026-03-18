@@ -52,6 +52,9 @@ internal static class StringParserProvider
         if (targetType == typeof(float))
             return new SingleStringParser(formatProvider);
 
+        if (targetType == typeof(double))
+            return new DoubleStringParser(formatProvider);
+
 
 
 
