@@ -254,6 +254,20 @@ internal sealed class DateTimeOffsetStringParser : IStringParser<DateTimeOffset>
 }
 
 
+internal sealed class TimeSpanStringParser : IStringParser<TimeSpan>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public TimeSpanStringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out TimeSpan value)
+    {
+        return TimeSpan.TryParse(text, _formatProvider, out value);
+    }
+}
 
 
 
