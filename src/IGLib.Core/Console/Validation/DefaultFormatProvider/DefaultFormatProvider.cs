@@ -51,6 +51,8 @@ public class DefaultFormatProviderSelector
     /// <see cref="IDefaultFormatProviderSelector.DefaultFormatProvider"/> property is returned.</para>
     /// <para>Otherwise, the format provider obtained by the <see cref="DefaultFormatProviderSelector.Global"/>'s 
     /// <see cref="IDefaultFormatProviderSelector.DefaultFormatProvider"/> property is returned.</para></returns>
+    /// <remarks>Default parameters are intentionally not provided, such that the caller needs to consciously
+    /// provide null values if this is itended.</remarks>
     public static IFormatProvider GetFormatProvider(IFormatProvider? specifiedFormatProvider,
         IDefaultFormatProviderSelector? defaultSelector)
     {
