@@ -234,6 +234,24 @@ internal sealed class DateTimeStringParser : IStringParser<DateTime>
 }
 
 
+internal sealed class DateTimeOffsetStringParser : IStringParser<DateTimeOffset>
+{
+    private readonly IFormatProvider _formatProvider;
+
+    public DateTimeOffsetStringParser(IFormatProvider formatProvider)
+    {
+        _formatProvider = formatProvider;
+    }
+
+    public bool TryParse(string text, out DateTimeOffset value)
+    {
+        return DateTimeOffset.TryParse(
+            text,
+            _formatProvider,
+            DateTimeStyles.None,
+            out value);
+    }
+}
 
 
 
