@@ -46,6 +46,8 @@ internal static class StringParserProvider
         if (targetType == typeof(long))
             return new Int64StringParser(formatProvider);
 
+        if (targetType == typeof(ulong))
+            return new UInt64StringParser(formatProvider);
 
 
 
