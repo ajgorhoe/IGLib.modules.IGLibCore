@@ -67,14 +67,8 @@ internal static class StringParserProvider
         if (targetType == typeof(TimeSpan))
             return new TimeSpanStringParser(formatProvider);
 
-
-
-
-
-
-
-
-
+        if (targetType == typeof(Guid))
+            return new GuidStringParser();
 
         throw new NotSupportedException(
             $"No built-in string parser is available for target type '{targetType.FullName}'.");
