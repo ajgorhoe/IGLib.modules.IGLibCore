@@ -31,6 +31,9 @@ internal static class StringParserProvider
         if (targetType == typeof(sbyte))
             return new SByteStringParser(formatProvider);
 
+        if (targetType == typeof(short))
+            return new Int16StringParser(formatProvider);
+
 
 
 
