@@ -1,38 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace IGLib
+namespace IGLib;
+
+public class ParsableStringValidator<TTarget> : IValidator<string>
 {
+    private readonly IStringParser<TTarget> _parser;
 
-    public class ParsableStringValidator<TTarget> : IValidator<string>
+    public ParsableStringValidator(
+        IFormatProvider formatProvider = null,
+        string errorMessage = null)
     {
-        private readonly IStringParser<TTarget> _parser;
+        _parser = StringParserProvider.GetParser<TTarget>(formatProvider ?? CultureInfo.CurrentCulture);
+        ErrorMessage = errorMessage ?? $"Value is not a valid {typeof(TTarget).Name}.";
+    }
 
-        public ParsableStringValidator(
-            IFormatProvider? formatProvider = null,
-            string? errorMessage = null)
+    public string ErrorMessage { get; }
+
+    public virtual void Validate(string value, ValidationResults results)
+    {
+        if (results == null)
+            throw new ArgumentNullException(nameof(results));
+
+        if (value == null)
         {
-            _parser = StringParserProvider.GetParser<TTarget>(formatProvider);
-            ErrorMessage = errorMessage ?? $"Value is not a valid {typeof(TTarget).Name}.";
+            results.AddError(ErrorMessage);
+            return;
         }
 
-        public string ErrorMessage { get; }
-
-        public virtual void Validate(string value, ValidationResults results)
-        {
-            // ToDo ArgumentNullException.ThrowIfNull(results);
-
-            if (value == null)
-            {
-                results.AddError(ErrorMessage);
-                return;
-            }
-
-            if (!_parser.TryParse(value, out _))
-                results.AddError(ErrorMessage);
-        }
+        if (!_parser.TryParse(value, out _))
+            results.AddError(ErrorMessage);
     }
 }
