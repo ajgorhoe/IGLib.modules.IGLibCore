@@ -55,6 +55,9 @@ internal static class StringParserProvider
         if (targetType == typeof(double))
             return new DoubleStringParser(formatProvider);
 
+        if (targetType == typeof(decimal))
+            return new DecimalStringParser(formatProvider);
+
 
 
 
