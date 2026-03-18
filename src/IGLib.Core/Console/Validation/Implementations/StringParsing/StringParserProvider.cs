@@ -49,6 +49,12 @@ internal static class StringParserProvider
         if (targetType == typeof(ulong))
             return new UInt64StringParser(formatProvider);
 
+        if (targetType == typeof(float))
+            return new SingleStringParser(formatProvider);
+
+
+
+
 
 
 
