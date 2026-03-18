@@ -16,6 +16,14 @@ public class DefaultFormatProviderSelector
     public static IDefaultFormatProviderSelector Global { get; private set; }
         = new DefaultFormatProviderSelectorInvariantCulture();
 
+    /// <summary>Sets (changes) the global <see cref="IDefaultFormatProviderSelector"/>, which will be
+    /// used by default to select the default <see cref="IFormatProvider"/> object when one is not
+    /// specified, and the <see cref="IDefaultFormatProviderSelector"/> to obtain the default value
+    /// is also not specified.</summary>
+    /// <param name="selector">The <see cref="IDefaultFormatProviderSelector"/> that will be returned
+    /// by the <see cref="DefaultFormatProviderSelector.Global"/> property after this call.
+    /// The marameter may not be null (otherwise, this method throws an exception).</param>
+    /// <exception cref="ArgumentNullException">When the <paramref name="selector"/> parameter is null.</exception>
     public static void SetGlobal(IDefaultFormatProviderSelector selector) 
     {
         if (selector == null)
