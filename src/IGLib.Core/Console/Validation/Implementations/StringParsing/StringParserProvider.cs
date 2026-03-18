@@ -58,6 +58,9 @@ internal static class StringParserProvider
         if (targetType == typeof(decimal))
             return new DecimalStringParser(formatProvider);
 
+        if (targetType == typeof(DateTime))
+            return new DateTimeStringParser(formatProvider);
+
 
 
 
