@@ -270,4 +270,11 @@ internal sealed class TimeSpanStringParser : IStringParser<TimeSpan>
 }
 
 
+internal sealed class GuidStringParser : IStringParser<Guid>
+{
+    public bool TryParse(string text, out Guid value)
+    {
+        return Guid.TryParse(text, out value);
+    }
+}
 
