@@ -64,6 +64,9 @@ internal static class StringParserProvider
         if (targetType == typeof(DateTimeOffset))
             return new DateTimeOffsetStringParser(formatProvider);
 
+        if (targetType == typeof(TimeSpan))
+            return new TimeSpanStringParser(formatProvider);
+
 
 
 
