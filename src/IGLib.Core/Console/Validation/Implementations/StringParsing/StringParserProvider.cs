@@ -25,6 +25,16 @@ internal static class StringParserProvider
         if (targetType == typeof(bool))
             return new BooleanStringParser();
 
+        if (targetType == typeof(byte))
+            return new ByteStringParser(formatProvider);
+
+
+
+
+
+
+
+
         throw new NotSupportedException(
             $"No built-in string parser is available for target type '{targetType.FullName}'.");
     }
