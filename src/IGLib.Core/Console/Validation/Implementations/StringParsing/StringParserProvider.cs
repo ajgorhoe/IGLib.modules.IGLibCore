@@ -40,6 +40,9 @@ internal static class StringParserProvider
         if (targetType == typeof(int))
             return new Int32StringParser(formatProvider);
 
+        if (targetType == typeof(uint))
+            return new UInt32StringParser(formatProvider);
+
 
 
 
