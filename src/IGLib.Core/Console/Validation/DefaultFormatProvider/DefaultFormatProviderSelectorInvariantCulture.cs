@@ -17,7 +17,7 @@ namespace IGLib
     /// <see cref="DefaulltFormatProvider"/> returns. In applications, you can arrange for specific 
     /// <see cref="IDefaultFormatProviderSelector"/> to be injected in all such constructors.</remarks>
     /// </remarks>
-    public class DefaultFormatProviderSelectorInvariantCulture: IDefaultFormatProviderSelector
+    public class DefaultFormatProviderSelectorInvariantCulture : IDefaultFormatProviderSelector
     {
 
         public IFormatProvider DefaultFormatProvider => CultureInfo.InvariantCulture;
