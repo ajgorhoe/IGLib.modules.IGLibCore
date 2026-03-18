@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-
 namespace IGLib;
+
 
 public class ParsableStringValidator<TTarget> : IValidator<string>
 {
     private readonly IStringParser<TTarget> _parser;
 
     public ParsableStringValidator(
-        IFormatProvider formatProvider = null,
-        string errorMessage = null)
+        IFormatProvider? formatProvider = null,
+        string? errorMessage = null)
     {
         _parser = StringParserProvider.GetParser<TTarget>(formatProvider ?? CultureInfo.CurrentCulture);
         ErrorMessage = errorMessage ?? $"Value is not a valid {typeof(TTarget).Name}.";
