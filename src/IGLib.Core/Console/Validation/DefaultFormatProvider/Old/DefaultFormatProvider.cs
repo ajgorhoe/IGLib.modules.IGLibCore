@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 
-namespace IGLib;
+namespace IGLib.Old;
 
 
 public class DefaultFormatProviderSelector
