@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace IGLib;
+namespace IGLib.Old;
 
 
 /// <summary>Provides the default format provider (object of type <see cref="IFormatProvider"/>) 

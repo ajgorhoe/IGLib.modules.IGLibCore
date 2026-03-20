@@ -2,7 +2,7 @@
 using System;
 using System.Globalization;
 
-namespace IGLib;
+namespace IGLib.Old;
 
 /// <summary>Provides the default format provider (object of type <see cref="IFormatProvider"/>) 
 /// for cases where the format provider is not explicitly specified; e.g., in methods where
