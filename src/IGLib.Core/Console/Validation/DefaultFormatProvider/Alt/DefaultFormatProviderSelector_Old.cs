@@ -7,13 +7,13 @@ using System.Text;
 namespace IGLib.Alt;
 
 
-public class DefaultFormatProviderSelector
+    [Obsolete ("Replaced by FormatProviderDefaults")]
+public class DefaultFormatProviderSelector_Old
 {
 
     /// <summary>Returns the global <see cref="IDefaultFormatProviderSelector"/> that is used to provide
     /// the <see cref="IFormatProvider"/> when one is not specified, and also the the
     /// <see cref="IDefaultFormatProviderSelector"/> is not specified.</summary>
-    [Obsolete ("Replaced by FormatProviderDefaults")]
     public static IDefaultFormatProviderSelector Global { get; private set; }
         = new InvariantCultureFormatProviderSelector();
 
