@@ -13,8 +13,9 @@ public class DefaultFormatProviderSelector
     /// <summary>Returns the global <see cref="IDefaultFormatProviderSelector"/> that is used to provide
     /// the <see cref="IFormatProvider"/> when one is not specified, and also the the
     /// <see cref="IDefaultFormatProviderSelector"/> is not specified.</summary>
+    [Obsolete ("Replaced by FormatProviderDefaults")]
     public static IDefaultFormatProviderSelector Global { get; private set; }
-        = new DefaultFormatProviderSelectorInvariantCulture();
+        = new InvariantCultureFormatProviderSelector();
 
     /// <summary>Sets (changes) the global <see cref="IDefaultFormatProviderSelector"/>, which will be
     /// used by default to select the default <see cref="IFormatProvider"/> object when one is not
